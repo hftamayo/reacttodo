@@ -10,7 +10,8 @@ function App() {
       <div className={style.container}>
         <h3 className={style.heading}>ToDo App</h3>
         <form className={style.form}>
-          <input type="text" placeholder='Add a Task' />
+          <input className={style.input} type="text" placeholder='Add a Task' />
+          <button className={style.button}></button>
         </form>
       </div>
 
