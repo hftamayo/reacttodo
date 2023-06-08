@@ -5,3 +5,5 @@ const Todo = () => {
         <li>Todo</li>
     )
 }
+
+export default Todo();
