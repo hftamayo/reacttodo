@@ -21,9 +21,9 @@ function App() {
         </form>
       </div>
       <ul>
-        {todos.map((todo, index) => {
-          <Todo key={index} todo={todo} />;
-        })}
+        {todos.map((todo, index) => (
+          <Todo key={index} todo={todo} />
+        ))}
       </ul>
     </div>
   );
