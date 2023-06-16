@@ -1,6 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import Todo from "./Todo";
+import { db } from "./firebase";
+import {
+  query,
+  collection,
+  onSnapshot,
+  QuerySnapshot,
+} from "firebase/firestore";
 
 const style = {
   bg: `h-screen w-screen p-4 bg-gradient-to-r from-[#2F80ED] to-[#1CB5E0]`,
@@ -13,7 +20,19 @@ const style = {
 };
 
 function App() {
-  const [todos, setTodos] = useState(["Test1", "Test2"]);
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    const q = query(collection(db, "todo"));
+    const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
+      let todosArr = [];
+      QuerySnapshot.forEach((doc) => {
+        todosArr.push({ ...doc.data(), id: doc.id });
+      });
+      setTodos(todosArr);
+    });
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className={style.bg}>
