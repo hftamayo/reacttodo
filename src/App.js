@@ -6,7 +6,8 @@ import {
   query,
   collection,
   onSnapshot,
-  QuerySnapshot,
+  updateDoc,
+  doc,
 } from "firebase/firestore";
 
 const style = {
@@ -34,6 +35,12 @@ function App() {
     return () => unsubscribe();
   }, []);
 
+  const toggleComplete = async (todo) => {
+    await updateDoc(doc(db, "tasks", todo.id), {
+      completed: !todo.completed,
+    });
+  };
+
   return (
     <div className={style.bg}>
       <div className={style.container}>
@@ -46,7 +53,7 @@ function App() {
         </form>
         <ul>
           {todos.map((todo, index) => (
-            <Todo key={index} todo={todo} />
+            <Todo key={index} todo={todo} toggleComplete={toggleComplete} />
           ))}
         </ul>
         <p className={style.count}>You have 2 todos</p>
