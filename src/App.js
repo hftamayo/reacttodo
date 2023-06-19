@@ -23,7 +23,7 @@ function App() {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
-    const q = query(collection(db, "todo"));
+    const q = query(collection(db, "tasks"));
     const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
       let todosArr = [];
       QuerySnapshot.forEach((doc) => {
