@@ -35,7 +35,7 @@ function App() {
       text: input,
       completed: false,
     });
-    setInput('')
+    setInput("");
   };
 
   useEffect(() => {
@@ -77,7 +77,9 @@ function App() {
             <Todo key={index} todo={todo} toggleComplete={toggleComplete} />
           ))}
         </ul>
-        <p className={style.count}>`You have ${todos.length} todos`</p>
+        {todos.length < 1 ? null : (
+          <p className={style.count}>`You have ${todos.length} todos`</p>
+        )}
       </div>
     </div>
   );
