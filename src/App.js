@@ -7,6 +7,7 @@ import {
   collection,
   onSnapshot,
   updateDoc,
+  addDoc,
   doc,
 } from "firebase/firestore";
 
@@ -22,6 +23,20 @@ const style = {
 
 function App() {
   const [todos, setTodos] = useState([]);
+  const [input, setInput] = useState("");
+
+  const createTask = async (e) => {
+    e.preventDefault(e);
+    if (input === "") {
+      alert("Please enter details of the new task");
+      return;
+    }
+    await addDoc(collection(db, "tasks"), {
+      text: input,
+      completed: false,
+    });
+    setInput("");
+  };
 
   useEffect(() => {
     const q = query(collection(db, "tasks"));
@@ -45,8 +60,14 @@ function App() {
     <div className={style.bg}>
       <div className={style.container}>
         <h3 className={style.heading}>ToDo App</h3>
-        <form className={style.form}>
-          <input className={style.input} type="text" placeholder="Add a Task" />
+        <form onSubmit={createTask} className={style.form}>
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            className={style.input}
+            type="text"
+            placeholder="Add a Task"
+          />
           <button className={style.button}>
             <AiOutlinePlus size={30} />
           </button>
