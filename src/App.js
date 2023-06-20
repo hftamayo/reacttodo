@@ -8,6 +8,7 @@ import {
   onSnapshot,
   updateDoc,
   addDoc,
+  deleteDoc,
   doc,
 } from "firebase/firestore";
 
@@ -56,6 +57,10 @@ function App() {
     });
   };
 
+  const deleteTask = async (id) => {
+    await deleteDoc(doc(db, "tasks", id));
+  };
+
   return (
     <div className={style.bg}>
       <div className={style.container}>
@@ -74,11 +79,16 @@ function App() {
         </form>
         <ul>
           {todos.map((todo, index) => (
-            <Todo key={index} todo={todo} toggleComplete={toggleComplete} />
+            <Todo
+              key={index}
+              todo={todo}
+              toggleComplete={toggleComplete}
+              deleteTask={deleteTask}
+            />
           ))}
         </ul>
         {todos.length < 1 ? null : (
-          <p className={style.count}>`You have ${todos.length} todos`</p>
+          <p className={style.count}>{`You have ${todos.length} todos`}</p>
         )}
       </div>
     </div>
