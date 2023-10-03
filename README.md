@@ -32,7 +32,7 @@ Application which help the user to manage tasks and reminders
 * Experimental: sourcecode in progress
 
 ## Snapshots ##
-[localhost](./snapshots/view.png)
+![localhost](./snapshots/view.png)
 
 ## Proof of Concept ##
 [Todo]
