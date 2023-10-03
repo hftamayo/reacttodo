@@ -13,7 +13,7 @@ Application which help the user to manage tasks and reminders
 
 ### Technical Stack ###
 * Data storage: Firebase 9 
-* FrontEnd: React JS 
+* FrontEnd: React JS, Tailwind 
 * BackEnd: Serverless
 * Built using: Vite
 * Architecture: To be defined 
@@ -31,6 +31,8 @@ Application which help the user to manage tasks and reminders
 * Unstable: sourcecode that is in progress of testing
 * Experimental: sourcecode in progress
 
+## Snapshots ##
+[localhost](./snapshots/view.png)
 
 ## Proof of Concept ##
 [Todo]
@@ -39,3 +41,5 @@ Application which help the user to manage tasks and reminders
 ## Bugs ##
 Please refer to the Issues section in this repository
 
+## References ###
+[Original tutorial](https://youtu.be/drF8HbnW87w?si=MD15WKGIJXGMdCEq)
