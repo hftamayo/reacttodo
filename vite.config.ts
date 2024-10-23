@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
-    open: true,
+    open: false,
     host: '0.0.0.0',
   },
   resolve: {
@@ -16,4 +16,5 @@ export default defineConfig({
   build: {
     outDir: 'dist',
   },
+  publicDir: 'public',
 });
