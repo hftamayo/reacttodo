@@ -2,7 +2,7 @@
   "name": "vitetodo",
   "version": "0.0.1",
   "description": "Todo Application used for testing entire SDLC and new technologies",
-  "type": "module",  
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
