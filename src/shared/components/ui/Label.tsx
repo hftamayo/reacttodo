@@ -1,9 +1,8 @@
-import React, { FC, LabelHTMLAttributes } from 'react';
+import React, { FC } from 'react';
 import { Label as ShadcnLabel } from '@shadcn/ui';
+import { LabelProps } from '../../types/shadcn-component.type';
 
-interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {}
-
-const Label: FC<LabelProps> = ({ children, ...props }) => {
+const Label: FC<Readonly<LabelProps>> = ({ children, ...props }) => {
   return <ShadcnLabel {...props}>{children}</ShadcnLabel>;
 };
 
