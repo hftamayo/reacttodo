@@ -1,4 +1,4 @@
-export type Task = {
+export type TaskProps = {
   id: string;
   name: string;
   complete: boolean;
