@@ -3,3 +3,5 @@ export type TaskProps = {
   name: string;
   complete: boolean;
 };
+
+export type AddTask = Pick<TaskProps, 'name'>;
