@@ -6,7 +6,7 @@ import Button from '../../../shared/components/ui/Button';
 import { TaskProps } from '../../../shared/types/task.type';
 import { taskRow } from '../../../shared/utils/twind/styles';
 
-const Todo: FC<TaskProps> = ({ todo, toggleComplete, deleteTask }) => {
+const TaskRow: FC<TaskProps> = ({ todo, toggleComplete, deleteTask }) => {
   return (
     <li className={todo.completed ? taskRow.liComplete : taskRow.li}>
       <div className="flex">
@@ -29,4 +29,4 @@ const Todo: FC<TaskProps> = ({ todo, toggleComplete, deleteTask }) => {
   );
 };
 
-export default Todo;
+export default TaskRow;
