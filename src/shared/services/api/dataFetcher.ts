@@ -1,7 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { BACKEND_URL } from '../../utils/envvars';
+import { TaskProps, TaskResponse } from '../../types/task.type';
 
-const fetchTasks = async () => {
+const fetchTasks = async (): Promise<TaskProps[]> => {
   const response = await fetch(`${BACKEND_URL}/tasks/all`, {
     credentials: 'include',
   });
@@ -11,7 +12,7 @@ const fetchTasks = async () => {
   return response.json();
 };
 
-const fetchTask = async (id: string) => {
+const fetchTask = async (id: string): Promise<TaskProps> => {
   const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
     credentials: 'include',
   });
@@ -21,7 +22,7 @@ const fetchTask = async (id: string) => {
   return response.json();
 };
 
-const fetchAddTask = async (task: any) => {
+const fetchAddTask = async (task: TaskProps): Promise<TaskProps> => {
   const response = await fetch(`${BACKEND_URL}/tasks/task`, {
     method: 'POST',
     credentials: 'include',
@@ -36,7 +37,7 @@ const fetchAddTask = async (task: any) => {
   return response.json();
 };
 
-const fetchUpdateTask = async (task: any) => {
+const fetchUpdateTask = async (task: TaskProps): Promise<TaskProps> => {
   const response = await fetch(`${BACKEND_URL}/tasks/task/${task.id}`, {
     method: 'PUT',
     credentials: 'include',
@@ -51,28 +52,29 @@ const fetchUpdateTask = async (task: any) => {
   return response.json();
 };
 
-const fetchDeleteTask = async (id: string) => {
+const fetchDeleteTask = async (id: string): Promise<TaskResponse> => {
   const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
     method: 'DELETE',
     credentials: 'include',
   });
   if (!response.ok) {
-    throw new Error('Network response was not ok');
+    throw new Error('No response received');
   }
   return response.json();
 };
 
+//defining hooks
 export const useGetTasks = () => {
-  return useQuery('tasks', fetchTasks);
+  return useQuery<TaskProps[], Error>('tasks', fetchTasks);
 };
 
 export const useGetTask = (id: string) => {
-  return useQuery(['task', id], () => fetchTask(id));
+  return useQuery<TaskProps, Error>(['task', id], () => fetchTask(id));
 };
 
 export const useAddTask = () => {
   const queryClient = useQueryClient();
-  return useMutation(fetchAddTask, {
+  return useMutation<TaskProps, Error, TaskProps>(fetchAddTask, {
     onSuccess: () => {
       queryClient.invalidateQueries('tasks');
     },
@@ -81,7 +83,7 @@ export const useAddTask = () => {
 
 export const useUpdateTask = () => {
   const queryClient = useQueryClient();
-  return useMutation(fetchUpdateTask, {
+  return useMutation<TaskProps, Error, TaskProps>(fetchUpdateTask, {
     onSuccess: () => {
       queryClient.invalidateQueries('tasks');
     },
@@ -90,7 +92,7 @@ export const useUpdateTask = () => {
 
 export const useDeleteTask = () => {
   const queryClient = useQueryClient();
-  return useMutation(fetchDeleteTask, {
+  return useMutation<TaskResponse, Error, string>(fetchDeleteTask, {
     onSuccess: () => {
       queryClient.invalidateQueries('tasks');
     },
