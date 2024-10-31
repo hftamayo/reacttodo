@@ -36,7 +36,7 @@ const fetchAddTask = async (task: TaskProps): Promise<TaskResponse> => {
   return response.json();
 };
 
-const fetchUpdateTask = async (task: TaskProps): Promise<TaskProps> => {
+const fetchUpdateTask = async (task: TaskProps): Promise<TaskResponse> => {
   const response = await fetch(`${BACKEND_URL}/tasks/task/${task.id}`, {
     method: 'PUT',
     credentials: 'include',
