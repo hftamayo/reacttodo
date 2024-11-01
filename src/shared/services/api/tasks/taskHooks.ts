@@ -42,12 +42,10 @@ const useUpdateTask = () => {
   });
 };
 
-const useDeleteTask = () => {
-  const queryClient = useQueryClient();
-  return useMutation<TaskResponse, Error, string>(taskService.fetchDeleteTask, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('tasks');
-    },
+const useDeleteTask = (id: string) => {
+  return useQuery<TaskResponse, Error>({
+    queryKey: ['task', id],
+    queryFn: () => taskService.fetchDeleteTask(id),
   });
 };
 
