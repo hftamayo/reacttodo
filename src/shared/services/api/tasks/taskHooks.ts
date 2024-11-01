@@ -23,16 +23,12 @@ const useGetTask = (id: string) => {
 
 const useAddTask = () => {
   const queryClient = useQueryClient();
-  return useMutation<TaskResponse, Error, TaskProps>(
-    {
-      mutationFn: taskService.fetchAddTask,
+  return useMutation<TaskResponse, Error, TaskProps>({
+    mutationFn: taskService.fetchAddTask,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tasks'] });
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['tasks'] });
-      },
-    }
-  );
+  });
 };
 
 const useUpdateTask = () => {
