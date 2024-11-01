@@ -24,7 +24,9 @@ const useGetTask = (id: string) => {
 const useAddTask = () => {
   const queryClient = useQueryClient();
   return useMutation<TaskResponse, Error, TaskProps>(
-    (newTask: TaskProps) => taskService.fetchAddTask(newTask),
+    {
+      mutationFn: taskService.fetchAddTask,
+    },
     {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['tasks'] });
