@@ -27,7 +27,7 @@ const useAddTask = () => {
     (newTask: TaskProps) => taskService.fetchAddTask(newTask),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['tasks']);
+        queryClient.invalidateQueries({ queryKey: ['tasks'] });
       },
     }
   );
@@ -35,11 +35,15 @@ const useAddTask = () => {
 
 const useUpdateTask = () => {
   const queryClient = useQueryClient();
-  return useMutation<TaskProps, Error, TaskProps>(taskService.fetchUpdateTask, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('tasks');
-    },
-  });
+  return useMutation<TaskResponse, Error, TaskProps>(
+    (updatedTask: TaskProps) => taskService.fetchUpdateTask(updatedTask),
+    {
+      onSuccess: (data: TaskResponse) => {
+        queryClient.invalidateQueries({ queryKey: ['tasks'] });
+        queryClient.invalidateQueries({ queryKey: ['task', data.task?.id] });
+      },
+    }
+  );
 };
 
 const useDeleteTask = (id: string) => {
