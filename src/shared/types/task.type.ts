@@ -14,6 +14,10 @@ export type TaskResponse = {
   tasks: TaskProps[];
 };
 
+export type TaskContext = {
+  previousTasks?: TaskResponse;
+};
+
 export type TasksState = {
   tasks: TaskProps[];
   task: TaskProps | null;
