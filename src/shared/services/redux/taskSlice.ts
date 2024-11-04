@@ -29,12 +29,12 @@ export const getTasks = createAsyncThunk(
   }
 );
 
-export const getRole = createAsyncThunk(
-  'role/getRole',
+export const getTask = createAsyncThunk(
+  'task/getTask',
   async (id: string, { rejectWithValue }) => {
     try {
-      const response: RoleResponse = await roleOps.getRole(id);
-      return response.role;
+      const response: TaskResponse = await taskService.fetchTask(id);
+      return response.task;
     } catch (error) {
       const apiError: ApiError = error as ApiError;
       return rejectWithValue(
