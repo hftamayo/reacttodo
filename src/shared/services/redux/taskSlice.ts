@@ -48,6 +48,11 @@ export const getTask = createAsyncThunk(
 
 const initialState: TasksState = {
   tasks: [],
+  task: null,
+  status: 'idle',
+  loading: false,
+  error: null,
+  msg: null,
 };
 
 const tasksSlice = createSlice({
