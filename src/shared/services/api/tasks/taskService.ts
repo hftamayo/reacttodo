@@ -1,5 +1,9 @@
 import { BACKEND_URL } from '../../../utils/envvars';
-import { TaskProps, TaskResponse } from '../../../types/task.type';
+import {
+  AddTaskProps,
+  TaskProps,
+  TaskResponse,
+} from '../../../types/task.type';
 
 const fetchTasks = async (): Promise<TaskResponse> => {
   const response = await fetch(`${BACKEND_URL}/tasks/all`, {
@@ -21,7 +25,7 @@ const fetchTask = async (id: string): Promise<TaskResponse> => {
   return response.json();
 };
 
-const fetchAddTask = async (task: TaskProps): Promise<TaskResponse> => {
+const fetchAddTask = async (task: AddTaskProps): Promise<TaskResponse> => {
   const response = await fetch(`${BACKEND_URL}/tasks/task`, {
     method: 'POST',
     credentials: 'include',
