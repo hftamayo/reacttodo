@@ -110,6 +110,75 @@ const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getTasks.pending, (state) => {
+        state.status = 'loading';
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getTasks.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.loading = false;
+        state.tasks = (
+          Array.isArray(action.payload) ? action.payload : [action.payload]).filter((task) : task is TaskProps => task != undefined);
+        state.error = null;
+      })
+      .addCase(getTasks.rejected, (state, action) => {
+        state.status = 'failed';
+        state.loading = false;
+        state.error = action.error.message as string;
+      })
+      .addCase(getTask.pending, (state) => {
+        state.status = 'loading';
+        state.loading = true;
+      })
+      .addCase(getTask.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.loading = false;
+        state.task = action.payload;
+      })
+      .addCase(getTask.rejected, (state, action) => {
+        state.status = 'failed';
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(addTask.pending, (state) => {
+        state.status = 'loading';
+        state.loading = true;
+      })
+      .addCase(addTask.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.loading = false;
+        state.tasks.push(action.payload);
+      })
+      .addCase(addTask.rejected, (state, action) => {
+        state.status = 'failed';
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(updateTask.pending, (state) => {
+        state.status = 'loading';
+        state.loading = true;
+      })
+      .addCase(updateTask.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.loading = false;
+        state.tasks = state.tasks.map((task) =>
+          task.id === action.payload.id ? action.payload : task
+        );
+      })
+      .addCase(updateTask.rejected, (state, action) => {
+        state.status = 'failed';
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(deleteTask.pending, (state) => {
+        state.status = 'loading';
+        state.loading = true;
+      })
+      .addCase(deleteTask.fulfilled, (state, action) => {
+        state.status = '
 });
 
 export default tasksSlice.reducer;
