@@ -19,7 +19,7 @@ export type TaskContext = {
 };
 
 export type TasksState = {
-  tasks: TaskProps[];
+  tasks: Map<string, TaskProps>;
   task: TaskProps | null;
   loading: boolean;
   status: 'idle' | 'loading' | 'failed' | 'succeeded';
