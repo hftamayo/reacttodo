@@ -9,7 +9,7 @@ import {
 import { RootState } from './rootSlice';
 import { taskService } from '../api/tasks/taskService';
 
-export const getTotalTasks = (state: RootState) => state.task.tasks.length;
+export const getTotalTasks = (state: RootState) => state.task.tasks.size;
 
 export const getTasks = createAsyncThunk(
   'task/getTasks',
@@ -132,10 +132,10 @@ const tasksSlice = createSlice({
         state.status = 'loading';
         state.loading = true;
       })
-      .addCase(getTask.fulfilled, (state, action) => {
+      .addCase(getTask.fulfilled, (state, action: PayloadAction<TaskProps | undefined>) => {
         state.status = 'succeeded';
         state.loading = false;
-        state.task = action.payload;
+        state.task = action.payload ?? null;
       })
       .addCase(getTask.rejected, (state, action) => {
         state.status = 'failed';
@@ -146,12 +146,14 @@ const tasksSlice = createSlice({
         state.status = 'loading';
         state.loading = true;
       })
-      .addCase(addTask.fulfilled, (state, action) => {
+      .addCase(addTask.fulfilled, (state, action: PayloadAction<TaskProps | undefined>) => {
         state.status = 'succeeded';
         state.loading = false;
-        state.tasks.push(action.payload);
+        if (action.payload && action.payload.id){
+          state.tasks.set(action.payload.id, action.payload);
+        }
       })
-      .addCase(addTask.rejected, (state, action) => {
+      .addCase(addTask.rejected, (state, action: PayloadAction<unknown>) => {
         state.status = 'failed';
         state.loading = false;
         state.error = action.payload as string;
@@ -176,8 +178,11 @@ const tasksSlice = createSlice({
         state.status = 'loading';
         state.loading = true;
       })
-      .addCase(deleteTask.fulfilled, (state, action) => {
-        state.status = '
+      .addCase(deleteTask.fulfilled, (state, action: PayloadAction<string>) => {
+        state.status = 'succeeded';
+        state.loading = false;
+        state.tasks.delete(action.payload.id!);
+      })
 });
 
 export default tasksSlice.reducer;
