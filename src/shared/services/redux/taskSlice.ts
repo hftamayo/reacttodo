@@ -98,7 +98,7 @@ export const deleteTask = createAsyncThunk(
 );
 
 const initialState: TasksState = {
-  tasks: [],
+  tasks: new Map<string, TaskProps>(),
   task: null,
   status: 'idle',
   loading: false,
@@ -107,7 +107,7 @@ const initialState: TasksState = {
 };
 
 const tasksSlice = createSlice({
-  name: 'tasks',
+  name: 'task',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -120,8 +120,7 @@ const tasksSlice = createSlice({
       .addCase(getTasks.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.loading = false;
-        state.tasks = (
-          Array.isArray(action.payload) ? action.payload : [action.payload]).filter((task) : task is TaskProps => task != undefined);
+        state.tasks = new Map(action.payload.map((task) => [task.id!, task]));
         state.error = null;
       })
       .addCase(getTasks.rejected, (state, action) => {
