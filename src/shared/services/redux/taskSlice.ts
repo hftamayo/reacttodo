@@ -16,7 +16,7 @@ export const getTasks = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response: TaskResponse = await taskService.fetchTasks();
-      const tasks = response.tasks ? [...response.tasks].reverse() : [];
+      const tasks = response.tasks ? new Map(response.tasks.map(task => [task.id!, task])) : new Map();
       return tasks;
     } catch (error) {
       const apiError: ApiError = error as ApiError;
