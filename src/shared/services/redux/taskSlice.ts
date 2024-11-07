@@ -16,7 +16,9 @@ export const getTasks = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response: TaskResponse = await taskService.fetchTasks();
-      const tasks = response.tasks ? new Map(response.tasks.map(task => [task.id!, task])) : new Map();
+      const tasks = response.tasks
+        ? new Map(response.tasks.map((task) => [task.id!, task]))
+        : new Map();
       return tasks;
     } catch (error) {
       const apiError: ApiError = error as ApiError;
@@ -120,7 +122,7 @@ const tasksSlice = createSlice({
       .addCase(getTasks.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.loading = false;
-        state.tasks = new Map(action.payload.map((task) => [task.id!, task]));
+        state.tasks = action.payload;
         state.error = null;
       })
       .addCase(getTasks.rejected, (state, action) => {
@@ -132,11 +134,14 @@ const tasksSlice = createSlice({
         state.status = 'loading';
         state.loading = true;
       })
-      .addCase(getTask.fulfilled, (state, action: PayloadAction<TaskProps | undefined>) => {
-        state.status = 'succeeded';
-        state.loading = false;
-        state.task = action.payload ?? null;
-      })
+      .addCase(
+        getTask.fulfilled,
+        (state, action: PayloadAction<TaskProps | undefined>) => {
+          state.status = 'succeeded';
+          state.loading = false;
+          state.task = action.payload ?? null;
+        }
+      )
       .addCase(getTask.rejected, (state, action) => {
         state.status = 'failed';
         state.loading = false;
@@ -146,13 +151,16 @@ const tasksSlice = createSlice({
         state.status = 'loading';
         state.loading = true;
       })
-      .addCase(addTask.fulfilled, (state, action: PayloadAction<TaskProps | undefined>) => {
-        state.status = 'succeeded';
-        state.loading = false;
-        if (action.payload && action.payload.id){
-          state.tasks.set(action.payload.id, action.payload);
+      .addCase(
+        addTask.fulfilled,
+        (state, action: PayloadAction<TaskProps | undefined>) => {
+          state.status = 'succeeded';
+          state.loading = false;
+          if (action.payload && action.payload.id) {
+            state.tasks.set(action.payload.id, action.payload);
+          }
         }
-      })
+      )
       .addCase(addTask.rejected, (state, action: PayloadAction<unknown>) => {
         state.status = 'failed';
         state.loading = false;
@@ -162,13 +170,16 @@ const tasksSlice = createSlice({
         state.status = 'loading';
         state.loading = true;
       })
-      .addCase(updateTask.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.loading = false;
-        state.tasks = state.tasks.map((task) =>
-          task.id === action.payload.id ? action.payload : task
-        );
-      })
+      .addCase(
+        updateTask.fulfilled,
+        (state, action: PayloadAction<TaskProps | undefined>) => {
+          state.loading = false;
+          state.status = 'succeeded';
+          if (action.payload && action.payload.id) {
+            state.tasks.set(action.payload.id, action.payload);
+          }
+        }
+      )
       .addCase(updateTask.rejected, (state, action) => {
         state.status = 'failed';
         state.loading = false;
@@ -178,11 +189,18 @@ const tasksSlice = createSlice({
         state.status = 'loading';
         state.loading = true;
       })
+      .addCase(deleteTask.rejected, (state, action: PayloadAction<unknown>) => {
+        state.status = 'failed';
+        state.loading = false;
+        state.error = action.payload as string;
+      })
       .addCase(deleteTask.fulfilled, (state, action: PayloadAction<string>) => {
         state.status = 'succeeded';
         state.loading = false;
-        state.tasks.delete(action.payload.id!);
-      })
+        state.tasks.delete(action.payload);
+        state.error = action.payload as string;
+      });
+  },
 });
 
 export default tasksSlice.reducer;
