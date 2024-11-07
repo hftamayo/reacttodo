@@ -87,7 +87,7 @@ export const deleteTask = createAsyncThunk(
   async (id: string, { rejectWithValue }) => {
     try {
       const response: TaskResponse = await taskService.fetchDeleteTask(id);
-      return response.task;
+      return { id, msg: response.resultMessage };
     } catch (error) {
       const apiError: ApiError = error as ApiError;
       return rejectWithValue(
@@ -156,7 +156,7 @@ const tasksSlice = createSlice({
         (state, action: PayloadAction<TaskProps | undefined>) => {
           state.status = 'succeeded';
           state.loading = false;
-          if (action.payload && action.payload.id) {
+          if (action.payload?.id) {
             state.tasks.set(action.payload.id, action.payload);
           }
         }
@@ -175,7 +175,7 @@ const tasksSlice = createSlice({
         (state, action: PayloadAction<TaskProps | undefined>) => {
           state.loading = false;
           state.status = 'succeeded';
-          if (action.payload && action.payload.id) {
+          if (action.payload?.id) {
             state.tasks.set(action.payload.id, action.payload);
           }
         }
@@ -189,15 +189,18 @@ const tasksSlice = createSlice({
         state.status = 'loading';
         state.loading = true;
       })
+      .addCase(
+        deleteTask.fulfilled,
+        (state, action: PayloadAction<{ id: string; msg: string }>) => {
+          state.status = 'succeeded';
+          state.loading = false;
+          state.tasks.delete(action.payload.id);
+          state.error = action.payload.msg;
+        }
+      )
       .addCase(deleteTask.rejected, (state, action: PayloadAction<unknown>) => {
         state.status = 'failed';
         state.loading = false;
-        state.error = action.payload as string;
-      })
-      .addCase(deleteTask.fulfilled, (state, action: PayloadAction<string>) => {
-        state.status = 'succeeded';
-        state.loading = false;
-        state.tasks.delete(action.payload);
         state.error = action.payload as string;
       });
   },
