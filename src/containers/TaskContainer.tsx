@@ -1,4 +1,4 @@
-const App: React.FC = () => {
+const TaskContainer: React.FC = () => {
   return (
     <div className="App">
       <h1 className="text-4xl font-bold">Hello, World!</h1>
@@ -9,4 +9,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default TaskContainer;
