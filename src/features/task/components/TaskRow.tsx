@@ -11,30 +11,32 @@ import Input from '../../../shared/components/ui/Input';
 import Button from '../../../shared/components/ui/Button';
 import { taskRow } from '../../../shared/utils/twind/styles';
 
-const TaskRow: React.FC<TaskProps> = (todo: TaskProps) => {
+const TaskRow: React.FC<TaskProps> = (task: TaskProps) => {
   const dispatch = useAppDispatch();
 
   const handleToggleComplete = () => {
-    dispatch(updateTask({ ...todo, complete: !todo.complete }));
+    dispatch(updateTask({ ...task, complete: !task.complete }));
   };
 
   const handleDeleteTask = () => {
-    dispatch(deleteTask(todo.id!));
+    if (task.id) {
+      dispatch(deleteTask(task.id));
+    }
   };
 
   return (
-    <li className={todo.complete ? taskRow.liComplete : taskRow.li}>
+    <li className={task.complete ? taskRow.liComplete : taskRow.li}>
       <div className="flex">
         <Input
           type="checkbox"
-          checked={todo.complete}
+          checked={task.complete}
           onChange={handleToggleComplete}
         />
         <Label
-          className={todo.complete ? taskRow.textComplete : taskRow.text}
+          className={task.complete ? taskRow.textComplete : taskRow.text}
           onClick={handleToggleComplete}
         >
-          {todo.name}
+          {task.name}
         </Label>
       </div>
       <Button onClick={handleDeleteTask}>
