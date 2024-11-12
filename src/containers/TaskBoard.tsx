@@ -7,8 +7,12 @@ import { getTasks } from '../shared/services/redux/taskSlice';
 import AddTaskForm from '../features/task/components/AddTask';
 import TaskRow from '../features/task/components/TaskRow';
 import { taskBoard } from '../shared/utils/twind/styles';
+import { taskHooks } from '../shared/services/api/tasks/taskHooks';
 
 const TaskBoard: React.FC = () => {
+  const { data, error, loading } = taskHooks.useGetTasks();
+  const tasks = data ? Array.from(data.tasks.values()) : [];
+
   const dispatch = useAppDispatch();
   const tasks = useAppSelector((state) =>
     Array.from(state.task.tasks.values())
@@ -26,7 +30,7 @@ const TaskBoard: React.FC = () => {
         <h3 className={taskBoard.heading}>ToDo App</h3>
         <AddTaskForm />
         {loading && <p>Loading...</p>}
-        {error && <p>Error: {error}</p>}
+        {error && <p>Error: {error.message}</p>}
         <ul>
           {tasks.map((task) => (
             <TaskRow key={task.id} {...task} />
