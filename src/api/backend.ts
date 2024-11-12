@@ -1,20 +1,16 @@
-import axios from 'axios';
 import { BACKEND_URL } from '../shared/utils/envvars';
 import { ApiError, TaskResponse } from '../shared/types/task.type';
-
-const instance = axios.create({
-  baseURL: BACKEND_URL,
-  withCredentials: true,
-});
 
 export const taskOps = {
   async getTasks(): Promise<TaskResponse> {
     try {
-      const response = await instance.get(`${BACKEND_URL}/tasks/all`);
-      if (response.status !== 200) {
+      const response = await fetch(`${BACKEND_URL}/tasks/all`, {
+        credentials: 'include',
+      });
+      if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      return response.data;
+      return await response.json();
     } catch (error: unknown) {
       const apiError = error as ApiError;
       throw new Error(
