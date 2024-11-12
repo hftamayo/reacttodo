@@ -1,4 +1,5 @@
 import { BACKEND_URL } from '../../../utils/envvars';
+import { taskOps } from '../../../../api/backend';
 import {
   AddTaskProps,
   TaskProps,
@@ -6,13 +7,7 @@ import {
 } from '../../../types/task.type';
 
 const fetchTasks = async (): Promise<TaskResponse> => {
-  const response = await fetch(`${BACKEND_URL}/tasks/all`, {
-    credentials: 'include',
-  });
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
-  return response.json();
+  return taskOps.getTasks();
 };
 
 const fetchTask = async (id: string): Promise<TaskResponse> => {
