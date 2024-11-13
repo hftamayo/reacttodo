@@ -1,6 +1,25 @@
 import { BACKEND_URL } from '../shared/utils/envvars';
 import { ApiError, TaskProps, TaskResponse } from '../shared/types/task.type';
 
+export const beOps = {
+  async checkHealth(): Promise<{ status: string }> {
+    try {
+      const response = await fetch(`${BACKEND_URL}/health`, {
+        credentials: 'include',
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return await response.json();
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      throw new Error(
+        apiError.response?.resultMessage || 'An unknown error occurred'
+      );
+    }
+  },
+};
+
 export const taskOps = {
   async getTasks(): Promise<TaskResponse> {
     try {
