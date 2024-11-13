@@ -1,35 +1,19 @@
-import React, { useEffect } from 'react';
-import {
-  useAppDispatch,
-  useAppSelector,
-} from '../shared/services/redux/storeHooks';
-import { getTasks } from '../shared/services/redux/taskSlice';
+import React from 'react';
 import AddTaskForm from '../features/task/components/AddTask';
 import TaskRow from '../features/task/components/TaskRow';
 import { taskBoard } from '../shared/utils/twind/styles';
 import { taskHooks } from '../shared/services/api/tasks/taskHooks';
 
 const TaskBoard: React.FC = () => {
-  const { data, error, loading } = taskHooks.useGetTasks();
+  const { data, error, isLoading } = taskHooks.useGetTasks();
   const tasks = data ? Array.from(data.tasks.values()) : [];
-
-  const dispatch = useAppDispatch();
-  const tasks = useAppSelector((state) =>
-    Array.from(state.task.tasks.values())
-  );
-  const loading = useAppSelector((state) => state.task.loading);
-  const error = useAppSelector((state) => state.task.error);
-
-  useEffect(() => {
-    dispatch(getTasks());
-  }, [dispatch]);
 
   return (
     <div className={taskBoard.bg}>
       <div className={taskBoard.container}>
         <h3 className={taskBoard.heading}>ToDo App</h3>
         <AddTaskForm />
-        {loading && <p>Loading...</p>}
+        {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error.message}</p>}
         <ul>
           {tasks.map((task) => (
