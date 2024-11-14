@@ -2,8 +2,9 @@ import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useAppDispatch } from '../../../shared/services/redux/storeHooks';
 import { addTask } from '../../../shared/services/redux/taskSlice';
-import Input from '../../../shared/components/ui/Input';
-import Button from '../../../shared/components/ui/Button';
+import { Input } from '@/shared/components/ui/input';
+import { Button } from '@/shared/components/ui/button';
+
 import { taskBoard } from '../../../shared/utils/twind/styles';
 import { AddTaskProps } from '../../../shared/types/task.type';
 import { AiOutlinePlus } from 'react-icons/ai';
