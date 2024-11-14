@@ -6,9 +6,10 @@ import {
   deleteTask,
 } from '../../../shared/services/redux/taskSlice';
 import { FaRegTrashAlt } from 'react-icons/fa';
-import Label from '../../../shared/components/ui/Label';
-import Input from '../../../shared/components/ui/Input';
-import Button from '../../../shared/components/ui/Button';
+import { Label } from '@/shared/components/ui/label';
+import { Input } from '@/shared/components/ui/input';
+import { Button } from '@/shared/components/ui/button';
+
 import { taskRow } from '../../../shared/utils/twind/styles';
 
 const TaskRow: React.FC<TaskProps> = (task: TaskProps) => {
