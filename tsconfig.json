@@ -1,5 +1,11 @@
 {
     "compilerOptions": {
+      "baseUrl": ".",
+      "paths": {
+        "@/*": ["./src/*"],
+        "@types/*": ["src/shared/types/*"],
+        "@utils/*": ["src/shared/utils/*"],
+      },
       "outDir": "./dist",
       "rootDir": "./src",
       "target": "es6",
