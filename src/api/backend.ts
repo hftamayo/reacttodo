@@ -1,4 +1,4 @@
-import { BACKEND_URL } from '../shared/utils/envvars';
+import { BACKEND_URL, BACKEND_TYPE } from '../shared/utils/envvars';
 import { ApiError, TaskProps, TaskResponse } from '../shared/types/task.type';
 
 export const beOps = {
@@ -23,7 +23,13 @@ export const beOps = {
 export const taskOps = {
   async getTasks(): Promise<TaskResponse> {
     try {
-      const response = await fetch(`${BACKEND_URL}/tasks/all`, {
+      let url;
+      if (BACKEND_TYPE === '0') {
+        url = `${BACKEND_URL}?limit=5`;
+      } else {
+        url = `${BACKEND_URL}/tasks/all`;
+      }
+      const response = await fetch(url, {
         credentials: 'include',
       });
       if (!response.ok) {
