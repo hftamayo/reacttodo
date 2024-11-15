@@ -25,7 +25,7 @@ export const taskOps = {
     try {
       let url;
       if (BACKEND_TYPE === '0') {
-        url = `${BACKEND_URL}?limit=5`;
+        url = `/api?limit=5`;
       } else {
         url = `${BACKEND_URL}/tasks/all`;
       }
