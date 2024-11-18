@@ -6,7 +6,8 @@ import { taskHooks } from '../shared/services/api/tasks/taskHooks';
 
 const TaskBoard: React.FC = () => {
   const { data, error, isLoading } = taskHooks.useGetTasks();
-  const tasks = data ? Array.from(data.tasks.values()) : [];
+  //console.log('data received in TaskBoard: ', data);
+  const tasks = data?.tasks ? Array.from(data.tasks.values()) : [];
 
   return (
     <div className={taskBoard.bg}>
