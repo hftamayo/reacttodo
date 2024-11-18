@@ -25,7 +25,7 @@ export const taskOps = {
     try {
       let url;
       if (BACKEND_TYPE === '0') {
-        url = `/api?limit=5`;
+        url = `/api/todos?limit=5&skip=10`;
       } else {
         url = `${BACKEND_URL}/tasks/all`;
       }
@@ -35,7 +35,26 @@ export const taskOps = {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      return await response.json();
+      const dataFetched = await response.json();
+      //console.log('fetched data: ', dataFetched);
+
+      if (BACKEND_TYPE === '0') {
+        const dataFetchedAdjusted: TaskProps[] = dataFetched.todos.map(
+          (todo: any) => ({
+            id: todo.id,
+            name: todo.todo,
+            complete: todo.completed,
+          })
+        );
+
+        return {
+          httpStatusCode: 200,
+          resultMessage: 'Data fetched successfully',
+          tasks: dataFetchedAdjusted,
+        };
+      } else {
+        return dataFetched;
+      }
     } catch (error: unknown) {
       const apiError = error as ApiError;
       throw new Error(
