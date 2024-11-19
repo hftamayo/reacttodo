@@ -26,7 +26,12 @@ const AddTaskForm: React.FC = () => {
         {...register('name', { required: true })}
         className={taskBoard.input}
       />
-      <Button type="submit" className={taskBoard.button}>
+      <Button
+        variant="additive"
+        size="lg"
+        type="submit"
+        className={taskBoard.button}
+      >
         <AiOutlinePlus size={30} />
       </Button>
     </form>

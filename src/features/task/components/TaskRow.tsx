@@ -34,13 +34,14 @@ const TaskRow: React.FC<TaskProps> = (task: TaskProps) => {
           onChange={handleToggleComplete}
         />
         <Label
+          size="large"
           className={task.complete ? taskRow.textComplete : taskRow.text}
           onClick={handleToggleComplete}
         >
           {task.name}
         </Label>
       </div>
-      <Button onClick={handleDeleteTask}>
+      <Button variant="destructive" size="sm" onClick={handleDeleteTask}>
         <FaRegTrashAlt />
       </Button>
     </li>
