@@ -1,11 +1,13 @@
 import React from 'react';
 import AddTaskForm from '../features/task/components/AddTask';
 import TaskRow from '../features/task/components/TaskRow';
-import { taskBoard } from '../shared/utils/twind/styles';
-import { taskHooks } from '../shared/services/api/tasks/taskHooks';
+import { taskBoard } from '@/shared/utils/twind/styles';
+import { taskHooks } from '@/shared/services/api/tasks/taskHooks';
+import useLazyLoad from '@/shared/services/lazyloading/hooks/useLazyLoad';
 
 const TaskBoard: React.FC = () => {
-  const { data, error, isLoading } = taskHooks.useGetTasks();
+  const { ref, shouldFetch } = useLazyLoad();
+  const { data, error, isLoading } = taskHooks.useGetTasks(shouldFetch);
   //console.log('data received in TaskBoard: ', data);
   const tasks = data?.tasks ? Array.from(data.tasks.values()) : [];
 
@@ -24,6 +26,7 @@ const TaskBoard: React.FC = () => {
         {tasks.length < 1 ? null : (
           <p className={taskBoard.count}>{`You have ${tasks.length} todos`}</p>
         )}
+        <div ref={ref}></div>
       </div>
     </div>
   );
