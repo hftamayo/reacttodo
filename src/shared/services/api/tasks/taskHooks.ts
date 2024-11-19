@@ -2,10 +2,11 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { taskService } from './taskService';
 import { TaskContext, TaskProps, TaskResponse } from '../../../types/task.type';
 
-const useGetTasks = () => {
+const useGetTasks = (enabled: boolean) => {
   return useQuery<TaskResponse, Error>({
     queryKey: ['tasks'],
     queryFn: taskService.fetchTasks,
+    enabled,
   });
 };
 
