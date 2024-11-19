@@ -4,6 +4,7 @@ import TaskRow from '../features/task/components/TaskRow';
 import { taskBoard } from '@/shared/utils/twind/styles';
 import { taskHooks } from '@/shared/services/api/tasks/taskHooks';
 import useLazyLoad from '@/shared/services/lazyloading/hooks/useLazyLoad';
+import { APP_NAME } from '@/shared/utils/envvars';
 
 const TaskBoard: React.FC = () => {
   const { ref, shouldFetch } = useLazyLoad();
@@ -14,7 +15,7 @@ const TaskBoard: React.FC = () => {
   return (
     <div className={taskBoard.bg}>
       <div className={taskBoard.container}>
-        <h3 className={taskBoard.heading}>ToDo App</h3>
+        <h3 className={taskBoard.heading}>{APP_NAME}</h3>
         <AddTaskForm />
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error.message}</p>}
