@@ -7,12 +7,26 @@ const inputVariants = cva(
   {
     variants: {
       type: {
-        text: 'h-9',
-        checkbox: 'h-4 w-4',
+        text: '',
+        checkbox: '',
+      },
+      size: {
+        small: '',
+        medium: '',
+        large: '',
       },
     },
+    compoundVariants: [
+      { type: 'text', size: 'small', className: 'h-6 text-sm' },
+      { type: 'text', size: 'medium', className: 'h-9 text-base' },
+      { type: 'text', size: 'large', className: 'h-12 text-lg' },
+      { type: 'checkbox', size: 'small', className: 'h-3 w-3' },
+      { type: 'checkbox', size: 'medium', className: 'h-4 w-4' },
+      { type: 'checkbox', size: 'large', className: 'h-5 w-5' },
+    ],
     defaultVariants: {
       type: 'text',
+      size: 'medium',
     },
   }
 );
@@ -20,11 +34,11 @@ const inputVariants = cva(
 const Input = React.forwardRef<
   HTMLInputElement,
   React.ComponentPropsWithoutRef<'input'> & VariantProps<typeof inputVariants>
->(({ className, type, ...props }, ref) => {
+>(({ className, type, size, ...props }, ref) => {
   return (
     <input
       type={type}
-      className={cn(inputVariants({ type }), className)}
+      className={cn(inputVariants({ type, size }), className)}
       ref={ref}
       {...props}
     />
