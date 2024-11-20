@@ -20,14 +20,17 @@ const AddTaskForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={taskBoard.form}>
-      <Input
-        type="text"
-        placeholder="Add a task"
-        {...register('name', { required: true })}
-      />
-      <Button variant="additive" size="lg" type="submit">
-        <AiOutlinePlus size={30} />
-      </Button>
+      <div className={taskBoard.frmContainer}>
+        <Input
+          type="text"
+          ctrlsize="large"
+          placeholder="Add a task"
+          {...register('name', { required: true })}
+        />
+        <Button variant="additive" size="lg" type="submit">
+          <AiOutlinePlus size={30} />
+        </Button>
+      </div>
     </form>
   );
 };
