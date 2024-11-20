@@ -1,5 +1,5 @@
 import React from 'react';
-import AddTaskForm from '../features/task/components/AddTask';
+import AddTaskForm from '../features/task/components/AddTaskForm';
 import TaskRow from '../features/task/components/TaskRow';
 import { taskBoard } from '@/shared/utils/twind/styles';
 import { taskHooks } from '@/shared/services/api/tasks/taskHooks';
