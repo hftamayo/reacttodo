@@ -27,7 +27,7 @@ const TaskBoard: React.FC = () => {
             <TaskRow key={task.id} {...task} />
           ))}
         </ul>
-        {tasks.length < 1 ? null : (
+        {totalTasks < 1 ? null : (
           <p
             className={taskBoard.count}
           >{`You have ${totalTasks} tasks, ${completedTasks} completed`}</p>
