@@ -41,7 +41,12 @@ const TaskRow: React.FC<TaskProps> = (task: TaskProps) => {
           {task.name}
         </Label>
       </div>
-      <Button variant="destructive" size="sm" onClick={handleDeleteTask}>
+      <Button
+        variant="destructive"
+        size="sm"
+        onClick={handleDeleteTask}
+        title="Delete a Record"
+      >
         <FaRegTrashAlt />
       </Button>
     </li>
