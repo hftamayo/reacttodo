@@ -12,6 +12,9 @@ const TaskBoard: React.FC = () => {
   //console.log('data received in TaskBoard: ', data);
   const tasks = data?.tasks ? Array.from(data.tasks.values()) : [];
 
+  const totalTasks = tasks.length;
+  const completedTasks = tasks.filter((task) => task.complete).length;
+
   return (
     <div className={taskBoard.bg}>
       <div className={taskBoard.container}>
@@ -25,7 +28,9 @@ const TaskBoard: React.FC = () => {
           ))}
         </ul>
         {tasks.length < 1 ? null : (
-          <p className={taskBoard.count}>{`You have ${tasks.length} todos`}</p>
+          <p
+            className={taskBoard.count}
+          >{`You have ${totalTasks} tasks, ${completedTasks} completed`}</p>
         )}
         <div ref={ref}></div>
       </div>
