@@ -27,7 +27,7 @@ const AddTaskForm: React.FC = () => {
           placeholder="Add a task"
           {...register('name', { required: true })}
         />
-        <Button variant="additive" size="lg" type="submit">
+        <Button variant="additive" size="lg" type="submit" title="Add a Task">
           <AiOutlinePlus size={30} />
         </Button>
       </div>
