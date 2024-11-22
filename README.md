@@ -9,7 +9,11 @@ Application which help the user to manage tasks and reminders
 - Delete permanently a task / reminder
 
 
-## Version 1 specs ##
+## Releases ##
+
+### 0.1.1 ###
+
+* [Third party API for UI testing](https://dummyjson.com/)
 
 ### Technical Stack ###
 * Data storage: Firebase 9 
