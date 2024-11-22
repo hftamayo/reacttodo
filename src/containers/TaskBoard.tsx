@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import AddTaskForm from '../features/task/components/AddTaskForm';
 import TaskRow from '../features/task/components/TaskRow';
-import { taskBoard } from '@/shared/utils/twind/styles';
+import { taskBoard, toasterMessages } from '@/shared/utils/twind/styles';
 import { taskHooks } from '@/shared/services/api/tasks/taskHooks';
 import useLazyLoad from '@/shared/services/lazyloading/hooks/useLazyLoad';
 import { APP_NAME } from '@/shared/utils/envvars';
@@ -18,7 +18,9 @@ const TaskBoard: React.FC = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error.message);
+      toast.error(error.message, {
+        className: toasterMessages.errorToaster,
+      });
     }
   }, [error]);
 
