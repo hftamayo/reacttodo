@@ -5,6 +5,7 @@ import store from './shared/services/redux/store';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import TaskBoard from './containers/TaskBoard';
 import './index.css';
+import { Toaster } from 'sonner';
 import { taskBoard } from './shared/utils/twind/styles';
 
 const queryClient = new QueryClient();
@@ -17,6 +18,7 @@ root.render(
         <div className={taskBoard.boardContainer}>
           <TaskBoard />
         </div>
+        <Toaster />
       </QueryClientProvider>
     </Provider>
   </React.StrictMode>
