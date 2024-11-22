@@ -19,3 +19,9 @@ export const taskBoard = {
   button: 'border p-4 ml-2 bg-purple-500 text-slate-100',
   count: 'text-center p-2',
 };
+
+export const toasterMessages = {
+  errorToaster: 'bg-red-500 text-white p-2 text-lg rounded-md',
+  successToaster: 'bg-green-500 text-white p-2 text-lg rounded-md',
+  infoToaster: 'bg-blue-500 text-white p-2 text-lg rounded-md',
+};
