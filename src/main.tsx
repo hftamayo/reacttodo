@@ -18,7 +18,7 @@ root.render(
         <div className={taskBoard.boardContainer}>
           <TaskBoard />
         </div>
-        <Toaster />
+        <Toaster position="bottom-left" />
       </QueryClientProvider>
     </Provider>
   </React.StrictMode>
