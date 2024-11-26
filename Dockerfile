@@ -18,5 +18,5 @@ EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 
 ## how to use this file:
-# docker build -t hftamayo/reacttodo:0.0.1 .
-# docker run --name reacttodo -p 8041:80 --env-file .env hftamayo/reacttodo:0.0.1 -d
+# docker build --no-cache -t hftamayo/reacttodo:0.0.1 .
+# docker run -d --name reacttodo -p 8041:80 --env-file .env hftamayo/reacttodo:0.0.1
