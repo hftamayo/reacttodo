@@ -25,12 +25,12 @@ export const taskOps = {
     try {
       let url;
       if (BACKEND_TYPE === '0') {
-        url = `/api/todos?limit=5&skip=10`;
+        url = `${BACKEND_URL}/todos?limit=5&skip=10`;
       } else {
         url = `${BACKEND_URL}/tasks/all`;
       }
       const response = await fetch(url, {
-        credentials: 'include',
+        //credentials: 'include',
       });
       if (!response.ok) {
         throw new Error('Network response was not ok');
