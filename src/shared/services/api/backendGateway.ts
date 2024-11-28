@@ -1,5 +1,5 @@
-import { BACKEND_URL, BACKEND_TYPE } from '../shared/utils/envvars';
-import { ApiError, TaskProps, TaskResponse } from '../shared/types/task.type';
+import { BACKEND_URL, BACKEND_TYPE } from '../../utils/envvars';
+import { ApiError, TaskProps, TaskResponse } from '../../types/task.type';
 
 export const beOps = {
   async checkHealth(): Promise<{ status: string }> {
