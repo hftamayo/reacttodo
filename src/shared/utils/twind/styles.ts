@@ -20,6 +20,18 @@ export const taskBoard = {
   count: 'text-center p-2',
 };
 
+export const DashBoardHeader = {
+  menuLoggedUser:
+    'mb-2 rounded hover:shadow hover:bg-gray-600 hover:text-white py-2',
+  menuItemLoggedUser:
+    'mb-2 rounded hover:shadow hover:bg-gray-600 hover:text-white py-2',
+  firstLevelContainer: 'bg-gray-800 px-4 py-3 flex justify-between',
+  secondLevelContainer: 'flex items-center text-xl',
+  spacer: 'relative md:absolute inset-y-0-left-0 flex items-center pl-2',
+  searchInput:
+    'w-full px-4 py-1 pl-12 rounded shadow outline-none hidden md:block',
+};
+
 export const toasterMessages = {
   errorToaster: 'bg-red-500 text-white p-2 text-lg rounded-md',
   successToaster: 'bg-green-500 text-white p-2 text-lg rounded-md',
