@@ -1,5 +1,5 @@
 import { BACKEND_URL } from '../../../utils/envvars';
-import { taskOps } from '../../../../api/backend';
+import { taskOps } from '../backendGateway';
 import {
   AddTaskProps,
   TaskProps,
