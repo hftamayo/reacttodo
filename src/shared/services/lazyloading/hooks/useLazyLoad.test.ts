@@ -15,6 +15,10 @@ describe('useLazyLoad', () => {
 
     const { result } = renderHook(() => useLazyLoad());
 
+    act(() => {
+      result.current.ref();
+    });
+
     expect(result.current.shouldFetch).toBe(true);
   });
 
@@ -25,6 +29,10 @@ describe('useLazyLoad', () => {
     });
 
     const { result } = renderHook(() => useLazyLoad());
+
+    act(() => {
+      result.current.ref();
+    });
 
     expect(result.current.shouldFetch).toBe(false);
   });
