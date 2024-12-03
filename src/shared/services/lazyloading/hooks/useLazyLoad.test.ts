@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, act } from '@testing-library/react-hooks';
 import { useInView } from 'react-intersection-observer';
 import useLazyLoad from './useLazyLoad';
 
