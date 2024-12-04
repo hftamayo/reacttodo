@@ -8,7 +8,7 @@ export type MenuOptionProps = {
   option: MenuOption;
 };
 
-export type DropdownMenuProps = {
+export type DropDownMenuProps = {
   options: MenuOption[];
 };
 
