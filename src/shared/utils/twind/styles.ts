@@ -1,10 +1,27 @@
-export const taskRow = {
-  li: 'flex justify-between bg-slate-200 p-4 my-2 capitalize',
-  liComplete: 'flex justify-between bg-slate-400 p-4 my-2 capitalize',
-  row: 'flex',
-  text: 'ml-2 cursor-pointer',
-  textComplete: 'ml-2 cursor-pointer line-through',
-  button: 'cursor-pointer flex items-center',
+export const DashBoardHeader = {
+  menuLoggedUser:
+    'mb-2 rounded hover:shadow hover:bg-gray-600 hover:text-white py-2',
+  menuItemLoggedUser:
+    'mb-2 rounded hover:shadow hover:bg-gray-600 hover:text-white py-2',
+  firstLevelContainer: 'bg-gray-800 px-4 py-3 flex justify-between',
+  secondLevelContainer: 'flex items-center text-xl',
+  spacer: 'relative md:absolute inset-y-0-left-0 flex items-center pl-2',
+  searchInput:
+    'w-full px-4 py-1 pl-12 rounded shadow outline-none hidden md:block',
+};
+
+export const DashBoardMenuBarStyles = {
+  div2ndLevelContainer: 'sidebar-item text-white w-60 h-full',
+  unorderedItem1stLevel: 'mt-3 text-white font-bold',
+  unorderedItem2ndLevel: 'mt-3 font-bold',
+  unorderedItem3rdLevel: 'ml-6 mt-2',
+  listItem: 'mb-2 rounded hover:shadow hover:bg-teal-600 py-2',
+  linkItem: 'px-3',
+  menuIcon: 'inline-block w-6 h-6 mr-2 -mt-2',
+  menuButton: 'px-3 w-full text-left flex items-center',
+  menuIcon2ndLevel: 'inline-block w-6 h-6 mr-2',
+  menuIcon3rdLevel: 'ml-auto',
+  mappedItem: 'hover:bg-teal-600 hover:text-teal-200 py-2 px-3 rounded',
 };
 
 export const taskBoard = {
@@ -20,16 +37,13 @@ export const taskBoard = {
   count: 'text-center p-2',
 };
 
-export const DashBoardHeader = {
-  menuLoggedUser:
-    'mb-2 rounded hover:shadow hover:bg-gray-600 hover:text-white py-2',
-  menuItemLoggedUser:
-    'mb-2 rounded hover:shadow hover:bg-gray-600 hover:text-white py-2',
-  firstLevelContainer: 'bg-gray-800 px-4 py-3 flex justify-between',
-  secondLevelContainer: 'flex items-center text-xl',
-  spacer: 'relative md:absolute inset-y-0-left-0 flex items-center pl-2',
-  searchInput:
-    'w-full px-4 py-1 pl-12 rounded shadow outline-none hidden md:block',
+export const taskRow = {
+  li: 'flex justify-between bg-slate-200 p-4 my-2 capitalize',
+  liComplete: 'flex justify-between bg-slate-400 p-4 my-2 capitalize',
+  row: 'flex',
+  text: 'ml-2 cursor-pointer',
+  textComplete: 'ml-2 cursor-pointer line-through',
+  button: 'cursor-pointer flex items-center',
 };
 
 export const toasterMessages = {
