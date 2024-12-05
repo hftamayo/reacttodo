@@ -8,6 +8,13 @@ const config: Config = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
+  globals: {
+    'ts-jest': {
+      tsconfig: {
+        module: 'esnext',
+      },
+    },
+  },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
 
