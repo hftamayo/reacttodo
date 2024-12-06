@@ -33,6 +33,7 @@ export const taskOps = {
         //credentials: 'include',
       });
       if (!response.ok) {
+        console.log('this was the data fetched', response);
         throw new Error('Network response was not ok');
       }
       const dataFetched = await response.json();
@@ -56,6 +57,7 @@ export const taskOps = {
         return dataFetched;
       }
     } catch (error: unknown) {
+      console.error('Error reported: ', error);
       const apiError = error as ApiError;
       throw new Error(
         apiError.response?.resultMessage || 'An unknown error occurred'
