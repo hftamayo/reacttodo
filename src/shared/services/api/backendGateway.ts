@@ -29,12 +29,12 @@ export const taskOps = {
       } else {
         url = `${BACKEND_URL}/tasks/all`;
       }
+      console.log('Fetching data from: ', url);
       const response = await fetch(url, {
         //credentials: 'include',
       });
       if (!response.ok) {
-        console.log('this was the data fetched', response);
-        throw new Error('Network response was not ok');
+        throw new Error('Data could not be fetched');
       }
       const dataFetched = await response.json();
       //console.log('fetched data: ', dataFetched);
@@ -54,6 +54,9 @@ export const taskOps = {
           tasks: dataFetchedAdjusted,
         };
       } else {
+        if (!dataFetched.tasks || !Array.isArray(dataFetched.tasks)) {
+          console.log('Invalid data structure: tasks is not an array');
+        }
         return dataFetched;
       }
     } catch (error: unknown) {
