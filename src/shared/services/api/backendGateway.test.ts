@@ -4,6 +4,10 @@ import { ApiError, TaskProps, TaskResponse } from '@/shared/types/task.type';
 global.fetch = jest.fn();
 
 describe('beOps', () => {
+  beforeAll(() => {
+    console.log('BACKEND_URL:', process.env.BACKEND_URL); // Add this line to verify the environment variable
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
