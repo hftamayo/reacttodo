@@ -4,10 +4,6 @@ import { ApiError, TaskProps, TaskResponse } from '@/shared/types/task.type';
 global.fetch = jest.fn();
 
 describe('beOps', () => {
-  beforeAll(() => {
-    console.log('BACKEND_URL:', process.env.BACKEND_URL); // Add this line to verify the environment variable
-  });
-
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -21,9 +17,12 @@ describe('beOps', () => {
 
     const result = await beOps.checkHealth();
     expect(result).toEqual(mockResponse);
-    expect(fetch).toHaveBeenCalledWith(`${process.env.BACKEND_URL}/health`, {
-      credentials: 'include',
-    });
+    expect(fetch).toHaveBeenCalledWith(
+      `${process.env.VITE_BACKEND_URL}/health`,
+      {
+        credentials: 'include',
+      }
+    );
   });
 
   it('should handle errors when checking health', async () => {
@@ -32,7 +31,7 @@ describe('beOps', () => {
     });
 
     await expect(beOps.checkHealth()).rejects.toThrow(
-      'Network response was not ok'
+      'An unknown error occurred'
     );
   });
 });
@@ -56,7 +55,7 @@ describe('taskOps', () => {
     const result = await taskOps.getTasks();
     expect(result).toEqual(mockResponse);
     expect(fetch).toHaveBeenCalledWith(
-      `${process.env.BACKEND_URL}/todos?limit=5&skip=10`,
+      `${process.env.VITE_BACKEND_URL}/todos?limit=5&skip=10`,
       {
         //credentials: 'include',
       }
@@ -69,7 +68,7 @@ describe('taskOps', () => {
     });
 
     await expect(taskOps.getTasks()).rejects.toThrow(
-      'Network response was not ok'
+      'An unknown error occurred'
     );
   });
 
