@@ -1,3 +1,4 @@
+jest.mock('../../utils/envvars', () => require('../../utils/envvars.mock'));
 import { beOps, taskOps } from './backendGateway';
 import { ApiError, TaskProps, TaskResponse } from '@/shared/types/task.type';
 
@@ -37,6 +38,11 @@ describe('beOps', () => {
 });
 
 describe('taskOps', () => {
+  beforeAll(() => {
+    // Verify that the environment variables are mocked correctly
+    console.log('VITE_BACKEND_URL:', process.env.VITE_BACKEND_URL);
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -63,8 +69,11 @@ describe('taskOps', () => {
   });
 
   it('should handle errors when getting tasks', async () => {
+    const errorData = { message: 'Not Found' };
     (fetch as jest.Mock).mockResolvedValueOnce({
       ok: false,
+      statusText: 'Not Found',
+      json: async () => errorData,
     });
 
     await expect(taskOps.getTasks()).rejects.toThrow(
