@@ -33,32 +33,38 @@ export const taskOps = {
       const response = await fetch(url, {
         //credentials: 'include',
       });
+      console.log('Response:', response);
       if (!response.ok) {
-        throw new Error('Data could not be fetched');
+        const errorData = await response.json();
+        throw new Error(
+          `Network response was not ok: ${response.statusText}. Data: ${JSON.stringify(errorData)}`
+        );
       }
       const dataFetched = await response.json();
-      //console.log('fetched data: ', dataFetched);
+      console.log('fetched data: ', dataFetched);
 
+      let tasks: TaskProps[] = [];
       if (BACKEND_TYPE === '0') {
-        const dataFetchedAdjusted: TaskProps[] = dataFetched.todos.map(
-          (todo: any) => ({
-            id: todo.id,
-            name: todo.todo,
-            complete: todo.completed,
-          })
-        );
-
-        return {
-          httpStatusCode: 200,
-          resultMessage: 'Data fetched successfully',
-          tasks: dataFetchedAdjusted,
-        };
+        if (!dataFetched.todos || !Array.isArray(dataFetched.todos)) {
+          console.log('Invalid data structure fetched from API');
+        }
+        tasks = dataFetched.todos.map((todo: any) => ({
+          id: todo.id,
+          name: todo.todo,
+          complete: todo.completed,
+        }));
       } else {
         if (!dataFetched.tasks || !Array.isArray(dataFetched.tasks)) {
-          console.log('Invalid data structure: tasks is not an array');
+          throw new Error('Invalid data structure: tasks is not an array');
         }
-        return dataFetched;
+        tasks = dataFetched.tasks;
       }
+
+      return {
+        httpStatusCode: 200,
+        resultMessage: 'Data fetched successfully',
+        tasks,
+      };
     } catch (error: unknown) {
       console.error('Error reported: ', error);
       const apiError = error as ApiError;
