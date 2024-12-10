@@ -5,6 +5,10 @@ import { ApiError, TaskProps, TaskResponse } from '@/shared/types/task.type';
 global.fetch = jest.fn();
 
 describe('beOps', () => {
+  beforeAll(() => {
+    console.log('VITE_BACKEND_URL:', process.env.VITE_BACKEND_URL);
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -21,7 +25,7 @@ describe('beOps', () => {
     expect(fetch).toHaveBeenCalledWith(
       `${process.env.VITE_BACKEND_URL}/health`,
       {
-        credentials: 'include',
+        //credentials: 'include',
       }
     );
   });
@@ -29,10 +33,11 @@ describe('beOps', () => {
   it('should handle errors when checking health', async () => {
     (fetch as jest.Mock).mockResolvedValueOnce({
       ok: false,
+      statusText: 'Not Found',
     });
 
     await expect(beOps.checkHealth()).rejects.toThrow(
-      'An unknown error occurred'
+      'Network response was not ok'
     );
   });
 });
@@ -47,11 +52,9 @@ describe('taskOps', () => {
     jest.clearAllMocks();
   });
 
-  it('should get tasks successfully', async () => {
-    const mockResponse: TaskResponse = {
-      httpStatusCode: 200,
-      resultMessage: 'Data fetched successfully',
-      tasks: [],
+  it('should get tasks successfully for BACKEND_TYPE 0', async () => {
+    const mockResponse = {
+      todos: [], // Ensure this matches the expected structure
     };
     (fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
@@ -59,9 +62,37 @@ describe('taskOps', () => {
     });
 
     const result = await taskOps.getTasks();
-    expect(result).toEqual(mockResponse);
+    expect(result).toEqual({
+      httpStatusCode: 200,
+      resultMessage: 'Data fetched successfully',
+      tasks: [],
+    });
     expect(fetch).toHaveBeenCalledWith(
-      `${process.env.VITE_BACKEND_URL}/todos?limit=5&skip=10`,
+      `${import.meta.env.VITE_BACKEND_URL}/todos?limit=5&skip=10`,
+      {
+        //credentials: 'include',
+      }
+    );
+  });
+
+  it('should get tasks successfully for BACKEND_TYPE not 0', async () => {
+    (global as any).importMeta.env.VITE_BACKEND_TYPE = '1';
+    const mockResponse = {
+      tasks: [], // Ensure this matches the expected structure
+    };
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockResponse,
+    });
+
+    const result = await taskOps.getTasks();
+    expect(result).toEqual({
+      httpStatusCode: 200,
+      resultMessage: 'Data fetched successfully',
+      tasks: [],
+    });
+    expect(fetch).toHaveBeenCalledWith(
+      `${import.meta.env.VITE_BACKEND_URL}/tasks/all`,
       {
         //credentials: 'include',
       }
@@ -77,9 +108,166 @@ describe('taskOps', () => {
     });
 
     await expect(taskOps.getTasks()).rejects.toThrow(
-      'An unknown error occurred'
+      `Network response was not ok: Not Found. Data: ${JSON.stringify(errorData)}`
     );
   });
 
-  // Add similar tests for getTask, addTask, updateTask, and deleteTask
+  it('should get a single task successfully', async () => {
+    const mockResponse = {
+      id: '1',
+      name: 'Test Task',
+      complete: false,
+    };
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockResponse,
+    });
+
+    const result = await taskOps.getTask('1');
+    expect(result).toEqual(mockResponse);
+    expect(fetch).toHaveBeenCalledWith(
+      `${import.meta.env.VITE_BACKEND_URL}/tasks/task/1`,
+      {
+        credentials: 'include',
+      }
+    );
+  });
+
+  it('should handle errors when getting a single task', async () => {
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: false,
+      statusText: 'Not Found',
+    });
+
+    await expect(taskOps.getTask('1')).rejects.toThrow(
+      'Network response was not ok'
+    );
+  });
+
+  it('should add a task successfully', async () => {
+    const mockTask: TaskProps = {
+      id: '1',
+      name: 'New Task',
+      complete: false,
+    };
+    const mockResponse = {
+      httpStatusCode: 200,
+      resultMessage: 'Task added successfully',
+      tasks: [mockTask],
+    };
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockResponse,
+    });
+
+    const result = await taskOps.addTask(mockTask);
+    expect(result).toEqual(mockResponse);
+    expect(fetch).toHaveBeenCalledWith(
+      `${import.meta.env.VITE_BACKEND_URL}/tasks/task`,
+      {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(mockTask),
+      }
+    );
+  });
+
+  it('should handle errors when adding a task', async () => {
+    const mockTask: TaskProps = {
+      id: '1',
+      name: 'New Task',
+      complete: false,
+    };
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: false,
+      statusText: 'Bad Request',
+    });
+
+    await expect(taskOps.addTask(mockTask)).rejects.toThrow(
+      'Network response was not ok'
+    );
+  });
+
+  it('should update a task successfully', async () => {
+    const mockTask: TaskProps = {
+      id: '1',
+      name: 'Updated Task',
+      complete: true,
+    };
+    const mockResponse = {
+      httpStatusCode: 200,
+      resultMessage: 'Task updated successfully',
+      tasks: [mockTask],
+    };
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockResponse,
+    });
+
+    const result = await taskOps.updateTask(mockTask);
+    expect(result).toEqual(mockResponse);
+    expect(fetch).toHaveBeenCalledWith(
+      `${import.meta.env.VITE_BACKEND_URL}/tasks/task/1`,
+      {
+        method: 'PUT',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(mockTask),
+      }
+    );
+  });
+
+  it('should handle errors when updating a task', async () => {
+    const mockTask: TaskProps = {
+      id: '1',
+      name: 'Updated Task',
+      complete: true,
+    };
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: false,
+      statusText: 'Bad Request',
+    });
+
+    await expect(taskOps.updateTask(mockTask)).rejects.toThrow(
+      'Network response was not ok'
+    );
+  });
+
+  it('should delete a task successfully', async () => {
+    const mockResponse = {
+      httpStatusCode: 200,
+      resultMessage: 'Task deleted successfully',
+      tasks: [],
+    };
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockResponse,
+    });
+
+    const result = await taskOps.deleteTask('1');
+    expect(result).toEqual(mockResponse);
+    expect(fetch).toHaveBeenCalledWith(
+      `${import.meta.env.VITE_BACKEND_URL}/tasks/task/1`,
+      {
+        method: 'DELETE',
+        credentials: 'include',
+      }
+    );
+  });
+
+  it('should handle errors when deleting a task', async () => {
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: false,
+      statusText: 'Not Found',
+    });
+
+    await expect(taskOps.deleteTask('1')).rejects.toThrow(
+      'Network response was not ok'
+    );
+  });
 });
