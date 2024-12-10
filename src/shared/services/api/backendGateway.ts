@@ -29,11 +29,11 @@ export const taskOps = {
       } else {
         url = `${BACKEND_URL}/tasks/all`;
       }
-      console.log('Fetching data from: ', url);
+      //console.log('Fetching data from: ', url);
       const response = await fetch(url, {
         //credentials: 'include',
       });
-      console.log('Response:', response);
+      //console.log('Response:', response);
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
@@ -41,7 +41,7 @@ export const taskOps = {
         );
       }
       const dataFetched = await response.json();
-      console.log('fetched data: ', dataFetched);
+      //console.log('fetched data: ', dataFetched);
 
       let tasks: TaskProps[] = [];
       if (BACKEND_TYPE === '0') {
