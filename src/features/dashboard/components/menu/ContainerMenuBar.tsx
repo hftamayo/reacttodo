@@ -1,9 +1,9 @@
-import DropDownMenu from './menu/DropDownMenu';
-import MenuItem from './menu/MenuItem';
+import DropDownMenu from './DropDownMenu';
+import MenuItem from './MenuItem';
 import { MenuProps } from '@/shared/types/menu.type';
 import { DashBoardMenuBarStyles } from '@/shared/utils/twind/styles';
 
-const DashBoardMenuBar: React.FC<MenuProps> = ({ options }) => {
+const ContainerMenuBar: React.FC<MenuProps> = ({ options }) => {
   return (
     <div>
       <ul className={DashBoardMenuBarStyles.div2ndLevelContainer}>
@@ -21,4 +21,4 @@ const DashBoardMenuBar: React.FC<MenuProps> = ({ options }) => {
   );
 };
 
-export default DashBoardMenuBar;
+export default ContainerMenuBar;
