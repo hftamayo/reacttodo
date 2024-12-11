@@ -28,6 +28,11 @@ export const DashBoardMenuBarStyles = {
 
 export const DashBoardHeaderActionsStyles = {
   toggleButton: 'text-white me-4 cursor-pointer',
+  spanSearchAction:
+    'relative md:absolute inset-y-0-left-0 flex items-center pl-2',
+  buttonSearchAction: 'p-1 focus:outline-none text-white md:text-black',
+  inputSearchAction:
+    'w-full px-4 py-1 pl-12 rounded shadow outline-none hidden md:block',
 };
 
 export const taskBoard = {
