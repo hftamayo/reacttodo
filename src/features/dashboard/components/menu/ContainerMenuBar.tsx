@@ -10,7 +10,9 @@ const ContainerMenuBar: React.FC<MenuProps> = ({
   onCollapse,
 }) => {
   return (
-    <div>
+    <div
+      className={`${isCollapsed ? 'hidden' : 'block'} ${DashBoardMenuBarStyles.toggleEffectButton}`}
+    >
       <button
         onClick={onCollapse}
         className={DashBoardMenuBarStyles.collapseButton}
