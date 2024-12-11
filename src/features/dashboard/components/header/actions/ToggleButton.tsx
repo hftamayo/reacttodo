@@ -17,3 +17,5 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
     </div>
   );
 };
+
+export default ToggleButton;
