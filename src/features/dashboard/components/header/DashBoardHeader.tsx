@@ -1,10 +1,14 @@
 import React from 'react';
-import { FaBars, FaSearch, FaBell, FaUserCircle } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
-import { APP_NAME } from '@/shared/utils/envvars';
+import DashBoardToggleMenuBar from './menu/DashBoardToggleMenuBar';
+import ContainerActions from './actions/ContainerActions';
 
-const DashBoardHeader = () => {
-  return <div>DashBoardHeader</div>;
+const DashBoardHeader: React.FC = () => {
+  return (
+    <div className="flex">
+      <DashBoardToggleMenuBar />
+      <ContainerActions />
+    </div>
+  );
 };
 
 export default DashBoardHeader;
