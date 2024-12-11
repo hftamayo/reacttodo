@@ -26,9 +26,6 @@ const DashBoardToggleMenuBar: React.FC = () => {
 
   return (
     <div>
-      <button onClick={() => setIsCollapsed(!isCollapsed)}>
-        Toggle Sidebar
-      </button>
       {!isCollapsed && (
         <ContainerMenuBar
           options={menuOptions}
