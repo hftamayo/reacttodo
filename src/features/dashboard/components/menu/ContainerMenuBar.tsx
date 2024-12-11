@@ -1,11 +1,22 @@
+import React from 'react';
 import DropDownMenu from './DropDownMenu';
 import MenuItem from './MenuItem';
 import { MenuProps } from '@/shared/types/menu.type';
 import { DashBoardMenuBarStyles } from '@/shared/utils/twind/styles';
 
-const ContainerMenuBar: React.FC<MenuProps> = ({ options }) => {
+const ContainerMenuBar: React.FC<MenuProps> = ({
+  options,
+  isCollapsed,
+  onCollapse,
+}) => {
   return (
     <div>
+      <button
+        onClick={onCollapse}
+        className={DashBoardMenuBarStyles.collapseButton}
+      >
+        {isCollapsed ? 'Expand' : 'Collapse'}
+      </button>
       <ul className={DashBoardMenuBarStyles.div2ndLevelContainer}>
         {options.map((option) => (
           <MenuItem key={option.path} option={option} />
