@@ -26,6 +26,10 @@ export const DashBoardMenuBarStyles = {
   mappedItem: 'hover:bg-teal-600 hover:text-teal-200 py-2 px-3 rounded',
 };
 
+export const DashBoardHeaderActionsStyles = {
+  toggleButton: 'text-white me-4 cursor-pointer',
+};
+
 export const taskBoard = {
   boardContainer: 'flex items-center justify-center min-h-screen',
   bg: 'h-screen w-screen p-4 bg-gradient-to-r from-[#2F80ED] to-[#1CB5E0]',

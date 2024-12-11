@@ -17,3 +17,8 @@ export type MenuProps = {
   isCollapsed: boolean;
   onCollapse: () => void;
 };
+
+export type ToggleButtonProps = {
+  setSidebarToggle: () => void;
+  appName: string;
+};
