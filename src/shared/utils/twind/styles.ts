@@ -15,6 +15,8 @@ export const DashBoardMenuBarStyles = {
   unorderedItem1stLevel: 'mt-3 text-white font-bold',
   unorderedItem2ndLevel: 'mt-3 font-bold',
   unorderedItem3rdLevel: 'ml-6 mt-2',
+  collapseButton: 'w-full bg-gray-800 text-white py-2',
+  toggleEffectButton: 'w-64 bg-gray-600 fixed h-full px-4 py-2',
   listItem: 'mb-2 rounded hover:shadow hover:bg-teal-600 py-2',
   linkItem: 'px-3',
   menuIcon: 'inline-block w-6 h-6 mr-2 -mt-2',
