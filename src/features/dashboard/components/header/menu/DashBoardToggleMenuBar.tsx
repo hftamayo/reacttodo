@@ -4,7 +4,7 @@ import {
   adminMenuOptions,
   supervisorMenuOptions,
   userMenuOptions,
-} from '../../services/menuOptions';
+} from '../services/menuOptions';
 
 const DashBoardToggleMenuBar: React.FC = () => {
   //const [menuOptions, setMenuOptions] = useState(adminMenuOptions);
