@@ -1,3 +1,12 @@
+export const MainLayoutStyles = {
+  layoutContainer: 'min-h-screen grid grid-rows-[auto,1fr,auto]',
+  layoutHeader: 'col-span-2 fixed left-0 right-0 z-10 top-0',
+  layoutSideBar: 'h-full fixed top-[header-height] bottom-[footer-height]',
+  layoutContent:
+    'ml-[sidebar-width] flex items-center justify-center pt-[header-height] pb-[footer-height] min-h-screen',
+  layoutFooter: 'col-span-2 fixed left-0 right-0 z-10 bottom-0',
+};
+
 export const DashBoardHeader = {
   menuLoggedUser:
     'mb-2 rounded hover:shadow hover:bg-gray-600 hover:text-white py-2',
