@@ -5,8 +5,8 @@ import ContainerActions from './actions/ContainerActions';
 const DashBoardHeader: React.FC = () => {
   return (
     <div className="flex">
-      <DashBoardToggleMenuBar />
       <ContainerActions />
+      <DashBoardToggleMenuBar />
     </div>
   );
 };
