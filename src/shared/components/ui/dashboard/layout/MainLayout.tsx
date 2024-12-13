@@ -1,7 +1,7 @@
 import React from 'react';
 import CustomOutlet from '@/shared/services/routing/CustomOutlet';
 import DashBoardHeader from '@/features/dashboard/components/header/DashBoardHeader';
-import DashBoardToggleMenuBar from '@/features/dashboard/components/header/menu/DashBoardToggleMenuBar';
+import DashBoardToggleMenuBar from '@/features/dashboard/components/menu/DashBoardToggleMenuBar';
 import DashBoardFooter from '@/features/dashboard/components/footer/DashBoardFooter';
 import { MainLayoutStyles } from '@/shared/utils/twind/styles';
 
