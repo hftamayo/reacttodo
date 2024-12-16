@@ -8,12 +8,12 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
   appName,
 }) => {
   return (
-    <div className="flex items-center text-xl">
+    <div className="flex items-center text-xl mr-4">
       <FaBars
         className={DashBoardHeaderActionsStyles.toggleButton}
         onClick={setSidebarToggle}
       />
-      <span className="text-white font-semibold">${appName}</span>
+      <span className="text-white font-semibold">{appName}</span>
     </div>
   );
 };
