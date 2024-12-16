@@ -1,36 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ContainerMenuBar from './ContainerMenuBar';
-import {
-  adminMenuOptions,
-  supervisorMenuOptions,
-  userMenuOptions,
-} from './services/menuOptions';
+import { MenuProps } from '@/shared/types/menu.type';
 
-const DashBoardToggleMenuBar: React.FC = () => {
+const DashBoardToggleMenuBar: React.FC<MenuProps> = ({
+  options,
+  isCollapsed,
+  onCollapse,
+}) => {
   //const [menuOptions, setMenuOptions] = useState(adminMenuOptions);
-  const [isCollapsed, setIsCollapsed] = useState(true);
-  const userRole = 'admin';
-
-  let menuOptions;
-  if (userRole === 'admin') {
-    menuOptions = adminMenuOptions;
-  } else if (userRole === 'supervisor') {
-    menuOptions = supervisorMenuOptions;
-  } else {
-    menuOptions = userMenuOptions;
-  }
-
-  const handleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
-  };
 
   return (
     <div>
       {!isCollapsed && (
         <ContainerMenuBar
-          options={menuOptions}
+          options={options}
           isCollapsed={isCollapsed}
-          onCollapse={handleCollapse}
+          onCollapse={onCollapse}
         />
       )}
     </div>
