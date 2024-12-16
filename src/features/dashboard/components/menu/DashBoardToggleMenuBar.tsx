@@ -8,7 +8,7 @@ import {
 
 const DashBoardToggleMenuBar: React.FC = () => {
   //const [menuOptions, setMenuOptions] = useState(adminMenuOptions);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const userRole = 'admin';
 
   let menuOptions;
