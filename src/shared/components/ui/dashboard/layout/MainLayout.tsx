@@ -40,7 +40,6 @@ const MainLayout = () => {
         <DashBoardToggleMenuBar
           options={menuOptions}
           isCollapsed={sidebarToggle}
-          onCollapse={() => setSidebarToggle(!sidebarToggle)}
         />
         <div
           className={`${MainLayoutStyles.layoutContent} flex items-center justify-center overflow-hidden`}

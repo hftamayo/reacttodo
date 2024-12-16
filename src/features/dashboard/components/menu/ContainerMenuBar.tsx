@@ -4,11 +4,7 @@ import MenuItem from './MenuItem';
 import { MenuProps } from '@/shared/types/menu.type';
 import { DashBoardMenuBarStyles } from '@/shared/utils/twind/styles';
 
-const ContainerMenuBar: React.FC<MenuProps> = ({
-  options,
-  isCollapsed,
-  onCollapse,
-}) => {
+const ContainerMenuBar: React.FC<MenuProps> = ({ options, isCollapsed }) => {
   return (
     <div
       className={`${isCollapsed ? 'hidden' : 'block'} ${DashBoardMenuBarStyles.toggleEffectButton}`}

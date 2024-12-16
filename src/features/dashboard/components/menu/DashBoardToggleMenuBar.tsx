@@ -5,19 +5,12 @@ import { MenuProps } from '@/shared/types/menu.type';
 const DashBoardToggleMenuBar: React.FC<MenuProps> = ({
   options,
   isCollapsed,
-  onCollapse,
 }) => {
   //const [menuOptions, setMenuOptions] = useState(adminMenuOptions);
 
   return (
     <div>
-      {!isCollapsed && (
-        <ContainerMenuBar
-          options={options}
-          isCollapsed={isCollapsed}
-          onCollapse={onCollapse}
-        />
-      )}
+      <ContainerMenuBar options={options} isCollapsed={isCollapsed} />
     </div>
   );
   //   return (
