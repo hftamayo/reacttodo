@@ -44,6 +44,11 @@ export const DashBoardHeaderActionsStyles = {
     'w-full px-4 py-1 pl-12 rounded shadow outline-none hidden md:block',
 };
 
+export const DashBoardFooterStyles = {
+  footer_links:
+    'mx-3 font-semibold hover:opacity-80 duration-150 hover:text-teal-500 hover:underline',
+};
+
 export const taskBoard = {
   boardContainer: 'flex items-center justify-center min-h-screen',
   bg: 'h-screen w-screen p-4 bg-gradient-to-r from-[#2F80ED] to-[#1CB5E0]',
