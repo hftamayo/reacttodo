@@ -44,6 +44,15 @@ export const DashBoardHeaderActionsStyles = {
     'w-full px-4 py-1 pl-12 rounded shadow outline-none hidden md:block',
 };
 
+export const DashBoardHeaderProfileMenuStyles = {
+  button: 'text-white group flex items-center',
+  containerFirstLevel:
+    'z-10 hidden absolute bg-white rounded-lg shadow-lg w-40 group-focus:block top-full right-0 mt-2',
+  ul: 'py-2 text-sm text-gray-900 divide-y divide-gray-200',
+  li: 'px-4 py-2 hover:bg-gray-100 flex items-center',
+  icon: 'w-4 h-4 mr-2 text-gray-600',
+};
+
 export const DashBoardFooterStyles = {
   footer_links:
     'mx-3 font-semibold hover:opacity-80 duration-150 hover:text-teal-500 hover:underline',
