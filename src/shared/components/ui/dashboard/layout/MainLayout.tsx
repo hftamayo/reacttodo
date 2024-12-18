@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import CustomOutlet from '@/shared/services/routing/CustomOutlet';
+import SkeletonCustomOutlet from '@/shared/services/routing/SkeletonCustomOutlet';
 import DashBoardHeader from '@/features/dashboard/components/header/DashBoardHeader';
 import DashBoardToggleMenuBar from '@/features/dashboard/components/menu/DashBoardToggleMenuBar';
 import DashBoardFooter from '@/features/dashboard/components/footer/DashBoardFooter';
@@ -11,7 +12,7 @@ import {
 import { APP_NAME } from '@/shared/utils/envvars';
 import { MainLayoutStyles } from '@/shared/utils/twind/styles';
 
-const MainLayout = () => {
+const MainLayout: React.FC = () => {
   const isAuthenticated = true;
   const userRole = 'admin';
 
@@ -44,7 +45,8 @@ const MainLayout = () => {
         <div
           className={`${MainLayoutStyles.layoutContent} flex items-center justify-center overflow-hidden`}
         >
-          <CustomOutlet />
+          {/* <CustomOutlet />  */}
+          <SkeletonCustomOutlet />
         </div>
       </div>
       <div className={MainLayoutStyles.layoutFooter}>
