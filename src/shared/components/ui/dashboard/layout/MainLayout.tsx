@@ -37,15 +37,16 @@ const MainLayout: React.FC = () => {
           />
         ) : null}
       </div>
-      <div className="flex">
-        <DashBoardToggleMenuBar
-          options={menuOptions}
-          isCollapsed={sidebarToggle}
-        />
+      <div className="flex flex-grow">
         <div
-          className={`${MainLayoutStyles.layoutContent} flex items-center justify-center overflow-hidden`}
+          className={`${MainLayoutStyles.layoutSideBar} ${sidebarToggle ? 'block' : 'hidden'}`}
         >
-          {/* <CustomOutlet />  */}
+          <DashBoardToggleMenuBar
+            options={menuOptions}
+            isCollapsed={sidebarToggle}
+          />
+        </div>
+        <div className={MainLayoutStyles.layoutContent(sidebarToggle)}>
           <SkeletonCustomOutlet />
         </div>
       </div>
