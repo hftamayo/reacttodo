@@ -1,21 +1,32 @@
 import React from 'react';
-import { FaUserCircle } from 'react-icons/fa';
+import { FaUserCircle, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { DashBoardHeaderProfileMenuStyles } from '@/shared/utils/twind/styles';
 
 const ProfileMenu: React.FC = () => {
   return (
     <div className="relative">
-      <button className="text-white group">
-        <FaUserCircle className="w-6 h-6 mt-1" />
-        <div className="z-10 hidden absolute bg-white rounded-lg shadow w-32 group-focus:block top-full right-0">
-          <ul className="py-2 text-sm text-gray-950">
-            <li>
-              <a href="">Profile</a>
+      <button className={DashBoardHeaderProfileMenuStyles.button}>
+        <FaUserCircle className="w-6 h-6 mr-2" />
+
+        <div className={DashBoardHeaderProfileMenuStyles.containerFirstLevel}>
+          <ul className={DashBoardHeaderProfileMenuStyles.ul}>
+            <li className={DashBoardHeaderProfileMenuStyles.li}>
+              <FaUser className={DashBoardHeaderProfileMenuStyles.icon} />
+              <a href="#" className="block w-full">
+                Profile
+              </a>
             </li>
-            <li>
-              <a href="">Settings</a>
+            <li className={DashBoardHeaderProfileMenuStyles.li}>
+              <FaCog className={DashBoardHeaderProfileMenuStyles.icon} />
+              <a href="#" className="block w-full">
+                Settings
+              </a>
             </li>
-            <li>
-              <a href="">Log Out</a>
+            <li className={DashBoardHeaderProfileMenuStyles.li}>
+              <FaSignOutAlt className={DashBoardHeaderProfileMenuStyles.icon} />
+              <a href="#" className="block w-full">
+                Log Out
+              </a>
             </li>
           </ul>
         </div>
