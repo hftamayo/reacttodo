@@ -27,7 +27,7 @@ export const DashBoardMenuBarStyles = {
   unorderedItem3rdLevel: 'ml-6 mt-2',
   collapseButton: 'w-full bg-gray-800 text-white py-2',
   toggleEffectButton:
-    'w-64 bg-gray-600 fixed h-full px-4 py-2 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2', // Center the ToggleMenuBar
+    'w-64 bg-gray-600 fixed h-full px-4 py-2 left-0 top-1/2 transform -translate-y-1/2', // Move to left edge
   listItem: 'mb-2 rounded hover:shadow hover:bg-teal-600 py-2',
   linkItem: 'px-3',
   menuIcon: 'inline-block w-6 h-6 mr-2 -mt-2',
