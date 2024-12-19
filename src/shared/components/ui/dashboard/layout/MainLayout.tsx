@@ -16,7 +16,7 @@ const MainLayout: React.FC = () => {
   const isAuthenticated = true;
   const userRole = 'admin';
 
-  const [sidebarToggle, setSidebarToggle] = useState(true);
+  const [sidebarToggle, setSidebarToggle] = useState(false);
 
   let menuOptions;
   if (userRole === 'admin') {
