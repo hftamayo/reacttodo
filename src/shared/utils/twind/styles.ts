@@ -1,7 +1,8 @@
 export const MainLayoutStyles = {
   layoutContainer: 'min-h-screen grid grid-rows-[auto,1fr,auto]',
   layoutHeader: 'col-span-2 fixed left-0 right-0 z-10 top-0',
-  layoutSideBar: 'h-full fixed top-[header-height] bottom-[footer-height]',
+  layoutSideBar:
+    'h-full fixed top-[64px] bottom-0 left-0 transition-all duration-300',
   layoutContent: (isCollapsed: boolean) =>
     `flex-grow pt-[64px] ${isCollapsed ? 'ml-0' : 'ml-[256px]'} transition-all duration-300 overflow-auto`,
   layoutFooter: 'col-span-2 fixed left-0 right-0 z-10 bottom-0',
@@ -25,7 +26,8 @@ export const DashBoardMenuBarStyles = {
   unorderedItem2ndLevel: 'mt-3 font-bold',
   unorderedItem3rdLevel: 'ml-6 mt-2',
   collapseButton: 'w-full bg-gray-800 text-white py-2',
-  toggleEffectButton: 'w-64 bg-gray-600 fixed h-full px-4 py-2 left-0 top-0',
+  toggleEffectButton:
+    'w-64 bg-gray-600 fixed h-full px-4 py-2 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2', // Center the ToggleMenuBar
   listItem: 'mb-2 rounded hover:shadow hover:bg-teal-600 py-2',
   linkItem: 'px-3',
   menuIcon: 'inline-block w-6 h-6 mr-2 -mt-2',

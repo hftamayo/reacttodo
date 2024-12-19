@@ -7,7 +7,7 @@ import { DashBoardMenuBarStyles } from '@/shared/utils/twind/styles';
 const ContainerMenuBar: React.FC<MenuProps> = ({ options, isCollapsed }) => {
   return (
     <div
-      className={`${isCollapsed ? 'hidden' : 'block'} ${DashBoardMenuBarStyles.toggleEffectButton}`}
+      className={`${isCollapsed ? 'block' : 'hidden'} ${DashBoardMenuBarStyles.toggleEffectButton}`}
     >
       <ul className={DashBoardMenuBarStyles.div2ndLevelContainer}>
         {options.map((option) => (
