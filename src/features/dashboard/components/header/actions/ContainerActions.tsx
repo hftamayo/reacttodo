@@ -4,6 +4,7 @@ import SearchText from './SearchText';
 import { FaBell } from 'react-icons/fa';
 import ProfileMenu from './ProfileMenu';
 import { ToggleButtonProps } from '@/shared/types/menu.type';
+import ThemeButton from './ThemeButton';
 
 const ContainerActions: React.FC<ToggleButtonProps> = ({
   setSidebarToggle,
@@ -17,6 +18,7 @@ const ContainerActions: React.FC<ToggleButtonProps> = ({
         <div className="text-white">
           <FaBell className="w-6 h-6" />
         </div>
+        <ThemeButton />
         <ProfileMenu />
       </div>
     </nav>
