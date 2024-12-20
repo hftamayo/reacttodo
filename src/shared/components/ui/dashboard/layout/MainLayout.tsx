@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAppSelector } from '@/shared/services/redux/storeHooks';
 import CustomOutlet from '@/shared/services/routing/CustomOutlet';
 import SkeletonCustomOutlet from '@/shared/services/routing/SkeletonCustomOutlet';
 import DashBoardHeader from '@/features/dashboard/components/header/DashBoardHeader';
@@ -13,10 +14,15 @@ import { APP_NAME } from '@/shared/utils/envvars';
 import { MainLayoutStyles } from '@/shared/utils/twind/styles';
 
 const MainLayout: React.FC = () => {
+  const theme = useAppSelector((state: any) => state.theme.theme);
   const isAuthenticated = true;
   const userRole = 'admin';
 
   const [sidebarToggle, setSidebarToggle] = useState(false);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+  }, [theme]);
 
   let menuOptions;
   if (userRole === 'admin') {
