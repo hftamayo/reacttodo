@@ -1,10 +1,5 @@
 import React from 'react';
 import {
-  useAppDispatch,
-  useAppSelector,
-} from '@/shared/services/redux/storeHooks';
-import { toggleTheme } from '@/shared/services/redux/themeSlice';
-import {
   FaUserCircle,
   FaUser,
   FaCog,
@@ -15,14 +10,6 @@ import {
 import { DashBoardHeaderProfileMenuStyles } from '@/shared/utils/twind/styles';
 
 const ProfileMenu: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const theme = useAppSelector((state: any) => state.theme.theme);
-
-  const handleToggle = () => {
-    console.log('dark mode logic');
-    dispatch(toggleTheme());
-  };
-
   return (
     <div className="relative">
       <button className={DashBoardHeaderProfileMenuStyles.button}>
@@ -36,21 +23,6 @@ const ProfileMenu: React.FC = () => {
                 Profile
               </a>
             </li>
-            <button
-              onClick={handleToggle}
-              className={DashBoardHeaderProfileMenuStyles.li}
-            >
-              {theme === 'light' ? (
-                <FaToggleOff
-                  className={DashBoardHeaderProfileMenuStyles.icon}
-                />
-              ) : (
-                <FaToggleOn className={DashBoardHeaderProfileMenuStyles.icon} />
-              )}
-              <a href="#" className="block w-full">
-                Switch to {theme === 'light' ? 'Dark' : 'Light'}
-              </a>
-            </button>
             <li className={DashBoardHeaderProfileMenuStyles.li}>
               <FaCog className={DashBoardHeaderProfileMenuStyles.icon} />
               <a href="#" className="block w-full">
