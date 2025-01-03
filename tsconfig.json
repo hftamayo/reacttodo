@@ -9,7 +9,7 @@
       "outDir": "./dist",
       "rootDir": "./src",
       "target": "es6",
-      "module": "ESNext",
+      "module": "esnext",
       "lib": ["dom", "es2015"],
       "jsx": "react-jsx",
       "strict": true,
@@ -17,7 +17,7 @@
       "esModuleInterop": true,
       "skipLibCheck": true,
       "forceConsistentCasingInFileNames": true,
-      "types": ["jest", "wouter", "react-aria-modal"],
+      "types": ["jest", "wouter", "react-aria-modal", "node"],
       "allowImportingTsExtensions": true,
       "noEmit": true 
     },

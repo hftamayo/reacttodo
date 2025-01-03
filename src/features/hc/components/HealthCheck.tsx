@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { beOps } from '../../../api/backend';
+import { beOps } from '../../../shared/services/api/backendGateway';
 
 const HealthCheck: React.FC = () => {
   const [status, setStatus] = useState<string | null>(null);
