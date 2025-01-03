@@ -53,7 +53,7 @@ const MainLayout: React.FC = () => {
           />
         </div>
         <div className={MainLayoutStyles.layoutContent(sidebarToggle)}>
-          <SkeletonCustomOutlet />
+          <CustomOutlet />
         </div>
       </div>
       <div className={MainLayoutStyles.layoutFooter}>
