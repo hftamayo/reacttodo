@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'wouter';
 import { FaRegFileAlt, FaChevronDown, FaChevronRight } from 'react-icons/fa';
-import { MenuProps, DropDownMenuProps } from '@/shared/types/menu.type';
+import { DropDownMenuProps } from '@/shared/types/menu.type';
 import { DashBoardMenuBarStyles } from '@/shared/utils/twind/styles';
 
 const DropDownMenu: React.FC<DropDownMenuProps> = ({ options }) => {

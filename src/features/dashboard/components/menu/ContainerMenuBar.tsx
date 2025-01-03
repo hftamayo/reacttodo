@@ -1,11 +1,14 @@
-import DropDownMenu from './menu/DropDownMenu';
-import MenuItem from './menu/MenuItem';
+import React from 'react';
+import DropDownMenu from './DropDownMenu';
+import MenuItem from './MenuItem';
 import { MenuProps } from '@/shared/types/menu.type';
 import { DashBoardMenuBarStyles } from '@/shared/utils/twind/styles';
 
-const DashBoardMenuBar: React.FC<MenuProps> = ({ options }) => {
+const ContainerMenuBar: React.FC<MenuProps> = ({ options, isCollapsed }) => {
   return (
-    <div>
+    <div
+      className={`${isCollapsed ? 'block' : 'hidden'} ${DashBoardMenuBarStyles.toggleEffectButton}`}
+    >
       <ul className={DashBoardMenuBarStyles.div2ndLevelContainer}>
         {options.map((option) => (
           <MenuItem key={option.path} option={option} />
@@ -21,4 +24,4 @@ const DashBoardMenuBar: React.FC<MenuProps> = ({ options }) => {
   );
 };
 
-export default DashBoardMenuBar;
+export default ContainerMenuBar;
