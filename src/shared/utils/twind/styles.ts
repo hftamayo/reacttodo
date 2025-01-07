@@ -58,6 +58,7 @@ export const DashBoardHeaderProfileMenuStyles = {
 export const DashBoardFooterStyles = {
   footer_links:
     'mx-3 font-semibold hover:opacity-80 duration-150 hover:text-teal-500 hover:underline',
+  footer_text: 'mx-3 font-semibold text-teal-300 hover:opacity-80',
 };
 
 export const taskBoard = {

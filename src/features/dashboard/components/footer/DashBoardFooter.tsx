@@ -27,12 +27,12 @@ const DashBoardFooter = () => {
         </a>
       </div>
       <div className="flex">
-        <a href="{}" className={DashBoardFooterStyles.footer_links}>
-          EULA
-        </a>{' '}
+        <span className={DashBoardFooterStyles.footer_text}>
+          Status: Online
+        </span>{' '}
         |
         <a href="{}" className={DashBoardFooterStyles.footer_links}>
-          Customer Support
+          Suggestions
         </a>{' '}
         |
         <a href="{}" className={DashBoardFooterStyles.footer_links}>
