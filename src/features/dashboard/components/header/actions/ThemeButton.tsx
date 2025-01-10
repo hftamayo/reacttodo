@@ -4,7 +4,7 @@ import { FaToggleOn, FaToggleOff } from 'react-icons/fa';
 import {
   useAppDispatch,
   useAppSelector,
-} from '@/shared/services/redux/storeHooks';
+} from '@/shared/services/redux/hooks/storeHooks';
 import { toggleTheme } from '@/shared/services/redux/slices/themeSlice';
 import { DashBoardHeaderActionsStyles } from '@/shared/utils/twind/styles';
 

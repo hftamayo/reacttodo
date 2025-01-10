@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useAppDispatch } from '../../../shared/services/redux/storeHooks';
+import { useAppDispatch } from '../../../shared/services/redux/hooks/storeHooks';
 import { addTask } from '../../../shared/services/redux/slices/taskSlice';
 import { Input } from '@/shared/components/ui/forms/input';
 import { Button } from '@/shared/components/ui/forms/button';
