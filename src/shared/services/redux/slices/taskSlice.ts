@@ -5,9 +5,9 @@ import {
   TaskResponse,
   TasksState,
   ApiError,
-} from '../../types/task.type';
-import { RootState } from './rootSlice';
-import { taskService } from '../api/tasks/taskService';
+} from '../../../types/task.type';
+import { RootState } from '../rootSlice';
+import { taskService } from '../../api/tasks/taskService';
 
 export const getTotalTasks = (state: RootState) => state.task.tasks.size;
 

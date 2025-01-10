@@ -4,7 +4,7 @@ import { TaskProps } from '../../../shared/types/task.type';
 import {
   updateTask,
   deleteTask,
-} from '../../../shared/services/redux/taskSlice';
+} from '../../../shared/services/redux/slices/taskSlice';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { Label } from '@/shared/components/ui/forms/label';
 import { Input } from '@/shared/components/ui/forms/input';

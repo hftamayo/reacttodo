@@ -5,7 +5,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '@/shared/services/redux/storeHooks';
-import { toggleTheme } from '@/shared/services/redux/themeSlice';
+import { toggleTheme } from '@/shared/services/redux/slices/themeSlice';
 import { DashBoardHeaderActionsStyles } from '@/shared/utils/twind/styles';
 
 const ThemeButton: React.FC = () => {

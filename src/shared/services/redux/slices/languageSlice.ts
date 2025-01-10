@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { RootState } from './rootSlice';
+import { RootState } from '../rootSlice';
 
 const initialState = {
   language: localStorage.getItem('language') ?? 'en',
