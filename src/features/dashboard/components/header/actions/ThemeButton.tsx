@@ -1,10 +1,8 @@
 import React from 'react';
 import { Link } from 'wouter';
 import { FaToggleOn, FaToggleOff } from 'react-icons/fa';
-import {
-  useAppDispatch,
-  useAppSelector,
-} from '@/shared/services/redux/hooks/storeHooks';
+import { useAppDispatch } from '@/shared/services/redux/hooks/useAppDispatch';
+import { useAppSelector } from '@/shared/services/redux/hooks/useAppSelector';
 import { toggleTheme } from '@/shared/services/redux/slices/themeSlice';
 import { DashBoardHeaderActionsStyles } from '@/shared/utils/twind/styles';
 
