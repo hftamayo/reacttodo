@@ -15,9 +15,11 @@ export type DropDownMenuProps = {
 export type MenuProps = {
   options: MenuOption[];
   isCollapsed: boolean;
+  language: string;
 };
 
 export type ToggleButtonProps = {
   setSidebarToggle: () => void;
   appName: string;
+  language: string;
 };
