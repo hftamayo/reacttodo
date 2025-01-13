@@ -1,7 +1,7 @@
 import { LanguageContextType } from '@/shared/types/ui.type';
 
 const stringMessages: LanguageContextType = {
-  //dashboard:
+  //dashboard header:
   dropDownHeaderBar: {
     en: {
       group: {
@@ -23,6 +23,18 @@ const stringMessages: LanguageContextType = {
         settings: 'Einstellungen',
         logout: 'Ausloggen',
       },
+    },
+  },
+
+  searchTextControl: {
+    en: {
+      text: 'Search criteria',
+    },
+    es: {
+      text: 'Criterio de busqueda',
+    },
+    de: {
+      text: 'Suchkriterium',
     },
   },
 
