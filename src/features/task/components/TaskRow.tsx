@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAppDispatch } from '../../../shared/services/redux/hooks/storeHooks';
+import { useAppDispatch } from '@/shared/services/redux/hooks/useAppDispatch';
 import { TaskProps } from '../../../shared/types/task.type';
 import {
   updateTask,
