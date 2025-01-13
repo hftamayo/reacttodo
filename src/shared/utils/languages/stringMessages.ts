@@ -1,7 +1,7 @@
 import { LanguageContextType } from '@/shared/types/ui.type';
 
 const stringMessages: LanguageContextType = {
-  //dashboard header:
+  //dashboard header components:
   dropDownHeaderBar: {
     en: {
       group: {
@@ -38,6 +38,56 @@ const stringMessages: LanguageContextType = {
     },
   },
 
+  themeButtonOn: {
+    en: {
+      text: 'Dark Mode On',
+    },
+    es: {
+      text: 'Modo oscuro activado',
+    },
+    de: {
+      text: 'Dunkler Modus an',
+    },
+  },
+
+  themeButtonOff: {
+    en: {
+      text: 'Dark Mode Off',
+    },
+    es: {
+      text: 'Modo oscuro desactivado',
+    },
+    de: {
+      text: 'Dunkler Modus aus',
+    },
+  },
+
+  statusBarDashboard: {
+    en: {
+      group: {
+        status: 'Status',
+        suggestions: 'Suggestions',
+        service: 'Service Desk',
+      },
+    },
+    es: {
+      group: {
+        status: 'Estado',
+        suggestions: 'Sugerencias',
+        service: 'Service Desk',
+      },
+    },
+    de: {
+      group: {
+        status: 'Status',
+        suggestions: 'Vorschläge',
+        service: 'Service Desk',
+      },
+    },
+  },
+
+  //dashboard header components end
+
   sideBarDashboard: {
     en: {
       group: {
@@ -70,30 +120,6 @@ const stringMessages: LanguageContextType = {
         reports: 'Berichte',
         inbox: 'Posteingang',
         settings: 'Einstellungen',
-      },
-    },
-  },
-
-  statusBarDashboard: {
-    en: {
-      group: {
-        status: 'Status',
-        suggestions: 'Suggestions',
-        service: 'Service Desk',
-      },
-    },
-    es: {
-      group: {
-        status: 'Estado',
-        suggestions: 'Sugerencias',
-        service: 'Service Desk',
-      },
-    },
-    de: {
-      group: {
-        status: 'Status',
-        suggestions: 'Vorschläge',
-        service: 'Service Desk',
       },
     },
   },
