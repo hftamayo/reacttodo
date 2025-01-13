@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useAppSelector } from '@/shared/services/redux/hooks/useAppSelector';
-import { useLanguage } from '@/shared/services/redux/hooks/useLanguage';
 import CustomOutlet from '@/shared/services/routing/CustomOutlet';
 import SkeletonCustomOutlet from '@/shared/services/routing/SkeletonCustomOutlet';
 import DashBoardHeader from '@/features/dashboard/components/header/DashBoardHeader';
@@ -16,7 +15,6 @@ import { MainLayoutStyles } from '@/shared/utils/twind/styles';
 
 const MainLayout: React.FC = () => {
   const theme = useAppSelector((state: any) => state.theme.theme);
-  const language = useLanguage();
   const isAuthenticated = true;
   const userRole = 'admin';
 
@@ -42,7 +40,6 @@ const MainLayout: React.FC = () => {
           <DashBoardHeader
             setSidebarToggle={() => setSidebarToggle(!sidebarToggle)}
             appName={APP_NAME}
-            language={language}
           />
         ) : null}
       </div>
@@ -53,7 +50,6 @@ const MainLayout: React.FC = () => {
           <DashBoardToggleMenuBar
             options={menuOptions}
             isCollapsed={sidebarToggle}
-            language={language}
           />
         </div>
         <div className={MainLayoutStyles.layoutContent(sidebarToggle)}>
