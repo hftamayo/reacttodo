@@ -5,31 +5,58 @@ import {
   FaPoll,
   FaCog,
 } from 'react-icons/fa';
+import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 
-export const adminMenuOptions = [
-  { path: '', label: '', icon: FaHome },
-  { path: '/', label: 'Home', icon: FaHome },
-  { path: '/dashboard/entities/roles', label: 'Roles', icon: FaRegFileAlt },
-  { path: '/dashboard/entities/users', label: 'Users', icon: FaRegFileAlt },
-  { path: '/taskboard', label: 'Tasks', icon: FaRegFileAlt },
-  { path: '/dashboard/inbox', label: 'Inbox', icon: FaRegEnvelope },
-  { path: '/dashboard/settings', label: 'Settings', icon: FaCog },
-  { path: '/dashboard/reports', label: 'Reports', icon: FaPoll },
-];
+export const menuOptions = () => {
+  const { group } = useTranslation('sideBarDashboard');
 
-export const userMenuOptions = [
-  { path: '', label: '', icon: FaHome },
-  { path: '/', label: 'Home', icon: FaHome },
-  { path: '/taskboard', label: 'Tasks', icon: FaRegFileAlt },
-  { path: '/dashboard/inbox', label: 'Inbox', icon: FaRegEnvelope },
-  { path: '/dashboard/reports', label: 'Reports', icon: FaPoll },
-];
+  if (!group) {
+    return {
+      adminMenuOptions: [],
+      userMenuOptions: [],
+      supervisorMenuOptions: [],
+    };
+  }
 
-export const supervisorMenuOptions = [
-  { path: '', label: '', icon: FaHome },
-  { path: '/', label: 'Home', icon: FaHome },
-  { path: '/dashboard/entities/users', label: 'Users', icon: FaRegFileAlt },
-  { path: '/taskboard', label: 'Tasks', icon: FaRegFileAlt },
-  { path: '/dashboard/inbox', label: 'Inbox', icon: FaRegEnvelope },
-  { path: '/dashboard/reports', label: 'Reports', icon: FaPoll },
-];
+  return {
+    adminMenuOptions: [
+      { path: '', label: '', icon: FaHome },
+      { path: '/', label: group.home, icon: FaHome },
+      {
+        path: '/dashboard/entities/roles',
+        label: group.roles,
+        icon: FaRegFileAlt,
+      },
+      {
+        path: '/dashboard/entities/users',
+        label: group.users,
+        icon: FaRegFileAlt,
+      },
+      { path: '/taskboard', label: group.tasks, icon: FaRegFileAlt },
+      { path: '/dashboard/inbox', label: group.inbox, icon: FaRegEnvelope },
+      { path: '/dashboard/settings', label: group.settings, icon: FaCog },
+      { path: '/dashboard/reports', label: group.reports, icon: FaPoll },
+    ],
+
+    userMenuOptions: [
+      { path: '', label: '', icon: FaHome },
+      { path: '/', label: group.home, icon: FaHome },
+      { path: '/taskboard', label: group.tasks, icon: FaRegFileAlt },
+      { path: '/dashboard/inbox', label: group.inbox, icon: FaRegEnvelope },
+      { path: '/dashboard/reports', label: group.reports, icon: FaPoll },
+    ],
+
+    supervisorMenuOptions: [
+      { path: '', label: '', icon: FaHome },
+      { path: '/', label: group.home, icon: FaHome },
+      {
+        path: '/dashboard/entities/users',
+        label: group.users,
+        icon: FaRegFileAlt,
+      },
+      { path: '/taskboard', label: group.tasks, icon: FaRegFileAlt },
+      { path: '/dashboard/inbox', label: group.inbox, icon: FaRegEnvelope },
+      { path: '/dashboard/reports', label: group.reports, icon: FaPoll },
+    ],
+  };
+};

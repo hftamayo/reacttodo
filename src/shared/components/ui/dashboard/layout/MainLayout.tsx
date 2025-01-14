@@ -5,11 +5,7 @@ import SkeletonCustomOutlet from '@/shared/services/routing/SkeletonCustomOutlet
 import DashBoardHeader from '@/features/dashboard/components/header/DashBoardHeader';
 import DashBoardToggleMenuBar from '@/features/dashboard/components/menu/DashBoardToggleMenuBar';
 import DashBoardFooter from '@/features/dashboard/components/footer/DashBoardFooter';
-import {
-  adminMenuOptions,
-  supervisorMenuOptions,
-  userMenuOptions,
-} from '@/features/dashboard/components/menu/services/menuOptions';
+import { menuOptions } from '@/features/dashboard/components/menu/services/menuOptions';
 import { APP_NAME } from '@/shared/utils/envvars';
 import { MainLayoutStyles } from '@/shared/utils/twind/styles';
 
@@ -17,6 +13,8 @@ const MainLayout: React.FC = () => {
   const theme = useAppSelector((state: any) => state.theme.theme);
   const isAuthenticated = true;
   const userRole = 'admin';
+  const { adminMenuOptions, supervisorMenuOptions, userMenuOptions } =
+    menuOptions();
 
   const [sidebarToggle, setSidebarToggle] = useState(false);
 
@@ -24,13 +22,13 @@ const MainLayout: React.FC = () => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
   }, [theme]);
 
-  let menuOptions;
+  let selectMenuOptions;
   if (userRole === 'admin') {
-    menuOptions = adminMenuOptions;
+    selectMenuOptions = adminMenuOptions;
   } else if (userRole === 'supervisor') {
-    menuOptions = supervisorMenuOptions;
+    selectMenuOptions = supervisorMenuOptions;
   } else {
-    menuOptions = userMenuOptions;
+    selectMenuOptions = userMenuOptions;
   }
 
   return (
@@ -48,7 +46,7 @@ const MainLayout: React.FC = () => {
           className={`${MainLayoutStyles.layoutSideBar} ${sidebarToggle ? 'block' : 'hidden'}`}
         >
           <DashBoardToggleMenuBar
-            options={menuOptions}
+            options={selectMenuOptions}
             isCollapsed={sidebarToggle}
           />
         </div>
