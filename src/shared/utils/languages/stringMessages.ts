@@ -88,6 +88,8 @@ const stringMessages: LanguageContextType = {
 
   //dashboard header components end
 
+  //menu
+  //profileMenu
   sideBarDashboard: {
     en: {
       group: {
