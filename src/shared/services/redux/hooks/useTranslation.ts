@@ -5,5 +5,5 @@ import { LanguageContextType, Language } from '@/shared/types/ui.type';
 
 export const useTranslation = (key: keyof LanguageContextType) => {
   const language = useAppSelector(selectLanguage) as Language;
-  return stringMessages[key][language];
+  return stringMessages[key][language] || {};
 };
