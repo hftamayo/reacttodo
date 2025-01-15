@@ -61,32 +61,58 @@ const stringMessages: LanguageContextType = {
       text: 'Dunkler Modus aus',
     },
   },
+  //dashboard header components end
 
-  statusBarDashboard: {
+  //dashboard footer components
+  statusOn: {
     en: {
-      group: {
-        status: 'Status',
-        suggestions: 'Suggestions',
-        service: 'Service Desk',
-      },
+      text: 'Online',
     },
     es: {
-      group: {
-        status: 'Estado',
-        suggestions: 'Sugerencias',
-        service: 'Service Desk',
-      },
+      text: 'En linea',
     },
     de: {
-      group: {
-        status: 'Status',
-        suggestions: 'Vorschläge',
-        service: 'Service Desk',
-      },
+      text: 'Online',
     },
   },
 
-  //dashboard header components end
+  statusOff: {
+    en: {
+      text: 'Offline',
+    },
+    es: {
+      text: 'Desconectado',
+    },
+    de: {
+      text: 'Offline',
+    },
+  },
+
+  suggestions: {
+    en: {
+      text: 'Suggestions',
+    },
+    es: {
+      text: 'Sugerencias',
+    },
+    de: {
+      text: 'Vorschläge',
+    },
+  },
+
+  serviceDesk: {
+    en: {
+      text: 'Service-Desk',
+    },
+    es: {
+      text: 'Att al cliente',
+    },
+    de: {
+      text: 'Service-Desk',
+    },
+  },
+
+  //dashboard footer components end
 
   //menu
   //profileMenu
@@ -139,6 +165,18 @@ const stringMessages: LanguageContextType = {
     de: {
       title: 'Bestätigen',
       text: 'Sind Sie sicher, dass Sie fortfahren möchten?',
+    },
+  },
+
+  dashboardAnalyticsForm: {
+    en: {
+      title: 'DashBoard Analytics',
+    },
+    es: {
+      title: 'Tablero de control',
+    },
+    de: {
+      title: 'DashBoard-Analytik',
     },
   },
 };
