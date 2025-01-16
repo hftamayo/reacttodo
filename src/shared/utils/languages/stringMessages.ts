@@ -179,6 +179,18 @@ const stringMessages: LanguageContextType = {
       title: 'DashBoard-Analytik',
     },
   },
+
+  settingsForm: {
+    en: {
+      title: 'Settings',
+    },
+    es: {
+      title: 'Configuraciones',
+    },
+    de: {
+      title: 'Einstellungen',
+    },
+  },
 };
 
 export default stringMessages;
