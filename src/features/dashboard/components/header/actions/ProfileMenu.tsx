@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaUserCircle, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { DashBoardHeaderProfileMenuStyles } from '@/shared/utils/twind/styles';
+import ViewSettingsForm from '@/features/settings/components/ViewSettingsForm';
+import CustomModal from '@/shared/components/ui/forms/CustomModal';
 
 const ProfileMenu: React.FC = () => {
   const { group } = useTranslation('dropDownHeaderBar');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState<React.ReactNode>(null);
 
   if (!group) {
     return null;
   }
+
+  const handleSettingsClick = () => {
+    setModalContent(<ViewSettingsForm />);
+    setIsModalOpen(true);
+  };
 
   return (
     <div className="relative">
@@ -25,9 +34,12 @@ const ProfileMenu: React.FC = () => {
             </li>
             <li className={DashBoardHeaderProfileMenuStyles.li}>
               <FaCog className={DashBoardHeaderProfileMenuStyles.icon} />
-              <a href="#" className="block w-full">
+              <button
+                onClick={handleSettingsClick}
+                className="block w-full text-left"
+              >
                 {group.settings}
-              </a>
+              </button>
             </li>
             <li className={DashBoardHeaderProfileMenuStyles.li}>
               <FaSignOutAlt className={DashBoardHeaderProfileMenuStyles.icon} />
@@ -38,6 +50,10 @@ const ProfileMenu: React.FC = () => {
           </ul>
         </div>
       </button>
+
+      <CustomModal isOpen={isModalOpen} onDismiss={() => setIsModalOpen(false)}>
+        {modalContent}
+      </CustomModal>
     </div>
   );
 };
