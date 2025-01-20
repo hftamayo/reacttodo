@@ -14,9 +14,20 @@ const ProfileMenu: React.FC = () => {
     return null;
   }
 
+  const handleProfileClick = () => {
+    console.log('Profile clicked');
+  };
+
   const handleSettingsClick = () => {
+    console.log('Settings clicked');
     setModalContent(<ViewSettingsForm />);
     setIsModalOpen(true);
+    console.log('Modal content set:', <ViewSettingsForm />);
+    console.log('Modal open state:', isModalOpen);
+  };
+
+  const handleLogoutClick = () => {
+    console.log('Logout clicked');
   };
 
   return (
@@ -28,24 +39,21 @@ const ProfileMenu: React.FC = () => {
           <ul className={DashBoardHeaderProfileMenuStyles.ul}>
             <li className={DashBoardHeaderProfileMenuStyles.li}>
               <FaUser className={DashBoardHeaderProfileMenuStyles.icon} />
-              <a href="#" className="block w-full">
+              <button onClick={handleProfileClick} className="block w-full">
                 {group.profile}
-              </a>
+              </button>
             </li>
             <li className={DashBoardHeaderProfileMenuStyles.li}>
               <FaCog className={DashBoardHeaderProfileMenuStyles.icon} />
-              <button
-                onClick={handleSettingsClick}
-                className="block w-full text-left"
-              >
+              <button onClick={handleSettingsClick} className="block w-full">
                 {group.settings}
               </button>
             </li>
             <li className={DashBoardHeaderProfileMenuStyles.li}>
               <FaSignOutAlt className={DashBoardHeaderProfileMenuStyles.icon} />
-              <a href="#" className="block w-full">
+              <button onClick={handleLogoutClick} className="block w-full">
                 {group.logout}
-              </a>
+              </button>
             </li>
           </ul>
         </div>
