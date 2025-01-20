@@ -34,30 +34,30 @@ const ProfileMenu: React.FC = () => {
     <div className="relative">
       <button className={DashBoardHeaderProfileMenuStyles.button}>
         <FaUserCircle className="w-6 h-6 mr-2" />
-
-        <div className={DashBoardHeaderProfileMenuStyles.containerFirstLevel}>
-          <ul className={DashBoardHeaderProfileMenuStyles.ul}>
-            <li className={DashBoardHeaderProfileMenuStyles.li}>
-              <FaUser className={DashBoardHeaderProfileMenuStyles.icon} />
-              <button onClick={handleProfileClick} className="block w-full">
-                {group.profile}
-              </button>
-            </li>
-            <li className={DashBoardHeaderProfileMenuStyles.li}>
-              <FaCog className={DashBoardHeaderProfileMenuStyles.icon} />
-              <button onClick={handleSettingsClick} className="block w-full">
-                {group.settings}
-              </button>
-            </li>
-            <li className={DashBoardHeaderProfileMenuStyles.li}>
-              <FaSignOutAlt className={DashBoardHeaderProfileMenuStyles.icon} />
-              <button onClick={handleLogoutClick} className="block w-full">
-                {group.logout}
-              </button>
-            </li>
-          </ul>
-        </div>
       </button>
+
+      <div className={DashBoardHeaderProfileMenuStyles.containerFirstLevel}>
+        <ul className={DashBoardHeaderProfileMenuStyles.ul}>
+          <li className={DashBoardHeaderProfileMenuStyles.li}>
+            <FaUser className={DashBoardHeaderProfileMenuStyles.icon} />
+            <button onClick={handleProfileClick} className="block w-full">
+              {group.profile}
+            </button>
+          </li>
+          <li className={DashBoardHeaderProfileMenuStyles.li}>
+            <FaCog className={DashBoardHeaderProfileMenuStyles.icon} />
+            <button onClick={handleSettingsClick} className="block w-full">
+              {group.settings}
+            </button>
+          </li>
+          <li className={DashBoardHeaderProfileMenuStyles.li}>
+            <FaSignOutAlt className={DashBoardHeaderProfileMenuStyles.icon} />
+            <button onClick={handleLogoutClick} className="block w-full">
+              {group.logout}
+            </button>
+          </li>
+        </ul>
+      </div>
 
       <CustomModal isOpen={isModalOpen} onDismiss={() => setIsModalOpen(false)}>
         {modalContent}
