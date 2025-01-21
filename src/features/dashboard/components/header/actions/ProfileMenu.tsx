@@ -26,11 +26,8 @@ const ProfileMenu: React.FC = () => {
   };
 
   const handleSettingsClick = () => {
-    console.log('Settings clicked');
     setModalContent(<ViewSettingsForm />);
     setIsModalOpen(true);
-    console.log('Modal content set:', <ViewSettingsForm />);
-    console.log('Modal open state:', isModalOpen);
   };
 
   const handleLogoutClick = () => {
