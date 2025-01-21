@@ -6,8 +6,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
+  DropdownMenuGroup,
 } from '@/shared/components/ui/dashboard/menu/dropdown-menu';
 import ViewSettingsForm from '@/features/settings/components/ViewSettingsForm';
 import CustomModal from '@/shared/components/ui/forms/CustomModal';
@@ -46,23 +45,21 @@ const ProfileMenu: React.FC = () => {
             <FaUserCircle className="w-6 h-6 mr-2" />
           </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent
-          className={DashBoardHeaderProfileMenuStyles.containerFirstLevel}
-        >
-          <DropdownMenuLabel>{group.profile}</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onSelect={handleProfileClick}>
-            <FaUser className={DashBoardHeaderProfileMenuStyles.icon} />
-            {group.profile}
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={handleSettingsClick}>
-            <FaCog className={DashBoardHeaderProfileMenuStyles.icon} />
-            {group.settings}
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={handleLogoutClick}>
-            <FaSignOutAlt className={DashBoardHeaderProfileMenuStyles.icon} />
-            {group.logout}
-          </DropdownMenuItem>
+        <DropdownMenuContent>
+          <DropdownMenuGroup>
+            <DropdownMenuItem onSelect={handleProfileClick}>
+              <FaUser className={DashBoardHeaderProfileMenuStyles.icon} />
+              {group.profile}
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={handleSettingsClick}>
+              <FaCog className={DashBoardHeaderProfileMenuStyles.icon} />
+              {group.settings}
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={handleLogoutClick}>
+              <FaSignOutAlt className={DashBoardHeaderProfileMenuStyles.icon} />
+              {group.logout}
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
 
