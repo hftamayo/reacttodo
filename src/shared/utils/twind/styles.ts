@@ -48,8 +48,6 @@ export const DashBoardHeaderActionsStyles = {
 
 export const DashBoardHeaderProfileMenuStyles = {
   button: 'text-white group flex items-center',
-  containerFirstLevel:
-    'z-10 hidden absolute bg-white rounded-lg shadow-lg w-40 group-focus:block top-full right-0 mt-2',
   icon: 'w-4 h-4 mr-2 text-gray-600',
 };
 
