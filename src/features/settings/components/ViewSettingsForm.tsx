@@ -22,9 +22,14 @@ import {
   SelectValue,
 } from '@/shared/components/ui/forms/select';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
+import { ViewSettingsFormProps } from '@/shared/types/ui.type';
 
-const ViewSettingsForm: React.FC = () => {
+const ViewSettingsForm: React.FC<ViewSettingsFormProps> = ({ onCancel }) => {
   const { title, text } = useTranslation('settingsForm');
+
+  const cancelHandler = () => {
+    onCancel();
+  };
 
   return (
     <Card>
@@ -53,11 +58,29 @@ const ViewSettingsForm: React.FC = () => {
                 </SelectContent>
               </Select>
             </div>
+            <div className="flex flex-col space-y-1.5">
+              <RadioGroup defaultValue="comfortable">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="default" id="r1" />
+                  <Label htmlFor="r1">Default</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="comfortable" id="r2" />
+                  <Label htmlFor="r2">Comfortable</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="compact" id="r3" />
+                  <Label htmlFor="r3">Compact</Label>
+                </div>
+              </RadioGroup>
+            </div>
           </div>
         </form>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline">Cancel</Button>
+        <Button variant="outline" onClick={cancelHandler}>
+          Cancel
+        </Button>
         <Button variant="additive">Save</Button>
       </CardFooter>
     </Card>
