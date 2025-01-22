@@ -183,12 +183,15 @@ const stringMessages: LanguageContextType = {
   settingsForm: {
     en: {
       title: 'Settings',
+      text: 'Please select your settings',
     },
     es: {
       title: 'Configuraciones',
+      text: 'Seleccione los ajustes necesario',
     },
     de: {
       title: 'Einstellungen',
+      text: 'Bitte wählen Sie Ihre Einstellungen',
     },
   },
 };
