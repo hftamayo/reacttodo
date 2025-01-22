@@ -19,7 +19,7 @@ export type LanguageContextType = {
 };
 
 export type ViewSettingsFormProps = {
-  onSubmit: (values: any) => void;
-  onCancel: () => void;
   initialValues: any;
+  onCancel: () => void;
+  onSubmit: (values: any) => void;
 };
