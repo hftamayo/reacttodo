@@ -16,6 +16,10 @@ const ProfileMenu: React.FC = () => {
   const { group } = useTranslation('dropDownHeaderBar');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<React.ReactNode>(null);
+  const initialValues = {
+    setting1: 'value1',
+    setting2: 'value2',
+  };
 
   if (!group) {
     return null;
@@ -26,7 +30,13 @@ const ProfileMenu: React.FC = () => {
   };
 
   const handleSettingsClick = () => {
-    setModalContent(<ViewSettingsForm />);
+    setModalContent(
+      <ViewSettingsForm
+        initialValues={initialValues}
+        onCancel={() => setIsModalOpen(false)}
+        onSubmit={() => {}}
+      />
+    );
     setIsModalOpen(true);
   };
 

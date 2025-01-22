@@ -78,7 +78,7 @@ const ViewSettingsForm: React.FC<ViewSettingsFormProps> = ({ onCancel }) => {
         </form>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline" onClick={cancelHandler}>
+        <Button variant="destructive" onClick={cancelHandler}>
           Cancel
         </Button>
         <Button variant="additive">Save</Button>
