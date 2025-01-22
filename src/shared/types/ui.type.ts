@@ -17,3 +17,9 @@ export type LanguageContextType = {
     [key in Language]: Translation;
   };
 };
+
+export type ViewSettingsFormProps = {
+  onSubmit: (values: any) => void;
+  onCancel: () => void;
+  initialValues: any;
+};
