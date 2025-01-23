@@ -79,6 +79,12 @@ export const taskRow = {
   button: 'cursor-pointer flex items-center',
 };
 
+export const formSettingsStyles = {
+  title: 'text-center text-2xl font-bold',
+  description: 'text-center text-xl font-bold',
+  grouptitle: 'font-bold underline',
+};
+
 export const toasterMessages = {
   errorToaster: 'bg-red-500 text-white p-2 text-lg rounded-md',
   successToaster: 'bg-green-500 text-white p-2 text-lg rounded-md',
