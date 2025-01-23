@@ -194,6 +194,45 @@ const stringMessages: LanguageContextType = {
       text: 'Bitte wählen Sie Ihre Einstellungen',
     },
   },
+
+  settingsFormElements: {
+    en: {
+      group: {
+        lbllanguage: 'Language',
+        lbltimezone: 'Timezone',
+        tzpholder: 'Select timezone',
+        lbltheme: 'Theme',
+        theme01: 'Dark',
+        theme02: 'Light',
+        lblfsize: 'Font Size',
+        fsizepholder: 'Select font size',
+      },
+    },
+    es: {
+      group: {
+        lbllanguage: 'Idioma',
+        lbltimezone: 'Zona horaria',
+        tzpholder: 'Seleccionar zona horaria',
+        lbltheme: 'Tema',
+        theme01: 'Oscuro',
+        theme02: 'Claro',
+        lblfsize: 'Tamaño de fuente',
+        fsizepholder: 'Seleccionar tamaño de fuente',
+      },
+    },
+    de: {
+      group: {
+        lbllanguage: 'Sprache',
+        lbltimezone: 'Zeitzone',
+        tzpholder: 'Zeitzone auswählen',
+        lbltheme: 'Thema',
+        theme01: 'Dunkel',
+        theme02: 'Licht',
+        lblfsize: 'Schriftgröße',
+        fsizepholder: 'Schriftgröße auswählen',
+      },
+    },
+  },
 };
 
 export default stringMessages;
