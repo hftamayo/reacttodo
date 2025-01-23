@@ -26,6 +26,11 @@ import { ViewSettingsFormProps } from '@/shared/types/ui.type';
 
 const ViewSettingsForm: React.FC<ViewSettingsFormProps> = ({ onCancel }) => {
   const { title, text } = useTranslation('settingsForm');
+  const { group } = useTranslation('settingsFormElements');
+
+  if (!group) {
+    return null;
+  }
 
   const cancelHandler = () => {
     onCancel();
@@ -41,38 +46,69 @@ const ViewSettingsForm: React.FC<ViewSettingsFormProps> = ({ onCancel }) => {
         <form>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" placeholder="Name of your project" />
+              <Label>{group.lbllanguage}</Label>
+              <RadioGroup>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="en" id="r1" />
+                  <Label htmlFor="r1">English</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="es" id="r2" />
+                  <Label htmlFor="r2">Espanol</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="de" id="r3" />
+                  <Label htmlFor="r3">Deutsch</Label>
+                </div>
+              </RadioGroup>
             </div>
+
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="framework">Framework</Label>
+              <Label htmlFor="timezone">{group.lbltimezone}</Label>
               <Select>
-                <SelectTrigger id="framework">
-                  <SelectValue placeholder="Select" />
+                <SelectTrigger id="timezone">
+                  <SelectValue placeholder={group.tzpholder} />
                 </SelectTrigger>
                 <SelectContent position="popper">
-                  <SelectItem value="next">Next.js</SelectItem>
-                  <SelectItem value="sveltekit">SvelteKit</SelectItem>
-                  <SelectItem value="astro">Astro</SelectItem>
-                  <SelectItem value="nuxt">Nuxt.js</SelectItem>
+                  <SelectItem value="tz1">TimeZone 1</SelectItem>
+                  <SelectItem value="tz2">TimeZone 2</SelectItem>
+                  <SelectItem value="tz3">TimeZone 3</SelectItem>
                 </SelectContent>
               </Select>
             </div>
+
             <div className="flex flex-col space-y-1.5">
-              <RadioGroup defaultValue="comfortable">
+              <Label>{group.lbltheme}</Label>
+              <RadioGroup>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="default" id="r1" />
-                  <Label htmlFor="r1">Default</Label>
+                  <RadioGroupItem value="dark" id="r1" />
+                  <Label htmlFor="r1">{group.theme01}</Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="comfortable" id="r2" />
-                  <Label htmlFor="r2">Comfortable</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="compact" id="r3" />
-                  <Label htmlFor="r3">Compact</Label>
+                  <RadioGroupItem value="standard" id="r2" />
+                  <Label htmlFor="r2">{group.theme02}</Label>
                 </div>
               </RadioGroup>
+            </div>
+
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="fontsize">{group.lblfsize}</Label>
+              <Select>
+                <SelectTrigger id="fontsize">
+                  <SelectValue placeholder={group.fsizepholder} />
+                </SelectTrigger>
+                <SelectContent position="popper">
+                  <SelectItem value="12">12</SelectItem>
+                  <SelectItem value="14">14</SelectItem>
+                  <SelectItem value="16">16</SelectItem>
+                  <SelectItem value="18">18</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="txtbackup">Backup and Restore</Label>
+              <Input id="txtbackup" placeholder="todo" />
             </div>
           </div>
         </form>
