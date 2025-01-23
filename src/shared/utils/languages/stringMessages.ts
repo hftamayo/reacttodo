@@ -206,6 +206,8 @@ const stringMessages: LanguageContextType = {
         theme02: 'Light',
         lblfsize: 'Font Size',
         fsizepholder: 'Select font size',
+        btncancel: 'Cancel',
+        btnsave: 'Save  ',
       },
     },
     es: {
@@ -218,6 +220,8 @@ const stringMessages: LanguageContextType = {
         theme02: 'Claro',
         lblfsize: 'Tamaño de fuente',
         fsizepholder: 'Seleccionar tamaño de fuente',
+        btncancel: 'Cancelar',
+        btnsave: 'Guardar',
       },
     },
     de: {
@@ -230,6 +234,8 @@ const stringMessages: LanguageContextType = {
         theme02: 'Licht',
         lblfsize: 'Schriftgröße',
         fsizepholder: 'Schriftgröße auswählen',
+        btncancel: 'Abbrechen',
+        btnsave: 'Speichern',
       },
     },
   },
