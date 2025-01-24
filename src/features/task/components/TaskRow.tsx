@@ -6,9 +6,9 @@ import {
   deleteTask,
 } from '../../../shared/services/redux/slices/taskSlice';
 import { FaRegTrashAlt } from 'react-icons/fa';
-import { Label } from '@/shared/components/ui/forms/label';
-import { Input } from '@/shared/components/ui/forms/input';
-import { Button } from '@/shared/components/ui/forms/button';
+import { Label } from '@/shared/components/ui/label/Label';
+import { Input } from '@/shared/components/ui/input/Input';
+import { Button } from '@/shared/components/ui/button/Button';
 
 import { taskRow } from '../../../shared/utils/twind/styles';
 

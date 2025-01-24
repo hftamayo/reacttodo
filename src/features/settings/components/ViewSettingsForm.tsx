@@ -6,21 +6,21 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/shared/components/ui/forms/card';
-import { Button } from '@/shared/components/ui/forms/button';
-import { Input } from '@/shared/components/ui/forms/input';
-import { Label } from '@/shared/components/ui/forms/label';
+} from '@/shared/components/ui/card/Card';
+import { Button } from '@/shared/components/ui/button/Button';
+import { Input } from '@/shared/components/ui/input/Input';
+import { Label } from '@/shared/components/ui/label/Label';
 import {
   RadioGroup,
   RadioGroupItem,
-} from '@/shared/components/ui/forms/radio-group';
+} from '@/shared/components/ui/rgroup/RadioGroup';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/shared/components/ui/forms/select';
+} from '@/shared/components/ui/select/Select';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { ViewSettingsFormProps } from '@/shared/types/ui.type';
 import { formSettingsStyles } from '@/shared/utils/twind/styles';
