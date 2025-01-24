@@ -7,9 +7,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuGroup,
-} from '@/shared/components/ui/dashboard/menu/dropdown-menu';
+} from '@/shared/components/ui/menu/DropDownMenu';
 import ViewSettingsForm from '@/features/settings/components/ViewSettingsForm';
-import CustomModal from '@/shared/components/ui/forms/CustomModal';
+import CustomModal from '@/shared/components/ui/modal/CustomModal';
 import { DashBoardHeaderProfileMenuStyles } from '@/shared/utils/twind/styles';
 
 const ProfileMenu: React.FC = () => {
