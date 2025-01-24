@@ -1,5 +1,5 @@
 import React from 'react';
-import SkeletonDashBoardAnalytics from '@/shared/components/ui/dashboard/skeleton/SkeletonDashBoardAnalytics';
+import SkeletonDashBoardAnalytics from '@/shared/components/ui/skeleton/SkeletonDashBoardAnalytics';
 
 const SkeletonCustomOutlet: React.FC = () => {
   return (

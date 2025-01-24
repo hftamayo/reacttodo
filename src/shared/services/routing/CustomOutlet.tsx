@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRoute, Switch, Route } from 'wouter';
-import SkeletonDashBoardAnalytics from '@/shared/components/ui/dashboard/skeleton/SkeletonDashBoardAnalytics';
+import SkeletonDashBoardAnalytics from '@/shared/components/ui/skeleton/SkeletonDashBoardAnalytics';
 import TaskBoard from '@/containers/TaskBoard';
 
 const CustomOutlet: React.FC = () => {
