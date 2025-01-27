@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import AddTaskForm from '../features/task/components/AddTaskForm';
-import TaskRow from '../features/task/components/TaskRow';
+import AddTaskForm from '../../features/task/components/AddTaskForm';
+import TaskRow from '../../features/task/components/TaskRow';
 import { taskBoard, toasterMessages } from '@/shared/utils/twind/styles';
 import { taskHooks } from '@/shared/services/api/tasks/taskHooks';
 import useLazyLoad from '@/shared/services/lazyloading/hooks/useLazyLoad';
