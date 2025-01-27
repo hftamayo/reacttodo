@@ -12,7 +12,7 @@ import { Button } from '@/shared/components/ui/button/Button';
 
 import { taskRow } from '../../../shared/utils/twind/styles';
 
-const TaskRow: React.FC<TaskProps> = (task: TaskProps) => {
+export const TaskRow: React.FC<TaskProps> = (task: TaskProps) => {
   const dispatch = useAppDispatch();
 
   const handleToggleComplete = () => {
@@ -52,5 +52,3 @@ const TaskRow: React.FC<TaskProps> = (task: TaskProps) => {
     </li>
   );
 };
-
-export default TaskRow;

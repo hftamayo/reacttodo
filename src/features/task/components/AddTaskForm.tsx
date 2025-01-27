@@ -10,7 +10,7 @@ import { AddTaskProps } from '../../../shared/types/task.type';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { toast } from 'sonner';
 
-const AddTaskForm: React.FC = () => {
+export const AddTaskForm: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -54,5 +54,3 @@ const AddTaskForm: React.FC = () => {
     </form>
   );
 };
-
-export default AddTaskForm;
