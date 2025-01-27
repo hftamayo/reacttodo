@@ -5,7 +5,7 @@ import { taskBoard } from '@/shared/utils/twind/styles';
 import { APP_NAME } from '@/shared/utils/envvars';
 import { TaskBoardPresenterProps } from '@/shared/types/task.type';
 
-const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
+export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
   ref,
   tasks,
   isLoading,
@@ -33,5 +33,3 @@ const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
     </div>
   );
 };
-
-export default TaskBoardPresenter;

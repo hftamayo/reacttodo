@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { toast } from 'sonner';
 import { useLazyLoad } from '@/shared/services/lazyloading/hooks/useLazyLoad';
 import { taskHooks } from '@/shared/services/api/tasks/taskHooks';
-import TaskBoardPresenter from './TaskBoardPresenter';
+import { TaskBoardPresenter } from './TaskBoardPresenter';
 import { toasterMessages } from '@/shared/utils/twind/styles';
 
-const TaskBoardContainer: React.FC = () => {
+export const TaskBoardContainer: React.FC = () => {
   const { ref, shouldFetch } = useLazyLoad();
   const { data, error, isLoading } = taskHooks.useGetTasks(shouldFetch);
   const tasks = data?.tasks ? Array.from(data.tasks.values()) : [];
@@ -31,5 +31,3 @@ const TaskBoardContainer: React.FC = () => {
     />
   );
 };
-
-export default TaskBoardContainer;
