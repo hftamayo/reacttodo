@@ -28,7 +28,7 @@ export type TasksState = {
 };
 
 export type TaskBoardPresenterProps = {
-  ref: React.RefObject<HTMLDivElement>;
+  ref: React.Ref<HTMLDivElement>;
   tasks: TaskProps[];
   isLoading: boolean;
   totalTasks: number;
