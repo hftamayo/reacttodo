@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-const useLazyLoad = () => {
+export const useLazyLoad = () => {
   const { ref, inView } = useInView();
   const [shouldFetch, setShouldFetch] = useState(false);
 
@@ -13,5 +13,3 @@ const useLazyLoad = () => {
 
   return { ref, shouldFetch };
 };
-
-export default useLazyLoad;
