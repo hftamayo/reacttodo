@@ -27,6 +27,14 @@ export type TasksState = {
   msg: string | null;
 };
 
+export type TaskBoardPresenterProps = {
+  ref: React.RefObject<HTMLDivElement>;
+  tasks: TaskProps[];
+  isLoading: boolean;
+  totalTasks: number;
+  completedTasks: number;
+};
+
 export type ApiError = {
   response: {
     resultMessage: string;
