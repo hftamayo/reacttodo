@@ -2,7 +2,7 @@ import React from 'react';
 import { ContainerHeader } from './actions/ContainerHeader';
 import { ToggleButtonProps } from '@/shared/types/menu.type';
 
-const DashBoardHeader: React.FC<ToggleButtonProps> = ({
+export const DashBoardHeader: React.FC<ToggleButtonProps> = ({
   setSidebarToggle,
   appName,
 }) => {
@@ -12,5 +12,3 @@ const DashBoardHeader: React.FC<ToggleButtonProps> = ({
     </div>
   );
 };
-
-export default DashBoardHeader;
