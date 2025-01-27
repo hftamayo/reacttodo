@@ -1,5 +1,5 @@
 import React from 'react';
-import ContainerActions from './actions/ContainerActions';
+import { ContainerHeader } from './actions/ContainerHeader';
 import { ToggleButtonProps } from '@/shared/types/menu.type';
 
 const DashBoardHeader: React.FC<ToggleButtonProps> = ({
@@ -8,7 +8,7 @@ const DashBoardHeader: React.FC<ToggleButtonProps> = ({
 }) => {
   return (
     <div className="w-full">
-      <ContainerActions setSidebarToggle={setSidebarToggle} appName={appName} />
+      <ContainerHeader setSidebarToggle={setSidebarToggle} appName={appName} />
     </div>
   );
 };
