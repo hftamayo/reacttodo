@@ -1,12 +1,12 @@
 import React from 'react';
-import ToggleButton from './ToggleButton';
-import SearchText from './SearchText';
+import { ToggleButton } from './ToggleButton';
+import { SearchText } from './SearchText';
+import { ProfileMenu } from './ProfileMenu';
+import { ThemeButton } from './ThemeButton';
 import { FaBell } from 'react-icons/fa';
-import ProfileMenu from './ProfileMenu';
 import { ToggleButtonProps } from '@/shared/types/menu.type';
-import ThemeButton from './ThemeButton';
 
-const ContainerActions: React.FC<ToggleButtonProps> = ({
+export const ContainerHeader: React.FC<ToggleButtonProps> = ({
   setSidebarToggle,
   appName,
 }) => {
@@ -24,5 +24,3 @@ const ContainerActions: React.FC<ToggleButtonProps> = ({
     </nav>
   );
 };
-
-export default ContainerActions;
