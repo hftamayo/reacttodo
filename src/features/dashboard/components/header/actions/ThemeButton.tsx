@@ -6,7 +6,7 @@ import { toggleTheme } from '@/shared/services/redux/slices/themeSlice';
 import { DashBoardHeaderActionsStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 
-const ThemeButton: React.FC = () => {
+export const ThemeButton: React.FC = () => {
   const dispatch = useAppDispatch();
   const theme = useAppSelector((state: any) => state.theme.theme);
   const { text: textOn } = useTranslation('themeButtonOn');
@@ -34,5 +34,3 @@ const ThemeButton: React.FC = () => {
     </div>
   );
 };
-
-export default ThemeButton;

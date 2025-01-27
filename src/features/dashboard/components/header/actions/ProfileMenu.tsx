@@ -12,7 +12,7 @@ import ViewSettingsForm from '@/features/settings/components/ViewSettingsForm';
 import CustomModal from '@/shared/components/ui/modal/CustomModal';
 import { DashBoardHeaderProfileMenuStyles } from '@/shared/utils/twind/styles';
 
-const ProfileMenu: React.FC = () => {
+export const ProfileMenu: React.FC = () => {
   const { group } = useTranslation('dropDownHeaderBar');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<React.ReactNode>(null);
@@ -76,5 +76,3 @@ const ProfileMenu: React.FC = () => {
     </div>
   );
 };
-
-export default ProfileMenu;

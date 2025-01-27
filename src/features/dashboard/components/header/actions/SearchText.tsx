@@ -3,7 +3,7 @@ import { FaSearch } from 'react-icons/fa';
 import { DashBoardHeaderActionsStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 
-const SearchText: React.FC = () => {
+export const SearchText: React.FC = () => {
   const { text } = useTranslation('searchTextControl');
 
   return (
@@ -21,5 +21,3 @@ const SearchText: React.FC = () => {
     </div>
   );
 };
-
-export default SearchText;

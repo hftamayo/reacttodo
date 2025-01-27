@@ -4,7 +4,7 @@ import { FaBars } from 'react-icons/fa';
 import { ToggleButtonProps } from '@/shared/types/menu.type';
 import { DashBoardHeaderActionsStyles } from '@/shared/utils/twind/styles';
 
-const ToggleButton: React.FC<ToggleButtonProps> = ({
+export const ToggleButton: React.FC<ToggleButtonProps> = ({
   setSidebarToggle,
   appName,
 }) => {
@@ -20,5 +20,3 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
     </div>
   );
 };
-
-export default ToggleButton;
