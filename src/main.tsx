@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './index.css';
 import { Toaster } from 'sonner';
 import { taskBoard } from './shared/utils/twind/styles';
-import MainLayout from './shared/components/ui/layout/dashboard/MainLayout';
+import { MainLayout } from './shared/components/ui/layout/dashboard/MainLayout';
 
 const queryClient = new QueryClient();
 

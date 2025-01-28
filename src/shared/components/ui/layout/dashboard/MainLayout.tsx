@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useAppSelector } from '@/shared/services/redux/hooks/useAppSelector';
 import CustomOutlet from '@/shared/services/routing/CustomOutlet';
 import SkeletonCustomOutlet from '@/shared/services/routing/SkeletonCustomOutlet';
-import DashBoardHeader from '@/features/dashboard/components/header/DashBoardHeader';
-import DashBoardToggleMenuBar from '@/features/dashboard/components/menu/DashBoardToggleMenuBar';
-import DashBoardFooter from '@/features/dashboard/components/footer/DashBoardFooter';
+import { DashBoardHeader } from '@/features/dashboard/components/header/DashBoardHeader';
+import { DashBoardToggleMenuBar } from '@/features/dashboard/components/menu/DashBoardToggleMenuBar';
+import { DashBoardFooter } from '@/features/dashboard/components/footer/DashBoardFooter';
 import { menuOptions } from '@/features/dashboard/components/menu/services/menuOptions';
 import { APP_NAME } from '@/shared/utils/envvars';
 import { MainLayoutStyles } from '@/shared/utils/twind/styles';
 
-const MainLayout: React.FC = () => {
+export const MainLayout: React.FC = () => {
   const theme = useAppSelector((state: any) => state.theme.theme);
   const isAuthenticated = true;
   const userRole = 'admin';
@@ -60,5 +60,3 @@ const MainLayout: React.FC = () => {
     </div>
   );
 };
-
-export default MainLayout;
