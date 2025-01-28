@@ -25,7 +25,7 @@ import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { ViewSettingsFormProps } from '@/shared/types/ui.type';
 import { formSettingsStyles } from '@/shared/utils/twind/styles';
 
-const ViewSettingsForm: React.FC<ViewSettingsFormProps> = ({
+export const ViewSettingsForm: React.FC<ViewSettingsFormProps> = ({
   initialValues,
   onCancel,
   onSubmit,
@@ -164,4 +164,3 @@ const ViewSettingsForm: React.FC<ViewSettingsFormProps> = ({
     </Card>
   );
 };
-export default ViewSettingsForm;
