@@ -3,7 +3,7 @@ import { FaFacebook, FaTwitter, FaTiktok } from 'react-icons/fa';
 import { DashBoardFooterStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 
-const DashBoardFooter = () => {
+export const DashBoardFooter = () => {
   const { text: statusOn } = useTranslation('statusOn');
   const { text: statusOff } = useTranslation('statusOff');
   const { text: suggestions } = useTranslation('suggestions');
@@ -45,5 +45,3 @@ const DashBoardFooter = () => {
     </footer>
   );
 };
-
-export default DashBoardFooter;

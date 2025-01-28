@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { beOps } from '../../../shared/services/api/backendGateway';
 
-const HealthCheck: React.FC = () => {
+export const HealthCheck: React.FC = () => {
   const [status, setStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,5 +33,3 @@ const HealthCheck: React.FC = () => {
     </div>
   );
 };
-
-export default HealthCheck;
