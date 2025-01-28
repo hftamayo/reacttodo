@@ -3,7 +3,7 @@ import ContainerMenuBar from './ContainerMenuBar';
 import { MenuProps } from '@/shared/types/menu.type';
 import { DashBoardMenuBarStyles } from '@/shared/utils/twind/styles';
 
-const DashBoardToggleMenuBar: React.FC<MenuProps> = ({
+export const DashBoardToggleMenuBar: React.FC<MenuProps> = ({
   options,
   isCollapsed,
 }) => {
@@ -23,5 +23,3 @@ const DashBoardToggleMenuBar: React.FC<MenuProps> = ({
   //     />
   //   );
 };
-
-export default DashBoardToggleMenuBar;

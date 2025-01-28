@@ -4,7 +4,7 @@ import { FaRegFileAlt, FaChevronDown, FaChevronRight } from 'react-icons/fa';
 import { DropDownMenuProps } from '@/shared/types/menu.type';
 import { DashBoardMenuBarStyles } from '@/shared/utils/twind/styles';
 
-const DropDownMenu: React.FC<DropDownMenuProps> = ({ options }) => {
+export const DropDownMenu: React.FC<DropDownMenuProps> = ({ options }) => {
   const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
 
   const handleDropDown = () => {
@@ -43,5 +43,3 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ options }) => {
     </li>
   );
 };
-
-export default DropDownMenu;
