@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useLocation } from 'wouter';
 //import {selectIsAuthenticated, selectUserRole} from
 import { PrivateRouteProps } from '@/shared/types/privroutes.type';

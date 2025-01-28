@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 
-const SkeletonDashBoardAnalytics: React.FC = () => {
+export const SkeletonDashBoardAnalytics: React.FC = () => {
   const { title } = useTranslation('dashboardAnalyticsForm');
 
   return (
@@ -21,5 +21,3 @@ const SkeletonDashBoardAnalytics: React.FC = () => {
     </div>
   );
 };
-
-export default SkeletonDashBoardAnalytics;
