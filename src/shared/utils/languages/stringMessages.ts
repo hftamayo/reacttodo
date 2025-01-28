@@ -1,6 +1,6 @@
 import { LanguageContextType } from '@/shared/types/ui.type';
 
-const stringMessages: LanguageContextType = {
+export const stringMessages: LanguageContextType = {
   //dashboard header components:
   dropDownHeaderBar: {
     en: {
@@ -240,5 +240,3 @@ const stringMessages: LanguageContextType = {
     },
   },
 };
-
-export default stringMessages;
