@@ -3,7 +3,7 @@ import { useRoute, Switch, Route } from 'wouter';
 import { SkeletonDashBoardAnalytics } from '@/shared/components/ui/skeleton/SkeletonDashBoardAnalytics';
 import { TaskBoardContainer } from '@/containers/TaskBoard/TaskBoardContainer';
 
-const CustomOutlet: React.FC = () => {
+export const CustomOutlet: React.FC = () => {
   const [match] = useRoute('/');
 
   return (
@@ -14,5 +14,3 @@ const CustomOutlet: React.FC = () => {
     </Switch>
   );
 };
-
-export default CustomOutlet;

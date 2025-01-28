@@ -1,12 +1,10 @@
 import React from 'react';
-import SkeletonDashBoardAnalytics from '@/shared/components/ui/skeleton/SkeletonDashBoardAnalytics';
+import { SkeletonDashBoardAnalytics } from '@/shared/components/ui/skeleton/SkeletonDashBoardAnalytics';
 
-const SkeletonCustomOutlet: React.FC = () => {
+export const SkeletonCustomOutlet: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center h-full">
       <SkeletonDashBoardAnalytics />
     </div>
   );
 };
-
-export default SkeletonCustomOutlet;
