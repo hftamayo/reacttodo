@@ -1,5 +1,5 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import taskReducer from '../../../features/task/services/taskSlice';
+import taskReducer from '../../../features/task/store/taskSlice';
 import themeReducer from './slices/themeSlice';
 import languageReducer from './slices/languageSlice';
 

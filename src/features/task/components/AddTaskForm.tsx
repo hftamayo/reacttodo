@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useAppDispatch } from '@/shared/services/redux/hooks/useAppDispatch';
-import { addTask } from '../services/taskSlice';
+import { addTask } from '../store/taskSlice';
 import { Input } from '@/shared/components/ui/input/Input';
 import { Button } from '@/shared/components/ui/button/Button';
 
