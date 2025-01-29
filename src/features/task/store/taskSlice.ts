@@ -7,7 +7,7 @@ import {
   ApiError,
 } from '../../../shared/types/task.type';
 import { RootState } from '../../../shared/services/redux/rootReducer';
-import { taskService } from '../../../shared/services/api/tasks/taskService';
+import { taskService } from '../services/taskService';
 
 export const getTotalTasks = (state: RootState) => state.task.tasks.size;
 

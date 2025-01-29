@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { toast } from 'sonner';
 import { useLazyLoad } from '@/shared/services/lazyloading/hooks/useLazyLoad';
-import { taskHooks } from '@/shared/services/api/tasks/taskHooks';
+import { taskHooks } from '@/features/task/hooks/taskHooks';
 import { TaskBoardPresenter } from './TaskBoardPresenter';
 import { toasterMessages } from '@/shared/utils/twind/styles';
 
