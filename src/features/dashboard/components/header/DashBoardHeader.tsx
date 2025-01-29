@@ -1,5 +1,5 @@
 import React from 'react';
-import { ContainerHeader } from './actions/ContainerHeader';
+import { ContainerHeader } from './components/ContainerHeader';
 import { ToggleButtonProps } from '@/shared/types/menu.type';
 
 export const DashBoardHeader: React.FC<ToggleButtonProps> = ({
