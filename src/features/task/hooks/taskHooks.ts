@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { taskService } from './taskService';
+import { taskService } from '../services/taskService';
 import {
   TaskContext,
   TaskProps,

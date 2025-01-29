@@ -1,10 +1,10 @@
-import { BACKEND_URL } from '../../../utils/envvars';
-import { taskOps } from '../backendGateway';
+import { BACKEND_URL } from '@/shared/utils/envvars';
+import { taskOps } from '@/shared/services/api/apiClient';
 import {
   AddTaskProps,
   TaskProps,
   TaskResponse,
-} from '../../../types/task.type';
+} from '@/shared/types/task.type';
 
 const fetchTasks = async (): Promise<TaskResponse> => {
   return taskOps.getTasks();
