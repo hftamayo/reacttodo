@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { toast } from 'sonner';
 import { useLazyLoad } from '@/shared/services/lazyloading/hooks/useLazyLoad';
 import { taskHooks } from '@/features/task/hooks/taskHooks';
-import { TaskBoardPresenter } from './TaskBoardPresenter';
+import TaskBoardPresenter from './TaskBoardPresenter';
 import { toasterMessages } from '@/shared/utils/twind/styles';
 
 export const TaskBoardContainer: React.FC = () => {
