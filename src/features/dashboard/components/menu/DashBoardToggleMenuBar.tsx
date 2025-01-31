@@ -1,5 +1,5 @@
 import React from 'react';
-import { ContainerMenuBar } from './ContainerMenuBar';
+import { ContainerMenuBar } from './components/ContainerMenuBar';
 import { MenuProps } from '@/shared/types/menu.type';
 import { DashBoardMenuBarStyles } from '@/shared/utils/twind/styles';
 

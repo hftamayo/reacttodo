@@ -1,6 +1,6 @@
 import React from 'react';
-import { DropDownMenu } from './components/DropDownMenu';
-import { MenuItem } from './components/MenuItem';
+import { DropDownMenu } from './DropDownMenu';
+import { MenuItem } from './MenuItem';
 import { MenuProps } from '@/shared/types/menu.type';
 import { DashBoardMenuBarStyles } from '@/shared/utils/twind/styles';
 

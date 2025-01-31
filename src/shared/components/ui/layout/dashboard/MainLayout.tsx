@@ -3,7 +3,7 @@ import { useAppSelector } from '@/shared/services/redux/hooks/useAppSelector';
 import { CustomOutlet } from '@/shared/services/routing/CustomOutlet';
 import { SkeletonCustomOutlet } from '@/shared/services/routing/SkeletonCustomOutlet';
 import { DashBoardHeader } from '@/features/dashboard/components/header/DashBoardHeader';
-import { DashBoardToggleMenuBar } from '@/features/dashboard/components/menu/components/DashBoardToggleMenuBar';
+import { DashBoardToggleMenuBar } from '@/features/dashboard/components/menu/DashBoardToggleMenuBar';
 import { DashBoardFooter } from '@/features/dashboard/components/footer/DashBoardFooter';
 import { menuOptions } from '@/features/dashboard/components/menu/config/menuOptions';
 import { APP_NAME } from '@/shared/utils/envvars';
