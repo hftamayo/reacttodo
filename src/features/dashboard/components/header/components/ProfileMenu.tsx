@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuGroup,
 } from '@/shared/components/ui/menu/DropDownMenu';
-import ViewSettingsForm from '@/features/settings/components/ViewSettingsForm';
+import { ViewSettingsForm } from '@/features/settings/components/ViewSettingsForm';
 import CustomModal from '@/shared/components/ui/modal/CustomModal';
 import { DashBoardHeaderProfileMenuStyles } from '@/shared/utils/twind/styles';
 
