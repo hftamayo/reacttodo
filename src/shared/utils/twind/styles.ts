@@ -4,7 +4,7 @@ export const MainLayoutStyles = {
   layoutSideBar:
     'h-full fixed top-[64px] bottom-0 left-0 transition-all duration-300',
   layoutContent: (isCollapsed: boolean) =>
-    `flex-grow pt-[64px] ${isCollapsed ? 'ml-0' : 'ml-[256px]'} transition-all duration-300 overflow-auto`,
+    `flex-grow pt-[64px] ${isCollapsed ? 'ml-0' : 'ml-64'} transition-all duration-300 overflow-auto`,
   layoutFooter: 'col-span-2 fixed left-0 right-0 z-10 bottom-0',
 };
 
