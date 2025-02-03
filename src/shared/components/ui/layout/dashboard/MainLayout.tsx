@@ -16,7 +16,7 @@ export const MainLayout: React.FC = () => {
   const { adminMenuOptions, supervisorMenuOptions, userMenuOptions } =
     menuOptions();
 
-  const [sidebarToggle, setSidebarToggle] = useState(false);
+  const [sidebarToggle, setSidebarToggle] = useState(true);
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
