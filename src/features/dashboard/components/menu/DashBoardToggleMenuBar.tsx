@@ -11,7 +11,7 @@ export const DashBoardToggleMenuBar: React.FC<MenuProps> = ({
 
   return (
     <div
-      className={`${isCollapsed ? 'block' : 'hidden'} ${DashBoardMenuBarStyles.toggleEffectButton}`}
+      className={`${!isCollapsed ? 'block' : 'hidden'} ${DashBoardMenuBarStyles.toggleEffectButton}`}
     >
       <ContainerMenuBar options={options} isCollapsed={isCollapsed} />
     </div>
