@@ -9,9 +9,7 @@ export const ContainerMenuBar: React.FC<MenuProps> = ({
   isCollapsed,
 }) => {
   return (
-    <div
-      className={`${isCollapsed ? 'block' : 'hidden'} ${DashBoardMenuBarStyles.toggleEffectButton}`}
-    >
+    <div>
       <ul className={DashBoardMenuBarStyles.div2ndLevelContainer}>
         {options.map((option) => (
           <MenuItem key={option.path} option={option} />
