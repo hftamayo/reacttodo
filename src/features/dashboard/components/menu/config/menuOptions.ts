@@ -20,7 +20,6 @@ export const menuOptions = () => {
 
   return {
     adminMenuOptions: [
-      { path: '', label: '', icon: FaHome },
       { path: '/', label: group.home, icon: FaHome },
       {
         path: '/dashboard/entities/roles',
@@ -39,7 +38,6 @@ export const menuOptions = () => {
     ],
 
     userMenuOptions: [
-      { path: '', label: '', icon: FaHome },
       { path: '/', label: group.home, icon: FaHome },
       { path: '/taskboard', label: group.tasks, icon: FaRegFileAlt },
       { path: '/dashboard/inbox', label: group.inbox, icon: FaRegEnvelope },
@@ -47,7 +45,6 @@ export const menuOptions = () => {
     ],
 
     supervisorMenuOptions: [
-      { path: '', label: '', icon: FaHome },
       { path: '/', label: group.home, icon: FaHome },
       {
         path: '/dashboard/entities/users',
