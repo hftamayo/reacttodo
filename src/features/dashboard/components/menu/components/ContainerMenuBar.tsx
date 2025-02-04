@@ -10,8 +10,6 @@ export const ContainerMenuBar: React.FC<MenuProps> = ({
 }) => {
   return (
     <div className="w-64 text-white p-4">
-      {' '}
-      {/* Fixed width to prevent shrinking */}
       <ul className="space-y-2">
         {options.map((option) => (
           <MenuItem key={option.path} option={option} />

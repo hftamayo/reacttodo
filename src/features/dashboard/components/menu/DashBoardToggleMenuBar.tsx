@@ -11,11 +11,7 @@ export const DashBoardToggleMenuBar: React.FC<MenuProps> = ({
 
   return (
     <div
-      className={`
-      fixed top-[64px] left-0 h-[calc(100vh-64px)] bg-gray-600 
-      transition-all duration-300 overflow-x-hidden
-      ${isCollapsed ? 'w-0' : 'w-64'}
-    `}
+      className={`${isCollapsed ? 'hidden' : 'block'} ${DashBoardMenuBarStyles.toggleEffectButton}`}
     >
       <ContainerMenuBar options={options} isCollapsed={isCollapsed} />
     </div>
