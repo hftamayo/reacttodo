@@ -14,7 +14,7 @@ export type DropDownMenuProps = {
 
 export type MenuProps = {
   options: MenuOption[];
-  isCollapsed: boolean;
+  isCollapsed?: boolean;
 };
 
 export type ToggleButtonProps = {
