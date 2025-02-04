@@ -8,16 +8,18 @@ export const ContainerMenuBar: React.FC<MenuProps> = ({
   options,
   isCollapsed,
 }) => {
+  if (isCollapsed) return null;
+
   return (
-    <div>
-      <ul className={DashBoardMenuBarStyles.div2ndLevelContainer}>
+    <div className="text-white">
+      <ul className="space-y-2">
         {options.map((option) => (
           <MenuItem key={option.path} option={option} />
         ))}
       </ul>
 
-      <div className={DashBoardMenuBarStyles.div2ndLevelContainer}>
-        <ul className={DashBoardMenuBarStyles.unorderedItem2ndLevel}>
+      <div className="mt-4">
+        <ul>
           <DropDownMenu options={options} />
         </ul>
       </div>

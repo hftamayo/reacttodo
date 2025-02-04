@@ -5,37 +5,40 @@ import { DropDownMenuProps } from '@/shared/types/menu.type';
 import { DashBoardMenuBarStyles } from '@/shared/utils/twind/styles';
 
 export const DropDownMenu: React.FC<DropDownMenuProps> = ({ options }) => {
-  const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
+  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
 
-  const handleDropDown = () => {
-    setIsDropDownOpen(!isDropDownOpen);
-  };
-
-  const filteredOptions = options.filter(
-    (option) =>
-      option.label === 'Roles' ||
-      option.label === 'Users' ||
-      option.label === 'Tasks'
+  const filteredOptions = options.filter((option) =>
+    ['Roles', 'Users', 'Tasks'].includes(option.label)
   );
+
   return (
-    <li className={DashBoardMenuBarStyles.listItem}>
+    <li className="rounded hover:bg-teal-600 transition-colors duration-200">
       <button
-        onClick={handleDropDown}
-        className={DashBoardMenuBarStyles.menuButton}
+        onClick={() => setIsDropDownOpen(!isDropDownOpen)}
+        className="w-full px-3 py-2 flex items-center text-white hover:text-teal-200"
       >
-        <FaRegFileAlt className={DashBoardMenuBarStyles.menuIcon2ndLevel} />
-        Entities
+        <FaRegFileAlt className="w-6 h-6 mr-2" />
+        <span>Entities</span>
         {isDropDownOpen ? (
-          <FaChevronDown className={DashBoardMenuBarStyles.menuIcon3rdLevel} />
+          <FaChevronDown className="ml-auto" />
         ) : (
-          <FaChevronRight className={DashBoardMenuBarStyles.menuIcon3rdLevel} />
+          <FaChevronRight className="ml-auto" />
         )}
       </button>
+
       {isDropDownOpen && (
-        <ul className={DashBoardMenuBarStyles.unorderedItem3rdLevel}>
+        <ul className="ml-6 mt-2 space-y-2">
           {filteredOptions.map((option) => (
-            <li key={option.path} className={DashBoardMenuBarStyles.mappedItem}>
-              <Link to={option.path}>{option.label}</Link>
+            <li
+              key={option.path}
+              className="rounded hover:bg-teal-700 transition-colors duration-200"
+            >
+              <Link
+                to={option.path}
+                className="block px-3 py-2 text-white hover:text-teal-200"
+              >
+                {option.label}
+              </Link>
             </li>
           ))}
         </ul>
