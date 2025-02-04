@@ -2,12 +2,8 @@ import React from 'react';
 import { DropDownMenu } from './DropDownMenu';
 import { MenuItem } from './MenuItem';
 import { MenuProps } from '@/shared/types/menu.type';
-import { DashBoardMenuBarStyles } from '@/shared/utils/twind/styles';
 
-export const ContainerMenuBar: React.FC<MenuProps> = ({
-  options,
-  isCollapsed,
-}) => {
+export const ContainerMenuBar: React.FC<MenuProps> = ({ options }) => {
   return (
     <div className="w-64 text-white p-4">
       <ul className="space-y-2">
