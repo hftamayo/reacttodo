@@ -20,6 +20,9 @@ export const DashBoardHeader = {
 };
 
 export const DashBoardMenuBarStyles = {
+  base: 'fixed top-[64px] left-0 w-64 bg-gray-600 h-[calc(100vh-64px)] transition-transform duration-300 ease-in-out',
+  collapsed: '-translate-x-full',
+  expanded: 'translate-x-0',
   div2ndLevelContainer: 'sidebar-item text-white w-60 h-full',
   unorderedItem1stLevel: 'mt-3 text-white font-bold',
   unorderedItem2ndLevel: 'mt-3 font-bold',
