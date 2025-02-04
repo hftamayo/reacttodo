@@ -8,16 +8,15 @@ export const ContainerMenuBar: React.FC<MenuProps> = ({
   options,
   isCollapsed,
 }) => {
-  if (isCollapsed) return null;
-
   return (
-    <div className="text-white">
+    <div className="w-64 text-white p-4">
+      {' '}
+      {/* Fixed width to prevent shrinking */}
       <ul className="space-y-2">
         {options.map((option) => (
           <MenuItem key={option.path} option={option} />
         ))}
       </ul>
-
       <div className="mt-4">
         <ul>
           <DropDownMenu options={options} />
