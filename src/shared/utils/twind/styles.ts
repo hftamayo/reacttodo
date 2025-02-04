@@ -24,17 +24,16 @@ export const DashBoardMenuBarStyles = {
   collapsed: '-translate-x-full',
   expanded: 'translate-x-0',
   unorderedItem1stLevel: 'mt-3 text-white font-bold',
-  unorderedItem3rdLevel: 'ml-6 mt-2',
   collapseButton: 'w-full bg-gray-800 text-white py-2',
   toggleEffectButton:
     'w-64 bg-gray-600 fixed h-full px-4 py-2 left-0 top-1/2 transform -translate-y-1/2', // Move to left edge
   listItem: 'rounded hover:bg-teal-600 transition-colors duration-200',
   linkItem: 'px-3 py-2 flex items-center text-white hover:text-teal-200',
   menuIcon: 'w-6 h-6 mr-2',
-  menuButton: 'px-3 w-full text-left flex items-center',
-  menuIcon2ndLevel: 'inline-block w-6 h-6 mr-2',
-  menuIcon3rdLevel: 'ml-auto',
-  mappedItem: 'hover:bg-teal-600 hover:text-teal-200 py-2 px-3 rounded',
+  menuButton:
+    'w-full px-3 py-2 flex items-center text-white hover:text-teal-200',
+  mappedItem: 'rounded hover:bg-teal-700 transition-colors duration-200',
+  mappedLink: 'block px-3 py-2 text-white hover:text-teal-200',
 };
 
 export const DashBoardHeaderActionsStyles = {
