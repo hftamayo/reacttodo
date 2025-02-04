@@ -1,11 +1,9 @@
 export const MainLayoutStyles = {
   layoutContainer: 'min-h-screen grid grid-rows-[auto,1fr,auto]',
-  layoutHeader: 'col-span-2 fixed left-0 right-0 z-20 top-0',
-  layoutSideBar:
-    'h-full fixed top-[64px] bottom-0 left-0 transition-all duration-300',
+  layoutHeader: 'col-span-2 fixed left-0 right-0 z-10 top-0',
   layoutContent: (isCollapsed: boolean) =>
     `flex-grow pt-[64px] transition-transform duration-300 
-       ${isCollapsed ? 'translate-x-0' : 'translate-x-64'}`,
+     ${isCollapsed ? 'ml-0' : 'ml-64'}`,
   layoutFooter: 'col-span-2 fixed left-0 right-0 z-10 bottom-0',
 };
 
