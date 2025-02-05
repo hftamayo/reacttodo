@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRoute, Switch, Route } from 'wouter';
-import { SkeletonDashBoardAnalytics } from '@/shared/components/ui/skeleton/SkeletonDashBoardAnalytics';
+import { DashBoardAnalytics } from '@/features/dashboard/components/content/DashBoardAnalytics';
 import { TaskBoardContainer } from '@/containers/TaskBoard/TaskBoardContainer';
 
 export const CustomOutlet: React.FC = () => {
@@ -8,7 +8,7 @@ export const CustomOutlet: React.FC = () => {
 
   return (
     <Switch>
-      {match && <Route path="/" component={SkeletonDashBoardAnalytics} />}
+      {match && <Route path="/" component={DashBoardAnalytics} />}
       <Route path="/taskboard" component={TaskBoardContainer} />
       {/* Add more routes as needed */}
     </Switch>
