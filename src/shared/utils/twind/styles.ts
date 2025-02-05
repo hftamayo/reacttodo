@@ -3,7 +3,7 @@ export const MainLayoutStyles = {
   layoutHeader: 'col-span-2 fixed left-0 right-0 z-10 top-0',
   layoutContent: (isCollapsed: boolean) =>
     `flex-grow pt-[64px] transition-transform duration-300 
-     ${isCollapsed ? 'ml-0' : 'ml-64'}`,
+     ${isCollapsed ? 'ml-0' : 'ml-64'} pt-[64px]`,
   layoutFooter: 'col-span-2 fixed left-0 right-0 z-10 bottom-0',
 };
 
