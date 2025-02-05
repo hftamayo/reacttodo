@@ -41,13 +41,17 @@ export const MainLayout: React.FC = () => {
           />
         ) : null}
       </div>
-      <div className="flex flex-grow">
+      <div className="flex flex-grow flex-1">
         <DashBoardToggleMenuBar
           options={selectMenuOptions}
           isCollapsed={sidebarToggle}
         />
-        <div className={MainLayoutStyles.layoutContent(sidebarToggle)}>
-          <CustomOutlet />
+        <div
+          className={`${MainLayoutStyles.layoutContent(sidebarToggle)} flex-1`}
+        >
+          <div className="flex-1">
+            <CustomOutlet />
+          </div>
         </div>
       </div>
       <div className={MainLayoutStyles.layoutFooter}>
