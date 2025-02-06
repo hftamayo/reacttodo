@@ -10,7 +10,7 @@
   --input: #e5e7eb;
   --ring: #3b82f6;
   --radius: 0.5rem;
-
+ 
   /* Cameo Palette: https://uicolors.app/create */
   --cameo-50: #faf6f2;
   --cameo-100: #f3eae1;
@@ -56,15 +56,15 @@
 
 /* Dark Mode Colors */
 .dark {
-  --background: #1f2937;
-  --foreground: #f9fafb;
+  --background: #000000;
+  --foreground: #ffffff;
   --card: #1f2937;
   --card-foreground: #f9fafb;
   --popover: #1f2937;
   --popover-foreground: #f9fafb;
   --border: #4b5563;
   --input: #4b5563;
-  --ring: #8b5cf6;
+  --ring: #8b5cf6;  
 
   /* Button dark palette */
   --primary: #bb86fc;
