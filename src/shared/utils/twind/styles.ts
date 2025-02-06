@@ -25,7 +25,7 @@ export const DashBoardMenuBarStyles = {
   unorderedItem1stLevel: 'mt-3 text-white font-bold',
   collapseButton: 'w-full bg-gray-800 text-white py-2',
   toggleEffectButton:
-    'w-64 bg-gray-600 fixed h-full px-4 py-2 left-0 top-1/2 transform -translate-y-1/2', // Move to left edge
+    'w-64 bg-gray-600 fixed h-full px-4 py-2 left-0 top-1/2 transform -translate-y-1/2',
   listItem: 'rounded hover:bg-teal-600 transition-colors duration-200',
   linkItem: 'px-3 py-2 flex items-center text-white hover:text-teal-200',
   menuIcon: 'w-6 h-6 mr-2',
@@ -56,19 +56,22 @@ export const DashBoardFooterStyles = {
 };
 
 export const taskBoard = {
-  bg: 'flex justify-center w-screen p-4 bg-gradient-to-r from-[#2F80ED] to-[#1CB5E0]',
-  container: 'bg-slate-100 max-w-[500px] w-full rounded-md shadow-xl p-4 mt-4',
-  heading: 'text-3xl font-bold text-center text-gray-800 p-2',
+  bg: 'flex justify-center w-screen p-4 bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)]',
+  container:
+    'bg-[var(--neutral-light)] max-w-[500px] w-full rounded-md shadow-xl p-4 mt-4',
+  heading: 'text-3xl font-bold text-center text-[var(--text-color)] p-2',
   form: 'flex justify-between',
   frmContainer: 'flex items-center space-x-4 w-full',
   input: 'border p-2 w-full text-xl',
-  button: 'border p-4 ml-2 bg-purple-500 text-slate-100',
+  button:
+    'border p-4 ml-2 bg-[var(--accent-color)] text-[var(--neutral-light)]',
   count: 'text-center p-2',
 };
 
 export const taskRow = {
-  li: 'flex justify-between bg-slate-200 p-4 my-2 capitalize',
-  liComplete: 'flex justify-between bg-slate-400 p-4 my-2 capitalize',
+  li: 'flex justify-between bg-[var(--neutral-light)] p-4 my-2 capitalize',
+  liComplete:
+    'flex justify-between bg-[var(--neutral-dark)] p-4 my-2 capitalize',
   row: 'flex',
   text: 'ml-2 cursor-pointer',
   textComplete: 'ml-2 cursor-pointer line-through',
