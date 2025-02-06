@@ -12,6 +12,7 @@
   --radius: 0.5rem;
  
   /* Cameo Palette: https://uicolors.app/create */
+  --cameo-0: #ffffff;
   --cameo-50: #faf6f2;
   --cameo-100: #f3eae1;
   --cameo-200: #e7d3c1;
@@ -23,6 +24,7 @@
   --cameo-800: #754437;
   --cameo-900: #5f392f;
   --cameo-950: #321c18;
+  --cameo-full: #000000;
 
 
 /* Button palette */

@@ -12,9 +12,9 @@ const buttonVariants = cva(
         default:
           'bg-[var(--primary)] text-[var(--primary-foreground)] shadow hover:bg-[var(--primary-hover)]',
         additive:
-          'bg-[var(--additive)] text-[var(--additive-foreground)] shadow-sm hover:bg-[var(--additive-hover)]',
+          'bg-[var(--cameo-300)] text-[var(--cameo-full)] shadow-sm hover:bg-[var(--cameo-600)]',
         destructive:
-          'bg-[var(--destructive)] text-[var(--destructive-foreground)] shadow-sm hover:bg-[var(--destructive-hover)]',
+          'bg-[var(--cameo-500)] text-[var(--cameo-full)] shadow-sm hover:bg-[var(--cameo-600)]',
         outline:
           'border border-[var(--input)] bg-[var(--background)] shadow-sm hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)]',
         secondary:
