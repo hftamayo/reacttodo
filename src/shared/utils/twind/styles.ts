@@ -69,7 +69,7 @@ export const taskBoard = {
 };
 
 export const taskRow = {
-  li: 'flex justify-between bg-[var(--neutral-light)] p-4 my-2 capitalize',
+  li: 'flex justify-between bg-[var(--neutral-mid)] p-4 my-2 capitalize',
   liComplete:
     'flex justify-between bg-[var(--neutral-dark)] p-4 my-2 capitalize',
   row: 'flex',
