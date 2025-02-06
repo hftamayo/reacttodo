@@ -1,3 +1,4 @@
+/* dashboard palette */
 :root {
   --background: #ffffff;
   --foreground: #1f2937;
@@ -5,6 +6,14 @@
   --card-foreground: #1f2937;
   --popover: #ffffff;
   --popover-foreground: #1f2937;
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #3b82f6;
+  --radius: 0.5rem;
+}
+
+/* Button palette */
+:root {
   --primary: #2F80ED;
   --primary-foreground: #ffffff;
   --secondary: #e5e7eb;
@@ -15,20 +24,25 @@
   --accent-foreground: #1f2937;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #e5e7eb;
-  --input: #e5e7eb;
-  --ring: #3b82f6;
+}
+
+/* Chart palette */
+:root {
   --chart-1: #f97316;
   --chart-2: #10b981;
   --chart-3: #3b82f6;
   --chart-4: #facc15;
   --chart-5: #ec4899;
-  --radius: 0.5rem;
+}
+
+/* form palette */
+:root {
   --neutral-light: #f8fafc; /* slate-100 */
   --neutral-mid: #e2e8f0; /* slate-200 */
   --neutral-dark: #cbd5e1; /* slate-300 */
 }
 
+/* Dark Mode Colors */
 .dark {
   --background: #1f2937;
   --foreground: #f9fafb;
@@ -36,6 +50,11 @@
   --card-foreground: #f9fafb;
   --popover: #1f2937;
   --popover-foreground: #f9fafb;
+  --border: #4b5563;
+  --input: #4b5563;
+  --ring: #8b5cf6;
+
+  /* Button dark palette */
   --primary: #bb86fc;
   --primary-foreground: #000000;
   --secondary: #4b5563;
@@ -46,15 +65,15 @@
   --accent-foreground: #f9fafb;
   --destructive: #f87171;
   --destructive-foreground: #000000;
-  --border: #4b5563;
-  --input: #4b5563;
-  --ring: #8b5cf6;
+
+  /* Chart dark palette */
   --chart-1: #f97316;
   --chart-2: #10b981;
   --chart-3: #3b82f6;
   --chart-4: #facc15;
   --chart-5: #ec4899;
-  --radius: 0.5rem;
+
+  /* form dark palette */
   --neutral-light: #1e293b; /* slate-800 */
   --neutral-mid: #2d3748; /* slate-700 */
   --neutral-dark: #4a5568; /* slate-600 */
