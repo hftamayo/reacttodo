@@ -1,13 +1,13 @@
 export const lightTheme = {
-  background: '#ffffff',
-  text: '#000000',
-  primary: '#1a73e8',
-  secondary: '#e8f0fe',
+  background: 'hsl(var(--background))',
+  text: 'hsl(var(--foreground))',
+  primary: 'hsl(var(--primary))',
+  secondary: 'hsl(var(--secondary))',
 };
 
 export const darkTheme = {
-  background: '#121212',
-  text: '#ffffff',
-  primary: '#bb86fc',
-  secondary: '#3700b3',
+  background: 'hsl(var(--background))',
+  text: 'hsl(var(--foreground))',
+  primary: 'hsl(var(--primary))',
+  secondary: 'hsl(var(--secondary))',
 };
