@@ -1,6 +1,6 @@
 /* dashboard palette */
 :root {
-  --background: #ffffff;
+  --background: var(--cameo-50);
   --foreground: #1f2937;
   --card: #ffffff;
   --card-foreground: #1f2937;

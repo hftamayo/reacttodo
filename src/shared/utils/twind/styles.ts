@@ -1,8 +1,10 @@
 export const MainLayoutStyles = {
-  layoutContainer: 'min-h-screen flex flex-col',
-  layoutHeader: 'w-full fixed left-0 right-0 z-10 top-0 h-16',
+  layoutContainer:
+    'min-h-screen flex flex-col bg-[var(--cameo-0)] text-[var(--cameo-1000)]',
+  layoutHeader:
+    'w-full fixed left-0 right-0 z-10 top-0 h-16 bg-[var(--cameo-800)]',
   layoutContent: (isCollapsed: boolean) =>
-    `flex-grow transition-transform duration-300 pt-16 ${isCollapsed ? 'ml-0' : 'ml-64'}`,
+    `flex-grow transition-transform duration-300 pt-16 bg-[var(--cameo-0)] text-[var(--cameo-1000)] ${isCollapsed ? 'ml-0' : 'ml-64'}`,
   layoutFooter: 'w-full fixed left-0 right-0 z-10 bottom-0',
 };
 
