@@ -68,6 +68,19 @@
   --input: #4b5563;
   --ring: #8b5cf6;  
 
+  /* Cameo dark palette */
+  --cameo-50: #1f2937;
+  --cameo-100: #2d3748;
+  --cameo-200: #4a5568;
+  --cameo-300: #64748b;
+  --cameo-400: #94a3b8;
+  --cameo-500: #a0aec0;
+  --cameo-600: #cbd5e1;
+  --cameo-700: #e2e8f0;
+  --cameo-800: #edf2f7;
+  --cameo-900: #f7fafc;
+  --cameo-950: #ffffff;
+
   /* Button dark palette */
   --primary: #bb86fc;
   --primary-foreground: #000000;
