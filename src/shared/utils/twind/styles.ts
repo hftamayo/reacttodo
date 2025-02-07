@@ -58,7 +58,7 @@ export const DashBoardFooterStyles = {
 export const taskBoard = {
   bg: 'flex justify-center w-screen p-4 bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)]',
   container:
-    'bg-[var(--neutral-light)] max-w-[500px] w-full rounded-md shadow-xl p-4 mt-4',
+    'bg-[var(--cameo-100)] max-w-[500px] w-full rounded-md shadow-xl p-4 mt-4',
   heading: 'text-3xl font-bold text-center text-[var(--text-color)] p-2',
   form: 'flex justify-between',
   frmContainer: 'flex items-center space-x-4 w-full',
@@ -69,9 +69,8 @@ export const taskBoard = {
 };
 
 export const taskRow = {
-  li: 'flex justify-between bg-[var(--neutral-mid)] p-4 my-2 capitalize',
-  liComplete:
-    'flex justify-between bg-[var(--neutral-dark)] p-4 my-2 capitalize',
+  li: 'flex justify-between bg-[var(--cameo-200)] p-4 my-2 capitalize',
+  liComplete: 'flex justify-between bg-[var(--cameo-300)] p-4 my-2 capitalize',
   row: 'flex',
   text: 'ml-2 cursor-pointer',
   textComplete: 'ml-2 cursor-pointer line-through',
