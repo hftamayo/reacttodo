@@ -21,20 +21,21 @@ export const DashBoardHeader = {
 };
 
 export const DashBoardMenuBarStyles = {
-  base: 'fixed top-[64px] left-0 w-64 bg-gray-600 h-[calc(100vh-64px)] transition-transform duration-300 ease-in-out',
+  base: 'fixed top-[64px] left-0 w-64 bg-[var(--cameo-300)] h-[calc(100vh-64px)] transition-transform duration-300 ease-in-out',
   collapsed: '-translate-x-full',
   expanded: 'translate-x-0',
-  unorderedItem1stLevel: 'mt-3 text-white font-bold',
-  collapseButton: 'w-full bg-gray-800 text-white py-2',
+  unorderedItem1stLevel: 'mt-3 text-[var(--cameo-950)] font-bold',
+  collapseButton: 'w-full bg-gray-800 text-[var(--cameo-950)] py-2',
   toggleEffectButton:
     'w-64 bg-gray-600 fixed h-full px-4 py-2 left-0 top-1/2 transform -translate-y-1/2',
   listItem: 'rounded hover:bg-teal-600 transition-colors duration-200',
-  linkItem: 'px-3 py-2 flex items-center text-white hover:text-teal-200',
+  linkItem:
+    'px-3 py-2 flex items-center text-[var(--cameo-950)] hover:text-teal-200',
   menuIcon: 'w-6 h-6 mr-2',
   menuButton:
-    'w-full px-3 py-2 flex items-center text-white hover:text-teal-200',
+    'w-full px-3 py-2 flex items-center text-[var(--cameo-950)] hover:text-teal-200',
   mappedItem: 'rounded hover:bg-teal-700 transition-colors duration-200',
-  mappedLink: 'block px-3 py-2 text-white hover:text-teal-200',
+  mappedLink: 'block px-3 py-2 text-[var(--cameo-950)] hover:text-teal-200',
 };
 
 export const DashBoardHeaderActionsStyles = {
