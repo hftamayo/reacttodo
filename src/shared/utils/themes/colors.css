@@ -24,7 +24,7 @@
   --cameo-800: #754437;
   --cameo-900: #5f392f;
   --cameo-950: #321c18;
-  --cameo-full: #000000;
+  --cameo-1000: #000000;
 
 
 /* Button palette */
@@ -69,6 +69,7 @@
   --ring: #8b5cf6;  
 
   /* Cameo dark palette */
+  --cameo-0: #000000;
   --cameo-50: #1f2937;
   --cameo-100: #2d3748;
   --cameo-200: #4a5568;
@@ -80,6 +81,7 @@
   --cameo-800: #edf2f7;
   --cameo-900: #f7fafc;
   --cameo-950: #ffffff;
+  --cameo-1000: #ffffff;
 
   /* Button dark palette */
   --primary: #bb86fc;
