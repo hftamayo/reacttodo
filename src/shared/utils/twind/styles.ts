@@ -28,14 +28,16 @@ export const DashBoardMenuBarStyles = {
   collapseButton: 'w-full bg-gray-800 text-[var(--cameo-950)] py-2',
   toggleEffectButton:
     'w-64 bg-gray-600 fixed h-full px-4 py-2 left-0 top-1/2 transform -translate-y-1/2',
-  listItem: 'rounded hover:bg-teal-600 transition-colors duration-200',
+  listItem: 'rounded transition-colors duration-200',
   linkItem:
-    'px-3 py-2 flex items-center text-[var(--cameo-950)] hover:text-teal-200',
+    'px-3 py-2 flex items-center text-[var(--cameo-950)] hover:bg-[var(--cameo-500)] font-bold',
   menuIcon: 'w-6 h-6 mr-2',
   menuButton:
-    'w-full px-3 py-2 flex items-center text-[var(--cameo-950)] hover:text-teal-200',
-  mappedItem: 'rounded hover:bg-teal-700 transition-colors duration-200',
-  mappedLink: 'block px-3 py-2 text-[var(--cameo-950)] hover:text-teal-200',
+    'w-full px-3 py-2 flex items-center text-[var(--cameo-950)] hover:bg-[var(--cameo-500)] font-bold',
+  mappedItem:
+    'rounded hover:bg-[var(--cameo-500)] transition-colors duration-200',
+  mappedLink:
+    'block px-3 py-2 text-[var(--cameo-950)] hover:text-[var(--cameo-950)] font-bold',
 };
 
 export const DashBoardHeaderActionsStyles = {
