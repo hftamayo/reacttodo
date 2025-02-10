@@ -52,6 +52,7 @@ export const ProfileMenu: React.FC = () => {
             <FaUserCircle className="w-6 h-6 mr-2" />
           </button>
         </DropdownMenuTrigger>
+
         <DropdownMenuContent>
           <DropdownMenuGroup>
             <DropdownMenuItem onSelect={handleProfileClick}>
