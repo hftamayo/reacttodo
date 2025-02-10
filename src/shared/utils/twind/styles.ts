@@ -50,8 +50,8 @@ export const DashBoardHeaderActionsStyles = {
 };
 
 export const DashBoardHeaderProfileMenuStyles = {
-  button: 'text-white group flex items-center',
-  icon: 'w-4 h-4 mr-2 text-gray-600',
+  button: 'text-[var(--cameo-0)] font-bold group flex items-center',
+  icon: 'w-4 h-4 mr-2 text-[var(--cameo-800) font-bold]',
 };
 
 export const DashBoardFooterStyles = {
