@@ -7,7 +7,7 @@ export const DashBoardHeader: React.FC<ToggleButtonProps> = ({
   appName,
 }) => {
   return (
-    <div className="w-full">
+    <div className="w-full h-16">
       <ContainerHeader setSidebarToggle={setSidebarToggle} appName={appName} />
     </div>
   );

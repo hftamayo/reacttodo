@@ -11,7 +11,7 @@ export const ContainerHeader: React.FC<ToggleButtonProps> = ({
   appName,
 }) => {
   return (
-    <nav className="flex items-center justify-between p-2 bg-gray-800">
+    <nav className="flex items-center justify-between p-2 h-16 bg-[var(--cameo-950)]">
       <ToggleButton setSidebarToggle={setSidebarToggle} appName={appName} />
       <div className="flex items-center gap-x-5">
         <SearchText />
