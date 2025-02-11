@@ -14,7 +14,7 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
         className={DashBoardHeaderActionsStyles.toggleButton}
         onClick={setSidebarToggle}
       />
-      <Link href="/" className="text-white font-semibold ml-2">
+      <Link href="/" className="text-[var(--cameo-50)] font-semibold ml-2">
         {appName}
       </Link>
     </div>
