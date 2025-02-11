@@ -2,6 +2,10 @@
 :root {
   --background: var(--cameo-50);
   --foreground: #1f2937;
+  --header-bg: var(--cameo-950);
+  --header-text: var(--cameo-0);  
+  --footer-bg: var(--cameo-950);
+  --footer-text: var(--cameo-0);
   --card: #ffffff;
   --card-foreground: #1f2937;
   --popover: #ffffff;
@@ -60,6 +64,10 @@
 .dark {
   --background: #000000;
   --foreground: #ffffff;
+  --header-bg: var(--cameo-300);
+  --header-text: var(--cameo-1000);  
+  --footer-bg: var(--cameo-300);
+  --footer-text: var(--cameo-1000);
   --card: #1f2937;
   --card-foreground: #f9fafb;
   --popover: #1f2937;
