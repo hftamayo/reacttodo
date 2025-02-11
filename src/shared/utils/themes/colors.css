@@ -70,17 +70,17 @@
 
   /* Cameo dark palette */
   --cameo-0: #000000;
-  --cameo-50: #1f2937;
-  --cameo-100: #2d3748;
-  --cameo-200: #4a5568;
-  --cameo-300: #64748b;
-  --cameo-400: #94a3b8;
-  --cameo-500: #a0aec0;
-  --cameo-600: #cbd5e1;
-  --cameo-700: #e2e8f0;
-  --cameo-800: #edf2f7;
-  --cameo-900: #f7fafc;
-  --cameo-950: #ffffff;
+  --cameo-50: #23272E;
+  --cameo-100: #343A46;
+  --cameo-200: #3A4252;
+  --cameo-300: #434E61;
+  --cameo-400: #526077;
+  --cameo-500: #64748B;
+  --cameo-600: #8695AA;
+  --cameo-700: #B1BBC8;
+  --cameo-800: #D5D9E2;
+  --cameo-900: #ECEEF2;
+  --cameo-950: #F6F7F9;
   --cameo-1000: #ffffff;
 
   /* Button dark palette */
