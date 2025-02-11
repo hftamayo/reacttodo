@@ -15,7 +15,7 @@ export const ContainerHeader: React.FC<ToggleButtonProps> = ({
       <ToggleButton setSidebarToggle={setSidebarToggle} appName={appName} />
       <div className="flex items-center gap-x-5">
         <SearchText />
-        <div className="text-white">
+        <div className="text-[var(--cameo-50)]">
           <FaBell className="w-6 h-6" />
         </div>
         <ThemeButton />
