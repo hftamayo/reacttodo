@@ -7,7 +7,10 @@ const Skeleton: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
 }) => {
   return (
     <div
-      className={cn('animate-pulse rounded-md bg-primary/10', className)}
+      className={cn(
+        'animate-pulse rounded-md bg-[var(--cameo-200)]',
+        className
+      )}
       {...props}
     />
   );

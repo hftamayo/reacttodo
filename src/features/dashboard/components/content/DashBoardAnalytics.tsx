@@ -6,7 +6,7 @@ export const DashBoardAnalytics: React.FC = () => {
   const { title } = useTranslation('dashboardAnalyticsForm');
 
   return (
-    <div className="bg-gray-200 p-4 rounded-md shadow-md">
+    <div className="bg-[var(--cameo-100)] p-4 rounded-md shadow-md">
       <h2 className="text-xl font-bold mb-4">{title}</h2>
       <div className="grid grid-cols-3 gap-8">
         <div className="space-y-8">
