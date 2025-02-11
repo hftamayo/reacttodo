@@ -38,6 +38,18 @@ export const stringMessages: LanguageContextType = {
     },
   },
 
+  searchTextValidation: {
+    en: {
+      text: 'Task name must be at least 5 characters',
+    },
+    es: {
+      text: 'El nombre de la tarea debe tener al menos 5 caracteres',
+    },
+    de: {
+      text: 'Der Aufgabenname muss mindestens 5 Zeichen lang sein',
+    },
+  },
+
   themeButtonOn: {
     en: {
       text: 'Dark Mode On',
