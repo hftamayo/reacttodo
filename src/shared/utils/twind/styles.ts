@@ -45,9 +45,7 @@ export const DashBoardHeaderActionsStyles = {
   spanSearchAction:
     'relative md:absolute inset-y-0-left-0 flex items-center pl-2',
   buttonSearchAction:
-    'p-1 focus:outline-none text-[var(--header-text)] md:text-[var(--cameo-50)]',
-  inputSearchAction:
-    'w-full px-4 py-1 pl-12 rounded shadow outline-none hidden md:block',
+    'p-1 focus:outline-none text-[var(--header-text)] md:text-[var(--header-text)]',
 };
 
 export const DashBoardHeaderProfileMenuStyles = {

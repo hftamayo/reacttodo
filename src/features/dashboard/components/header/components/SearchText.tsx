@@ -14,12 +14,7 @@ export const SearchText: React.FC = () => {
   };
 
   return (
-    <div className="relative md:w-65">
-      <span className={DashBoardHeaderActionsStyles.spanSearchAction}>
-        <button className={DashBoardHeaderActionsStyles.buttonSearchAction}>
-          <FaSearch />
-        </button>
-      </span>
+    <div className="relative md:w-65 flex items-center text-white">
       <Input
         type="text"
         ctrlsize="large"
