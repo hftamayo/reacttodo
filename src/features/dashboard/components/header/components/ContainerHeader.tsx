@@ -11,11 +11,11 @@ export const ContainerHeader: React.FC<ToggleButtonProps> = ({
   appName,
 }) => {
   return (
-    <nav className="flex items-center justify-between p-2 h-16 bg-[var(--cameo-950)]">
+    <nav className="flex items-center justify-between p-2 h-16 bg-[var(--header-bg)]">
       <ToggleButton setSidebarToggle={setSidebarToggle} appName={appName} />
       <div className="flex items-center gap-x-5">
         <SearchText />
-        <div className="text-[var(--cameo-50)]">
+        <div className="text-[var(--header-text)]">
           <FaBell className="w-6 h-6" />
         </div>
         <ThemeButton />

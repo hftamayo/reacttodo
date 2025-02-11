@@ -10,7 +10,7 @@ export const DashBoardFooter = () => {
   const { text: serviceDesk } = useTranslation('serviceDesk');
 
   return (
-    <footer className="flex justify-between items-center bg-[var(--cameo-950)] text-[var(--cameo-0)]">
+    <footer className="flex justify-between items-center bg-[var(--footer-bg)] text-[var(--footer-text)]">
       <div className="flex items-center">
         <span>Developed by Tamayo & Co, follow us on:</span>
         <a

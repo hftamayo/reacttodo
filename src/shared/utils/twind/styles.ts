@@ -41,16 +41,17 @@ export const DashBoardMenuBarStyles = {
 };
 
 export const DashBoardHeaderActionsStyles = {
-  toggleButton: 'text-white me-4 cursor-pointer',
+  toggleButton: 'text-[var(--header-text)] me-4 cursor-pointer',
   spanSearchAction:
     'relative md:absolute inset-y-0-left-0 flex items-center pl-2',
-  buttonSearchAction: 'p-1 focus:outline-none text-white md:text-black',
+  buttonSearchAction:
+    'p-1 focus:outline-none text-[var(--header-text)] md:text-[var(--cameo-50)]',
   inputSearchAction:
     'w-full px-4 py-1 pl-12 rounded shadow outline-none hidden md:block',
 };
 
 export const DashBoardHeaderProfileMenuStyles = {
-  button: 'text-[var(--cameo-0)] font-bold group flex items-center',
+  button: 'text-[var(--header-text)] font-bold group flex items-center',
   icon: 'w-4 h-4 mr-2 text-[var(--cameo-800) font-bold]',
 };
 
