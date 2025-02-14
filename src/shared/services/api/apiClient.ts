@@ -7,6 +7,7 @@ import {
   ApiResponse,
   DbHealthDetails,
   AppHealthDetails,
+  AddTaskProps,
 } from '../../types/api.type';
 
 const handleResponse = async <T>(
@@ -96,7 +97,9 @@ export const taskOps = {
     }
   },
 
-  async addTask(task: TaskProps): Promise<ApiResponse<TaskData> | undefined> {
+  async addTask(
+    task: AddTaskProps
+  ): Promise<ApiResponse<TaskData> | undefined> {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task`, {
         method: 'POST',

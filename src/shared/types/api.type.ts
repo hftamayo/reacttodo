@@ -62,7 +62,7 @@ export type TaskProps = {
 export type AddTaskProps = Pick<TaskProps, 'name'>;
 
 export type TaskData = {
-  newTask?: TaskProps;
+  newTask?: AddTaskProps;
   task?: TaskProps;
   tasks: TaskProps[];
 };
