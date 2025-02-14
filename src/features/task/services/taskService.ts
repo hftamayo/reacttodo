@@ -1,4 +1,3 @@
-import { BACKEND_URL } from '@/shared/utils/envvars';
 import { taskOps } from '@/shared/services/api/apiClient';
 import {
   AddTaskProps,
