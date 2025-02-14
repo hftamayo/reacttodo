@@ -1,3 +1,12 @@
+//healthcheck types:
+export type HealthCheckProps = {
+  status: string;
+};
+
+export type HealthCheckData = {
+  healthCheck: HealthCheckProps;
+};
+
 //role types:
 export type RoleProps = {
   id?: string;
