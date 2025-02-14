@@ -1,7 +1,7 @@
 import { BACKEND_URL, BACKEND_TYPE } from '@/shared/utils/envvars';
 import { ApiError, TaskProps, TaskResponse } from '../../types/task.type';
 
-const handleResponse = async (response: Response) => {
+const handleResponse = async <T>(response: Response): Promise<T> => {
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(
@@ -19,7 +19,7 @@ const handleError = (error: unknown) => {
 };
 
 export const beOps = {
-  async checkHealth(): Promise<{ status: string }> {
+  async checkHealth(): Promise<{ status: string } | undefined> {
     try {
       const response = await fetch(`${BACKEND_URL}/health`, {
         credentials: 'include',
@@ -27,12 +27,13 @@ export const beOps = {
       return await handleResponse(response);
     } catch (error: unknown) {
       handleError(error);
+      return undefined;
     }
   },
 };
 
 export const taskOps = {
-  async getTasks(): Promise<TaskResponse> {
+  async getTasks(): Promise<TaskResponse | undefined> {
     try {
       const url =
         BACKEND_TYPE === '0'
@@ -41,7 +42,7 @@ export const taskOps = {
       const response = await fetch(url, {
         //credentials: 'include',
       });
-      const dataFetched = await handleResponse(response);
+      const dataFetched = await handleResponse<any>(response);
 
       const tasks: TaskProps[] =
         BACKEND_TYPE === '0'
@@ -59,10 +60,11 @@ export const taskOps = {
       };
     } catch (error: unknown) {
       handleError(error);
+      return undefined;
     }
   },
 
-  async getTask(id: string): Promise<TaskResponse> {
+  async getTask(id: string): Promise<TaskResponse | undefined> {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
         credentials: 'include',
@@ -70,10 +72,11 @@ export const taskOps = {
       return await handleResponse(response);
     } catch (error: unknown) {
       handleError(error);
+      return undefined;
     }
   },
 
-  async addTask(task: TaskProps): Promise<TaskResponse> {
+  async addTask(task: TaskProps): Promise<TaskResponse | undefined> {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task`, {
         method: 'POST',
@@ -86,10 +89,11 @@ export const taskOps = {
       return await handleResponse(response);
     } catch (error: unknown) {
       handleError(error);
+      return undefined;
     }
   },
 
-  async updateTask(task: TaskProps): Promise<TaskResponse> {
+  async updateTask(task: TaskProps): Promise<TaskResponse | undefined> {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task/${task.id}`, {
         method: 'PUT',
@@ -102,10 +106,11 @@ export const taskOps = {
       return await handleResponse(response);
     } catch (error: unknown) {
       handleError(error);
+      return undefined;
     }
   },
 
-  async deleteTask(id: string): Promise<TaskResponse> {
+  async deleteTask(id: string): Promise<TaskResponse | undefined> {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
         method: 'DELETE',
@@ -114,6 +119,7 @@ export const taskOps = {
       return await handleResponse(response);
     } catch (error: unknown) {
       handleError(error);
+      return undefined;
     }
   },
 };
