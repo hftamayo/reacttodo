@@ -1,7 +1,15 @@
-import { BACKEND_URL, BACKEND_TYPE } from '@/shared/utils/envvars';
-import { ApiError, TaskProps, TaskResponse } from '../../types/task.type';
+import { BACKEND_URL } from '@/shared/utils/envvars';
+import {
+  ApiError,
+  HealthCheckData,
+  TaskProps,
+  TaskData,
+  ApiResponse,
+} from '../../types/api.type';
 
-const handleResponse = async <T>(response: Response): Promise<T> => {
+const handleResponse = async <T>(
+  response: Response
+): Promise<ApiResponse<T>> => {
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(
@@ -13,13 +21,11 @@ const handleResponse = async <T>(response: Response): Promise<T> => {
 
 const handleError = (error: unknown) => {
   const apiError = error as ApiError;
-  throw new Error(
-    apiError.response?.resultMessage || 'An unknown error occurred'
-  );
+  throw new Error(`${apiError.httpStatusCode} ${apiError.resultMessage}`);
 };
 
 export const beOps = {
-  async checkHealth(): Promise<{ status: string } | undefined> {
+  async checkHealth(): Promise<ApiResponse<HealthCheckData> | undefined> {
     try {
       const response = await fetch(`${BACKEND_URL}/health`, {
         credentials: 'include',
@@ -33,30 +39,26 @@ export const beOps = {
 };
 
 export const taskOps = {
-  async getTasks(): Promise<TaskResponse | undefined> {
+  async getTasks(): Promise<ApiResponse<TaskData> | undefined> {
     try {
-      const url =
-        BACKEND_TYPE === '0'
-          ? `${BACKEND_URL}/todos?limit=5&skip=10`
-          : `${BACKEND_URL}/tasks/all`;
+      const url = `${BACKEND_URL}/todos?limit=5&skip=10`;
       const response = await fetch(url, {
         //credentials: 'include',
       });
-      const dataFetched = await handleResponse<TaskResponse>(response);
+      const dataFetched = await handleResponse<TaskData>(response);
 
-      const tasks: TaskProps[] =
-        BACKEND_TYPE === '0'
-          ? dataFetched.tasks.map((todo: TaskProps) => ({
-              id: todo.id,
-              name: todo.name,
-              completed: todo.completed,
-            }))
-          : dataFetched.tasks;
+      const tasks: TaskProps[] = dataFetched.data.tasks.map(
+        (todo: TaskProps) => ({
+          id: todo.id,
+          name: todo.name,
+          completed: todo.completed,
+        })
+      );
 
       return {
         httpStatusCode: 200,
         resultMessage: 'Data fetched successfully',
-        tasks,
+        data: { tasks },
       };
     } catch (error: unknown) {
       handleError(error);
@@ -64,7 +66,7 @@ export const taskOps = {
     }
   },
 
-  async getTask(id: string): Promise<TaskResponse | undefined> {
+  async getTask(id: string): Promise<ApiResponse<TaskData> | undefined> {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
         credentials: 'include',
@@ -76,7 +78,7 @@ export const taskOps = {
     }
   },
 
-  async addTask(task: TaskProps): Promise<TaskResponse | undefined> {
+  async addTask(task: TaskProps): Promise<ApiResponse<TaskData> | undefined> {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task`, {
         method: 'POST',
@@ -93,7 +95,9 @@ export const taskOps = {
     }
   },
 
-  async updateTask(task: TaskProps): Promise<TaskResponse | undefined> {
+  async updateTask(
+    task: TaskProps
+  ): Promise<ApiResponse<TaskData> | undefined> {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task/${task.id}`, {
         method: 'PUT',
@@ -110,7 +114,7 @@ export const taskOps = {
     }
   },
 
-  async deleteTask(id: string): Promise<TaskResponse | undefined> {
+  async deleteTask(id: string): Promise<ApiResponse<TaskData> | undefined> {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
         method: 'DELETE',
