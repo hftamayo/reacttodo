@@ -49,7 +49,7 @@ export const taskOps = {
           ? dataFetched.tasks.map((todo: TaskProps) => ({
               id: todo.id,
               name: todo.name,
-              complete: todo.complete,
+              completed: todo.completed,
             }))
           : dataFetched.tasks;
 
