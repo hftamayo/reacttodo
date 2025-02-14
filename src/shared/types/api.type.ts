@@ -40,12 +40,6 @@ export type TaskData = {
   tasks: TaskProps[];
 };
 
-export type TaskResponse<T> = {
-  httpStatusCode: number;
-  resultMessage: string;
-  data: T;
-};
-
 export type TasksState = {
   tasks: Map<string, TaskProps>;
   task: TaskProps | null;
