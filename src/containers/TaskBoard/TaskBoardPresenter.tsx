@@ -3,7 +3,7 @@ import { AddTaskForm } from '@/features/task/components/AddTaskForm';
 import { TaskRow } from '@/features/task/components/TaskRow';
 import { taskBoard } from '@/shared/utils/twind/styles';
 import { APP_NAME } from '@/shared/utils/envvars';
-import { TaskBoardPresenterProps } from '@/shared/types/task.type';
+import { TaskBoardPresenterProps } from '@/shared/types/api.type';
 
 const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
   ({ tasks, isLoading, totalTasks, completedTasks }, ref) => {

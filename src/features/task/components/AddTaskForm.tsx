@@ -6,7 +6,7 @@ import { Input } from '@/shared/components/ui/input/Input';
 import { Button } from '@/shared/components/ui/button/Button';
 
 import { taskBoard, toasterMessages } from '../../../shared/utils/twind/styles';
-import { AddTaskProps } from '../../../shared/types/task.type';
+import { AddTaskProps } from '../../../shared/types/api.type';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { toast } from 'sonner';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAppDispatch } from '@/shared/services/redux/hooks/useAppDispatch';
-import { TaskProps } from '../../../shared/types/task.type';
+import { TaskProps } from '../../../shared/types/api.type';
 import { updateTask, deleteTask } from '../store/taskSlice';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { Label } from '@/shared/components/ui/label/Label';
