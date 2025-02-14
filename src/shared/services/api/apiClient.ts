@@ -87,7 +87,7 @@ export const taskOps = {
   async getTask(id: string): Promise<ApiResponse<TaskData> | undefined> {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
-        credentials: 'include',
+        //credentials: 'include',
       });
       return await handleResponse(response);
     } catch (error: unknown) {
@@ -100,7 +100,7 @@ export const taskOps = {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task`, {
         method: 'POST',
-        credentials: 'include',
+        //credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -119,7 +119,7 @@ export const taskOps = {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task/${task.id}`, {
         method: 'PUT',
-        credentials: 'include',
+        //credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -136,7 +136,7 @@ export const taskOps = {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
         method: 'DELETE',
-        credentials: 'include',
+        //credentials: 'include',
       });
       return await handleResponse(response);
     } catch (error: unknown) {
