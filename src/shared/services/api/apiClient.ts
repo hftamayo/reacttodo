@@ -42,14 +42,14 @@ export const taskOps = {
       const response = await fetch(url, {
         //credentials: 'include',
       });
-      const dataFetched = await handleResponse<any>(response);
+      const dataFetched = await handleResponse<TaskResponse>(response);
 
       const tasks: TaskProps[] =
         BACKEND_TYPE === '0'
-          ? dataFetched.todos.map((todo: any) => ({
+          ? dataFetched.tasks.map((todo: TaskProps) => ({
               id: todo.id,
-              name: todo.todo,
-              complete: todo.completed,
+              name: todo.name,
+              complete: todo.complete,
             }))
           : dataFetched.tasks;
 
