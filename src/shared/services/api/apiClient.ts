@@ -5,6 +5,8 @@ import {
   TaskProps,
   TaskData,
   ApiResponse,
+  DbHealthDetails,
+  AppHealthDetails,
 } from '../../types/api.type';
 
 const handleResponse = async <T>(
@@ -25,12 +27,28 @@ const handleError = (error: unknown) => {
 };
 
 export const beOps = {
-  async checkHealth(): Promise<ApiResponse<HealthCheckData> | undefined> {
+  async appHealth(): Promise<
+    ApiResponse<HealthCheckData<AppHealthDetails>> | undefined
+  > {
     try {
-      const response = await fetch(`${BACKEND_URL}/health`, {
-        credentials: 'include',
+      const response = await fetch(`${BACKEND_URL}/healthcheck/app`, {
+        //credentials: 'include',
       });
-      return await handleResponse(response);
+      return await handleResponse<HealthCheckData<AppHealthDetails>>(response);
+    } catch (error: unknown) {
+      handleError(error);
+      return undefined;
+    }
+  },
+
+  async dbHealth(): Promise<
+    ApiResponse<HealthCheckData<DbHealthDetails>> | undefined
+  > {
+    try {
+      const response = await fetch(`${BACKEND_URL}/healthcheck/db`, {
+        //credentials: 'include',
+      });
+      return await handleResponse<HealthCheckData<DbHealthDetails>>(response);
     } catch (error: unknown) {
       handleError(error);
       return undefined;
