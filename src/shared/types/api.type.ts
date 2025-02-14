@@ -1,10 +1,28 @@
 //healthcheck types:
-export type HealthCheckProps = {
-  status: string;
+export type AppHealthDetails = {
+  timestamp: string;
+  uptime: number;
+  memoryUsage: {
+    total: number;
+    free: number;
+  };
 };
 
-export type HealthCheckData = {
-  healthCheck: HealthCheckProps;
+export type DbHealthDetails = {
+  timestamp: string;
+  connectionTime?: number;
+  databaseStatus?: string;
+  error?: string;
+};
+
+export type HealthCheckProps<T> = {
+  status: string;
+  message: string;
+  details?: T;
+};
+
+export type HealthCheckData<T> = {
+  healthCheck: HealthCheckProps<T>;
 };
 
 //role types:
