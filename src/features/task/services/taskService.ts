@@ -3,62 +3,36 @@ import { taskOps } from '@/shared/services/api/apiClient';
 import {
   AddTaskProps,
   TaskProps,
-  TaskResponse,
-} from '@/shared/types/task.type';
+  TaskData,
+  ApiResponse,
+} from '@/shared/types/api.type';
 
-const fetchTasks = async (): Promise<TaskResponse> => {
+const fetchTasks = async (): Promise<ApiResponse<TaskData> | undefined> => {
   return taskOps.getTasks();
 };
 
-const fetchTask = async (id: string): Promise<TaskResponse> => {
-  const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
-    credentials: 'include',
-  });
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
-  return response.json();
+const fetchTask = async (
+  id: string
+): Promise<ApiResponse<TaskData> | undefined> => {
+  return taskOps.getTask(id);
 };
 
-const fetchAddTask = async (task: AddTaskProps): Promise<TaskResponse> => {
-  const response = await fetch(`${BACKEND_URL}/tasks/task`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(task),
-  });
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
-  return response.json();
+const fetchAddTask = async (
+  task: AddTaskProps
+): Promise<ApiResponse<TaskData> | undefined> => {
+  return taskOps.addTask(task);
 };
 
-const fetchUpdateTask = async (task: TaskProps): Promise<TaskResponse> => {
-  const response = await fetch(`${BACKEND_URL}/tasks/task/${task.id}`, {
-    method: 'PUT',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(task),
-  });
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
-  return response.json();
+const fetchUpdateTask = async (
+  task: TaskProps
+): Promise<ApiResponse<TaskData> | undefined> => {
+  return taskOps.updateTask(task);
 };
 
-const fetchDeleteTask = async (id: string): Promise<TaskResponse> => {
-  const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
-    method: 'DELETE',
-    credentials: 'include',
-  });
-  if (!response.ok) {
-    throw new Error('No response received');
-  }
-  return response.json();
+const fetchDeleteTask = async (
+  id: string
+): Promise<ApiResponse<TaskData> | undefined> => {
+  return taskOps.deleteTask(id);
 };
 
 export const taskService = {
