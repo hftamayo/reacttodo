@@ -69,8 +69,10 @@ export const taskOps = {
       const tasks: TaskProps[] = dataFetched.data.tasks.map(
         (todo: TaskProps) => ({
           id: todo.id,
-          name: todo.name,
-          completed: todo.completed,
+          title: todo.title,
+          description: todo.description,
+          done: todo.done,
+          owner: todo.owner,
         })
       );
 
