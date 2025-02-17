@@ -84,7 +84,7 @@ export type TaskData = {
 };
 
 export type TaskContext = {
-  previousTasks: ApiResponse<TaskData>;
+  previousTasks?: ApiResponse<TaskData>;
 };
 
 export type TasksState = {
