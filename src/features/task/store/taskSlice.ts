@@ -2,12 +2,13 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   TaskProps,
   AddTaskProps,
-  TaskResponse,
+  TaskData,
+  ApiResponse,
   TasksState,
-  ApiError,
-} from '../../../shared/types/task.type';
+} from '../../../shared/types/api.type';
 import { RootState } from '../../../shared/services/redux/rootReducer';
 import { taskService } from '../services/taskService';
+import { getErrorMessage } from '@/shared/utils/error/errorUtils';
 
 export const getTotalTasks = (state: RootState) => state.task.tasks.size;
 
@@ -15,18 +16,13 @@ export const getTasks = createAsyncThunk(
   'task/getTasks',
   async (_, { rejectWithValue }) => {
     try {
-      const response: TaskResponse = await taskService.fetchTasks();
-      const tasks = response.tasks
-        ? new Map(response.tasks.map((task) => [task.id!, task]))
+      const response: ApiResponse<TaskData> = await taskService.fetchTasks();
+      const tasks = response.data.tasks
+        ? new Map(response.data.tasks.map((task) => [task.id!, task]))
         : new Map();
       return tasks;
     } catch (error) {
-      const apiError: ApiError = error as ApiError;
-      return rejectWithValue(
-        apiError.response
-          ? apiError.response.resultMessage
-          : 'An unknown error occurred. Please check your network connection and try again.'
-      );
+      return rejectWithValue(getErrorMessage(error));
     }
   }
 );
@@ -35,7 +31,7 @@ export const getTask = createAsyncThunk(
   'task/getTask',
   async (id: string, { rejectWithValue }) => {
     try {
-      const response: TaskResponse = await taskService.fetchTask(id);
+      const response: ApiResponse = await taskService.fetchTask(id);
       return response.task;
     } catch (error) {
       const apiError: ApiError = error as ApiError;
@@ -52,7 +48,7 @@ export const addTask = createAsyncThunk(
   'task/addTask',
   async (task: AddTaskProps, { rejectWithValue }) => {
     try {
-      const response: TaskResponse = await taskService.fetchAddTask(task);
+      const response: ApiResponse = await taskService.fetchAddTask(task);
       return response.task;
     } catch (error) {
       const apiError: ApiError = error as ApiError;
@@ -69,7 +65,7 @@ export const updateTask = createAsyncThunk(
   'task/updateTask',
   async (task: TaskProps, { rejectWithValue }) => {
     try {
-      const response: TaskResponse = await taskService.fetchUpdateTask(task);
+      const response: ApiResponse = await taskService.fetchUpdateTask(task);
       return response.task;
     } catch (error) {
       const apiError: ApiError = error as ApiError;
@@ -86,7 +82,7 @@ export const deleteTask = createAsyncThunk(
   'task/deleteTask',
   async (id: string, { rejectWithValue }) => {
     try {
-      const response: TaskResponse = await taskService.fetchDeleteTask(id);
+      const response: ApiResponse = await taskService.fetchDeleteTask(id);
       return { id, msg: response.resultMessage };
     } catch (error) {
       const apiError: ApiError = error as ApiError;
