@@ -3,11 +3,11 @@ import { taskService } from '../services/taskService';
 import {
   TaskContext,
   TaskProps,
-  TaskResponse,
-} from '../../../shared/types/task.type';
+  ApiResponse,
+} from '../../../shared/types/api.type';
 
 const useGetTasks = (enabled: boolean) => {
-  return useQuery<TaskResponse, Error>({
+  return useQuery<ApiResponse, Error>({
     queryKey: ['tasks'],
     queryFn: taskService.fetchTasks,
     enabled,
@@ -15,7 +15,7 @@ const useGetTasks = (enabled: boolean) => {
 };
 
 const useGetTask = (id: string) => {
-  return useQuery<TaskResponse, Error>({
+  return useQuery<ApiResponse, Error>({
     queryKey: ['task', id],
     queryFn: () => taskService.fetchTask(id),
   });
@@ -24,13 +24,13 @@ const useGetTask = (id: string) => {
 const useAddTask = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<TaskResponse, Error, TaskProps, TaskContext>({
+  return useMutation<ApiResponse, Error, TaskProps, TaskContext>({
     mutationFn: taskService.fetchAddTask,
     onMutate: async (newTask: TaskProps) => {
       await queryClient.cancelQueries({ queryKey: ['tasks'] });
       const previousTasks = queryClient.getQueryData<TaskResponse>(['tasks']);
       if (previousTasks) {
-        queryClient.setQueryData<TaskResponse>(['tasks'], {
+        queryClient.setQueryData<ApiResponse>(['tasks'], {
           ...previousTasks,
           tasks: [...previousTasks.tasks, newTask],
         });
@@ -39,10 +39,7 @@ const useAddTask = () => {
     },
     onError: (_err, _newTask, context) => {
       if (context?.previousTasks) {
-        queryClient.setQueryData<TaskResponse>(
-          ['tasks'],
-          context.previousTasks
-        );
+        queryClient.setQueryData<ApiResponse>(['tasks'], context.previousTasks);
       }
     },
     onSettled: () => {
@@ -54,13 +51,13 @@ const useAddTask = () => {
 const useUpdateTask = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<TaskResponse, Error, TaskProps, TaskContext>({
+  return useMutation<ApiResponse, Error, TaskProps, TaskContext>({
     mutationFn: taskService.fetchUpdateTask,
     onMutate: async (updatedTask: TaskProps) => {
       await queryClient.cancelQueries({ queryKey: ['tasks'] });
-      const previousTasks = queryClient.getQueryData<TaskResponse>(['tasks']);
+      const previousTasks = queryClient.getQueryData<ApiResponse>(['tasks']);
       if (previousTasks) {
-        queryClient.setQueryData<TaskResponse>(['tasks'], {
+        queryClient.setQueryData<ApiResponse>(['tasks'], {
           ...previousTasks,
           tasks: [...previousTasks.tasks, updatedTask],
         });
@@ -69,10 +66,7 @@ const useUpdateTask = () => {
     },
     onError: (_err, _newTask, context) => {
       if (context?.previousTasks) {
-        queryClient.setQueryData<TaskResponse>(
-          ['tasks'],
-          context.previousTasks
-        );
+        queryClient.setQueryData<ApiResponse>(['tasks'], context.previousTasks);
       }
     },
     onSettled: () => {
@@ -82,7 +76,7 @@ const useUpdateTask = () => {
 };
 
 const useDeleteTask = (id: string) => {
-  return useQuery<TaskResponse, Error>({
+  return useQuery<ApiResponse, Error>({
     queryKey: ['task', id],
     queryFn: () => taskService.fetchDeleteTask(id),
   });
