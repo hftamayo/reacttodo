@@ -6,31 +6,27 @@ import {
   ApiResponse,
 } from '@/shared/types/api.type';
 
-const fetchTasks = async (): Promise<ApiResponse<TaskData> | undefined> => {
+const fetchTasks = async (): Promise<ApiResponse<TaskData>> => {
   return taskOps.getTasks();
 };
 
-const fetchTask = async (
-  id: string
-): Promise<ApiResponse<TaskData> | undefined> => {
+const fetchTask = async (id: string): Promise<ApiResponse<TaskData>> => {
   return taskOps.getTask(id);
 };
 
 const fetchAddTask = async (
   task: AddTaskProps
-): Promise<ApiResponse<TaskData> | undefined> => {
+): Promise<ApiResponse<TaskData>> => {
   return taskOps.addTask(task);
 };
 
 const fetchUpdateTask = async (
   task: TaskProps
-): Promise<ApiResponse<TaskData> | undefined> => {
+): Promise<ApiResponse<TaskData>> => {
   return taskOps.updateTask(task);
 };
 
-const fetchDeleteTask = async (
-  id: string
-): Promise<ApiResponse<TaskData> | undefined> => {
+const fetchDeleteTask = async (id: string): Promise<ApiResponse<TaskData>> => {
   return taskOps.deleteTask(id);
 };
 
