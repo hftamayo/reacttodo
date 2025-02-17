@@ -31,15 +31,10 @@ export const getTask = createAsyncThunk(
   'task/getTask',
   async (id: string, { rejectWithValue }) => {
     try {
-      const response: ApiResponse = await taskService.fetchTask(id);
-      return response.task;
+      const response: ApiResponse<TaskData> = await taskService.fetchTask(id);
+      return response.data.task;
     } catch (error) {
-      const apiError: ApiError = error as ApiError;
-      return rejectWithValue(
-        apiError.response
-          ? apiError.response.resultMessage
-          : 'An unknown error occurred. Please check your network connection and try again.'
-      );
+      return rejectWithValue(getErrorMessage(error));
     }
   }
 );
@@ -48,15 +43,11 @@ export const addTask = createAsyncThunk(
   'task/addTask',
   async (task: AddTaskProps, { rejectWithValue }) => {
     try {
-      const response: ApiResponse = await taskService.fetchAddTask(task);
-      return response.task;
+      const response: ApiResponse<TaskData> =
+        await taskService.fetchAddTask(task);
+      return response.data.task;
     } catch (error) {
-      const apiError: ApiError = error as ApiError;
-      return rejectWithValue(
-        apiError.response
-          ? apiError.response.resultMessage
-          : 'An unknown error occurred. Please check your network connection and try again.'
-      );
+      return rejectWithValue(getErrorMessage(error));
     }
   }
 );
@@ -65,15 +56,11 @@ export const updateTask = createAsyncThunk(
   'task/updateTask',
   async (task: TaskProps, { rejectWithValue }) => {
     try {
-      const response: ApiResponse = await taskService.fetchUpdateTask(task);
-      return response.task;
+      const response: ApiResponse<TaskData> =
+        await taskService.fetchUpdateTask(task);
+      return response.data.task;
     } catch (error) {
-      const apiError: ApiError = error as ApiError;
-      return rejectWithValue(
-        apiError.response
-          ? apiError.response.resultMessage
-          : 'An unknown error occurred. Please check your network connection and try again.'
-      );
+      rejectWithValue(getErrorMessage(error));
     }
   }
 );
@@ -82,15 +69,11 @@ export const deleteTask = createAsyncThunk(
   'task/deleteTask',
   async (id: string, { rejectWithValue }) => {
     try {
-      const response: ApiResponse = await taskService.fetchDeleteTask(id);
+      const response: ApiResponse<TaskData> =
+        await taskService.fetchDeleteTask(id);
       return { id, msg: response.resultMessage };
     } catch (error) {
-      const apiError: ApiError = error as ApiError;
-      return rejectWithValue(
-        apiError.response
-          ? apiError.response.resultMessage
-          : 'An unknown error occurred. Please check your network connection and try again.'
-      );
+      return rejectWithValue(getErrorMessage(error));
     }
   }
 );
