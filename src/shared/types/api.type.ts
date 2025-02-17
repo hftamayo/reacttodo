@@ -29,7 +29,12 @@ export type HealthCheckData<T> = {
 export type RoleProps = {
   id?: string;
   name: string;
+  description: string;
+  status: boolean;
   permissions: string[];
+  createdAt?: string;
+  updatedAt?: string;
+  deletedAt?: string;
 };
 
 export type RoleData = {
@@ -41,9 +46,15 @@ export type RoleData = {
 //user types:
 export type UserProps = {
   id?: string;
-  username: string;
+  fullname: string;
+  birthdate: string;
   email: string;
-  roles: string[];
+  password: string;
+  status: boolean;
+  role: string[];
+  createdAt?: string;
+  updatedAt?: string;
+  deletedAt?: string;
 };
 
 export type UserData = {
@@ -55,11 +66,16 @@ export type UserData = {
 //task types:
 export type TaskProps = {
   id?: string;
-  name: string;
-  completed: boolean;
+  title: string;
+  description: string;
+  done: boolean;
+  owner: string;
+  createdAt?: string;
+  updatedAt?: string;
+  deletedAt?: string;
 };
 
-export type AddTaskProps = Pick<TaskProps, 'name'>;
+export type AddTaskProps = Pick<TaskProps, 'title'>;
 
 export type TaskData = {
   newTask?: AddTaskProps;
