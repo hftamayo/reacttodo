@@ -28,9 +28,7 @@ const handleError = (error: unknown) => {
 };
 
 export const beOps = {
-  async appHealth(): Promise<
-    ApiResponse<HealthCheckData<AppHealthDetails>> | undefined
-  > {
+  async appHealth(): Promise<ApiResponse<HealthCheckData<AppHealthDetails>>> {
     try {
       const response = await fetch(`${BACKEND_URL}/healthcheck/app`, {
         //credentials: 'include',
@@ -38,13 +36,11 @@ export const beOps = {
       return await handleResponse<HealthCheckData<AppHealthDetails>>(response);
     } catch (error: unknown) {
       handleError(error);
-      return undefined;
+      throw error;
     }
   },
 
-  async dbHealth(): Promise<
-    ApiResponse<HealthCheckData<DbHealthDetails>> | undefined
-  > {
+  async dbHealth(): Promise<ApiResponse<HealthCheckData<DbHealthDetails>>> {
     try {
       const response = await fetch(`${BACKEND_URL}/healthcheck/db`, {
         //credentials: 'include',
@@ -52,13 +48,13 @@ export const beOps = {
       return await handleResponse<HealthCheckData<DbHealthDetails>>(response);
     } catch (error: unknown) {
       handleError(error);
-      return undefined;
+      throw error;
     }
   },
 };
 
 export const taskOps = {
-  async getTasks(): Promise<ApiResponse<TaskData> | undefined> {
+  async getTasks(): Promise<ApiResponse<TaskData>> {
     try {
       const url = `${BACKEND_URL}/todos?limit=5&skip=10`;
       const response = await fetch(url, {
@@ -83,11 +79,11 @@ export const taskOps = {
       };
     } catch (error: unknown) {
       handleError(error);
-      return undefined;
+      throw error;
     }
   },
 
-  async getTask(id: string): Promise<ApiResponse<TaskData> | undefined> {
+  async getTask(id: string): Promise<ApiResponse<TaskData>> {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
         //credentials: 'include',
@@ -95,13 +91,11 @@ export const taskOps = {
       return await handleResponse(response);
     } catch (error: unknown) {
       handleError(error);
-      return undefined;
+      throw error;
     }
   },
 
-  async addTask(
-    task: AddTaskProps
-  ): Promise<ApiResponse<TaskData> | undefined> {
+  async addTask(task: AddTaskProps): Promise<ApiResponse<TaskData>> {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task`, {
         method: 'POST',
@@ -114,13 +108,11 @@ export const taskOps = {
       return await handleResponse(response);
     } catch (error: unknown) {
       handleError(error);
-      return undefined;
+      throw error;
     }
   },
 
-  async updateTask(
-    task: TaskProps
-  ): Promise<ApiResponse<TaskData> | undefined> {
+  async updateTask(task: TaskProps): Promise<ApiResponse<TaskData>> {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task/${task.id}`, {
         method: 'PUT',
@@ -133,11 +125,11 @@ export const taskOps = {
       return await handleResponse(response);
     } catch (error: unknown) {
       handleError(error);
-      return undefined;
+      throw error;
     }
   },
 
-  async deleteTask(id: string): Promise<ApiResponse<TaskData> | undefined> {
+  async deleteTask(id: string): Promise<ApiResponse<TaskData>> {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
         method: 'DELETE',
@@ -146,7 +138,7 @@ export const taskOps = {
       return await handleResponse(response);
     } catch (error: unknown) {
       handleError(error);
-      return undefined;
+      throw error;
     }
   },
 };
