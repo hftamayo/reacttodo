@@ -83,6 +83,10 @@ export type TaskData = {
   tasks: TaskProps[];
 };
 
+export type TaskContext = {
+  previousTasks: ApiResponse<TaskData>;
+};
+
 export type TasksState = {
   tasks: Map<string, TaskProps>;
   task: TaskProps | null;
