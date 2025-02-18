@@ -180,7 +180,7 @@ export const stringMessages: LanguageContextType = {
     },
   },
 
-  deleteRow: {
+  deleteRowButton: {
     en: {
       text: 'Delete a record',
     },

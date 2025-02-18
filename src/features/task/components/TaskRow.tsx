@@ -11,7 +11,7 @@ import { Button } from '@/shared/components/ui/button/Button';
 import { taskRow } from '../../../shared/utils/twind/styles';
 
 export const TaskRow: React.FC<TaskProps> = (task: TaskProps) => {
-  const { text: deleteRow } = useTranslation('deleteRow');
+  const { text: deleteRowButton } = useTranslation('deleteRowButton');
   const dispatch = useAppDispatch();
 
   const handleToggleComplete = () => {
@@ -44,7 +44,7 @@ export const TaskRow: React.FC<TaskProps> = (task: TaskProps) => {
         variant="destructive"
         size="sm"
         onClick={handleDeleteTask}
-        title={deleteRow}
+        title={deleteRowButton}
       >
         <FaRegTrashAlt />
       </Button>
