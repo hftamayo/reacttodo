@@ -2,6 +2,7 @@ import React from 'react';
 import { useAppDispatch } from '@/shared/services/redux/hooks/useAppDispatch';
 import { TaskProps } from '../../../shared/types/api.type';
 import { updateTask, deleteTask } from '../store/taskSlice';
+import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { Label } from '@/shared/components/ui/label/Label';
 import { Input } from '@/shared/components/ui/input/Input';
@@ -10,6 +11,7 @@ import { Button } from '@/shared/components/ui/button/Button';
 import { taskRow } from '../../../shared/utils/twind/styles';
 
 export const TaskRow: React.FC<TaskProps> = (task: TaskProps) => {
+  const { text: deleteRow } = useTranslation('deleteRow');
   const dispatch = useAppDispatch();
 
   const handleToggleComplete = () => {
@@ -42,7 +44,7 @@ export const TaskRow: React.FC<TaskProps> = (task: TaskProps) => {
         variant="destructive"
         size="sm"
         onClick={handleDeleteTask}
-        title="Delete a Record"
+        title={deleteRow}
       >
         <FaRegTrashAlt />
       </Button>
