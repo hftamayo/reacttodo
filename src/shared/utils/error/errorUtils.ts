@@ -1,12 +1,13 @@
 import { toast } from 'sonner';
 import { toasterMessages } from '@/shared/utils/twind/styles';
 import { ApiError } from '@/shared/types/api.type';
+import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 
 const isApiError = (error: any): error is ApiError => {
   return error && typeof error === 'object' && 'resultMessage' in error;
 };
 
-export const getErrorMessage = (error: ApiError | unknown): string => {
+export const getErrorMessage = (error: ApiError | Error): string => {
   if (isApiError(error)) {
     return error.resultMessage;
   }
@@ -17,9 +18,11 @@ export const getErrorMessage = (error: ApiError | unknown): string => {
   return 'An unknown error occurred. Please check your network connection and try again.';
 };
 
-export const showError = (error: ApiError | unknown) => {
+export const showError = (error: ApiError | Error) => {
+  const { text: errorComponent } = useTranslation('errorComponent');
   const errorMessage = getErrorMessage(error);
-  toast.error(errorMessage, {
+  console.error('Error:', errorMessage); // Log detailed error for developers
+  toast.error(`${errorComponent}`, {
     className: toasterMessages.errorToaster,
   });
 };
