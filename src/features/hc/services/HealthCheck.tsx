@@ -6,7 +6,7 @@ import {
   AppHealthDetails,
 } from '@/shared/types/api.type';
 import { useQueryClient } from '@tanstack/react-query';
-import { Toaster } from 'sonner';
+import { toast } from 'sonner';
 
 export const HealthCheck: React.FC = () => {
   const [status, setStatus] = useState<string | null>(null);
