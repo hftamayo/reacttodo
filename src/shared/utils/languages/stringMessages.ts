@@ -180,6 +180,18 @@ export const stringMessages: LanguageContextType = {
     },
   },
 
+  deleteRow: {
+    en: {
+      text: 'Delete a record',
+    },
+    es: {
+      text: 'Borrar registro',
+    },
+    de: {
+      text: 'Eintrag löschen',
+    },
+  },
+
   dashboardAnalyticsForm: {
     en: {
       title: 'DashBoard Analytics',
