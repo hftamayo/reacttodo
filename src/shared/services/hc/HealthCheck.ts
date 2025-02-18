@@ -8,7 +8,7 @@ import {
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
-import { stat } from 'fs';
+import { toasterMessages } from '@/shared/utils/twind/styles';
 
 export const HealthCheck = ({
   setStatus,
@@ -41,9 +41,13 @@ export const HealthCheck = ({
 
   useEffect(() => {
     if (statusInternal === 'fail') {
-      toast.error(`The application is: ${statusOff}`);
+      toast.error(`The application is: ${statusOff}`, {
+        className: toasterMessages.errorToaster,
+      });
     } else if (statusInternal === 'pass') {
-      toast.success(`The application is: ${statusOn}`);
+      toast.success(`The application is: ${statusOn}`, {
+        className: toasterMessages.successToaster,
+      });
     }
   }, [statusInternal, statusOn, statusOff]);
 
