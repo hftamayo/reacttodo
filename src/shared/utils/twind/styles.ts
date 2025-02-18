@@ -57,6 +57,7 @@ export const DashBoardFooterStyles = {
   footer_links:
     'mx-3 font-semibold hover:opacity-80 duration-150 hover:text-teal-500 hover:underline',
   footer_text: 'mx-3 font-semibold text-teal-300 hover:opacity-80',
+  footer_text_offline: 'mx-3 font-bold text-red-700 hover:opacity-80',
 };
 
 export const taskBoard = {

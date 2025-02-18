@@ -9,6 +9,11 @@ export const DashBoardFooter: React.FC = () => {
   const { text: suggestions } = useTranslation('suggestions');
   const { text: serviceDesk } = useTranslation('serviceDesk');
 
+  const statusClass =
+    statOn === 'Online'
+      ? DashBoardFooterStyles.footer_text
+      : DashBoardFooterStyles.footer_text_offline;
+
   return (
     <footer className="flex justify-between items-center bg-[var(--footer-bg)] text-[var(--footer-text)]">
       <div className="flex items-center">
@@ -34,7 +39,7 @@ export const DashBoardFooter: React.FC = () => {
       </div>
       <div className="flex">
         <HealthCheck setStatus={setStatOn} />
-        <span className={DashBoardFooterStyles.footer_text}>{statOn}</span> |
+        <span className={statusClass}>{statOn}</span> |
         <a href="{}" className={DashBoardFooterStyles.footer_links}>
           {suggestions}
         </a>{' '}
