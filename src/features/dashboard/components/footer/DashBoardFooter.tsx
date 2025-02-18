@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaFacebook, FaTwitter, FaTiktok } from 'react-icons/fa';
 import { DashBoardFooterStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
+import { HealthCheck } from '@/shared/services/hc/HealthCheck';
 
-export const DashBoardFooter = () => {
-  const { text: statusOn } = useTranslation('statusOn');
-  const { text: statusOff } = useTranslation('statusOff');
+export const DashBoardFooter: React.FC = () => {
+  const [statOn, setStatOn] = useState<string>('Checking backend status...');
   const { text: suggestions } = useTranslation('suggestions');
   const { text: serviceDesk } = useTranslation('serviceDesk');
 
@@ -33,7 +33,8 @@ export const DashBoardFooter = () => {
         </a>
       </div>
       <div className="flex">
-        <span className={DashBoardFooterStyles.footer_text}>{statusOn}</span> |
+        <HealthCheck setStatus={setStatOn} />
+        <span className={DashBoardFooterStyles.footer_text}>{statOn}</span> |
         <a href="{}" className={DashBoardFooterStyles.footer_links}>
           {suggestions}
         </a>{' '}
