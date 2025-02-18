@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { beOps } from '../../../shared/services/api/apiClient';
+import { beOps } from '../api/apiClient';
 import {
   ApiResponse,
   HealthCheckData,
