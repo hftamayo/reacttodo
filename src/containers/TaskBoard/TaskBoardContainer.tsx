@@ -1,22 +1,25 @@
 import React, { useEffect } from 'react';
 import { taskHooks } from '@/features/task/hooks/taskHooks';
 import TaskBoardPresenter from './TaskBoardPresenter';
+import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { useLazyLoad } from '@/shared/services/lazyloading/hooks/useLazyLoad';
-import { getErrorMessage } from '@/shared/utils/error/errorUtils';
+import { showError } from '@/shared/utils/error/errorUtils';
 
 export const TaskBoardContainer: React.FC = () => {
   const { ref, shouldFetch } = useLazyLoad();
   const { data, error, isLoading } = taskHooks.useGetTasks(shouldFetch);
   const tasks = data?.data.tasks ? Array.from(data.data.tasks.values()) : [];
+  const { text: errorComponent = 'An error occurred' } =
+    useTranslation('errorComponent');
 
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter((task) => task.done).length;
 
   useEffect(() => {
     if (error) {
-      getErrorMessage(error);
+      showError(error, errorComponent);
     }
-  }, [error]);
+  }, [error, errorComponent]);
 
   return (
     <TaskBoardPresenter

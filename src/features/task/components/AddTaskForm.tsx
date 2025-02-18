@@ -1,18 +1,19 @@
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useAppDispatch } from '@/shared/services/redux/hooks/useAppDispatch';
-import { getErrorMessage } from '@/shared/utils/error/errorUtils';
+import { showError } from '@/shared/utils/error/errorUtils';
 import { addTask } from '../store/taskSlice';
 import { Input } from '@/shared/components/ui/input/Input';
 import { Button } from '@/shared/components/ui/button/Button';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
-import { taskBoard, toasterMessages } from '../../../shared/utils/twind/styles';
-import { AddTaskProps } from '../../../shared/types/api.type';
+import { taskBoard } from '@/shared/utils/twind/styles';
+import { AddTaskProps } from '@/shared/types/api.type';
 import { AiOutlinePlus } from 'react-icons/ai';
-import { toast } from 'sonner';
 
 export const AddTaskForm: React.FC = () => {
   const { text: addTaskButton } = useTranslation('addTaskButton');
+  const { text: errorComponent = 'An error occurred' } =
+    useTranslation('errorComponent');
   const { group } = useTranslation('addTaskForm');
   const {
     register,
@@ -33,7 +34,7 @@ export const AddTaskForm: React.FC = () => {
 
   const onError = (error: any) => {
     if (errors.title) {
-      getErrorMessage(error.title);
+      showError(error.title, errorComponent);
     }
   };
 
