@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useAppDispatch } from '@/shared/services/redux/hooks/useAppDispatch';
+import { getErrorMessage } from '@/shared/utils/error/errorUtils';
 import { addTask } from '../store/taskSlice';
 import { Input } from '@/shared/components/ui/input/Input';
 import { Button } from '@/shared/components/ui/button/Button';
@@ -32,9 +33,7 @@ export const AddTaskForm: React.FC = () => {
 
   const onError = (error: any) => {
     if (errors.title) {
-      toast.error(errors.title.message, {
-        className: toasterMessages.errorToaster,
-      });
+      getErrorMessage(error.title);
     }
   };
 

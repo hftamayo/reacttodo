@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
-import { toast } from 'sonner';
-import { useLazyLoad } from '@/shared/services/lazyloading/hooks/useLazyLoad';
 import { taskHooks } from '@/features/task/hooks/taskHooks';
 import TaskBoardPresenter from './TaskBoardPresenter';
+import { useLazyLoad } from '@/shared/services/lazyloading/hooks/useLazyLoad';
+import { getErrorMessage } from '@/shared/utils/error/errorUtils';
+import { toast } from 'sonner';
 import { toasterMessages } from '@/shared/utils/twind/styles';
+import { get } from 'http';
 
 export const TaskBoardContainer: React.FC = () => {
   const { ref, shouldFetch } = useLazyLoad();
@@ -15,9 +17,7 @@ export const TaskBoardContainer: React.FC = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error.message, {
-        className: toasterMessages.errorToaster,
-      });
+      getErrorMessage(error);
     }
   }, [error]);
 
