@@ -12,7 +12,7 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
         <div className={taskBoard.container}>
           <h3 className={taskBoard.heading}>{APP_NAME}</h3>
           <AddTaskForm />
-          {isLoading && <p>Loading...</p>}
+          {isLoading && <p>Loading data...</p>}
           <ul>
             {tasks.map((task) => (
               <TaskRow key={task.id} {...task} />

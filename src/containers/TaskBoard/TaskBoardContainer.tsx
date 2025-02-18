@@ -3,9 +3,6 @@ import { taskHooks } from '@/features/task/hooks/taskHooks';
 import TaskBoardPresenter from './TaskBoardPresenter';
 import { useLazyLoad } from '@/shared/services/lazyloading/hooks/useLazyLoad';
 import { getErrorMessage } from '@/shared/utils/error/errorUtils';
-import { toast } from 'sonner';
-import { toasterMessages } from '@/shared/utils/twind/styles';
-import { get } from 'http';
 
 export const TaskBoardContainer: React.FC = () => {
   const { ref, shouldFetch } = useLazyLoad();
