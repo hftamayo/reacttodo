@@ -11,6 +11,8 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { toast } from 'sonner';
 
 export const AddTaskForm: React.FC = () => {
+  const { text: addTaskButton } = useTranslation('addTaskButton');
+  const { group } = useTranslation('addTaskForm');
   const {
     register,
     handleSubmit,
@@ -18,6 +20,10 @@ export const AddTaskForm: React.FC = () => {
     formState: { errors },
   } = useForm<AddTaskProps>();
   const dispatch = useAppDispatch();
+
+  if (!group) {
+    return null;
+  }
 
   const onSubmit: SubmitHandler<AddTaskProps> = (data) => {
     dispatch(addTask(data));
@@ -38,16 +44,21 @@ export const AddTaskForm: React.FC = () => {
         <Input
           type="text"
           ctrlsize="large"
-          placeholder="Add a task"
+          placeholder={group.lblplaceholder}
           {...register('title', {
-            required: 'Task name is required',
+            required: `${group.lblregister}`,
             minLength: {
               value: 5,
-              message: 'Task name must be at least 5 characters',
+              message: `${group.lblminLength}`,
             },
           })}
         />
-        <Button variant="additive" size="lg" type="submit" title="Add a Task">
+        <Button
+          variant="additive"
+          size="lg"
+          type="submit"
+          title={addTaskButton}
+        >
           <AiOutlinePlus size={30} />
         </Button>
       </div>
