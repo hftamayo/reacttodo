@@ -14,7 +14,7 @@ export const HealthCheck = ({
 }: {
   setStatus: (status: string) => void;
 }) => {
-  const [status, setStatusInternal] = useState<string | null>(null);
+  const [statusInternal, setStatusInternal] = useState<string | null>(null);
   const queryClient = useQueryClient();
   const { text: statusOn } = useTranslation('statusOn');
   const { text: statusOff } = useTranslation('statusOff');
@@ -38,12 +38,12 @@ export const HealthCheck = ({
   }, [queryClient, setStatus]);
 
   useEffect(() => {
-    if (status === 'fail') {
+    if (statusInternal === 'fail') {
       toast.error(statusOff);
-    } else if (status === 'pass') {
+    } else if (statusInternal === 'pass') {
       toast.error(statusOn);
     }
-  }, [status, statusOn, statusOff]);
+  }, [statusInternal, statusOn, statusOff]);
 
   return null; // This component does not render anything itself
 };
