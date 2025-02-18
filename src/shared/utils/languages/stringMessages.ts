@@ -1,5 +1,6 @@
 import { addTask } from '@/features/task/store/taskSlice';
 import { LanguageContextType } from '@/shared/types/ui.type';
+import { error } from 'console';
 
 export const stringMessages: LanguageContextType = {
   //dashboard header components:
@@ -298,6 +299,19 @@ export const stringMessages: LanguageContextType = {
         btncancel: 'Abbrechen',
         btnsave: 'Speichern',
       },
+    },
+  },
+
+  //global error component
+  errorComponent: {
+    en: {
+      text: 'An error occurred. Please try again later.',
+    },
+    es: {
+      text: 'Se produjo un error. Por favor, inténtelo de nuevo más tarde.',
+    },
+    de: {
+      text: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.',
     },
   },
 };
