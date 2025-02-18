@@ -34,7 +34,9 @@ export const AddTaskForm: React.FC = () => {
 
   const onError = (error: any) => {
     if (errors.title) {
-      showError(error.title, errorComponent);
+      showError(errors.title, errorComponent);
+    } else {
+      showError(error, errorComponent);
     }
   };
 
