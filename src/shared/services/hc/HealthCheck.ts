@@ -8,6 +8,7 @@ import {
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
+import { stat } from 'fs';
 
 export const HealthCheck = ({
   setStatus,
@@ -16,32 +17,33 @@ export const HealthCheck = ({
 }) => {
   const [statusInternal, setStatusInternal] = useState<string | null>(null);
   const queryClient = useQueryClient();
-  const { text: statusOn } = useTranslation('statusOn');
-  const { text: statusOff } = useTranslation('statusOff');
+  const { text: statusOn = 'Status On' } = useTranslation('statusOn');
+  const { text: statusOff = 'Status Off' } = useTranslation('statusOff');
 
   useEffect(() => {
     const checkHealth = async () => {
       try {
         const response: ApiResponse<HealthCheckData<AppHealthDetails>> =
           await beOps.appHealth();
-        setStatusInternal(response.data.healthCheck.status);
-        setStatus(response.data.healthCheck.status);
+        const status = response.data.healthCheck.status;
+        setStatusInternal(status);
+        setStatus(status === 'pass' ? statusOn : statusOff);
       } catch (err: unknown) {
         setStatusInternal('fail');
-        setStatus('fail');
+        setStatus(statusOff);
       }
     };
 
     const intervalId = setInterval(checkHealth, 10000); // Check every 10 seconds
 
     return () => clearInterval(intervalId);
-  }, [queryClient, setStatus]);
+  }, [queryClient, setStatus, statusOn, statusOff]);
 
   useEffect(() => {
     if (statusInternal === 'fail') {
-      toast.error(statusOff);
+      toast.error(`The application is: ${statusOff}`);
     } else if (statusInternal === 'pass') {
-      toast.error(statusOn);
+      toast.success(`The application is: ${statusOn}`);
     }
   }, [statusInternal, statusOn, statusOff]);
 

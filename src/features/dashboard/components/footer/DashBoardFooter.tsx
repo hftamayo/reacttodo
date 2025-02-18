@@ -5,7 +5,7 @@ import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { HealthCheck } from '@/shared/services/hc/HealthCheck';
 
 export const DashBoardFooter: React.FC = () => {
-  const [statOn, setStatOn] = useState<string>('Checking backend status...');
+  const [statOn, setStatOn] = useState<string>('Checking status...');
   const { text: suggestions } = useTranslation('suggestions');
   const { text: serviceDesk } = useTranslation('serviceDesk');
 
