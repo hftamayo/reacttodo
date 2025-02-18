@@ -13,7 +13,7 @@ export const TaskRow: React.FC<TaskProps> = (task: TaskProps) => {
   const dispatch = useAppDispatch();
 
   const handleToggleComplete = () => {
-    dispatch(updateTask({ ...task, complete: !task.complete }));
+    dispatch(updateTask({ ...task, done: !task.done }));
   };
 
   const handleDeleteTask = () => {
@@ -23,19 +23,19 @@ export const TaskRow: React.FC<TaskProps> = (task: TaskProps) => {
   };
 
   return (
-    <li className={task.complete ? taskRow.liComplete : taskRow.li}>
+    <li className={task.done ? taskRow.liComplete : taskRow.li}>
       <div className="flex">
         <Input
           type="checkbox"
-          checked={task.complete}
+          checked={task.done}
           onChange={handleToggleComplete}
         />
         <Label
           size="large"
-          className={task.complete ? taskRow.textComplete : taskRow.text}
+          className={task.done ? taskRow.textComplete : taskRow.text}
           onClick={handleToggleComplete}
         >
-          {task.name}
+          {task.title}
         </Label>
       </div>
       <Button
