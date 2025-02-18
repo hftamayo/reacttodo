@@ -1,35 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import { beOps } from '../../../shared/services/api/apiClient';
+import {
+  ApiResponse,
+  HealthCheckData,
+  AppHealthDetails,
+} from '@/shared/types/api.type';
+import { useQueryClient } from '@tanstack/react-query';
+import { Toaster } from 'sonner';
 
 export const HealthCheck: React.FC = () => {
   const [status, setStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const checkHealth = async () => {
       try {
-        const response = await beOps.checkHealth();
-        setStatus(response.status);
+        const response: ApiResponse<HealthCheckData<AppHealthDetails>> =
+          await beOps.appHealth();
+        setStatus(response.data.healthCheck.status);
+        setError(null);
       } catch (err: unknown) {
         if (err instanceof Error) {
           setError(err.message);
+          setStatus('fail');
         } else {
           setError(String(err));
+          setStatus('fail');
         }
       }
     };
 
-    checkHealth();
-  }, []);
+    const intervalId = setInterval(checkHealth, 10000); // Check every 10 seconds
 
-  return (
-    <div>
-      {status ? (
-        <p>Backend Status: {status}</p>
-      ) : (
-        <p>Checking backend status...</p>
-      )}
-      {error && <p>Error: {error}</p>}
-    </div>
-  );
+    return () => clearInterval(intervalId);
+  }, [queryClient]);
+
+  useEffect(() => {
+    if (status === 'fail') {
+      toast.error('Connection lost');
+    } else if (status === 'pass') {
+      toast.success('Connection restored');
+    }
+  }, [status]);
+
+  return null; // This component does not render anything itself
 };
