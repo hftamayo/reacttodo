@@ -6,6 +6,7 @@ import {
   TaskProps,
   ApiResponse,
 } from '../../../shared/types/api.type';
+import { showError } from '@/shared/utils/error/errorUtils';
 
 const useGetTasks = (enabled: boolean) => {
   return useQuery<ApiResponse<TaskData>, Error>({
@@ -43,7 +44,9 @@ const useAddTask = () => {
       }
       return { previousTasks };
     },
-    onError: (_err, _newTask, context) => {
+    onError: (error, _newTask, context) => {
+      console.error('useAddTask mutation error:', error); // Log the error for debugging
+      showError(error, 'An error occurred while adding the task.');
       if (context?.previousTasks) {
         queryClient.setQueryData<ApiResponse<TaskData>>(
           ['tasks'],
@@ -78,8 +81,9 @@ const useUpdateTask = () => {
       }
       return { previousTasks };
     },
-
-    onError: (_err, _newTask, context) => {
+    onError: (error, _newTask, context) => {
+      console.error('useUpdateTask mutation error:', error); // Log the error for debugging
+      showError(error, 'An error occurred while updating the task.');
       if (context?.previousTasks) {
         queryClient.setQueryData<ApiResponse<TaskData>>(
           ['tasks'],
