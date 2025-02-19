@@ -17,6 +17,7 @@ export const TaskBoardContainer: React.FC = () => {
 
   useEffect(() => {
     if (error) {
+      console.error('TaskBoardContainer error:', error);
       showError(error, errorComponent);
     }
   }, [error, errorComponent]);
