@@ -20,7 +20,7 @@ export const getErrorMessage = (error: ApiError | unknown): string => {
 export const showError = (error: ApiError | unknown, userMessage: string) => {
   const errorMessage = getErrorMessage(error);
   console.error('Error:', errorMessage); // Log detailed error for developers
-  toast.error(userMessage, {
+  toast.error(userMessage || 'An error occurred. Please try again later.', {
     className: toasterMessages.errorToaster,
   });
 };
