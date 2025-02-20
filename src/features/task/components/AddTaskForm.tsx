@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useAppDispatch } from '@/shared/services/redux/hooks/useAppDispatch';
-import { showError } from '@/shared/utils/error/errorUtils';
+import { showUIError } from '@/shared/utils/error/errorUtils';
 import { addTask } from '../store/taskSlice';
 import { Input } from '@/shared/components/ui/input/Input';
 import { Button } from '@/shared/components/ui/button/Button';
@@ -34,9 +34,9 @@ export const AddTaskForm: React.FC = () => {
 
   const onError = (error: any) => {
     if (errors.title) {
-      showError(errors.title, errorComponent);
+      showUIError(errors.title.message ?? 'Validation error');
     } else {
-      showError(error, errorComponent);
+      showUIError(error.message || 'Validation error');
     }
   };
 
