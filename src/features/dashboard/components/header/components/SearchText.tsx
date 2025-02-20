@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
 import { Input } from '@/shared/components/ui/input/Input';
-import { DashBoardHeaderActionsStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 
 export const SearchText: React.FC = () => {
   const { text: textHolder } = useTranslation('searchTextControl');
-  const { text: textValidation } = useTranslation('searchTextValidation');
   const [searchValue, setSearchValue] = useState('');
 
   const handleSearch = (data: any) => {
