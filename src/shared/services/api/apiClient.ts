@@ -9,22 +9,26 @@ import {
   AppHealthDetails,
   AddTaskProps,
 } from '../../types/api.type';
+import { getErrorMessage, showApiError } from '@/shared/utils/error/errorUtils';
 
 const handleResponse = async <T>(
   response: Response
 ): Promise<ApiResponse<T>> => {
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(
-      `Network response was not ok: ${response.statusText}. Data: ${JSON.stringify(errorData)}`
-    );
+    const error: ApiError = {
+      httpStatusCode: response.status,
+      resultMessage: `Network response was not ok: ${response.statusText}. Data: ${JSON.stringify(errorData)}`,
+    };
+    handleError(error);
   }
   return await response.json();
 };
 
 const handleError = (error: unknown) => {
-  const apiError = error as ApiError;
-  throw new Error(`${apiError.httpStatusCode} ${apiError.resultMessage}`);
+  const errorMessage = getErrorMessage(error as ApiError);
+  showApiError(error as ApiError, errorMessage);
+  throw new Error(errorMessage);
 };
 
 export const beOps = {
