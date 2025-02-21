@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { beOps } from '../api/apiClient';
 import {
   ApiResponse,
@@ -26,18 +26,22 @@ export const HealthCheck = ({
         const response: ApiResponse<HealthCheckData<AppHealthDetails>> =
           await beOps.appHealth();
         const status = response.data.healthCheck.status;
-        setStatusInternal(status);
-        setStatus(status === 'pass' ? statusOn : statusOff);
+        if (status !== statusInternal) {
+          setStatusInternal(status);
+          setStatus(status === 'pass' ? statusOn : statusOff);
+        }
       } catch (err: unknown) {
-        setStatusInternal('fail');
-        setStatus(statusOff);
+        if (statusInternal !== 'fail') {
+          setStatusInternal('fail');
+          setStatus(statusOff);
+        }
       }
     };
 
-    const intervalId = setInterval(checkHealth, 10000); // Check every 10 seconds
+    const intervalId = setInterval(checkHealth, 60000); // Check every 60 seconds
 
     return () => clearInterval(intervalId);
-  }, [queryClient, setStatus, statusOn, statusOff]);
+  }, [queryClient, setStatus, statusOn, statusOff, statusInternal]);
 
   useEffect(() => {
     if (statusInternal === 'fail') {
