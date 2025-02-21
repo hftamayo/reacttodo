@@ -1,6 +1,4 @@
-import { addTask } from '@/features/task/store/taskSlice';
 import { LanguageContextType } from '@/shared/types/ui.type';
-import { error } from 'console';
 
 export const stringMessages: LanguageContextType = {
   //dashboard header components:
