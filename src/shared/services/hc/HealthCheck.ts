@@ -17,15 +17,17 @@ import { toasterMessages } from '@/shared/utils/twind/styles';
 
 export const HealthCheck = ({
   setStatus,
+  setMetrics,
 }: {
   setStatus: (status: string) => void;
+  setMetrics: (metrics: HealthMetrics) => void;
 }) => {
   const [statusInternal, setStatusInternal] = useState<string | null>(null);
   const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
   const [retryCount, setRetryCount] = useState<number>(0);
   const { text: statusOn = 'Online' } = useTranslation('statusOn'); // Changed to match expected value
   const { text: statusOff = 'Offline' } = useTranslation('statusOff'); // Changed to match expected value
-  const [metrics, setMetrics] = useState<HealthMetrics>({
+  const [internalMetrics, setInternalMetrics] = useState<HealthMetrics>({
     lastCheckTime: Date.now(),
     failureCount: 0,
     averageResponseTime: 0,
@@ -47,11 +49,14 @@ export const HealthCheck = ({
       }
 
       // Update metrics
-      setMetrics((prev) => ({
+      const updatedMetrics = {
         lastCheckTime: Date.now(),
         failureCount: 0, // Reset on success
-        averageResponseTime: (prev.averageResponseTime + responseTime) / 2,
-      }));
+        averageResponseTime:
+          (internalMetrics.averageResponseTime + responseTime) / 2,
+      };
+      setInternalMetrics(updatedMetrics);
+      setMetrics(updatedMetrics);
       //reset retry count if successful
       setRetryCount(0);
       return true;
@@ -59,11 +64,13 @@ export const HealthCheck = ({
       const endTime = performance.now();
       setRetryCount((prev) => prev + 1);
 
-      setMetrics((prev) => ({
+      const updatedMetrics = {
         lastCheckTime: Date.now(),
-        failureCount: prev.failureCount + 1,
-        averageResponseTime: prev.averageResponseTime,
-      }));
+        failureCount: internalMetrics.failureCount + 1,
+        averageResponseTime: internalMetrics.averageResponseTime,
+      };
+      setInternalMetrics(updatedMetrics);
+      setMetrics(updatedMetrics);
 
       if (retryCount >= MAX_RETRIES && statusInternal !== 'fail') {
         setStatusInternal('fail');
