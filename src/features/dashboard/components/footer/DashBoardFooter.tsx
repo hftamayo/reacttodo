@@ -4,7 +4,6 @@ import { DashBoardFooterStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { HealthCheck } from '@/shared/services/hc/HealthCheck';
 import { SocialLink, FooterLink } from '@/shared/types/footer.type';
-import { HealthMetrics } from '@/shared/types/healthcheck.type';
 
 const SOCIAL_LINKS: SocialLink[] = [
   {
@@ -26,11 +25,6 @@ const SOCIAL_LINKS: SocialLink[] = [
 
 export const DashBoardFooter: React.FC = () => {
   const [status, setStatus] = useState<string>('Checking status...');
-  const [metrics, setMetrics] = useState<HealthMetrics>({
-    lastCheckTime: Date.now(),
-    failureCount: 0,
-    averageResponseTime: 0,
-  });
   const { text: suggestions = 'Suggestions' } = useTranslation('suggestions');
   const { text: serviceDesk = 'Service Desk' } = useTranslation('serviceDesk');
 
@@ -85,7 +79,7 @@ export const DashBoardFooter: React.FC = () => {
       </div>
 
       <div className="flex">
-        <HealthCheck setStatus={setStatus} setMetrics={setMetrics} />
+        <HealthCheck setStatus={setStatus} />
         <span className={statusClass}>{status}</span> |
         {footerLinks.map(({ href, label }, index) => (
           <React.Fragment key={label}>
