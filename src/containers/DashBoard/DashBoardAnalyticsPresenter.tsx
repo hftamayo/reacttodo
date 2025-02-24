@@ -92,6 +92,7 @@ export const DashBoardAnalyticsPresenter: React.FC<{
           <span>
             Avg Response Time: {metrics.averageResponseTime.toFixed(2)} ms
           </span>
+          <span>Last Response Time: {metrics.responseTime.toFixed(2)} ms</span>
         </div>
       </div>
     </div>
