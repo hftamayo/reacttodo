@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { Skeleton } from '@/shared/components/ui/skeleton/Skeleton';
 
-export const DashBoardAnalytics: React.FC = () => {
+export const DashBoardAnalyticsSkeleton: React.FC = () => {
   const { title } = useTranslation('dashboardAnalyticsForm');
 
   return (
