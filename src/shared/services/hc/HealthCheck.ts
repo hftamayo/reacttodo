@@ -11,11 +11,9 @@ import {
   OFFLINE_CHECK_INTERVAL,
   MAX_RETRIES,
 } from '@/shared/utils/envvars';
-import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { toasterMessages } from '@/shared/utils/twind/styles';
-import { set } from 'react-hook-form';
 
 export const HealthCheck = ({
   setStatus,
@@ -25,11 +23,9 @@ export const HealthCheck = ({
   const [statusInternal, setStatusInternal] = useState<string | null>(null);
   const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
   const [retryCount, setRetryCount] = useState<number>(0);
-  const queryClient = useQueryClient();
-  const { text: statusOn = 'Status On' } = useTranslation('statusOn');
-  const { text: statusOff = 'Status Off' } = useTranslation('statusOff');
+  const { text: statusOn = 'Online' } = useTranslation('statusOn'); // Changed to match expected value
+  const { text: statusOff = 'Offline' } = useTranslation('statusOff'); // Changed to match expected value
 
-  // Memoize the health check function to prevent unnecessary recreations
   const checkHealth = useCallback(async () => {
     try {
       const response: ApiResponse<HealthCheckData<AppHealthDetails>> =
@@ -52,9 +48,13 @@ export const HealthCheck = ({
       }
       return false;
     }
-  }, [queryClient, setStatus, statusOn, statusOff, statusInternal, retryCount]);
+  }, [setStatus, statusOn, statusOff, statusInternal, retryCount]);
 
-  //hook for handle online/offline events
+  // Run health check on initial mount
+  useEffect(() => {
+    checkHealth();
+  }, []);
+
   useEffect(() => {
     const handleOnline = () => {
       setIsOnline(true);

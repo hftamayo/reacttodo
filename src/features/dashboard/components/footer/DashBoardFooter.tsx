@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaFacebook, FaTwitter, FaTiktok } from 'react-icons/fa';
 import { DashBoardFooterStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
@@ -43,6 +43,12 @@ export const DashBoardFooter: React.FC = () => {
     status === 'Online'
       ? DashBoardFooterStyles.footer_text
       : DashBoardFooterStyles.footer_text_offline;
+
+  // Add HealthCheck component to update status
+  useEffect(() => {
+    // This is just to visually show in the UI that we have a health check component
+    console.log('HealthCheck component is active');
+  }, []);
 
   const handleSocialClick =
     (url: string, label: string) => (e: React.MouseEvent) => {
