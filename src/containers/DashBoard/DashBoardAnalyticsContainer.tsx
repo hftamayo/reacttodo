@@ -1,9 +1,14 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/shared/services/redux/rootReducer';
+import { useHealthMetrics } from '@/shared/services/redux/hooks/useHealthMetrics';
 import { DashBoardAnalyticsPresenter } from './DashBoardAnalyticsPresenter';
+import { DashBoardAnalyticsSkeleton } from '@/shared/components/ui/skeleton/DashBoardAnalyticsSkeleton';
+
 export const DashBoardAnalyticsContainer: React.FC = () => {
-  const metrics = useSelector((state: RootState) => state.healthMetrics);
+  const { metrics, loading } = useHealthMetrics();
+
+  if (loading) {
+    return <DashBoardAnalyticsSkeleton />;
+  }
 
   return <DashBoardAnalyticsPresenter metrics={metrics} />;
 };
