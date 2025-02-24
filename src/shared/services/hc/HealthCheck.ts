@@ -16,6 +16,7 @@ import { toast } from 'sonner';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { toasterMessages } from '@/shared/utils/twind/styles';
 import { setMetrics } from '../redux/slices/healthMetricsSlice';
+import { showApiError } from '@/shared/utils/error/errorUtils';
 
 export const HealthCheck = ({
   setStatus,
@@ -81,6 +82,19 @@ export const HealthCheck = ({
         setStatusInternal('fail');
         setStatus(statusOff);
       }
+
+      if (err instanceof Error) {
+        showApiError(
+          { httpStatusCode: 500, resultMessage: err.message },
+          'Failed to perform health check. Please try again later.'
+        );
+      } else {
+        showApiError(
+          { httpStatusCode: 500, resultMessage: 'Unknown error' },
+          'Failed to perform health check. Please try again later.'
+        );
+      }
+
       return false;
     }
   }, [
