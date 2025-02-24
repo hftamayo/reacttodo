@@ -25,22 +25,45 @@ export const HealthCheck = ({
   const [retryCount, setRetryCount] = useState<number>(0);
   const { text: statusOn = 'Online' } = useTranslation('statusOn'); // Changed to match expected value
   const { text: statusOff = 'Offline' } = useTranslation('statusOff'); // Changed to match expected value
+  const [metrics, setMetrics] = useState<HealthMetrics>({
+    lastCheckTime: Date.now(),
+    failureCount: 0,
+    averageResponseTime: 0,
+  });
 
   const checkHealth = useCallback(async () => {
+    const startTime = performance.now();
     try {
       const response: ApiResponse<HealthCheckData<AppHealthDetails>> =
         await beOps.appHealth();
+      const endTime = performance.now();
+      const responseTime = endTime - startTime;
+
       const status = response.data.healthCheck.status;
 
       if (status !== statusInternal) {
         setStatusInternal(status);
         setStatus(status === 'pass' ? statusOn : statusOff);
       }
+
+      // Update metrics
+      setMetrics((prev) => ({
+        lastCheckTime: Date.now(),
+        failureCount: 0, // Reset on success
+        averageResponseTime: (prev.averageResponseTime + responseTime) / 2,
+      }));
       //reset retry count if successful
       setRetryCount(0);
       return true;
     } catch (err: unknown) {
+      const endTime = performance.now();
       setRetryCount((prev) => prev + 1);
+
+      setMetrics((prev) => ({
+        lastCheckTime: Date.now(),
+        failureCount: prev.failureCount + 1,
+        averageResponseTime: prev.averageResponseTime,
+      }));
 
       if (retryCount >= MAX_RETRIES && statusInternal !== 'fail') {
         setStatusInternal('fail');
