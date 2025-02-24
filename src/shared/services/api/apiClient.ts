@@ -34,10 +34,16 @@ const handleError = (error: unknown) => {
 export const beOps = {
   async appHealth(): Promise<ApiResponse<HealthCheckData<AppHealthDetails>>> {
     try {
+      const startTime = performance.now();
       const response = await fetch(`${BACKEND_URL}/healthcheck/app`, {
         //credentials: 'include',
       });
-      return await handleResponse<HealthCheckData<AppHealthDetails>>(response);
+      const data =
+        await handleResponse<HealthCheckData<AppHealthDetails>>(response);
+      if (data.data.healthCheck.details) {
+        data.data.healthCheck.details.startTime = startTime;
+      }
+      return data;
     } catch (error: unknown) {
       handleError(error);
       throw error;

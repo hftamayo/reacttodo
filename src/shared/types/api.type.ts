@@ -6,6 +6,7 @@ export type AppHealthDetails = {
     total: number;
     free: number;
   };
+  startTime: number;
 };
 
 export type DbHealthDetails = {
