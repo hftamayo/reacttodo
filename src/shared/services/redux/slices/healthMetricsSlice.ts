@@ -5,6 +5,7 @@ const initialState: HealthMetrics = {
   lastCheckTime: Date.now(),
   failureCount: 0,
   averageResponseTime: 0,
+  responseTime: 0,
 };
 
 const healthMetricsSlice = createSlice({
