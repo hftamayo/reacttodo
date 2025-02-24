@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import { beOps } from '../api/apiClient';
 import {
   ApiResponse,
@@ -14,14 +15,14 @@ import {
 import { toast } from 'sonner';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { toasterMessages } from '@/shared/utils/twind/styles';
+import { setMetrics } from '../redux/slices/healthMetricsSlice';
 
 export const HealthCheck = ({
   setStatus,
-  setMetrics,
 }: {
   setStatus: (status: string) => void;
-  setMetrics: (metrics: HealthMetrics) => void;
 }) => {
+  const dispatch = useDispatch();
   const [statusInternal, setStatusInternal] = useState<string | null>(null);
   const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
   const [retryCount, setRetryCount] = useState<number>(0);
@@ -31,6 +32,7 @@ export const HealthCheck = ({
     lastCheckTime: Date.now(),
     failureCount: 0,
     averageResponseTime: 0,
+    responseTime: 0,
   });
 
   const checkHealth = useCallback(async () => {
@@ -54,20 +56,23 @@ export const HealthCheck = ({
         failureCount: 0, // Reset on success
         averageResponseTime:
           (internalMetrics.averageResponseTime + responseTime) / 2,
+        responseTime,
       };
       setInternalMetrics(updatedMetrics);
-      setMetrics(updatedMetrics);
+      dispatch(setMetrics(updatedMetrics));
       //reset retry count if successful
       setRetryCount(0);
       return true;
     } catch (err: unknown) {
       const endTime = performance.now();
+      const responseTime = endTime - startTime;
       setRetryCount((prev) => prev + 1);
 
       const updatedMetrics = {
         lastCheckTime: Date.now(),
         failureCount: internalMetrics.failureCount + 1,
         averageResponseTime: internalMetrics.averageResponseTime,
+        responseTime,
       };
       setInternalMetrics(updatedMetrics);
       setMetrics(updatedMetrics);
@@ -78,7 +83,15 @@ export const HealthCheck = ({
       }
       return false;
     }
-  }, [setStatus, statusOn, statusOff, statusInternal, retryCount]);
+  }, [
+    setStatus,
+    statusOn,
+    statusOff,
+    statusInternal,
+    retryCount,
+    internalMetrics,
+    dispatch,
+  ]);
 
   // Run health check on initial mount
   useEffect(() => {
