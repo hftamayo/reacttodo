@@ -14,13 +14,22 @@ export const HealthCheck = ({
   const { text: statusOn = 'Online' } = useTranslation('statusOn');
   const { text: statusOff = 'Offline' } = useTranslation('statusOff');
 
+  // Fix 2: Add state to track if toast has been shown already
+  const [hasShownStatus, setHasShownStatus] = React.useState({
+    pass: false,
+    fail: false,
+  });
+
   useEffect(() => {
-    if (statusInternal === 'fail') {
+    // Only show toast if status changes and hasn't been shown for this status yet
+    if (statusInternal === 'fail' && !hasShownStatus.fail) {
       showErrorToast(`The application is: ${statusOff}`);
-    } else if (statusInternal === 'pass') {
+      setHasShownStatus((prev) => ({ ...prev, fail: true, pass: false }));
+    } else if (statusInternal === 'pass' && !hasShownStatus.pass) {
       showSuccessToast(`The application is: ${statusOn}`);
+      setHasShownStatus((prev) => ({ ...prev, pass: true, fail: false }));
     }
-  }, [statusInternal, statusOn, statusOff]);
+  }, [statusInternal, statusOn, statusOff, hasShownStatus]);
 
   return null;
 };

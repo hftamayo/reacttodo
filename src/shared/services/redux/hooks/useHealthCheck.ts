@@ -25,8 +25,14 @@ export const useHealthCheck = (setStatus: (status: string) => void) => {
     averageResponseTime: 0,
     responseTime: 0,
   });
+  // Fix 1: Add a flag to track if check is running
+  const [isChecking, setIsChecking] = useState<boolean>(false);
 
   const checkHealth = useCallback(async () => {
+    // Prevent concurrent calls
+    if (isChecking) return false;
+
+    setIsChecking(true);
     const startTime = performance.now();
     try {
       const response: ApiResponse<HealthCheckData<AppHealthDetails>> =
@@ -36,8 +42,10 @@ export const useHealthCheck = (setStatus: (status: string) => void) => {
 
       const status = response.data.healthCheck.status;
 
+      // Fix 3: Pass the actual translated strings to the parent
       if (status !== statusInternal) {
         setStatusInternal(status);
+        // Pass the actual translation strings here
         setStatus(status === 'pass' ? 'Online' : 'Offline');
       }
 
@@ -53,6 +61,7 @@ export const useHealthCheck = (setStatus: (status: string) => void) => {
       dispatch(setMetrics(updatedMetrics));
       //reset retry count if successful
       setRetryCount(0);
+      setIsChecking(false);
       return true;
     } catch (err: unknown) {
       const endTime = performance.now();
@@ -73,30 +82,47 @@ export const useHealthCheck = (setStatus: (status: string) => void) => {
         setStatusInternal('fail');
         setStatus('Offline');
 
-        if (err instanceof Error) {
-          showApiError(
-            { httpStatusCode: 500, resultMessage: err.message },
-            'Failed to perform health check. Please try again later.'
-          );
-        } else {
-          showApiError(
-            { httpStatusCode: 500, resultMessage: 'Unknown error' },
-            'Failed to perform health check. Please try again later.'
-          );
+        // Only show the API error once
+        if (internalMetrics.failureCount === 0) {
+          if (err instanceof Error) {
+            showApiError(
+              { httpStatusCode: 500, resultMessage: err.message },
+              'Failed to perform health check. Please try again later.'
+            );
+          } else {
+            showApiError(
+              { httpStatusCode: 500, resultMessage: 'Unknown error' },
+              'Failed to perform health check. Please try again later.'
+            );
+          }
         }
       }
 
+      setIsChecking(false);
       return false;
     }
-  }, [setStatus, statusInternal, retryCount, internalMetrics, dispatch]);
+  }, [
+    setStatus,
+    statusInternal,
+    retryCount,
+    internalMetrics,
+    dispatch,
+    isChecking,
+  ]);
 
   // Run health check on initial mount
   useEffect(() => {
     checkHealth();
-  }, [checkHealth]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Remove checkHealth from deps array to prevent initial loop
 
   // Dynamic interval based on retry count
   useEffect(() => {
+    if (retryCount >= MAX_RETRIES) {
+      // Stop polling when max retries reached
+      return () => {};
+    }
+
     const interval =
       retryCount > 0 ? OFFLINE_CHECK_INTERVAL : HEALTH_CHECK_INTERVAL;
     const intervalId = setInterval(checkHealth, interval);
