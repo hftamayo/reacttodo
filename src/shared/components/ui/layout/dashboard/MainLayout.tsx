@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useAppSelector } from '@/shared/services/redux/hooks/useAppSelector';
 import { CustomOutlet } from '@/shared/services/routing/CustomOutlet';
 import { DashBoardHeader } from '@/features/dashboard/components/header/DashBoardHeader';
@@ -8,7 +8,7 @@ import { menuOptions } from '@/features/dashboard/components/menu/config/menuOpt
 import { APP_NAME } from '@/shared/utils/envvars';
 import { MainLayoutStyles } from '@/shared/utils/twind/styles';
 
-export const MainLayout: React.FC = () => {
+export const MainLayout: React.FC = React.memo(() => {
   const theme = useAppSelector((state: any) => state.theme.theme);
   const isAuthenticated = true;
   const userRole = 'admin';
@@ -21,21 +21,26 @@ export const MainLayout: React.FC = () => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
   }, [theme]);
 
-  let selectMenuOptions;
-  if (userRole === 'admin') {
-    selectMenuOptions = adminMenuOptions;
-  } else if (userRole === 'supervisor') {
-    selectMenuOptions = supervisorMenuOptions;
-  } else {
-    selectMenuOptions = userMenuOptions;
-  }
+  const selectMenuOptions = useMemo(() => {
+    if (userRole === 'admin') {
+      return adminMenuOptions;
+    } else if (userRole === 'supervisor') {
+      return supervisorMenuOptions;
+    } else {
+      return userMenuOptions;
+    }
+  }, [userRole, adminMenuOptions, supervisorMenuOptions, userMenuOptions]);
+
+  const handleSidebarToggle = useCallback(() => {
+    setSidebarToggle((prev) => !prev);
+  }, []);
 
   return (
     <div className={MainLayoutStyles.layoutContainer}>
       <div className={MainLayoutStyles.layoutHeader}>
         {isAuthenticated ? (
           <DashBoardHeader
-            setSidebarToggle={() => setSidebarToggle(!sidebarToggle)}
+            setSidebarToggle={handleSidebarToggle}
             appName={APP_NAME}
           />
         ) : null}
@@ -58,4 +63,4 @@ export const MainLayout: React.FC = () => {
       </div>
     </div>
   );
-};
+});
