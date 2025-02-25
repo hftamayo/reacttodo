@@ -1,5 +1,6 @@
 import { toast } from 'sonner';
 import { toasterMessages } from '@/shared/utils/twind/styles';
+import { showApiError } from '@/shared/utils/error/errorUtils';
 
 export const showSuccessToast = (message: string) => {
   toast.success(message, {
@@ -7,8 +8,7 @@ export const showSuccessToast = (message: string) => {
   });
 };
 
-export const showErrorToast = (message: string) => {
-  toast.error(message, {
-    className: toasterMessages.errorToaster,
-  });
+export const showErrorToast = (message: string, userMessage: string) => {
+  console.log('Message to the developer: ', message);
+  showApiError({ httpStatusCode: 500, resultMessage: message }, userMessage);
 };
