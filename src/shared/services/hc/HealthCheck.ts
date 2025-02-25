@@ -10,7 +10,7 @@ export const HealthCheck = ({
   setStatus: (status: string) => void;
 }) => {
   const { statusInternal, checkHealth } = useHealthCheck(setStatus);
-  const isOnline = useNetworkStatus(checkHealth);
+  useNetworkStatus(checkHealth);
   const { text: statusOn = 'Online' } = useTranslation('statusOn');
   const { text: statusOff = 'Offline' } = useTranslation('statusOff');
 
@@ -23,7 +23,10 @@ export const HealthCheck = ({
   useEffect(() => {
     // Only show toast if status changes and hasn't been shown for this status yet
     if (statusInternal === 'fail' && !hasShownStatus.fail) {
-      showErrorToast(`The application is: ${statusOff}`);
+      showErrorToast(
+        'Application is offline',
+        `The application is: ${statusOff}`
+      );
       setHasShownStatus((prev) => ({ ...prev, fail: true, pass: false }));
     } else if (statusInternal === 'pass' && !hasShownStatus.pass) {
       showSuccessToast(`The application is: ${statusOn}`);
