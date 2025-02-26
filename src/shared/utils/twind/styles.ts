@@ -71,6 +71,7 @@ export const taskBoard = {
   button:
     'border p-4 ml-2 bg-[var(--accent-color)] text-[var(--neutral-light)]',
   count: 'text-center p-2',
+  error: 'text-center text-red-500',
 };
 
 export const taskRow = {
