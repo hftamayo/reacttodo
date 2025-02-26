@@ -103,6 +103,7 @@ export type TaskBoardPresenterProps = {
   isLoading: boolean;
   totalTasks: number;
   completedTasks: number;
+  error?: Error;
 };
 
 //common types:
