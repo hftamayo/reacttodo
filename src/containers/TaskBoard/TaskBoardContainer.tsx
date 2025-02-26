@@ -29,6 +29,7 @@ export const TaskBoardContainer: React.FC = () => {
       isLoading={isLoading}
       totalTasks={totalTasks}
       completedTasks={completedTasks}
+      error={error ?? undefined}
     />
   );
 };
