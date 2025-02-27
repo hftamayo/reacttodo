@@ -15,7 +15,7 @@ export const useHealthMetrics = () => {
         await dispatch(fetchHealthMetrics()).unwrap();
         setLoading(false);
       } catch (error) {
-        console.error('Failed to load health metrics:', error);
+        console.error('Developer Error: Failed to load health metrics:', error);
         setLoading(false);
       }
     };

@@ -17,7 +17,7 @@ export const getErrorMessage = (error: ApiError): string => {
 
 export const showApiError = (error: ApiError, userMessage: string) => {
   const errorMessage = getErrorMessage(error);
-  console.error('Error:', errorMessage); // Log detailed error for developers
+  console.error('Developer Error:', errorMessage); // Log detailed error for developers
   toast.error(userMessage || 'An error occurred. Please try again later.', {
     className: toasterMessages.errorToaster,
   });
