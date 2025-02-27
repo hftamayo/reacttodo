@@ -44,12 +44,6 @@ export const DashBoardFooter: React.FC = () => {
       ? DashBoardFooterStyles.footer_text
       : DashBoardFooterStyles.footer_text_offline;
 
-  // Add HealthCheck component to update status
-  useEffect(() => {
-    // This is just to visually show in the UI that we have a health check component
-    console.log('HealthCheck component is active');
-  }, []);
-
   const handleSocialClick =
     (url: string, label: string) => (e: React.MouseEvent) => {
       // You might want to add analytics tracking here
