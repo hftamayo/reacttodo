@@ -4,23 +4,33 @@ import {
   AddTaskProps,
   TaskData,
   ApiResponse,
-  TasksState,
   ApiError,
 } from '../../../shared/types/api.type';
 import { RootState } from '../../../shared/services/redux/rootReducer';
 import { taskService } from '../services/taskService';
 import { getErrorMessage, showApiError } from '@/shared/utils/error/errorUtils';
 
-export const getTotalTasks = (state: RootState) => state.task.tasks.size;
+// Update the RootState type to reflect the new tasks structure
+export const getTotalTasks = (state: RootState) =>
+  Object.keys(state.task.tasks).length;
 
 export const getTasks = createAsyncThunk(
   'task/getTasks',
   async (_, { rejectWithValue }) => {
     try {
       const response: ApiResponse<TaskData> = await taskService.fetchTasks();
+      // Convert to object instead of Map
       const tasks = response.data.tasks
-        ? new Map(response.data.tasks.map((task) => [task.id!, task]))
-        : new Map();
+        ? response.data.tasks.reduce(
+            (acc, task) => {
+              if (task.id) {
+                acc[task.id] = task;
+              }
+              return acc;
+            },
+            {} as Record<string, TaskProps>
+          )
+        : {};
       return tasks;
     } catch (error) {
       const errorMessage = getErrorMessage(error as ApiError);
@@ -89,8 +99,19 @@ export const deleteTask = createAsyncThunk(
   }
 );
 
-const initialState: TasksState = {
-  tasks: new Map<string, TaskProps>(),
+// Update TasksState interface to use Record instead of Map
+interface UpdatedTasksState {
+  tasks: Record<string, TaskProps>;
+  task: TaskProps | null;
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  loading: boolean;
+  error: string | null;
+  msg: string | null;
+}
+
+const initialState: UpdatedTasksState = {
+  // Use object instead of Map
+  tasks: {},
   task: null,
   status: 'idle',
   loading: false,
@@ -147,7 +168,8 @@ const tasksSlice = createSlice({
           state.status = 'succeeded';
           state.loading = false;
           if (action.payload?.id) {
-            state.tasks.set(action.payload.id, action.payload);
+            // Use object notation instead of Map.set
+            state.tasks[action.payload.id] = action.payload;
           }
         }
       )
@@ -166,7 +188,8 @@ const tasksSlice = createSlice({
           state.loading = false;
           state.status = 'succeeded';
           if (action.payload?.id) {
-            state.tasks.set(action.payload.id, action.payload);
+            // Use object notation instead of Map.set
+            state.tasks[action.payload.id] = action.payload;
           }
         }
       )
@@ -184,7 +207,8 @@ const tasksSlice = createSlice({
         (state, action: PayloadAction<{ id: string; msg: string }>) => {
           state.status = 'succeeded';
           state.loading = false;
-          state.tasks.delete(action.payload.id);
+          // Use delete operator instead of Map.delete
+          delete state.tasks[action.payload.id];
           state.error = action.payload.msg;
         }
       )
