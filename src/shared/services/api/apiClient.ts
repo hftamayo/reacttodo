@@ -9,7 +9,7 @@ import {
   AppHealthDetails,
   AddTaskProps,
 } from '../../types/api.type';
-import { getErrorMessage, showApiError } from '@/shared/utils/error/errorUtils';
+import { showError } from '../notification/notificationService';
 
 const handleResponse = async <T>(
   response: Response
@@ -26,9 +26,11 @@ const handleResponse = async <T>(
 };
 
 const handleError = (error: unknown) => {
-  const errorMessage = getErrorMessage(error as ApiError);
-  showApiError(error as ApiError, errorMessage);
-  throw new Error(errorMessage);
+  showError(
+    error as ApiError,
+    'An error occurred while processing your request.'
+  );
+  throw new Error((error as ApiError).resultMessage);
 };
 
 export const beOps = {
