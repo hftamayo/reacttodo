@@ -11,24 +11,24 @@ export const isApiError = (error: any): error is ApiError => {
   );
 };
 
-export const getErrorMessage = (error: ApiError): string => {
+const getErrorMessage = (error: ApiError): string => {
   return `${error.httpStatusCode} ${error.resultMessage}`;
 };
 
-export const showApiError = (error: ApiError, userMessage: string) => {
-  const errorMessage = getErrorMessage(error);
-  console.error('Developer Error:', errorMessage); // Log detailed error for developers
-  toast.error(userMessage || 'An error occurred. Please try again later.', {
-    className: toasterMessages.errorToaster,
-  });
-};
-
-export const showUIError = (message: string) => {
-  console.error('Validation Error:', message); // Log validation error for developers
-  toast.error(
-    message || 'Validation error. Please check your input and try again.',
-    {
+export const showError = (error: ApiError | string, userMessage?: string) => {
+  if (isApiError(error)) {
+    const errorMessage = getErrorMessage(error);
+    console.error('Developer Error:', errorMessage); // Log detailed error for developers
+    toast.error(userMessage || 'An error occurred. Please try again later.', {
       className: toasterMessages.errorToaster,
-    }
-  );
+    });
+  } else {
+    console.error('Validation Error:', error); // Log validation error for developers
+    toast.error(
+      userMessage || 'Validation error. Please check your input and try again.',
+      {
+        className: toasterMessages.errorToaster,
+      }
+    );
+  }
 };
