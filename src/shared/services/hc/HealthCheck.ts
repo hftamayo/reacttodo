@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHealthCheck } from '../redux/hooks/useHealthCheck';
 import { useNetworkStatus } from '../redux/hooks/useNetworkStatus';
-import { showSuccessToast } from './notificationService';
-import { showError } from '@/shared/utils/error/errorUtils';
+import { showSuccess, showError } from '../notification/notificationService';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 
 export const HealthCheck = ({
@@ -27,7 +26,7 @@ export const HealthCheck = ({
       showError('Application is offline', `The application is: ${statusOff}`);
       setHasShownStatus((prev) => ({ ...prev, fail: true, pass: false }));
     } else if (statusInternal === 'pass' && !hasShownStatus.pass) {
-      showSuccessToast(`The application is: ${statusOn}`);
+      showSuccess(`The application is: ${statusOn}`);
       setHasShownStatus((prev) => ({ ...prev, pass: true, fail: false }));
     }
   }, [statusInternal, statusOn, statusOff, hasShownStatus]);
