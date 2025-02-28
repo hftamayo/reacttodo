@@ -3,7 +3,7 @@ import { taskHooks } from '@/features/task/hooks/taskHooks';
 import TaskBoardPresenter from './TaskBoardPresenter';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { useLazyLoad } from '@/shared/services/lazyloading/hooks/useLazyLoad';
-import { showApiError, isApiError } from '@/shared/utils/error/errorUtils';
+import { showError } from '@/shared/services/notification/notificationService';
 
 export const TaskBoardContainer: React.FC = () => {
   const { ref, shouldFetch } = useLazyLoad();
@@ -16,9 +16,8 @@ export const TaskBoardContainer: React.FC = () => {
   const completedTasks = tasks.filter((task) => task.done).length;
 
   useEffect(() => {
-    if (isApiError(error)) {
-      console.error('TaskBoardContainer error:', error);
-      showApiError(error, errorComponent);
+    if (error) {
+      showError('unexpected UI error', errorComponent);
     }
   }, [error, errorComponent]);
 

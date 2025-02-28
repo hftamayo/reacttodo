@@ -4,13 +4,13 @@ import { TaskRow } from '@/features/task/components/TaskRow';
 import { taskBoard } from '@/shared/utils/twind/styles';
 import { APP_NAME } from '@/shared/utils/envvars';
 import { TaskBoardPresenterProps } from '@/shared/types/api.type';
-import { showUIError } from '@/shared/utils/error/errorUtils';
+import { showError } from '@/shared/services/notification/notificationService';
 
 const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
   ({ tasks, isLoading, totalTasks, completedTasks, error }, ref) => {
     const taskList = useMemo(() => {
       if (error) {
-        showUIError(error.message);
+        showError(error.message);
         return (
           <p className={taskBoard.error}>
             Failed to load data. Incident reported
