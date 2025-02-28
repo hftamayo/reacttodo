@@ -8,7 +8,7 @@ import {
 } from '../../../shared/types/api.type';
 import { RootState } from '../../../shared/services/redux/rootReducer';
 import { taskService } from '../services/taskService';
-import { getErrorMessage, showApiError } from '@/shared/utils/error/errorUtils';
+import { showError } from '@/shared/services/notification/notificationService';
 
 // Update the RootState type to reflect the new tasks structure
 export const getTotalTasks = (state: RootState) =>
@@ -33,9 +33,8 @@ export const getTasks = createAsyncThunk(
         : {};
       return tasks;
     } catch (error) {
-      const errorMessage = getErrorMessage(error as ApiError);
-      showApiError(error as ApiError, 'Failed to fetch tasks');
-      return rejectWithValue(errorMessage);
+      showError(error as ApiError, 'Failed to fetch tasks');
+      return rejectWithValue((error as ApiError).resultMessage);
     }
   }
 );
@@ -47,9 +46,8 @@ export const getTask = createAsyncThunk(
       const response: ApiResponse<TaskData> = await taskService.fetchTask(id);
       return response.data.task;
     } catch (error) {
-      const errorMessage = getErrorMessage(error as ApiError);
-      showApiError(error as ApiError, 'Failed to fetch task');
-      return rejectWithValue(errorMessage);
+      showError(error as ApiError, 'Failed to fetch tasks');
+      return rejectWithValue((error as ApiError).resultMessage);
     }
   }
 );
@@ -62,9 +60,8 @@ export const addTask = createAsyncThunk(
         await taskService.fetchAddTask(task);
       return response.data.task;
     } catch (error) {
-      const errorMessage = getErrorMessage(error as ApiError);
-      showApiError(error as ApiError, 'Failed to add a task');
-      return rejectWithValue(errorMessage);
+      showError(error as ApiError, 'Failed to fetch tasks');
+      return rejectWithValue((error as ApiError).resultMessage);
     }
   }
 );
@@ -77,9 +74,8 @@ export const updateTask = createAsyncThunk(
         await taskService.fetchUpdateTask(task);
       return response.data.task;
     } catch (error) {
-      const errorMessage = getErrorMessage(error as ApiError);
-      showApiError(error as ApiError, 'Failed to update a task');
-      return rejectWithValue(errorMessage);
+      showError(error as ApiError, 'Failed to fetch tasks');
+      return rejectWithValue((error as ApiError).resultMessage);
     }
   }
 );
@@ -92,9 +88,8 @@ export const deleteTask = createAsyncThunk(
         await taskService.fetchDeleteTask(id);
       return { id, msg: response.resultMessage };
     } catch (error) {
-      const errorMessage = getErrorMessage(error as ApiError);
-      showApiError(error as ApiError, 'Failed to delete a task');
-      return rejectWithValue(errorMessage);
+      showError(error as ApiError, 'Failed to fetch tasks');
+      return rejectWithValue((error as ApiError).resultMessage);
     }
   }
 );
