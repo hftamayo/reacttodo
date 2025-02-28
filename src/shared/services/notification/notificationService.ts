@@ -20,7 +20,7 @@ export const showError = (error: ApiError | string, userMessage?: string) => {
   if (isApiError(error)) {
     const errorMessage = getErrorMessage(error);
     console.error('Developer Error:', errorMessage); // Log detailed error for developers
-    toast.error(userMessage || 'An error occurred. Please try again later.', {
+    toast.error(userMessage ?? 'An error occurred. Please try again later.', {
       className: toasterMessages.errorToaster,
     });
   } else {
