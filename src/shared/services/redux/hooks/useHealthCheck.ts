@@ -8,7 +8,7 @@ import {
 } from '@/shared/types/api.type';
 import { HealthMetrics } from '@/shared/types/healthcheck.type';
 import { setMetrics } from '../slices/healthMetricsSlice';
-import { showApiError } from '@/shared/utils/error/errorUtils';
+import { showError } from '../../notification/notificationService';
 import {
   HEALTH_CHECK_INTERVAL,
   OFFLINE_CHECK_INTERVAL,
@@ -85,12 +85,12 @@ export const useHealthCheck = (setStatus: (status: string) => void) => {
         // Only show the API error once
         if (internalMetrics.failureCount === 0) {
           if (err instanceof Error) {
-            showApiError(
+            showError(
               { httpStatusCode: 500, resultMessage: err.message },
               'Failed to perform health check. Please try again later.'
             );
           } else {
-            showApiError(
+            showError(
               { httpStatusCode: 500, resultMessage: 'Unknown error' },
               'Failed to perform health check. Please try again later.'
             );
