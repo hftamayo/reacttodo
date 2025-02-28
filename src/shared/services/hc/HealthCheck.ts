@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useHealthCheck } from '../redux/hooks/useHealthCheck';
 import { useNetworkStatus } from '../redux/hooks/useNetworkStatus';
-import { showSuccessToast, showErrorToast } from './notificationService';
+import { showSuccessToast } from './notificationService';
+import { showError } from '@/shared/utils/error/errorUtils';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 
 export const HealthCheck = ({
@@ -23,10 +24,7 @@ export const HealthCheck = ({
   useEffect(() => {
     // Only show toast if status changes and hasn't been shown for this status yet
     if (statusInternal === 'fail' && !hasShownStatus.fail) {
-      showErrorToast(
-        'Application is offline',
-        `The application is: ${statusOff}`
-      );
+      showError('Application is offline', `The application is: ${statusOff}`);
       setHasShownStatus((prev) => ({ ...prev, fail: true, pass: false }));
     } else if (statusInternal === 'pass' && !hasShownStatus.pass) {
       showSuccessToast(`The application is: ${statusOn}`);
