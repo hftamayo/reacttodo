@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { HealthMetrics } from '@/shared/types/healthcheck.type';
-import { beOps } from '../../api/apiClient';
+import { beOps } from '../../../shared/services/api/apiClient';
 
 const initialState: HealthMetrics = {
   lastCheckTime: Date.now(),
