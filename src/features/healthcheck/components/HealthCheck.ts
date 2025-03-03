@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { useHealthCheck } from '../../../shared/services/redux/hooks/useHealthCheck';
-import { useNetworkStatus } from '../../../shared/services/redux/hooks/useNetworkStatus';
+import { useHealthCheck } from '../hooks/useHealthCheck';
+import { useNetworkStatus } from '../hooks/useNetworkStatus';
 import {
   showSuccess,
   showError,
