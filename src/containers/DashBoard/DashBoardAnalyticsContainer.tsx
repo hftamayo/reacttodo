@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHealthMetrics } from '@/shared/services/redux/hooks/useHealthMetrics';
+import { useHealthMetrics } from '@/features/healthcheck/hooks/useHealthMetrics';
 import { DashBoardAnalyticsPresenter } from './DashBoardAnalyticsPresenter';
 import { DashBoardAnalyticsSkeleton } from '@/shared/components/ui/skeleton/DashBoardAnalyticsSkeleton';
 
