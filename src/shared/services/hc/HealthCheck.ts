@@ -24,12 +24,14 @@ export const HealthCheck = ({
     // Only show toast if status changes and hasn't been shown for this status yet
     if (statusInternal === 'fail' && !hasShownStatus.fail) {
       showError('Application is offline', `The application is: ${statusOff}`);
+      setStatus('Offline');
       setHasShownStatus((prev) => ({ ...prev, fail: true, pass: false }));
     } else if (statusInternal === 'pass' && !hasShownStatus.pass) {
       showSuccess(`The application is: ${statusOn}`);
+      setStatus('Online');
       setHasShownStatus((prev) => ({ ...prev, pass: true, fail: false }));
     }
-  }, [statusInternal, statusOn, statusOff, hasShownStatus]);
+  }, [statusInternal, statusOn, statusOff, hasShownStatus, setStatus]);
 
   return null;
 };
