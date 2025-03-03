@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaFacebook, FaTwitter, FaTiktok } from 'react-icons/fa';
 import { DashBoardFooterStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
-import { HealthCheck } from '@/shared/services/hc/HealthCheck';
+import { HealthCheck } from '@/features/healthcheck/components/HealthCheck';
 import { SocialLink, FooterLink } from '@/shared/types/footer.type';
 
 const SOCIAL_LINKS: SocialLink[] = [
