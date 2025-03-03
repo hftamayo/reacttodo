@@ -2,7 +2,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 import taskReducer from '../../../features/task/store/taskSlice';
 import themeReducer from './slices/themeSlice';
 import languageReducer from './slices/languageSlice';
-import healthMetricsReducer from './slices/healthMetricsSlice';
+import healthMetricsReducer from '../../../features/healthcheck/store/healthMetricsSlice';
 
 export const rootReducer = combineReducers({
   task: taskReducer,

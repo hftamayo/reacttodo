@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '@/shared/services/redux/store';
 import { RootState } from '@/shared/services/redux/rootReducer';
-import { fetchHealthMetrics } from '@/shared/services/redux/slices/healthMetricsSlice';
+import { fetchHealthMetrics } from '@/features/healthcheck/store/healthMetricsSlice';
 
 export const useHealthMetrics = () => {
   const dispatch = useDispatch<AppDispatch>();

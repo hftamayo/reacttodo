@@ -7,7 +7,7 @@ import {
   AppHealthDetails,
 } from '@/shared/types/api.type';
 import { HealthMetrics } from '@/shared/types/healthcheck.type';
-import { setMetrics } from '../../../shared/services/redux/slices/healthMetricsSlice';
+import { setMetrics } from '../store/healthMetricsSlice';
 import { showError } from '../../../shared/services/notification/notificationService';
 import {
   HEALTH_CHECK_INTERVAL,
