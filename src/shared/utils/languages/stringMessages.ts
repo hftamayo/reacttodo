@@ -76,6 +76,8 @@ export const stringMessages: LanguageContextType = {
   //dashboard header components end
 
   //dashboard footer components
+
+  //labels to display on footer
   statusOn: {
     en: {
       text: 'Online',
@@ -97,6 +99,67 @@ export const stringMessages: LanguageContextType = {
     },
     de: {
       text: 'Offline',
+    },
+  },
+
+  noConnection: {
+    en: {
+      text: 'No Connection',
+    },
+    es: {
+      text: 'Sin Conexion',
+    },
+    de: {
+      text: 'Keine Verbindung',
+    },
+  },
+
+  //messages to display in the toaster
+  statusOnline: {
+    en: {
+      text: 'System Operational',
+    },
+    es: {
+      text: 'Sistema Operacional',
+    },
+    de: {
+      text: 'Systembetrieb',
+    },
+  },
+
+  statusOffline: {
+    en: {
+      text: 'System Unavailable',
+    },
+    es: {
+      text: 'Sistema No Disponible',
+    },
+    de: {
+      text: 'System nicht verfügbar',
+    },
+  },
+
+  statusNoConnection: {
+    en: {
+      text: 'No Connection',
+    },
+    es: {
+      text: 'Sin conexion',
+    },
+    de: {
+      text: 'Keine Verbindung',
+    },
+  },
+
+  statusChecking: {
+    en: {
+      text: 'Checking status...',
+    },
+    es: {
+      text: 'Comprobando estado...',
+    },
+    de: {
+      text: 'Status wird überprüft...',
     },
   },
 
