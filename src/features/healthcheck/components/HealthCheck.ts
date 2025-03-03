@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
-import { useHealthCheck } from '../redux/hooks/useHealthCheck';
-import { useNetworkStatus } from '../redux/hooks/useNetworkStatus';
-import { showSuccess, showError } from '../notification/notificationService';
+import { useHealthCheck } from '../../../shared/services/redux/hooks/useHealthCheck';
+import { useNetworkStatus } from '../../../shared/services/redux/hooks/useNetworkStatus';
+import {
+  showSuccess,
+  showError,
+} from '../../../shared/services/notification/notificationService';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 
 export const HealthCheck = ({
