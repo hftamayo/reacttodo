@@ -3,6 +3,10 @@ export type HealthMetrics = {
   failureCount: number;
   averageResponseTime: number;
   responseTime: number;
+  status: HealthStatus;
+  isOnline: boolean;
 };
 
-export type PubSubListener = (status: string) => void;
+export type HealthStatus = 'ONLINE' | 'OFFLINE' | 'NO_CONNECTION' | 'CHECKING';
+
+export type PubSubHealthListener = (metrics: HealthMetrics) => void;
