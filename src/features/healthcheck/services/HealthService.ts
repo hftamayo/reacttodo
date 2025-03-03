@@ -1,5 +1,4 @@
 import {
-  HealthStatus,
   HealthMetrics,
   PubSubHealthListener,
 } from '@/shared/types/healthcheck.type';
@@ -10,30 +9,6 @@ import {
 
 class HealthService {
   private readonly listeners: Set<PubSubHealthListener> = new Set();
-  private currentStatus: string = 'Checkign status...';
-
-  subscribe(listener: PubSubHealthListener): () => void {
-    this.listeners.add(listener);
-    listener(this.currentStatus);
-
-    return () => {
-      this.listeners.delete(listener);
-    };
-  }
-
-  updateStatus(status: string) {
-    this.currentStatus = status;
-    this.listeners.forEach((listener) => listener(status));
-  }
-
-  getCurrentStatus(): string {
-    return this.currentStatus;
-  }
-}
-
-export const healthService = new HealthService();
-class HealthService {
-  private listeners: Set<PubSubHealthListener> = new Set();
   private metrics: HealthMetrics = {
     lastCheckTime: Date.now(),
     failureCount: 0,
@@ -50,7 +25,7 @@ class HealthService {
     window.addEventListener('offline', this.handleOffline);
   }
 
-  private handleOnline = () => {
+  private readonly handleOnline = () => {
     this.updateMetrics({ isOnline: true });
     showSuccess('Connection restored');
 
@@ -60,7 +35,7 @@ class HealthService {
     this.checkHealthDebounced = setTimeout(() => this.checkHealth(), 500);
   };
 
-  private handleOffline = () => {
+  private readonly handleOffline = () => {
     this.updateMetrics({
       isOnline: false,
       status: 'NO_CONNECTION',
