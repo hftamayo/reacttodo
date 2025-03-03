@@ -4,3 +4,5 @@ export type HealthMetrics = {
   averageResponseTime: number;
   responseTime: number;
 };
+
+export type PubSubListener = (status: string) => void;
