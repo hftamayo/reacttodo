@@ -1,14 +1,14 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { beOps } from '../../api/apiClient';
+import { beOps } from '../../../shared/services/api/apiClient';
 import {
   ApiResponse,
   HealthCheckData,
   AppHealthDetails,
 } from '@/shared/types/api.type';
 import { HealthMetrics } from '@/shared/types/healthcheck.type';
-import { setMetrics } from '../slices/healthMetricsSlice';
-import { showError } from '../../notification/notificationService';
+import { setMetrics } from '../../../shared/services/redux/slices/healthMetricsSlice';
+import { showError } from '../../../shared/services/notification/notificationService';
 import {
   HEALTH_CHECK_INTERVAL,
   OFFLINE_CHECK_INTERVAL,
