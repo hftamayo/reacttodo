@@ -1,40 +1,28 @@
 import React, { useEffect } from 'react';
 import { useHealthCheck } from '../hooks/useHealthCheck';
 import { useNetworkStatus } from '../hooks/useNetworkStatus';
+import { healthStatusService } from '../services/HealthStatusService';
 import {
   showSuccess,
   showError,
 } from '../../../shared/services/notification/notificationService';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 
-export const HealthCheck = ({
-  setStatus,
-}: {
-  setStatus: (status: string) => void;
-}) => {
-  const { statusInternal, checkHealth } = useHealthCheck(setStatus);
+export const HealthCheck = () => {
+  const { statusInternal, checkHealth } = useHealthCheck(() => 'defaultStatus');
   useNetworkStatus(checkHealth);
   const { text: statusOn = 'Online' } = useTranslation('statusOn');
   const { text: statusOff = 'Offline' } = useTranslation('statusOff');
 
-  // Fix 2: Add state to track if toast has been shown already
-  const [hasShownStatus, setHasShownStatus] = React.useState({
-    pass: false,
-    fail: false,
-  });
-
   useEffect(() => {
-    // Only show toast if status changes and hasn't been shown for this status yet
-    if (statusInternal === 'fail' && !hasShownStatus.fail) {
+    if (statusInternal === 'fail') {
       showError('Application is offline', `The application is: ${statusOff}`);
-      setStatus('Offline');
-      setHasShownStatus((prev) => ({ ...prev, fail: true, pass: false }));
-    } else if (statusInternal === 'pass' && !hasShownStatus.pass) {
+      healthStatusService.updateStatus('Offline');
+    } else if (statusInternal === 'pass') {
       showSuccess(`The application is: ${statusOn}`);
-      setStatus('Online');
-      setHasShownStatus((prev) => ({ ...prev, pass: true, fail: false }));
+      healthStatusService.updateStatus('Online');
     }
-  }, [statusInternal, statusOn, statusOff, hasShownStatus, setStatus]);
+  }, [statusInternal, statusOn, statusOff]);
 
   return null;
 };

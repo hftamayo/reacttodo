@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FaFacebook, FaTwitter, FaTiktok } from 'react-icons/fa';
 import { DashBoardFooterStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { HealthCheck } from '@/features/healthcheck/components/HealthCheck';
 import { SocialLink, FooterLink } from '@/shared/types/footer.type';
+import { HealthStatusDisplay } from '@/features/healthcheck/components/HealthStatusDisplay';
 
 const SOCIAL_LINKS: SocialLink[] = [
   {
@@ -24,7 +25,6 @@ const SOCIAL_LINKS: SocialLink[] = [
 ];
 
 export const DashBoardFooter: React.FC = () => {
-  const [status, setStatus] = useState<string>('Checking status...');
   const { text: suggestions = 'Suggestions' } = useTranslation('suggestions');
   const { text: serviceDesk = 'Service Desk' } = useTranslation('serviceDesk');
 
@@ -38,11 +38,6 @@ export const DashBoardFooter: React.FC = () => {
       label: serviceDesk,
     },
   ];
-
-  const statusClass =
-    status === 'Online'
-      ? DashBoardFooterStyles.footer_text
-      : DashBoardFooterStyles.footer_text_offline;
 
   const handleSocialClick =
     (url: string, label: string) => (e: React.MouseEvent) => {
@@ -73,8 +68,8 @@ export const DashBoardFooter: React.FC = () => {
       </div>
 
       <div className="flex">
-        <HealthCheck setStatus={setStatus} />
-        <span className={statusClass}>{status}</span> |
+        <HealthCheck />
+        <HealthStatusDisplay />
         {footerLinks.map(({ href, label }, index) => (
           <React.Fragment key={label}>
             {index > 0 && <span className="mx-2">|</span>}
