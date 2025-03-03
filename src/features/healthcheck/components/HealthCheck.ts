@@ -7,7 +7,7 @@ export const HealthCheck: React.FC = () => {
   const { text: statusOn = 'Online' } = useTranslation('statusOn');
   const { text: statusOff = 'Offline' } = useTranslation('statusOff');
   const { text: statusNoConnection = 'No Connection' } =
-    useTranslation('statusNoConnection');
+    useTranslation('noConnection');
 
   // Component now only handles display-related side effects
   useEffect(() => {
