@@ -82,11 +82,18 @@ class HealthService {
   }
 
   private handleCheckFailure() {
+    const isNetworkAvailable = navigator.onLine;
+    const newStatus = isNetworkAvailable ? 'OFFLINE' : 'NO_CONNECTION';
+
+    this.retryCount += 1;
     this.updateMetrics({
-      status: this.metrics.isOnline ? 'OFFLINE' : 'NO_CONNECTION',
-      failureCount: this.retryCount + 1,
+      status: newStatus,
+      failureCount: this.retryCount,
+      isOnline: isNetworkAvailable,
     });
-    this.scheduleRetry();
+    if (this.retryCount < MAX_RETRIES) {
+      this.scheduleRetry();
+    }
   }
 
   private updateResponseTime(responseTime: number) {
