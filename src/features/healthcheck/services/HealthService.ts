@@ -6,9 +6,17 @@ import {
   showSuccess,
   showError,
 } from '@/shared/services/notification/notificationService';
+import {
+  HEALTH_CHECK_INTERVAL,
+  OFFLINE_CHECK_INTERVAL,
+  MAX_RETRIES,
+} from '@/shared/utils/envvars';
 
 class HealthService {
   private readonly listeners: Set<PubSubHealthListener> = new Set();
+  private retryCount = 0;
+  private checkHealthInterval: NodeJS.Timeout | null = null;
+
   private metrics: HealthMetrics = {
     lastCheckTime: Date.now(),
     failureCount: 0,
@@ -18,21 +26,32 @@ class HealthService {
     isOnline: navigator.onLine,
   };
 
-  private checkHealthDebounced: NodeJS.Timeout | null = null;
-
   constructor() {
     window.addEventListener('online', this.handleOnline);
     window.addEventListener('offline', this.handleOffline);
+    this.startHealthCheck();
   }
+
+  public cleanup(): void {
+    if (this.checkHealthInterval) {
+      clearInterval(this.checkHealthInterval);
+    }
+    window.removeEventListener('online', this.handleOnline);
+    window.removeEventListener('offline', this.handleOffline);
+  }
+
+  private readonly startHealthCheck = () => {
+    this.checkHealth();
+    this.checkHealthInterval = setInterval(() => {
+      this.checkHealth();
+    }, HEALTH_CHECK_INTERVAL);
+  };
 
   private readonly handleOnline = () => {
     this.updateMetrics({ isOnline: true });
     showSuccess('Connection restored');
-
-    if (this.checkHealthDebounced) {
-      clearTimeout(this.checkHealthDebounced);
-    }
-    this.checkHealthDebounced = setTimeout(() => this.checkHealth(), 500);
+    this.retryCount = 0;
+    this.checkHealth();
   };
 
   private readonly handleOffline = () => {
@@ -41,6 +60,16 @@ class HealthService {
       status: 'NO_CONNECTION',
     });
     showError('Network Error', 'Connection lost');
+    this.scheduleRetry();
+  };
+
+  private readonly scheduleRetry = () => {
+    if (this.retryCount < MAX_RETRIES) {
+      this.retryCount += 1;
+      setTimeout(() => {
+        this.checkHealth();
+      }, OFFLINE_CHECK_INTERVAL);
+    }
   };
 
   private updateMetrics(update: Partial<HealthMetrics>) {
@@ -50,6 +79,25 @@ class HealthService {
       lastCheckTime: Date.now(),
     };
     this.notifyListeners();
+  }
+
+  private handleCheckFailure() {
+    this.updateMetrics({
+      status: this.metrics.isOnline ? 'OFFLINE' : 'NO_CONNECTION',
+      failureCount: this.retryCount + 1,
+    });
+    this.scheduleRetry();
+  }
+
+  private updateResponseTime(responseTime: number) {
+    const { averageResponseTime } = this.metrics;
+    const { failureCount } = this.metrics;
+    const newAverageResponseTime =
+      (averageResponseTime * failureCount + responseTime) / (failureCount + 1);
+
+    this.updateMetrics({
+      averageResponseTime: newAverageResponseTime,
+    });
   }
 
   private notifyListeners() {
@@ -67,24 +115,21 @@ class HealthService {
       const startTime = performance.now();
       const response = await fetch('/api/health');
       const endTime = performance.now();
+      const responseTime = endTime - startTime;
 
       if (response.ok) {
+        this.retryCount = 0;
+        this.updateResponseTime(responseTime);
         this.updateMetrics({
           status: 'ONLINE',
-          responseTime: endTime - startTime,
+          responseTime,
           failureCount: 0,
         });
       } else {
-        this.updateMetrics({
-          status: 'OFFLINE',
-          failureCount: this.metrics.failureCount + 1,
-        });
+        this.handleCheckFailure();
       }
     } catch (error) {
-      this.updateMetrics({
-        status: 'NO_CONNECTION',
-        failureCount: this.metrics.failureCount + 1,
-      });
+      this.handleCheckFailure();
     }
   }
 
