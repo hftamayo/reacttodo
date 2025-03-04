@@ -3,6 +3,7 @@ import { useHealthCheck } from '../hooks/useHealthCheck';
 import { DashBoardFooterStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { HealthStatus } from '@/shared/types/healthcheck.type';
+import { MAX_RETRIES } from '@/shared/utils/envvars';
 
 const STATUS_CLASSES: Record<HealthStatus, string> = {
   ONLINE: DashBoardFooterStyles.footer_text,
@@ -24,13 +25,20 @@ export const HealthStatusDisplay: React.FC = () => {
 
   const statusMessage = {
     ONLINE: statusOnline,
-    OFFLINE: statusOffline,
-    NO_CONNECTION: statusNoConnection,
-    CHECKING: statusChecking,
+    OFFLINE:
+      metrics.failureCount > 0
+        ? `${statusOffline} (Retry ${metrics.failureCount}/${MAX_RETRIES})`
+        : statusOffline,
+    NO_CONNECTION: `${statusNoConnection} (${metrics.failureCount} attempts)`,
+    CHECKING: `${statusChecking}${'.'.repeat((metrics.failureCount % 3) + 1)}`,
   }[metrics.status];
 
   return (
-    <output className={STATUS_CLASSES[metrics.status]} aria-live="polite">
+    <output
+      className={STATUS_CLASSES[metrics.status]}
+      aria-live="polite"
+      title={`Last checked: ${new Date(metrics.lastCheckTime).toLocaleString()}`}
+    >
       {statusMessage}
     </output>
   );
