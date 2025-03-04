@@ -16,6 +16,8 @@ class HealthService {
   private readonly listeners: Set<PubSubHealthListener> = new Set();
   private retryCount = 0;
   private checkHealthInterval: NodeJS.Timeout | null = null;
+  private retryTimeout: NodeJS.Timeout | null = null;
+  private readonly REQUEST_TIMEOUT = 5000;
 
   private metrics: HealthMetrics = {
     lastCheckTime: Date.now(),
@@ -36,6 +38,9 @@ class HealthService {
     if (this.checkHealthInterval) {
       clearInterval(this.checkHealthInterval);
     }
+    if (this.retryTimeout) {
+      clearTimeout(this.retryTimeout);
+    }
     window.removeEventListener('online', this.handleOnline);
     window.removeEventListener('offline', this.handleOffline);
   }
@@ -48,8 +53,8 @@ class HealthService {
   };
 
   private readonly handleOnline = () => {
-    this.updateMetrics({ isOnline: true });
-    showSuccess('Connection restored');
+    this.updateMetrics({ isOnline: true, status: 'CHECKING' });
+    showSuccess('Backend Connection restored');
     this.retryCount = 0;
     this.checkHealth();
   };
@@ -58,15 +63,19 @@ class HealthService {
     this.updateMetrics({
       isOnline: false,
       status: 'NO_CONNECTION',
+      failureCount: this.retryCount + 1,
     });
-    showError('Network Error', 'Connection lost');
+    showError('Network Error', 'Backend connection lost');
     this.scheduleRetry();
   };
 
   private readonly scheduleRetry = () => {
     if (this.retryCount < MAX_RETRIES) {
       this.retryCount += 1;
-      setTimeout(() => {
+      if (this.retryTimeout) {
+        clearTimeout(this.retryTimeout);
+      }
+      this.retryTimeout = setTimeout(() => {
         this.checkHealth();
       }, OFFLINE_CHECK_INTERVAL);
     }
@@ -81,26 +90,30 @@ class HealthService {
     this.notifyListeners();
   }
 
-  private handleCheckFailure() {
-    const isNetworkAvailable = navigator.onLine;
-    const newStatus = isNetworkAvailable ? 'OFFLINE' : 'NO_CONNECTION';
-
+  private handleCheckFailure(reason: string) {
     this.retryCount += 1;
+    const isMaxRetries = this.retryCount >= MAX_RETRIES;
+
     this.updateMetrics({
-      status: newStatus,
+      status: 'OFFLINE',
       failureCount: this.retryCount,
-      isOnline: isNetworkAvailable,
+      isOnline: false,
     });
-    if (this.retryCount < MAX_RETRIES) {
+    if (this.retryCount === 1) {
+      showError('BackEnd Error', reason);
+    }
+    if (!isMaxRetries) {
       this.scheduleRetry();
     }
   }
 
   private updateResponseTime(responseTime: number) {
-    const { averageResponseTime } = this.metrics;
-    const { failureCount } = this.metrics;
+    const { averageResponseTime, failureCount } = this.metrics;
     const newAverageResponseTime =
-      (averageResponseTime * failureCount + responseTime) / (failureCount + 1);
+      failureCount === 0
+        ? responseTime
+        : (averageResponseTime * failureCount + responseTime) /
+          (failureCount + 1);
 
     this.updateMetrics({
       averageResponseTime: newAverageResponseTime,
@@ -118,9 +131,27 @@ class HealthService {
   }
 
   public async checkHealth(): Promise<void> {
+    if (!navigator.onLine) {
+      this.updateMetrics({
+        status: 'NO_CONNECTION',
+        isOnline: false,
+      });
+      return;
+    }
     try {
       const startTime = performance.now();
-      const response = await fetch('/api/health');
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => {
+        controller.abort();
+      }, this.REQUEST_TIMEOUT);
+      const response = await fetch('/api/health', {
+        signal: controller.signal,
+        headers: {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+        },
+      });
+      clearTimeout(timeoutId);
       const endTime = performance.now();
       const responseTime = endTime - startTime;
 
@@ -131,12 +162,18 @@ class HealthService {
           status: 'ONLINE',
           responseTime,
           failureCount: 0,
+          isOnline: true,
         });
       } else {
-        this.handleCheckFailure();
+        this.handleCheckFailure('Backend service unavailable');
       }
     } catch (error) {
-      this.handleCheckFailure();
+      if (error instanceof Error) {
+        const isTimeout = error.name === 'AbortError';
+        this.handleCheckFailure(
+          isTimeout ? 'Backend request timeout' : 'Backend connection failed'
+        );
+      }
     }
   }
 
