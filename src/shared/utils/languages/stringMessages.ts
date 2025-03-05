@@ -28,13 +28,13 @@ export const stringMessages: LanguageContextType = {
 
   searchTextControl: {
     en: {
-      text: 'Search criteria',
+      text: 'Search criteria...',
     },
     es: {
-      text: 'Criterio de busqueda',
+      text: 'Criterio de busqueda...',
     },
     de: {
-      text: 'Suchkriterium',
+      text: 'Suchkriterium...',
     },
   },
 
