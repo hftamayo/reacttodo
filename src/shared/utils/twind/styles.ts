@@ -17,7 +17,7 @@ export const DashBoardHeader = {
   secondLevelContainer: 'flex items-center text-xl',
   spacer: 'relative md:absolute inset-y-0-left-0 flex items-center pl-2',
   searchInput:
-    'w-full px-4 py-1 pl-12 rounded shadow outline-none hidden md:block',
+    'w-full px-4 py-1 pl-12 rounded shadow outline-none hidden md:block text-white',
 };
 
 export const DashBoardMenuBarStyles = {

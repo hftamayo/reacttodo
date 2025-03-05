@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Input } from '@/shared/components/ui/input/Input';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
+import { DashBoardHeader } from '@/shared/utils/twind/styles';
 
 export const SearchText: React.FC = () => {
   const { text: textHolder } = useTranslation('searchTextControl');
@@ -11,7 +12,7 @@ export const SearchText: React.FC = () => {
   };
 
   return (
-    <div className="relative md:w-65 flex items-center text-white">
+    <div className={DashBoardHeader.searchInput}>
       <Input
         type="text"
         ctrlsize="large"
