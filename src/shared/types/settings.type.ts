@@ -18,8 +18,21 @@ export type LanguageContextType = {
   };
 };
 
+export type AppSettings = {
+  language: Language;
+  theme: 'dark' | 'light';
+  timezone: string;
+  fontSize: number;
+};
+
+export type SettingsState = {
+  settings: AppSettings;
+  isLoading: boolean;
+  error: string | null;
+};
+
 export type ViewSettingsFormProps = {
-  initialValues: any;
+  initialValues: AppSettings;
   onCancel: () => void;
-  onSubmit: (values: any) => void;
+  onSubmit: (values: AppSettings) => void;
 };
