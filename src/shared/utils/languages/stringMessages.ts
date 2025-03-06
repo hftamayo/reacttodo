@@ -1,4 +1,4 @@
-import { LanguageContextType } from '@/shared/types/ui.type';
+import { LanguageContextType } from '@/shared/types/settings.type';
 
 export const stringMessages: LanguageContextType = {
   //dashboard header components:
