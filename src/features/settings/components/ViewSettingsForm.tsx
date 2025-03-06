@@ -22,14 +22,16 @@ import {
   SelectValue,
 } from '@/shared/components/ui/select/Select';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
-import { ViewSettingsFormProps } from '@/shared/types/ui.type';
+import { ViewSettingsFormProps } from '@/shared/types/settings.type';
 import { formSettingsStyles } from '@/shared/utils/twind/styles';
+import { showError } from '@/shared/services/notification/notificationService';
 
 export const ViewSettingsForm: React.FC<ViewSettingsFormProps> = ({
   initialValues,
   onCancel,
   onSubmit,
 }) => {
+  const {settings, updateSettings} = useSettings();
   const { title, text } = useTranslation('settingsForm');
   const { group } = useTranslation('settingsFormElements');
 
@@ -43,7 +45,18 @@ export const ViewSettingsForm: React.FC<ViewSettingsFormProps> = ({
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    onSubmit({});
+    try{
+      await updateSettings({
+        language:
+        theme:
+        timezone:
+        fontSize:
+      })
+      onSubmit(settings);
+    } catch(error){
+      showError('Failed to update settings');
+      //console.log(error);
+    }
   };
 
   return (
