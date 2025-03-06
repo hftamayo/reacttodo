@@ -26,7 +26,7 @@ export const showError = (error: ApiError | string, userMessage?: string) => {
   } else {
     console.error('Validation Error:', error); // Log validation error for developers
     toast.error(
-      userMessage || 'Validation error. Please check your input and try again.',
+      userMessage ?? 'Validation error. Please check your input and try again.',
       {
         className: toasterMessages.errorToaster,
       }
