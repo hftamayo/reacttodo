@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   CardContent,
@@ -23,7 +23,11 @@ import {
 } from '@/shared/components/ui/select/Select';
 import { useSettings } from '../hooks/useSettings';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
-import { ViewSettingsFormProps } from '@/shared/types/settings.type';
+import {
+  ViewSettingsFormProps,
+  Language,
+  Theme,
+} from '@/shared/types/settings.type';
 import { formSettingsStyles } from '@/shared/utils/twind/styles';
 import { showError } from '@/shared/services/notification/notificationService';
 
@@ -32,6 +36,13 @@ export const ViewSettingsForm: React.FC<ViewSettingsFormProps> = ({
   onCancel,
   onSubmit,
 }) => {
+  const [formValues, setFormValues] = useState({
+    language: initialValues.language,
+    theme: initialValues.theme,
+    timezone: initialValues.timezone,
+    fontSize: initialValues.fontSize,
+  });
+
   const { settings, updateSettings } = useSettings();
   const { title, text } = useTranslation('settingsForm');
   const { group } = useTranslation('settingsFormElements');
@@ -40,6 +51,22 @@ export const ViewSettingsForm: React.FC<ViewSettingsFormProps> = ({
     return null;
   }
 
+  const handleLanguageChange = (value: Language) => {
+    setFormValues((prev) => ({ ...prev, language: value }));
+  };
+
+  const handleThemeChange = (value: Theme) => {
+    setFormValues((prev) => ({ ...prev, theme: value }));
+  };
+
+  const handleTimeZoneChange = (value: string) => {
+    setFormValues((prev) => ({ ...prev, timezone: value }));
+  };
+
+  const handleFontSizeChange = (value: string) => {
+    setFormValues((prev) => ({ ...prev, fontSize: Number(value) }));
+  };
+
   const cancelHandler = () => {
     onCancel();
   };
@@ -47,10 +74,8 @@ export const ViewSettingsForm: React.FC<ViewSettingsFormProps> = ({
   const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      updateSettings({
-        ...settings,
-      });
-      onSubmit(settings);
+      updateSettings(formValues);
+      onSubmit(formValues);
     } catch (error) {
       showError('Failed to update settings');
       //console.log(error);
@@ -74,7 +99,10 @@ export const ViewSettingsForm: React.FC<ViewSettingsFormProps> = ({
                   <Label className={formSettingsStyles.grouptitle}>
                     {group.lbllanguage}
                   </Label>
-                  <RadioGroup>
+                  <RadioGroup
+                    value={formValues.language}
+                    onValueChange={handleLanguageChange}
+                  >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="en" id="r1" />
                       <Label htmlFor="r1">English</Label>
@@ -95,7 +123,10 @@ export const ViewSettingsForm: React.FC<ViewSettingsFormProps> = ({
                   <Label className={formSettingsStyles.grouptitle}>
                     {group.lbltheme}
                   </Label>
-                  <RadioGroup>
+                  <RadioGroup
+                    value={formValues.theme}
+                    onValueChange={handleThemeChange}
+                  >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="dark" id="r1" />
                       <Label htmlFor="r1">{group.theme01}</Label>
@@ -116,7 +147,10 @@ export const ViewSettingsForm: React.FC<ViewSettingsFormProps> = ({
                   >
                     {group.lbltimezone}
                   </Label>
-                  <Select defaultValue={initialValues.timezone}>
+                  <Select
+                    value={formValues.timezone}
+                    onValueChange={handleTimeZoneChange}
+                  >
                     <SelectTrigger id="timezone">
                       <SelectValue placeholder={group.tzpholder} />
                     </SelectTrigger>
