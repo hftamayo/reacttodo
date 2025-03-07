@@ -1,13 +1,15 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleTheme } from '../redux/slices/themeSlice';
+import { setTheme, selectTheme } from '@/features/settings/store/settingsSlice';
+import { Theme } from '@/shared/types/settings.type';
 
 export const ThemeToggle: React.FC = () => {
   const dispatch = useDispatch();
-  const theme = useSelector((state: any) => state.theme.theme);
+  const theme = useSelector(selectTheme);
 
   const handleToggle = () => {
-    dispatch(toggleTheme());
+    const newTheme: Theme = theme === 'light' ? 'dark' : 'light';
+    dispatch(setTheme(newTheme));
   };
 
   return (
