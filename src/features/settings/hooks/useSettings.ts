@@ -1,23 +1,27 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/shared/services/redux/rootReducer';
-import { AppDispatch } from '@/shared/services/redux/store';
-import { updateSettings } from '../store/settingsSlice';
-import { AppSettings } from '@/shared/types/settings.type';
+import { AppSettings, Language, Theme } from '@/shared/types/settings.type';
+import {
+  setLanguage,
+  setTheme,
+  updateSettings,
+  selectSettings,
+  selectLanguage,
+  selectTheme,
+} from '../store/settingsSlice';
 
 export const useSettings = () => {
-    const dispatch = useDispatch<AppDispatch>();
-    const { settings, isLoading, error } = useSelector((state: RootState) => useSelector(
-        (state: RootState) => state.settings
-      );
+  const dispatch = useDispatch();
+  const settings = useSelector(selectSettings);
+  const currentLanguage = useSelector(selectLanguage);
+  const currentTheme = useSelector(selectTheme);
 
-      const updateSettingsHandler = async (newSettings: Partial<AppSettings>) => {
-        await dispatch(updateSettings(newSettings)).unwrap();
-      };
-    
-      return {
-        settings,
-        isLoading,
-        error,
-        updateSettings: updateSettingsHandler
-      };
-    };      
+  return {
+    settings,
+    language: currentLanguage,
+    theme: currentTheme,
+    setLanguage: (lang: Language) => dispatch(setLanguage(lang)),
+    setTheme: (theme: Theme) => dispatch(setTheme(theme)),
+    updateSettings: (newSettings: Partial<AppSettings>) =>
+      dispatch(updateSettings(newSettings)),
+  };
+};
