@@ -1,5 +1,7 @@
 export type Language = 'en' | 'es' | 'de';
 
+export type Theme = 'dark' | 'light';
+
 export enum Languages {
   EN = 'en',
   ES = 'es',
@@ -20,7 +22,7 @@ export type LanguageContextType = {
 
 export type AppSettings = {
   language: Language;
-  theme: 'dark' | 'light';
+  theme: Theme;
   timezone: string;
   fontSize: number;
 };
