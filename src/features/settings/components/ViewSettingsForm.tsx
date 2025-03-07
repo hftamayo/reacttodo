@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/components/ui/select/Select';
+import { useSettings } from '../hooks/useSettings';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { ViewSettingsFormProps } from '@/shared/types/settings.type';
 import { formSettingsStyles } from '@/shared/utils/twind/styles';
@@ -31,7 +32,7 @@ export const ViewSettingsForm: React.FC<ViewSettingsFormProps> = ({
   onCancel,
   onSubmit,
 }) => {
-  const {settings, updateSettings} = useSettings();
+  const { settings, updateSettings } = useSettings();
   const { title, text } = useTranslation('settingsForm');
   const { group } = useTranslation('settingsFormElements');
 
@@ -43,17 +44,14 @@ export const ViewSettingsForm: React.FC<ViewSettingsFormProps> = ({
     onCancel();
   };
 
-  const submitHandler = (event: React.FormEvent) => {
+  const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    try{
-      await updateSettings({
-        language:
-        theme:
-        timezone:
-        fontSize:
-      })
+    try {
+      updateSettings({
+        ...settings,
+      });
       onSubmit(settings);
-    } catch(error){
+    } catch (error) {
       showError('Failed to update settings');
       //console.log(error);
     }
@@ -138,7 +136,7 @@ export const ViewSettingsForm: React.FC<ViewSettingsFormProps> = ({
                   >
                     {group.lblfsize}
                   </Label>
-                  <Select defaultValue={initialValues.fontSize}>
+                  <Select defaultValue={initialValues.fontSize.toString()}>
                     <SelectTrigger id="fontsize">
                       <SelectValue placeholder={group.fsizepholder} />
                     </SelectTrigger>
