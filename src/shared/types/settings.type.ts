@@ -34,6 +34,12 @@ export type SettingsFormActionsProps = {
   };
 };
 
+export type useSettingsFormProps = {
+  initialValues: AppSettings;
+  onCancel: () => void;
+  onSubmit: (values: AppSettings) => void;
+};
+
 export type AppSettings = {
   language: Language;
   theme: Theme;
