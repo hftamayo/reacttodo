@@ -95,104 +95,54 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-wrap -mx-2">
               <div className="w-full md:w-1/2 px-2">
-                <div className="flex flex-col space-y-1.5">
-                  <Label className={formSettingsStyles.grouptitle}>
-                    {group.lbllanguage}
-                  </Label>
-                  <RadioGroup
-                    value={formValues.language}
-                    onValueChange={handleLanguageChange}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="en" id="r1" />
-                      <Label htmlFor="r1">English</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="es" id="r2" />
-                      <Label htmlFor="r2">Espanol</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="de" id="r3" />
-                      <Label htmlFor="r3">Deutsch</Label>
-                    </div>
-                  </RadioGroup>
-                </div>
+                <Language
+                  value={formValues.language}
+                  onChange={handleLanguageChange}
+                  labels={{
+                    title: group.lbllanguage,
+                    options: group.languages,
+                  }}
+                />
                 <div className="my-4"></div>
 
-                <div className="flex flex-col space-y-1.5">
-                  <Label className={formSettingsStyles.grouptitle}>
-                    {group.lbltheme}
-                  </Label>
-                  <RadioGroup
-                    value={formValues.theme}
-                    onValueChange={handleThemeChange}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="dark" id="r1" />
-                      <Label htmlFor="r1">{group.theme01}</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="standard" id="r2" />
-                      <Label htmlFor="r2">{group.theme02}</Label>
-                    </div>
-                  </RadioGroup>
-                </div>
+                <Theme
+                  value={formValues.theme}
+                  onChange={handleThemeChange}
+                  labels={{
+                    title: group.lbltheme,
+                    options: group.themes,
+                  }}
+                />
               </div>
 
               <div className="w-full md:w-1/2 px-2">
-                <div className="flex flex-col space-y-1.5">
-                  <Label
-                    className={formSettingsStyles.grouptitle}
-                    htmlFor="timezone"
-                  >
-                    {group.lbltimezone}
-                  </Label>
-                  <Select
-                    value={formValues.timezone}
-                    onValueChange={handleTimeZoneChange}
-                  >
-                    <SelectTrigger id="timezone">
-                      <SelectValue placeholder={group.tzpholder} />
-                    </SelectTrigger>
-                    <SelectContent position="popper">
-                      <SelectItem value="tz1">TimeZone 1</SelectItem>
-                      <SelectItem value="tz2">TimeZone 2</SelectItem>
-                      <SelectItem value="tz3">TimeZone 3</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                <TimeZone
+                  value={formValues.timezone}
+                  onChange={handleTimeZoneChange}
+                  labels={{
+                    title: group.lbltimezone,
+                    options: group.timezones,
+                  }}
+                />
                 <div className="my-4"></div>
+                <FontSize
+                  value={formValues.fontSize}
+                  onChange={handleFontSizeChange}
+                  labels={{
+                    title: group.lblfontsize,
+                    options: group.fontsizes,
+                  }}
+                />
 
-                <div className="flex flex-col space-y-1.5">
-                  <Label
-                    className={formSettingsStyles.grouptitle}
-                    htmlFor="fontsize"
-                  >
-                    {group.lblfsize}
-                  </Label>
-                  <Select defaultValue={initialValues.fontSize.toString()}>
-                    <SelectTrigger id="fontsize">
-                      <SelectValue placeholder={group.fsizepholder} />
-                    </SelectTrigger>
-                    <SelectContent position="popper">
-                      <SelectItem value="12">12</SelectItem>
-                      <SelectItem value="14">14</SelectItem>
-                      <SelectItem value="16">16</SelectItem>
-                      <SelectItem value="18">18</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
                 <div className="my-4"></div>
-
-                <div className="flex flex-col space-y-1.5">
-                  <Label
-                    className={formSettingsStyles.grouptitle}
-                    htmlFor="txtbackup"
-                  >
-                    Backup and Restore
-                  </Label>
-                  <Input id="txtbackup" placeholder="todo" />
-                </div>
+                <BackUp
+                  value={formValues.backup}
+                  onChange={handleBackUpChange}
+                  labels={{
+                    title: group.lblbackup,
+                    options: group.backups,
+                  }}
+                />
               </div>
             </div>
           </div>
