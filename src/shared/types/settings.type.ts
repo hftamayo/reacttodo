@@ -20,6 +20,12 @@ export type LanguageContextType = {
   };
 };
 
+export type SettingsCardProps = {
+  title: string;
+  description: string;
+  children: React.ReactNode;
+};
+
 export type AppSettings = {
   language: Language;
   theme: Theme;
