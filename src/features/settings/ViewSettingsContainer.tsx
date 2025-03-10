@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card/Card';
-import { Button } from '@/shared/components/ui/button/Button';
+
 import { Input } from '@/shared/components/ui/input/Input';
 import { Label } from '@/shared/components/ui/label/Label';
 import {
@@ -30,6 +30,8 @@ import {
 } from '@/shared/types/settings.type';
 import { formSettingsStyles } from '@/shared/utils/twind/styles';
 import { showError } from '@/shared/services/notification/notificationService';
+import { SettingsFormActions } from './components/layout/SettingsFormActions';
+import { SettingsCard } from './components/layout/SettingsCard';
 
 export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
   initialValues,
@@ -83,79 +85,71 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className={formSettingsStyles.title}>{title}</CardTitle>
-        <CardDescription className={formSettingsStyles.description}>
-          {text}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={submitHandler}>
-          <div className="grid w-full items-center gap-4">
-            <div className="flex flex-wrap -mx-2">
-              <div className="w-full md:w-1/2 px-2">
-                <Language
-                  value={formValues.language}
-                  onChange={handleLanguageChange}
-                  labels={{
-                    title: group.lbllanguage,
-                    options: group.languages,
-                  }}
-                />
-                <div className="my-4"></div>
+    <SettingsCard title={title} description={text}>
+      <form onSubmit={submitHandler}>
+        <div className="grid w-full items-center gap-4">
+          <div className="flex flex-wrap -mx-2">
+            <div className="w-full md:w-1/2 px-2">
+              <Language
+                value={formValues.language}
+                onChange={handleLanguageChange}
+                labels={{
+                  title: group.lbllanguage,
+                  options: group.languages,
+                }}
+              />
+              <div className="my-4"></div>
 
-                <Theme
-                  value={formValues.theme}
-                  onChange={handleThemeChange}
-                  labels={{
-                    title: group.lbltheme,
-                    options: group.themes,
-                  }}
-                />
-              </div>
+              <Theme
+                value={formValues.theme}
+                onChange={handleThemeChange}
+                labels={{
+                  title: group.lbltheme,
+                  options: group.themes,
+                }}
+              />
+            </div>
 
-              <div className="w-full md:w-1/2 px-2">
-                <TimeZone
-                  value={formValues.timezone}
-                  onChange={handleTimeZoneChange}
-                  labels={{
-                    title: group.lbltimezone,
-                    options: group.timezones,
-                  }}
-                />
-                <div className="my-4"></div>
-                <FontSize
-                  value={formValues.fontSize}
-                  onChange={handleFontSizeChange}
-                  labels={{
-                    title: group.lblfontsize,
-                    options: group.fontsizes,
-                  }}
-                />
+            <div className="w-full md:w-1/2 px-2">
+              <TimeZone
+                value={formValues.timezone}
+                onChange={handleTimeZoneChange}
+                labels={{
+                  title: group.lbltimezone,
+                  options: group.timezones,
+                }}
+              />
+              <div className="my-4"></div>
+              <FontSize
+                value={formValues.fontSize}
+                onChange={handleFontSizeChange}
+                labels={{
+                  title: group.lblfontsize,
+                  options: group.fontsizes,
+                }}
+              />
 
-                <div className="my-4"></div>
-                <BackUp
-                  value={formValues.backup}
-                  onChange={handleBackUpChange}
-                  labels={{
-                    title: group.lblbackup,
-                    options: group.backups,
-                  }}
-                />
-              </div>
+              <div className="my-4"></div>
+              <BackUp
+                value={formValues.backup}
+                onChange={handleBackUpChange}
+                labels={{
+                  title: group.lblbackup,
+                  options: group.backups,
+                }}
+              />
             </div>
           </div>
-        </form>
-      </CardContent>
-      <CardFooter className="flex justify-center space-x-4">
-        <Button variant="destructive" onClick={cancelHandler}>
-          {group.btncancel}
-        </Button>
-        <Button variant="additive" type="submit">
-          {group.btnsave}
-        </Button>
-      </CardFooter>
-    </Card>
+        </div>
+
+        <SettingsFormActions
+          onCancel={cancelHandler}
+          labels={{
+            btncancel: group.btncancel,
+            btnsave: group.btnsave,
+          }}
+        />
+      </form>
+    </SettingsCard>
   );
 };
