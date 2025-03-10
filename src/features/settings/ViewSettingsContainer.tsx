@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/components/ui/select/Select';
-import { useSettings } from '../hooks/useSettings';
+import { useSettings } from './hooks/useSettings';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import {
   ViewSettingsFormProps,
@@ -31,7 +31,7 @@ import {
 import { formSettingsStyles } from '@/shared/utils/twind/styles';
 import { showError } from '@/shared/services/notification/notificationService';
 
-export const ViewSettingsForm: React.FC<ViewSettingsFormProps> = ({
+export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
   initialValues,
   onCancel,
   onSubmit,
