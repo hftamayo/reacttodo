@@ -26,6 +26,14 @@ export type SettingsCardProps = {
   children: React.ReactNode;
 };
 
+export type SettingsFormActionsProps = {
+  onCancel: () => void;
+  labels: {
+    btncancel: string;
+    btnsave: string;
+  };
+};
+
 export type AppSettings = {
   language: Language;
   theme: Theme;
