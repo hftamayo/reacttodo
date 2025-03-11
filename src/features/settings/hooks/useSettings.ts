@@ -8,9 +8,10 @@ import {
   selectLanguage,
   selectTheme,
 } from '../store/settingsSlice';
+import { AppDispatch } from '@/shared/services/redux/store';
 
 export const useSettings = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const settings = useSelector(selectSettings);
   const currentLanguage = useSelector(selectLanguage);
   const currentTheme = useSelector(selectTheme);
@@ -23,5 +24,7 @@ export const useSettings = () => {
     setTheme: (theme: Theme) => dispatch(setTheme(theme)),
     updateSettings: (newSettings: Partial<AppSettings>) =>
       dispatch(updateSettings(newSettings)),
-  };
+  } as const;
 };
+
+export type UseSettingsReturn = ReturnType<typeof useSettings>;
