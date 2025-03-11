@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useSettings } from './useSettings';
 import {
   useSettingsFormProps,
-  AppSettings,
   Language,
   Theme,
 } from '@/shared/types/settings.type';
@@ -14,7 +13,7 @@ export const useSettingsForm = ({
   onCancel,
 }: useSettingsFormProps) => {
   const [formValues, setFormValues] = useState(initialValues);
-  const updateSettings = useSettings();
+  const { updateSettings } = useSettings();
 
   const handleLanguageChange = (value: Language) => {
     setFormValues((prev) => ({ ...prev, language: value }));
