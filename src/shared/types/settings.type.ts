@@ -34,12 +34,6 @@ export type SettingsFormActionsProps = {
   };
 };
 
-export type useSettingsFormProps = {
-  initialValues: AppSettings;
-  onCancel: () => void;
-  onSubmit: (values: AppSettings) => void;
-};
-
 export type AppSettings = {
   language: Language;
   theme: Theme;
@@ -47,20 +41,17 @@ export type AppSettings = {
   fontSize: number;
 };
 
+export type useSettingsFormProps = {
+  initialValues: AppSettings;
+  onCancel: () => void;
+  onSubmit: (values: AppSettings) => void;
+};
+
 export type SettingsState = {
   settings: AppSettings;
   isLoading: boolean;
   error: string | null;
 };
-
-export type SettingsActions = {
-  type: string;
-  payload: Partial<AppSettings>;
-};
-
-export type UpdateSettingsFunction = (
-  settings: Partial<AppSettings>
-) => Promise<void>;
 
 export type ViewSettingsFormProps = {
   initialValues: AppSettings;
