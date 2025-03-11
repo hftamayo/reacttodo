@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { useSettings } from './useSettings';
 import {
   useSettingsFormProps,
-  Language,
-  Theme,
+  AppSettings,
 } from '@/shared/types/settings.type';
 import { showError } from '@/shared/services/notification/notificationService';
 
@@ -15,23 +14,23 @@ export const useSettingsForm = ({
   const [formValues, setFormValues] = useState(initialValues);
   const { updateSettings } = useSettings();
 
-  const handleLanguageChange = (value: Language) => {
+  const handleLanguageChange = (value: AppSettings['language']) => {
     setFormValues((prev) => ({ ...prev, language: value }));
   };
 
-  const handleThemeChange = (value: Theme) => {
+  const handleThemeChange = (value: AppSettings['theme']) => {
     setFormValues((prev) => ({ ...prev, theme: value }));
   };
 
-  const handleTimeZoneChange = (value: string) => {
+  const handleTimeZoneChange = (value: AppSettings['timezone']) => {
     setFormValues((prev) => ({ ...prev, timezone: value }));
   };
 
-  const handleFontSizeChange = (value: string) => {
+  const handleFontSizeChange = (value: AppSettings['fontsize']) => {
     setFormValues((prev) => ({ ...prev, fontSize: Number(value) }));
   };
 
-  const handleBackUpChange = (value: string) => {
+  const handleBackUpChange = (value: AppSettings['backup']) => {
     setFormValues((prev) => ({ ...prev, backUp: value }));
   };
 

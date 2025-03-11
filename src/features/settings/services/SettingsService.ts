@@ -10,13 +10,15 @@ const defaultSettings: AppSettings = {
 
 export const settingsService = {
   getSettings: (): AppSettings => {
-    const storedSettings = localStorage.getItem(STORAGE_KEY);
-    return storedSettings ? JSON.parse(storedSettings) : defaultSettings;
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : defaultSettings;
   },
 
-  saveSettings: (settings: AppSettings): void => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
-  },
+  saveSettings: (settings: Partial<AppSettings>): void => {
+    const currentSettings = this.getSettings();
+    const newSettings = { ...currentSettings, ...settings };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newSettings));
+  }
 
   clearSettings: (): void => {
     localStorage.removeItem(STORAGE_KEY);
