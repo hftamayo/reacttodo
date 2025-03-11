@@ -18,13 +18,26 @@ export const settingsService = {
     const currentSettings = this.getSettings();
     const newSettings = { ...currentSettings, ...settings };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newSettings));
-  }
+
+    // Apply theme if it was updated
+    if (settings.theme) {
+      this.applyTheme(settings.theme);
+    }
+  },
+
+  resetToDefaults: (): void => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultSettings));
+    this.applyTheme(defaultSettings.theme);
+  },
 
   clearSettings: (): void => {
     localStorage.removeItem(STORAGE_KEY);
+    this.applyTheme('light'); // Reset to light theme when clearing
   },
 
-  updateTheme: (theme: AppSettings['theme']): void => {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
+  // Private helper method
+  applyTheme: (theme: AppSettings['theme']): void => {
+    document.documentElement.classList.remove('dark', 'light');
+    document.documentElement.classList.add(theme);
   },
 };
