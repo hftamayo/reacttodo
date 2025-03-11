@@ -38,7 +38,7 @@ export const useSettingsForm = ({
   const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      await updateSettings(formValues);
+      updateSettings(formValues);
       onSubmit(formValues);
     } catch (error) {
       showError('Failed to update settings');
