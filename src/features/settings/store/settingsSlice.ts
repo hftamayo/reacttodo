@@ -1,33 +1,30 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AppSettings, Language, Theme } from '@/shared/types/settings.type';
+import { AppSettings, SettingsState } from '@/shared/types/settings.type';
 import { RootState } from '@/shared/services/redux/rootReducer';
 
-const initialState: AppSettings = {
-  language: (localStorage.getItem('language') as Language) ?? 'en',
-  theme: (localStorage.getItem('theme') as Theme) ?? 'light',
-  timezone: 'UTC',
-  fontSize: 12,
+const initialState: SettingsState = {
+  settings: {
+    language: 'en',
+    theme: 'light',
+    timezone: 'UTC',
+    fontSize: 14,
+  },
+  isLoading: false,
+  error: null,
 };
 
 const settingsSlice = createSlice({
   name: 'settings',
   initialState,
   reducers: {
-    setLanguage: (state, action: PayloadAction<Language>) => {
-      state.language = action.payload;
-      localStorage.setItem('language', action.payload);
+    setLanguage: (state, action: PayloadAction<AppSettings['language']>) => {
+      state.settings.language = action.payload;
     },
-    setTheme: (state, action: PayloadAction<Theme>) => {
-      state.theme = action.payload;
-      localStorage.setItem('theme', action.payload);
-      document.documentElement.classList.toggle(
-        'dark',
-        action.payload === 'dark'
-      );
+    setTheme: (state, action: PayloadAction<AppSettings['theme']>) => {
+      state.settings.theme = action.payload;
     },
     updateSettings: (state, action: PayloadAction<Partial<AppSettings>>) => {
-      Object.assign(state, action.payload);
-      localStorage.setItem('settings', JSON.stringify(state));
+      state.settings = { ...state.settings, ...action.payload };
     },
   },
 });
