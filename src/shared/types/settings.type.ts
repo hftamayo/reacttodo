@@ -53,6 +53,15 @@ export type SettingsState = {
   error: string | null;
 };
 
+export type SettingsActions = {
+  type: string;
+  payload: Partial<AppSettings>;
+};
+
+export type UpdateSettingsFunction = (
+  settings: Partial<AppSettings>
+) => Promise<void>;
+
 export type ViewSettingsFormProps = {
   initialValues: AppSettings;
   onCancel: () => void;
