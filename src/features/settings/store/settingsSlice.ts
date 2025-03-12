@@ -27,4 +27,5 @@ export const selectSettings = (state: RootState) => state;
 export const selectLanguage = (state: RootState) => state.settings.language;
 export const selectTheme = (state: RootState) => state.settings.theme;
 
+export const { updateSettings } = settingsSlice.actions;
 export default settingsSlice.reducer;
