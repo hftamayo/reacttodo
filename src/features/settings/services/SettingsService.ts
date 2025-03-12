@@ -1,4 +1,5 @@
 import { AppSettings } from '@/shared/types/settings.type';
+
 const STORAGE_KEY = 'app_settings';
 
 const defaultSettings: AppSettings = {
@@ -14,14 +15,13 @@ export const settingsService = {
     return stored ? JSON.parse(stored) : defaultSettings;
   },
 
-  saveSettings(settings: Partial<AppSettings>): void {
+  saveSettings: (settings: Partial<AppSettings>): void => {
     const currentSettings = settingsService.getSettings();
     const newSettings = { ...currentSettings, ...settings };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newSettings));
 
-    // Apply theme if it was updated
     if (settings.theme) {
-      this.applyTheme(settings.theme);
+      settingsService.applyTheme(settings.theme);
     }
   },
 
@@ -32,12 +32,11 @@ export const settingsService = {
 
   clearSettings: (): void => {
     localStorage.removeItem(STORAGE_KEY);
-    settingsService.applyTheme('light'); // Reset to light theme when clearing
+    settingsService.applyTheme('light');
   },
 
-  // Private helper method
   applyTheme: (theme: AppSettings['theme']): void => {
     document.documentElement.classList.remove('dark', 'light');
     document.documentElement.classList.add(theme);
   },
-};
+} as const;
