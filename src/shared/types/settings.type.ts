@@ -58,3 +58,12 @@ export type ViewSettingsFormProps = {
   onCancel: () => void;
   onSubmit: (values: AppSettings) => void;
 };
+
+export type SettingsControlsProps<T> = {
+  value: T;
+  onChange: (value: T) => void;
+  labels: {
+    title: string;
+    options: Record<string, string>;
+  };
+};
