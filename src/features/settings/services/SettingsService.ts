@@ -14,8 +14,8 @@ export const settingsService = {
     return stored ? JSON.parse(stored) : defaultSettings;
   },
 
-  saveSettings: (settings: Partial<AppSettings>): void => {
-    const currentSettings = this.getSettings();
+  saveSettings(settings: Partial<AppSettings>): void {
+    const currentSettings = settingsService.getSettings();
     const newSettings = { ...currentSettings, ...settings };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newSettings));
 
@@ -27,12 +27,12 @@ export const settingsService = {
 
   resetToDefaults: (): void => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultSettings));
-    this.applyTheme(defaultSettings.theme);
+    settingsService.applyTheme(defaultSettings.theme);
   },
 
   clearSettings: (): void => {
     localStorage.removeItem(STORAGE_KEY);
-    this.applyTheme('light'); // Reset to light theme when clearing
+    settingsService.applyTheme('light'); // Reset to light theme when clearing
   },
 
   // Private helper method
