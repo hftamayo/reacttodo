@@ -375,4 +375,4 @@ export const stringMessages: LanguageContextType = {
       text: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.',
     },
   },
-};
+} as const;
