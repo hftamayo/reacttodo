@@ -4,6 +4,11 @@ import { ViewSettingsFormProps } from '@/shared/types/settings.type';
 import { SettingsFormActions } from './components/layout/SettingsFormActions';
 import { SettingsCard } from './components/layout/SettingsCard';
 import { useSettingsForm } from './hooks/useSettingsForm';
+import { Language } from './components/sections/Language';
+import { Theme } from './components/sections/Theme';
+import { TimeZone } from './components/sections/TimeZone';
+import { FontSize } from './components/sections/FontSize';
+import { BackUp } from './components/sections/BackUp';
 
 export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
   initialValues,
@@ -24,13 +29,15 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
 
   return (
     <SettingsCard title={title} description={text}>
-      <form onSubmit={submitHandler}>
+      <form onSubmit={handlers.submitHandler}>
         <div className="grid w-full items-center gap-4">
           <div className="flex flex-wrap -mx-2">
             <div className="w-full md:w-1/2 px-2">
               <Language
                 value={formValues.language}
-                onChange={handleLanguageChange}
+                onChange={(value) =>
+                  handlers.handleSettingChange('language', value)
+                }
                 labels={{
                   title: group.lbllanguage,
                   options: group.languages,
@@ -40,7 +47,9 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
 
               <Theme
                 value={formValues.theme}
-                onChange={handleThemeChange}
+                onChange={(value) =>
+                  handlers.handleSettingChange('theme', value)
+                }
                 labels={{
                   title: group.lbltheme,
                   options: group.themes,
@@ -51,7 +60,9 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
             <div className="w-full md:w-1/2 px-2">
               <TimeZone
                 value={formValues.timezone}
-                onChange={handleTimeZoneChange}
+                onChange={(value) =>
+                  handlers.handleSettingChange('timezone', value)
+                }
                 labels={{
                   title: group.lbltimezone,
                   options: group.timezones,
@@ -60,7 +71,9 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
               <div className="my-4"></div>
               <FontSize
                 value={formValues.fontSize}
-                onChange={handleFontSizeChange}
+                onChange={(value) =>
+                  handlers.handleSettingChange('fontSize', value)
+                }
                 labels={{
                   title: group.lblfontsize,
                   options: group.fontsizes,
@@ -70,7 +83,9 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
               <div className="my-4"></div>
               <BackUp
                 value={formValues.backup}
-                onChange={handleBackUpChange}
+                onChange={(value) =>
+                  handlers.handleSettingChange('backup', value)
+                }
                 labels={{
                   title: group.lblbackup,
                   options: group.backups,
@@ -81,7 +96,7 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
         </div>
 
         <SettingsFormActions
-          onCancel={cancelHandler}
+          onCancel={handlers.cancelHandler}
           labels={{
             btncancel: group.btncancel,
             btnsave: group.btnsave,
