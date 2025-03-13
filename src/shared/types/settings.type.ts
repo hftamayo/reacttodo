@@ -64,6 +64,6 @@ export type SettingsControlsProps<T> = {
   onChange: (value: T) => void;
   labels: {
     title: string;
-    options: Record<string, string>;
+    options?: Record<string, string>;
   };
 };
