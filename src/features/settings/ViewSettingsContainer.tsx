@@ -20,7 +20,7 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
     onCancel,
     onSubmit,
   });
-  const { title, text } = useTranslation('settingsForm');
+  const { title = '', text = '' } = useTranslation('settingsForm');
   const { group } = useTranslation('settingsFormElements');
 
   if (!group) {
@@ -88,7 +88,6 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
                 }
                 labels={{
                   title: group.lblbackup,
-                  options: group.backups,
                 }}
               />
             </div>
