@@ -39,8 +39,7 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
                   handlers.handleSettingChange('language', value)
                 }
                 labels={{
-                  title: group.lbllanguage,
-                  options: group.languages,
+                  lbllanguage: group.lbllanguage,
                 }}
               />
               <div className="my-4"></div>
@@ -51,8 +50,9 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
                   handlers.handleSettingChange('theme', value)
                 }
                 labels={{
-                  title: group.lbltheme,
-                  options: group.themes,
+                  lbltheme: group.lbltheme,
+                  theme01: group.theme01,
+                  theme02: group.theme02,
                 }}
               />
             </div>
@@ -64,8 +64,8 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
                   handlers.handleSettingChange('timezone', value)
                 }
                 labels={{
-                  title: group.lbltimezone,
-                  options: group.timezones,
+                  lbltimezone: group.lbltimezone,
+                  tzpholder: group.tzpholder,
                 }}
               />
               <div className="my-4"></div>
@@ -75,8 +75,8 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
                   handlers.handleSettingChange('fontSize', value)
                 }
                 labels={{
-                  title: group.lblfontsize,
-                  options: group.fontsizes,
+                  lblfsize: group.lblfsize,
+                  fsizepholder: group.fsizepholder,
                 }}
               />
 
@@ -87,7 +87,7 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
                   handlers.handleSettingChange('backup', value)
                 }
                 labels={{
-                  title: group.lblbackup,
+                  lblbackup: group.lblbackup,
                 }}
               />
             </div>
