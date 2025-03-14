@@ -14,13 +14,8 @@ export const Language: React.FC<SettingsControlsProps<string>> = ({
 }) => {
   return (
     <div className="flex flex-col space-y-1.5">
-      <Label className={formSettingsStyles.grouptitle}>
-        {group.lbllanguage}
-      </Label>
-      <RadioGroup
-        value={formValues.language}
-        onValueChange={handleLanguageChange}
-      >
+      <Label className={formSettingsStyles.grouptitle}>{labels.title}</Label>
+      <RadioGroup value={value} onValueChange={onChange}>
         <div className="flex items-center space-x-2">
           <RadioGroupItem value="en" id="r1" />
           <Label htmlFor="r1">English</Label>
