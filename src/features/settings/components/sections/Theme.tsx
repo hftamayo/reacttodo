@@ -14,16 +14,14 @@ export const Theme: React.FC<SettingsControlsProps<string>> = ({
 }) => {
   return (
     <div className="flex flex-col space-y-1.5">
-      <Label className={formSettingsStyles.grouptitle}>{group.lbltheme}</Label>
-      <RadioGroup value={formValues.theme} onValueChange={handleThemeChange}>
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem value="dark" id="r1" />
-          <Label htmlFor="r1">{group.theme01}</Label>
-        </div>
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem value="standard" id="r2" />
-          <Label htmlFor="r2">{group.theme02}</Label>
-        </div>
+      <Label className={formSettingsStyles.grouptitle}>{labels.title}</Label>
+      <RadioGroup value={value} onValueChange={onChange}>
+        {Object.entries(labels.options).map(([key, label]) => (
+          <div key={key} className="flex items-center space-x-2">
+            <RadioGroupItem value={key} id={`theme-${key}`} />
+            <Label htmlFor={`theme-${key}`}>{label}</Label>
+          </div>
+        ))}
       </RadioGroup>
     </div>
   );
