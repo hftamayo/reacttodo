@@ -322,11 +322,11 @@ export const stringMessages: LanguageContextType = {
     en: {
       group: {
         lbllanguage: 'Language',
-        lbltimezone: 'Timezone',
-        tzpholder: 'Select timezone',
         lbltheme: 'Theme',
         theme01: 'Dark',
         theme02: 'Light',
+        lbltimezone: 'Timezone',
+        tzpholder: 'Select timezone',
         lblfsize: 'Font Size',
         fsizepholder: 'Select font size',
         lblbackup: 'Backup',
@@ -337,11 +337,11 @@ export const stringMessages: LanguageContextType = {
     es: {
       group: {
         lbllanguage: 'Idioma',
-        lbltimezone: 'Zona horaria',
-        tzpholder: 'Seleccionar zona horaria',
         lbltheme: 'Tema',
         theme01: 'Oscuro',
         theme02: 'Claro',
+        lbltimezone: 'Zona horaria',
+        tzpholder: 'Seleccionar zona horaria',
         lblfsize: 'Tamaño de fuente',
         fsizepholder: 'Seleccionar tamaño de fuente',
         lblbackup: 'Copia de seguridad',
@@ -352,11 +352,11 @@ export const stringMessages: LanguageContextType = {
     de: {
       group: {
         lbllanguage: 'Sprache',
-        lbltimezone: 'Zeitzone',
-        tzpholder: 'Zeitzone auswählen',
         lbltheme: 'Thema',
         theme01: 'Dunkel',
         theme02: 'Licht',
+        lbltimezone: 'Zeitzone',
+        tzpholder: 'Zeitzone auswählen',
         lblfsize: 'Schriftgröße',
         fsizepholder: 'Schriftgröße auswählen',
         lblbackup: 'Backup',
