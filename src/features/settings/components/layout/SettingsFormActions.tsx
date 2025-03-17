@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button } from '@/shared/components/ui/button/Button';
 import { CardFooter } from '@/shared/components/ui/card/Card';
-import { SettingsFormControlsProps } from '@/shared/types/settings.type';
+import { SettingsFormActionsProps } from '@/shared/types/settings.type';
 
-export const SettingsFormActions: React.FC<SettingsFormControlsProps> = ({
+export const SettingsFormActions: React.FC<SettingsFormActionsProps> = ({
   onCancel,
   onSave,
   labels,
