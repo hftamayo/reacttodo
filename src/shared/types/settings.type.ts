@@ -29,7 +29,7 @@ export type SettingsCardProps = {
 export type SettingsFormLabelProps = {
   labels: {
     control01: string;
-    control02: string;
+    control02?: string;
   };
 };
 
