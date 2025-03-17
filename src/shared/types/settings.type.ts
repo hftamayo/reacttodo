@@ -26,13 +26,16 @@ export type SettingsCardProps = {
   children: React.ReactNode;
 };
 
-export type SettingsFormControlsProps = {
-  onCancel: () => void;
-  onSave: () => void;
+export type SettingsFormLabelProps = {
   labels: {
     control01: string;
     control02: string;
   };
+};
+
+export type SettingsFormActionsProps = SettingsFormLabelProps & {
+  onCancel: () => void;
+  onSave: () => void;
 };
 
 export type SettingsFormSpecialControlsProps<T> = {
