@@ -8,17 +8,17 @@ import {
   showSuccess,
   showError,
 } from '@/shared/services/notification/notificationService';
-import { SettingsControlsProps } from '@/shared/types/settings.type';
+import { SettingsFormControlsProps } from '@/shared/types/settings.type';
 
-export const BackUp: React.FC<SettingsControlsProps<string>> = ({
-  value,
-  onChange,
+export const BackUp: React.FC<SettingsFormControlsProps> = ({
+  onCancel,
+  onSave,
   labels,
 }) => {
   return (
     <div className="flex flex-col space-y-1.5">
       <Label className={formSettingsStyles.grouptitle} htmlFor="txtbackup">
-        {labels.title}
+        {labels.control01}
       </Label>
       <Input id="txtbackup" placeholder="todo" />
     </div>
