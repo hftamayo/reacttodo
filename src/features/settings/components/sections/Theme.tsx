@@ -5,9 +5,9 @@ import {
   RadioGroupItem,
 } from '@/shared/components/ui/rgroup/RadioGroup';
 import { formSettingsStyles } from '@/shared/utils/twind/styles';
-import { SettingsControlsProps } from '@/shared/types/settings.type';
+import { SettingsFormSpecialControlsProps } from '@/shared/types/settings.type';
 
-export const Theme: React.FC<SettingsControlsProps<string>> = ({
+export const Theme: React.FC<SettingsFormSpecialControlsProps<string>> = ({
   value,
   onChange,
   labels,
@@ -16,7 +16,7 @@ export const Theme: React.FC<SettingsControlsProps<string>> = ({
     <div className="flex flex-col space-y-1.5">
       <Label className={formSettingsStyles.grouptitle}>{labels.title}</Label>
       <RadioGroup value={value} onValueChange={onChange}>
-        {Object.entries(labels.options).map(([key, label]) => (
+        {Object.entries(labels.options ?? {}).map(([key, label]) => (
           <div key={key} className="flex items-center space-x-2">
             <RadioGroupItem value={key} id={`theme-${key}`} />
             <Label htmlFor={`theme-${key}`}>{label}</Label>
