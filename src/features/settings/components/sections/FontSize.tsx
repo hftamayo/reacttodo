@@ -8,9 +8,9 @@ import {
   SelectValue,
 } from '@/shared/components/ui/select/Select';
 import { formSettingsStyles } from '@/shared/utils/twind/styles';
-import { SettingsControlsProps } from '@/shared/types/settings.type';
+import { SettingsFormSpecialControlsProps } from '@/shared/types/settings.type';
 
-export const FontSize: React.FC<SettingsControlsProps<string>> = ({
+export const FontSize: React.FC<SettingsFormSpecialControlsProps<string>> = ({
   value,
   onChange,
   labels,
@@ -18,11 +18,11 @@ export const FontSize: React.FC<SettingsControlsProps<string>> = ({
   return (
     <div className="flex flex-col space-y-1.5">
       <Label className={formSettingsStyles.grouptitle} htmlFor="fontsize">
-        {group.lblfsize}
+        {labels.title}
       </Label>
-      <Select defaultValue={initialValues.fontSize.toString()}>
+      <Select value={value} onValueChange={onChange}>
         <SelectTrigger id="fontsize">
-          <SelectValue placeholder={group.fsizepholder} />
+          <SelectValue placeholder={labels.options?.toString()} />
         </SelectTrigger>
         <SelectContent position="popper">
           <SelectItem value="12">12</SelectItem>
