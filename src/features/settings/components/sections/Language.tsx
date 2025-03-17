@@ -5,9 +5,9 @@ import {
   RadioGroupItem,
 } from '@/shared/components/ui/rgroup/RadioGroup';
 import { formSettingsStyles } from '@/shared/utils/twind/styles';
-import { SettingsControlsProps } from '@/shared/types/settings.type';
+import { SettingsFormSpecialControlsProps } from '@/shared/types/settings.type';
 
-export const Language: React.FC<SettingsControlsProps<string>> = ({
+export const Language: React.FC<SettingsFormSpecialControlsProps<string>> = ({
   value,
   onChange,
   labels,
