@@ -39,7 +39,7 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
                   handlers.handleSettingChange('language', value)
                 }
                 labels={{
-                  lbllanguage: group.lbllanguage,
+                  title: group.lbllanguage,
                 }}
               />
               <div className="my-4"></div>
@@ -50,9 +50,11 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
                   handlers.handleSettingChange('theme', value)
                 }
                 labels={{
-                  lbltheme: group.lbltheme,
-                  theme01: group.theme01,
-                  theme02: group.theme02,
+                  title: group.lbltheme,
+                  options: {
+                    light: group.theme01,
+                    dark: group.theme02,
+                  },
                 }}
               />
             </div>
@@ -64,8 +66,8 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
                   handlers.handleSettingChange('timezone', value)
                 }
                 labels={{
-                  lbltimezone: group.lbltimezone,
-                  tzpholder: group.tzpholder,
+                  title: group.lbltimezone,
+                  options: { placeholder: group.tzpholder },
                 }}
               />
               <div className="my-4"></div>
@@ -75,19 +77,15 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
                   handlers.handleSettingChange('fontSize', value)
                 }
                 labels={{
-                  lblfsize: group.lblfsize,
-                  fsizepholder: group.fsizepholder,
+                  title: group.lblfsize,
+                  options: { placeholder: group.fsizepholder },
                 }}
               />
 
               <div className="my-4"></div>
               <BackUp
-                value={formValues.backup}
-                onChange={(value) =>
-                  handlers.handleSettingChange('backup', value)
-                }
                 labels={{
-                  lblbackup: group.lblbackup,
+                  control01: group.lblbackup,
                 }}
               />
             </div>
@@ -96,9 +94,10 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
 
         <SettingsFormActions
           onCancel={handlers.cancelHandler}
+          onSave={handlers.submitHandler}
           labels={{
-            btncancel: group.btncancel,
-            btnsave: group.btnsave,
+            control01: group.btncancel,
+            control02: group.btnsave,
           }}
         />
       </form>
