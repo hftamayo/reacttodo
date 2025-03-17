@@ -43,7 +43,7 @@ export type SettingsFormSpecialControlsProps<T> = {
   onChange: (value: T) => void;
   labels: {
     title: string;
-    options: { [key: string]: string };
+    options?: { [key: string]: string };
   };
 };
 
