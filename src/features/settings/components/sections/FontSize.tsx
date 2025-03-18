@@ -22,7 +22,13 @@ export const FontSize: React.FC<SettingsFormSpecialControlsProps<string>> = ({
       </Label>
       <Select value={value} onValueChange={onChange}>
         <SelectTrigger id="fontsize">
-          <SelectValue placeholder={labels.options?.toString()} />
+          <SelectValue
+            placeholder={
+              Array.isArray(labels.options)
+                ? labels.options.join(', ')
+                : String(labels.options)
+            }
+          />
         </SelectTrigger>
         <SelectContent position="popper">
           <SelectItem value="12">12</SelectItem>
