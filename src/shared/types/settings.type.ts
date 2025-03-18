@@ -54,7 +54,7 @@ export type AppSettings = {
   fontSize: number;
 };
 
-export type useSettingsFormProps = {
+export type SettingsFormProps = {
   initialValues: AppSettings;
   onCancel: () => void;
   onSubmit: (values: AppSettings) => void;
@@ -64,10 +64,4 @@ export type SettingsState = {
   settings: AppSettings;
   isLoading: boolean;
   error: string | null;
-};
-
-export type ViewSettingsFormProps = {
-  initialValues: AppSettings;
-  onCancel: () => void;
-  onSubmit: (values: AppSettings) => void;
 };
