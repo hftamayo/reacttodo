@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Label } from '@/shared/components/ui/label/Label';
 import { Input } from '@/shared/components/ui/input/Input';
 import { Button } from '@/shared/components/ui/button/Button';
-import { useSettings } from '../../hooks/useSettings';
+import { useSettingsForm } from '../../hooks/useSettingsForm';
 import { formSettingsStyles } from '@/shared/utils/twind/styles';
 import {
   showSuccess,
