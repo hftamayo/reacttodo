@@ -26,13 +26,6 @@ export type SettingsCardProps = {
   children: React.ReactNode;
 };
 
-export type SettingsFormLabelProps = {
-  labels: {
-    control01: string;
-    control02?: string;
-  };
-};
-
 export type AppSettings = {
   language: Language;
   theme: Theme;
@@ -41,10 +34,13 @@ export type AppSettings = {
 };
 
 export type SettingsFormProps = {
-  initialValues: AppSettings;
-  onCancel: () => void;
-  onSubmit: (values: AppSettings) => void;
-  labels: SettingsFormLabelProps;
+  initialValues?: AppSettings;
+  labels: {
+    control01: string;
+    control02?: string;
+  };
+  onCancel?: () => void;
+  onSubmit?: (values: AppSettings) => void;
 };
 
 export type SettingsState = {

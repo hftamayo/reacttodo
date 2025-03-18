@@ -8,9 +8,9 @@ import {
   showSuccess,
   showError,
 } from '@/shared/services/notification/notificationService';
-import { SettingsFormLabelProps } from '@/shared/types/settings.type';
+import { SettingsFormProps } from '@/shared/types/settings.type';
 
-export const BackUp: React.FC<SettingsFormLabelProps> = ({ labels }) => {
+export const BackUp: React.FC<SettingsFormProps> = ({ labels }) => {
   return (
     <div className="flex flex-col space-y-1.5">
       <Label className={formSettingsStyles.grouptitle} htmlFor="txtbackup">
