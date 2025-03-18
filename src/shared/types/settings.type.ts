@@ -34,13 +34,13 @@ export type AppSettings = {
 };
 
 export type SettingsFormProps = {
-  initialValues?: AppSettings;
+  initialValues: AppSettings;
   labels: {
     control01: string;
     control02?: string;
   };
-  onCancel?: () => void;
-  onSubmit?: (values: AppSettings) => void;
+  onCancel: () => void;
+  onSubmit: (values: AppSettings) => void;
 };
 
 export type SettingsState = {
