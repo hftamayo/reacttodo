@@ -33,20 +33,6 @@ export type SettingsFormLabelProps = {
   };
 };
 
-export type SettingsFormActionsProps = SettingsFormLabelProps & {
-  onCancel: () => void;
-  onSave: () => void;
-};
-
-export type SettingsFormSpecialControlsProps<T> = {
-  value: T;
-  onChange: (value: T) => void;
-  labels: {
-    title: string;
-    options?: { [key: string]: string };
-  };
-};
-
 export type AppSettings = {
   language: Language;
   theme: Theme;
@@ -58,10 +44,20 @@ export type SettingsFormProps = {
   initialValues: AppSettings;
   onCancel: () => void;
   onSubmit: (values: AppSettings) => void;
+  labels: SettingsFormLabelProps;
 };
 
 export type SettingsState = {
   settings: AppSettings;
   isLoading: boolean;
   error: string | null;
+};
+
+export type SettingsFormSpecialControlsProps<T> = {
+  value: T;
+  onChange: (value: T) => void;
+  labels: {
+    title: string;
+    options?: { [key: string]: string };
+  };
 };
