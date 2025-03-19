@@ -23,10 +23,6 @@ export const ViewSettingsContainer: React.FC<SettingsFormProps> = ({
     initialValues,
     onCancel,
     onSubmit,
-    labels: {
-      control01: '',
-      control02: '',
-    },
   });
   const { title = '', text = '' } = useTranslation('settingsForm');
   const { group } = useTranslation('settingsFormElements');
@@ -80,9 +76,9 @@ export const ViewSettingsContainer: React.FC<SettingsFormProps> = ({
               />
               <div className="my-4"></div>
               <FontSizeComponent
-                value={String(formValues.fontSize)}
+                value={formValues.fontSize}
                 onChange={(value) =>
-                  handlers.handleSettingChange('fontSize', Number(value))
+                  handlers.handleSettingChange('fontSize', value)
                 }
                 labels={{
                   title: group.lblfsize,
@@ -101,6 +97,7 @@ export const ViewSettingsContainer: React.FC<SettingsFormProps> = ({
         </div>
 
         <SettingsFormActions
+          initialValues={initialValues}
           onCancel={handlers.cancelHandler}
           onSubmit={() => onSubmit(formValues)}
           labels={{
