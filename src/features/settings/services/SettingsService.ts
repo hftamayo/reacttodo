@@ -6,7 +6,7 @@ const defaultSettings: AppSettings = {
   language: 'en',
   theme: 'light',
   timezone: 'UTC',
-  fontSize: 12,
+  fontSize: '12',
 };
 
 export const settingsService = {
