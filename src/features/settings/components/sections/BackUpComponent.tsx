@@ -8,9 +8,11 @@ import {
   showSuccess,
   showError,
 } from '@/shared/services/notification/notificationService';
-import { SettingsFormProps } from '@/shared/types/settings.type';
+import { SettingsFormBasicControlsProps } from '@/shared/types/settings.type';
 
-export const BackUpComponent: React.FC<SettingsFormProps> = ({ labels }) => {
+export const BackUpComponent: React.FC<SettingsFormBasicControlsProps> = ({
+  labels,
+}) => {
   return (
     <div className="flex flex-col space-y-1.5">
       <Label className={formSettingsStyles.grouptitle} htmlFor="txtbackup">

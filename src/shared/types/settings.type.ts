@@ -30,15 +30,11 @@ export type AppSettings = {
   language: Language;
   theme: Theme;
   timezone: string;
-  fontSize: number;
+  fontSize: string;
 };
 
 export type SettingsFormProps = {
   initialValues: AppSettings;
-  labels: {
-    control01: string;
-    control02?: string;
-  };
   onCancel: () => void;
   onSubmit: (values: AppSettings) => void;
 };
@@ -47,6 +43,13 @@ export type SettingsState = {
   settings: AppSettings;
   isLoading: boolean;
   error: string | null;
+};
+
+export type SettingsFormBasicControlsProps = {
+  labels: {
+    control01: string;
+    control02?: string;
+  };
 };
 
 export type SettingsFormSpecialControlsProps<T> = {
