@@ -7,11 +7,9 @@ import {
 import { formSettingsStyles } from '@/shared/utils/twind/styles';
 import { SettingsFormSpecialControlsProps } from '@/shared/types/settings.type';
 
-export const Theme: React.FC<SettingsFormSpecialControlsProps<string>> = ({
-  value,
-  onChange,
-  labels,
-}) => {
+export const ThemeComponent: React.FC<
+  SettingsFormSpecialControlsProps<string>
+> = ({ value, onChange, labels }) => {
   return (
     <div className="flex flex-col space-y-1.5">
       <Label className={formSettingsStyles.grouptitle}>{labels.title}</Label>
