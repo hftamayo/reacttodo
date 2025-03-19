@@ -11,10 +11,10 @@ export const SettingsFormActions: React.FC<SettingsFormProps> = ({
   return (
     <CardFooter className="flex justify-center space-x-4">
       <Button variant="destructive" onClick={onCancel}>
-        {labels.control01}
+        {labels?.control01}
       </Button>
       <Button variant="additive" type="submit">
-        {labels.control01}
+        {labels?.control01}
       </Button>
     </CardFooter>
   );

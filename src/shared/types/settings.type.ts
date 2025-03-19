@@ -33,23 +33,26 @@ export type AppSettings = {
   fontSize: string;
 };
 
+export type SettingsFormBasicControlsProps = {
+  labels: {
+    control01: string;
+    control02?: string;
+  };
+};
 export type SettingsFormProps = {
   initialValues: AppSettings;
   onCancel: () => void;
   onSubmit: (values: AppSettings) => void;
+  labels?: {
+    control01: string;
+    control02?: string;
+  };
 };
 
 export type SettingsState = {
   settings: AppSettings;
   isLoading: boolean;
   error: string | null;
-};
-
-export type SettingsFormBasicControlsProps = {
-  labels: {
-    control01: string;
-    control02?: string;
-  };
 };
 
 export type SettingsFormSpecialControlsProps<T> = {
