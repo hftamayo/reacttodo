@@ -4,9 +4,9 @@ import { SettingsCard } from './components/layout/SettingsCard';
 import { useSettingsForm } from './hooks/useSettingsForm';
 import { LanguageComponent } from './components/sections/LanguageComponent';
 import { ThemeComponent } from './components/sections/ThemeComponent';
-import { TimeZone } from './components/sections/TimeZone';
-import { FontSize } from './components/sections/FontSize';
-import { BackUp } from './components/sections/BackUp';
+import { TimeZoneComponent } from './components/sections/TimeZoneComponent';
+import { FontSizeComponent } from './components/sections/FontSizeComponent';
+import { BackUpComponent } from './components/sections/BackUpComponent';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import {
   Language,
@@ -68,7 +68,7 @@ export const ViewSettingsContainer: React.FC<SettingsFormProps> = ({
             </div>
 
             <div className="w-full md:w-1/2 px-2">
-              <TimeZone
+              <TimeZoneComponent
                 value={formValues.timezone}
                 onChange={(value) =>
                   handlers.handleSettingChange('timezone', value)
@@ -79,10 +79,10 @@ export const ViewSettingsContainer: React.FC<SettingsFormProps> = ({
                 }}
               />
               <div className="my-4"></div>
-              <FontSize
-                value={formValues.fontSize}
+              <FontSizeComponent
+                value={String(formValues.fontSize)}
                 onChange={(value) =>
-                  handlers.handleSettingChange('fontSize', value)
+                  handlers.handleSettingChange('fontSize', Number(value))
                 }
                 labels={{
                   title: group.lblfsize,
@@ -91,7 +91,7 @@ export const ViewSettingsContainer: React.FC<SettingsFormProps> = ({
               />
 
               <div className="my-4"></div>
-              <BackUp
+              <BackUpComponent
                 labels={{
                   control01: group.lblbackup,
                 }}
