@@ -1,24 +1,32 @@
 import React from 'react';
-import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
-import { ViewSettingsFormProps } from '@/shared/types/settings.type';
 import { SettingsFormActions } from './components/layout/SettingsFormActions';
 import { SettingsCard } from './components/layout/SettingsCard';
 import { useSettingsForm } from './hooks/useSettingsForm';
-import { Language } from './components/sections/Language';
-import { Theme } from './components/sections/Theme';
+import { LanguageComponent } from './components/sections/LanguageComponent';
+import { ThemeComponent } from './components/sections/ThemeComponent';
 import { TimeZone } from './components/sections/TimeZone';
 import { FontSize } from './components/sections/FontSize';
 import { BackUp } from './components/sections/BackUp';
+import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
+import {
+  Language,
+  Theme,
+  SettingsFormProps,
+} from '@/shared/types/settings.type';
 
-export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
+export const ViewSettingsContainer: React.FC<SettingsFormProps> = ({
   initialValues,
   onCancel,
   onSubmit,
 }) => {
-  const [formValues, handlers] = useSettingsForm({
+  const { formValues, handlers } = useSettingsForm({
     initialValues,
     onCancel,
     onSubmit,
+    labels: {
+      control01: '',
+      control02: '',
+    },
   });
   const { title = '', text = '' } = useTranslation('settingsForm');
   const { group } = useTranslation('settingsFormElements');
@@ -33,10 +41,10 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
         <div className="grid w-full items-center gap-4">
           <div className="flex flex-wrap -mx-2">
             <div className="w-full md:w-1/2 px-2">
-              <Language
+              <LanguageComponent
                 value={formValues.language}
                 onChange={(value) =>
-                  handlers.handleSettingChange('language', value)
+                  handlers.handleSettingChange('language', value as Language)
                 }
                 labels={{
                   title: group.lbllanguage,
@@ -44,10 +52,10 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
               />
               <div className="my-4"></div>
 
-              <Theme
+              <ThemeComponent
                 value={formValues.theme}
                 onChange={(value) =>
-                  handlers.handleSettingChange('theme', value)
+                  handlers.handleSettingChange('theme', value as Theme)
                 }
                 labels={{
                   title: group.lbltheme,
@@ -94,7 +102,7 @@ export const ViewSettingsContainer: React.FC<ViewSettingsFormProps> = ({
 
         <SettingsFormActions
           onCancel={handlers.cancelHandler}
-          onSave={handlers.submitHandler}
+          onSubmit={() => onSubmit(formValues)}
           labels={{
             control01: group.btncancel,
             control02: group.btnsave,
