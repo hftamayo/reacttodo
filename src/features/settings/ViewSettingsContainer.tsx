@@ -15,12 +15,10 @@ import {
 } from '@/shared/types/settings.type';
 
 export const ViewSettingsContainer: React.FC<SettingsFormProps> = ({
-  initialValues,
   onCancel,
   onSubmit,
 }) => {
   const { formValues, handlers } = useSettingsForm({
-    initialValues,
     onCancel,
     onSubmit,
   });
@@ -97,7 +95,6 @@ export const ViewSettingsContainer: React.FC<SettingsFormProps> = ({
         </div>
 
         <SettingsFormActions
-          initialValues={initialValues}
           onCancel={handlers.cancelHandler}
           onSubmit={() => onSubmit(formValues)}
           labels={{

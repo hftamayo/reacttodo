@@ -11,10 +11,7 @@ import { settingsService } from '../services/SettingsService';
 import { AppSettings, SettingsFormProps } from '@/shared/types/settings.type';
 import { showError } from '@/shared/services/notification/notificationService';
 
-export const useSettingsForm = ({
-  onSubmit,
-  onCancel,
-}: Omit<SettingsFormProps, 'initialValues'>) => {
+export const useSettingsForm = ({ onSubmit, onCancel }: SettingsFormProps) => {
   const dispatch = useAppDispatch();
   const settings = useAppSelector(selectSettings);
   const language = useAppSelector(selectLanguage);

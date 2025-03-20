@@ -40,7 +40,6 @@ export type SettingsFormBasicControlsProps = {
   };
 };
 export type SettingsFormProps = {
-  initialValues: AppSettings;
   onCancel: () => void;
   onSubmit: (values: AppSettings) => void;
   labels?: {
