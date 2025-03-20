@@ -14,13 +14,15 @@ import {
   SettingsFormProps,
 } from '@/shared/types/settings.type';
 
-export const ViewSettingsContainer: React.FC<SettingsFormProps> = ({
+type SettingsContainerProps = Pick<SettingsFormProps, 'onCancel' | 'onSubmit'>;
+
+export const ViewSettingsContainer: React.FC<SettingsContainerProps> = ({
   onCancel,
   onSubmit,
 }) => {
   const { formValues, handlers } = useSettingsForm({
-    onCancel,
     onSubmit,
+    onCancel,
   });
   const { title = '', text = '' } = useTranslation('settingsForm');
   const { group } = useTranslation('settingsFormElements');
