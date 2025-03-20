@@ -1,25 +1,27 @@
 import { useState } from 'react';
 import { useAppDispatch } from '@/shared/services/redux/hooks/useAppDispatch';
 import { useAppSelector } from '@/shared/services/redux/hooks/useAppSelector';
-import { AppSettings, SettingsFormProps } from '@/shared/types/settings.type';
 import {
   updateSettings,
   selectSettings,
   selectLanguage,
   selectTheme,
 } from '../store/settingsSlice';
+import { settingsService } from '../services/SettingsService';
+import { AppSettings, SettingsFormProps } from '@/shared/types/settings.type';
 import { showError } from '@/shared/services/notification/notificationService';
 
 export const useSettingsForm = ({
-  initialValues,
   onSubmit,
   onCancel,
-}: SettingsFormProps) => {
+}: Omit<SettingsFormProps, 'initialValues'>) => {
   const dispatch = useAppDispatch();
   const settings = useAppSelector(selectSettings);
   const language = useAppSelector(selectLanguage);
   const theme = useAppSelector(selectTheme);
-  const [formValues, setFormValues] = useState<AppSettings>(initialValues);
+  const [formValues, setFormValues] = useState<AppSettings>(
+    settingsService.getSettings()
+  );
 
   const handleSettingChange = <K extends keyof AppSettings>(
     key: K,
@@ -27,13 +29,14 @@ export const useSettingsForm = ({
   ) => {
     setFormValues((prev) => ({
       ...prev,
-      [key]: key === 'fontSize' ? Number(value) : value,
+      [key]: value,
     }));
   };
 
   const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
+      settingsService.saveSettings(formValues);
       dispatch(updateSettings(formValues));
       onSubmit(formValues);
     } catch (error) {
@@ -42,7 +45,7 @@ export const useSettingsForm = ({
   };
 
   const cancelHandler = () => {
-    setFormValues(initialValues);
+    setFormValues(settingsService.getSettings());
     onCancel();
   };
 
