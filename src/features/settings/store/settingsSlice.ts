@@ -7,7 +7,7 @@ const initialState: SettingsState = {
     language: 'en',
     theme: 'light',
     timezone: 'UTC',
-    fontSize: 12,
+    fontSize: '12',
   },
   isLoading: false,
   error: null,
