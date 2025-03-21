@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useAppSelector } from '@/shared/services/redux/hooks/useAppSelector';
+import { selectTheme } from '@/features/settings/store/settingsSlice';
 import { CustomOutlet } from '@/shared/services/routing/CustomOutlet';
 import { DashBoardHeader } from '@/features/dashboard/components/header/DashBoardHeader';
 import { DashBoardToggleMenuBar } from '@/features/dashboard/components/menu/DashBoardToggleMenuBar';
@@ -9,7 +10,7 @@ import { APP_NAME } from '@/shared/utils/envvars';
 import { MainLayoutStyles } from '@/shared/utils/twind/styles';
 
 export const MainLayout: React.FC = React.memo(() => {
-  const theme = useAppSelector((state: any) => state.theme.theme);
+  const theme = useAppSelector(selectTheme);
   const isAuthenticated = true;
   const userRole = 'admin';
   const { adminMenuOptions, supervisorMenuOptions, userMenuOptions } =
