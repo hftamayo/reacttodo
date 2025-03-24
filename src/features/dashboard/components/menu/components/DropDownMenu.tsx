@@ -18,7 +18,7 @@ export const DropDownMenu: React.FC<DropDownMenuProps> = ({ options }) => {
         className={DashBoardMenuBarStyles.menuButton}
       >
         <FaRegFileAlt className="w-6 h-6 mr-2" />
-        <span>Entities</span>
+        <span>Management</span>
         {isDropDownOpen ? (
           <FaChevronDown className="ml-auto" />
         ) : (
