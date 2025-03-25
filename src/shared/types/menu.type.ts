@@ -1,12 +1,12 @@
 export type MenuItemProps = {
-  id?: string;
+  id: string;
   path: string;
   label: string;
   icon: React.ComponentType<any>;
   roles: string[];
 };
 
-export type DropDownMenuProps = {
+export type DropDownMenuItemProps = {
   options: MenuItemProps[];
 };
 
