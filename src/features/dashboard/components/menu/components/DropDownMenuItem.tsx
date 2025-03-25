@@ -4,7 +4,7 @@ import { FaRegFileAlt, FaChevronDown, FaChevronRight } from 'react-icons/fa';
 import { DropDownMenuProps } from '@/shared/types/menu.type';
 import { DashBoardMenuBarStyles } from '@/shared/utils/twind/styles';
 
-export const DropDownMenu: React.FC<DropDownMenuProps> = ({ options }) => {
+export const DropDownMenuItem: React.FC<DropDownMenuProps> = ({ options }) => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
 
   const filteredOptions = options.filter((option) =>
