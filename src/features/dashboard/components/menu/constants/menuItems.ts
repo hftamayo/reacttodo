@@ -1,4 +1,4 @@
-import { MenuItem } from '@/shared/types/menu.type';
+import { MenuItemProps } from '@/shared/types/menu.type';
 import {
   FaHome,
   FaRegFileAlt,
@@ -7,7 +7,7 @@ import {
   FaPoll,
 } from 'react-icons/fa';
 
-export const MENU_ITEMS: MenuItem[] = [
+export const MENU_ITEMS: MenuItemProps[] = [
   {
     id: 'home',
     path: '/',

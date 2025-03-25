@@ -1,4 +1,4 @@
-export type MenuItem = {
+export type MenuItemProps = {
   id?: string;
   path: string;
   label: string;
@@ -7,11 +7,11 @@ export type MenuItem = {
 };
 
 export type DropDownMenuProps = {
-  options: MenuItem[];
+  options: MenuItemProps[];
 };
 
 export type MenuProps = {
-  options: MenuItem[];
+  options: MenuItemProps[];
   isCollapsed?: boolean;
 };
 
