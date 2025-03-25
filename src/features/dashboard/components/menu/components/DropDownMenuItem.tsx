@@ -1,15 +1,24 @@
 import React, { useState } from 'react';
 import { Link } from 'wouter';
+import { useMenuOptions } from '../hooks/useMenuOptions';
 import { FaRegFileAlt, FaChevronDown, FaChevronRight } from 'react-icons/fa';
-import { DropDownMenuProps } from '@/shared/types/menu.type';
+import { DropDownMenuItemProps } from '@/shared/types/menu.type';
 import { DashBoardMenuBarStyles } from '@/shared/utils/twind/styles';
 
-export const DropDownMenuItem: React.FC<DropDownMenuProps> = ({ options }) => {
+export const DropDownMenuItem: React.FC<DropDownMenuItemProps> = ({
+  userRole,
+  managementOptions = ['roles', 'users', 'tasks'],
+}) => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+  const menuOptions = useMenuOptions(userRole);
 
-  const filteredOptions = options.filter((option) =>
-    ['Roles', 'Users', 'Tasks'].includes(option.label)
+  const filteredOptions = menuOptions.filter((option) =>
+    managementOptions.includes(option.label.toLowerCase())
   );
+
+  if (filteredOptions.length === 0) {
+    return null;
+  }
 
   return (
     <li className={DashBoardMenuBarStyles.listItem}>
