@@ -2,7 +2,6 @@ export type MenuItem = {
   id?: string;
   path: string;
   label: string;
-  translationKey?: string;
   icon: React.ComponentType<any>;
   roles?: string[];
 };
