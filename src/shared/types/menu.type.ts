@@ -3,7 +3,7 @@ export type MenuItemProps = {
   path: string;
   label: string;
   icon: React.ComponentType<any>;
-  roles?: string[];
+  roles: string[];
 };
 
 export type DropDownMenuProps = {
