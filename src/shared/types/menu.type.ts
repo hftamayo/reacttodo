@@ -7,7 +7,8 @@ export type MenuItemProps = {
 };
 
 export type DropDownMenuItemProps = {
-  options: MenuItemProps[];
+  userRole: string;
+  menuoptions: string[];
 };
 
 export type MenuProps = {
