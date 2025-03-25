@@ -1,19 +1,18 @@
-type MenuOption = {
+export type MenuItem = {
+  id?: string;
   path: string;
   label: string;
+  translationKey?: string;
   icon: React.ComponentType<any>;
-};
-
-export type MenuOptionProps = {
-  option: MenuOption;
+  roles?: string[];
 };
 
 export type DropDownMenuProps = {
-  options: MenuOption[];
+  options: MenuItem[];
 };
 
 export type MenuProps = {
-  options: MenuOption[];
+  options: MenuItem[];
   isCollapsed?: boolean;
 };
 
