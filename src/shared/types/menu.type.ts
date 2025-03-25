@@ -11,6 +11,11 @@ export type DropDownMenuItemProps = {
   managementOptions: string[];
 };
 
+export type MenuLinkProps = {
+  option: MenuItemProps;
+  userRole: string;
+};
+
 export type MenuProps = {
   options: MenuItemProps[];
   isCollapsed?: boolean;
