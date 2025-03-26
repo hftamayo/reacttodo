@@ -1,26 +1,22 @@
 import React from 'react';
 import { ContainerMenuBar } from './components/ContainerMenuBar';
-import { MenuProps } from '@/shared/types/menu.type';
+import { MenuBarProps } from '@/shared/types/menu.type';
 import { DashBoardMenuBarStyles } from '@/shared/utils/twind/styles';
 
-export const DashBoardToggleMenuBar: React.FC<MenuProps> = ({
-  options,
+export const DashBoardToggleMenuBar: React.FC<MenuBarProps> = ({
+  userRole,
+  managementOptions,
   isCollapsed,
 }) => {
-  //const [menuOptions, setMenuOptions] = useState(adminMenuOptions);
-
   return (
     <div
       className={`${DashBoardMenuBarStyles.base} 
       ${isCollapsed ? DashBoardMenuBarStyles.collapsed : DashBoardMenuBarStyles.expanded}`}
     >
-      <ContainerMenuBar options={options} />
+      <ContainerMenuBar
+        userRole={userRole}
+        managementOptions={managementOptions}
+      />
     </div>
   );
-  //   return (
-  //     <ContainerMenuBar
-  //       menuOptions={menuOptions}
-  //       setMenuOptions={setMenuOptions}
-  //     />
-  //   );
 };
