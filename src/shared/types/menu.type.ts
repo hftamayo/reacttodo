@@ -16,8 +16,9 @@ export type MenuLinkProps = {
   userRole: string;
 };
 
-export type MenuProps = {
-  options: MenuItemProps[];
+export type MenuBarProps = {
+  userRole: string;
+  managementOptions: string[];
   isCollapsed?: boolean;
 };
 
