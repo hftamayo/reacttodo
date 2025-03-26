@@ -1,5 +1,4 @@
 export type MenuItemProps = {
-  id: string;
   path: string;
   label: string;
   icon: React.ComponentType<any>;
