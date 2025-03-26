@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAppSelector } from '@/shared/services/redux/hooks/useAppSelector';
 import { selectTheme } from '@/features/settings/store/settingsSlice';
 import { CustomOutlet } from '@/shared/services/routing/CustomOutlet';
 import { DashBoardHeader } from '@/features/dashboard/components/header/DashBoardHeader';
 import { DashBoardToggleMenuBar } from '@/features/dashboard/components/menu/DashBoardToggleMenuBar';
 import { DashBoardFooter } from '@/features/dashboard/components/footer/DashBoardFooter';
-import { menuOptions } from '@/features/dashboard/components/menu/config/menuOptions';
 import { APP_NAME } from '@/shared/utils/envvars';
 import { MainLayoutStyles } from '@/shared/utils/twind/styles';
 
@@ -13,24 +12,13 @@ export const MainLayout: React.FC = React.memo(() => {
   const theme = useAppSelector(selectTheme);
   const isAuthenticated = true;
   const userRole = 'admin';
-  const { adminMenuOptions, supervisorMenuOptions, userMenuOptions } =
-    menuOptions();
+  const menuOptions = ['roles', 'users', 'tasks'];
 
   const [sidebarToggle, setSidebarToggle] = useState(true);
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
   }, [theme]);
-
-  const selectMenuOptions = useMemo(() => {
-    if (userRole === 'admin') {
-      return adminMenuOptions;
-    } else if (userRole === 'supervisor') {
-      return supervisorMenuOptions;
-    } else {
-      return userMenuOptions;
-    }
-  }, [userRole, adminMenuOptions, supervisorMenuOptions, userMenuOptions]);
 
   const handleSidebarToggle = useCallback(() => {
     setSidebarToggle((prev) => !prev);
@@ -48,7 +36,8 @@ export const MainLayout: React.FC = React.memo(() => {
       </div>
       <div className="flex flex-grow flex-1">
         <DashBoardToggleMenuBar
-          options={selectMenuOptions}
+          userRole={userRole}
+          managementOptions={menuOptions}
           isCollapsed={sidebarToggle}
         />
         <div
