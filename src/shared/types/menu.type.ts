@@ -3,11 +3,12 @@ export type MenuItemProps = {
   label: string;
   icon: React.ComponentType<any>;
   roles: string[];
+  isDropDownItem?: boolean;
 };
 
 export type DropDownMenuItemProps = {
   userRole: string;
-  managementOptions: string[];
+  dropDownMenuOptions: string[];
 };
 
 export type MenuLinkProps = {
@@ -17,7 +18,7 @@ export type MenuLinkProps = {
 
 export type MenuBarProps = {
   userRole: string;
-  managementOptions: string[];
+  dropDownMenuOptions: string[];
   isCollapsed?: boolean;
 };
 
