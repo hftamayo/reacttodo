@@ -22,7 +22,6 @@ export type MenuLinkProps = {
 
 export type MenuBarProps = {
   userRole: string;
-  dropDownMenuOptions: string[];
   isCollapsed?: boolean;
 };
 
