@@ -1,18 +1,12 @@
 import React from 'react';
 import { DropDownMenuItem } from './DropDownMenuItem';
 import { MenuItem } from './MenuItem';
-import { DropDownMenuItemProps } from '@/shared/types/menu.type';
 import { useMenuOptions } from '../hooks/useMenuOptions';
 
-export const ContainerMenuBar: React.FC<DropDownMenuItemProps> = ({
+export const ContainerMenuBar: React.FC<{ userRole: string }> = ({
   userRole,
-  managementOptions,
 }) => {
-  const menuOptions = useMenuOptions(userRole);
-
-  const mainMenuItems = menuOptions.filter(
-    (option) => !managementOptions.includes(option.label.toLowerCase())
-  );
+  const { mainMenuItems } = useMenuOptions(userRole);
 
   return (
     <div className="w-64 text-white p-4">
@@ -23,10 +17,7 @@ export const ContainerMenuBar: React.FC<DropDownMenuItemProps> = ({
       </ul>
       <div className="mt-4">
         <ul>
-          <DropDownMenuItem
-            userRole={userRole}
-            managementOptions={managementOptions}
-          />
+          <DropDownMenuItem userRole={userRole} />
         </ul>
       </div>
     </div>
