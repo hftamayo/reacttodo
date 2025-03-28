@@ -3,8 +3,8 @@ import {
   FaHome,
   FaRegFileAlt,
   FaRegEnvelope,
-  FaCog,
-  FaPoll,
+  FaDeezer,
+  FaDatabase,
 } from 'react-icons/fa';
 
 export const MENU_ITEMS: MenuItemProps[] = [
@@ -39,15 +39,15 @@ export const MENU_ITEMS: MenuItemProps[] = [
     roles: ['admin', 'supervisor', 'user'],
   },
   {
-    path: '/dashboard/settings',
-    label: 'settings',
-    icon: FaCog,
+    path: '/dashboard/metrics',
+    label: 'metrics',
+    icon: FaDeezer,
     roles: ['admin', 'supervisor'],
   },
   {
-    path: '/dashboard/reports',
-    label: 'reports',
-    icon: FaPoll,
+    path: '/dashboard/repository',
+    label: 'repository',
+    icon: FaDatabase,
     roles: ['admin', 'supervisor', 'user'],
   },
 ];
