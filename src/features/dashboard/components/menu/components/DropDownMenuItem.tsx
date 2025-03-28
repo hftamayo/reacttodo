@@ -2,21 +2,15 @@ import React, { useState } from 'react';
 import { Link } from 'wouter';
 import { useMenuOptions } from '../hooks/useMenuOptions';
 import { FaRegFileAlt, FaChevronDown, FaChevronRight } from 'react-icons/fa';
-import { DropDownMenuItemProps } from '@/shared/types/menu.type';
 import { DashBoardMenuBarStyles } from '@/shared/utils/twind/styles';
 
-export const DropDownMenuItem: React.FC<DropDownMenuItemProps> = ({
+export const DropDownMenuItem: React.FC<{ userRole: string }> = ({
   userRole,
-  managementOptions = ['roles', 'users', 'tasks'],
 }) => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
-  const menuOptions = useMenuOptions(userRole);
+  const { dropdownItems } = useMenuOptions(userRole);
 
-  const filteredOptions = menuOptions.filter((option) =>
-    managementOptions.includes(option.label.toLowerCase())
-  );
-
-  if (filteredOptions.length === 0) {
+  if (dropdownItems.length === 0) {
     return null;
   }
 
@@ -37,7 +31,7 @@ export const DropDownMenuItem: React.FC<DropDownMenuItemProps> = ({
 
       {isDropDownOpen && (
         <ul className="ml-6 mt-2 space-y-2">
-          {filteredOptions.map((option) => (
+          {dropdownItems.map((option) => (
             <li key={option.path} className={DashBoardMenuBarStyles.mappedItem}>
               <Link
                 to={option.path}
