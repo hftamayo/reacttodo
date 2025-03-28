@@ -5,7 +5,6 @@ import { DashBoardMenuBarStyles } from '@/shared/utils/twind/styles';
 
 export const DashBoardToggleMenuBar: React.FC<MenuBarProps> = ({
   userRole,
-  managementOptions,
   isCollapsed,
 }) => {
   return (
@@ -13,10 +12,7 @@ export const DashBoardToggleMenuBar: React.FC<MenuBarProps> = ({
       className={`${DashBoardMenuBarStyles.base} 
       ${isCollapsed ? DashBoardMenuBarStyles.collapsed : DashBoardMenuBarStyles.expanded}`}
     >
-      <ContainerMenuBar
-        userRole={userRole}
-        managementOptions={managementOptions}
-      />
+      <ContainerMenuBar userRole={userRole} />
     </div>
   );
 };

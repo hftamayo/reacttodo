@@ -12,7 +12,6 @@ export const MainLayout: React.FC = React.memo(() => {
   const theme = useAppSelector(selectTheme);
   const isAuthenticated = true;
   const userRole = 'admin';
-  const menuOptions = ['roles', 'users', 'tasks'];
 
   const [sidebarToggle, setSidebarToggle] = useState(true);
 
@@ -37,7 +36,6 @@ export const MainLayout: React.FC = React.memo(() => {
       <div className="flex flex-grow flex-1">
         <DashBoardToggleMenuBar
           userRole={userRole}
-          managementOptions={menuOptions}
           isCollapsed={sidebarToggle}
         />
         <div
