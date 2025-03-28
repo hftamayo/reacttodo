@@ -6,6 +6,10 @@ export type MenuItemProps = {
   isDropDownItem?: boolean;
 };
 
+export type MenuState = {
+  items: MenuItemProps[];
+};
+
 export type DropDownMenuItemProps = {
   userRole: string;
   dropDownMenuOptions: string[];
