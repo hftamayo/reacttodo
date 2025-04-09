@@ -9,7 +9,10 @@ export const CustomOutlet: React.FC = () => {
   return (
     <Switch>
       {match && <Route path="/" component={DashBoardAnalyticsContainer} />}
-      <Route path="/taskboard" component={TaskBoardContainer} />
+      <Route
+        path="/dashboard/entities/taskboard"
+        component={TaskBoardContainer}
+      />
       {/* Add more routes as needed */}
     </Switch>
   );
