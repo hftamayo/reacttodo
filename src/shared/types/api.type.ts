@@ -104,6 +104,7 @@ export type TaskBoardPresenterProps = {
   totalTasks: number;
   completedTasks: number;
   error?: Error;
+  onClose: () => void;
 };
 
 //common types:
