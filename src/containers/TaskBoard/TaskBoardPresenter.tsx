@@ -2,7 +2,6 @@ import React, { forwardRef, useMemo } from 'react';
 import { AddTaskForm } from '@/features/task/components/AddTaskForm';
 import { TaskRow } from '@/features/task/components/TaskRow';
 import { taskBoard } from '@/shared/utils/twind/styles';
-import { APP_NAME } from '@/shared/utils/envvars';
 import { TaskBoardPresenterProps } from '@/shared/types/api.type';
 import { showError } from '@/shared/services/notification/notificationService';
 
@@ -38,7 +37,7 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
     return (
       <div className={taskBoard.bg}>
         <div className={taskBoard.container}>
-          <h3 className={taskBoard.heading}>{APP_NAME}</h3>
+          <h3 className={taskBoard.heading}>Task Board</h3>
           <AddTaskForm />
           {taskList}
           {totalTasks > 0 && (
