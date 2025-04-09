@@ -2,10 +2,15 @@ import { useTaskBoard } from '@/features/task/hooks/useTaskBoard';
 import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import { useErrorHandler } from '@/shared/hooks/useErrorHandler';
 import TaskBoardPresenter from './TaskBoardPresenter';
+import { navigate } from 'wouter/use-browser-location';
 
 export const TaskBoardContainer: React.FC = () => {
   const { handleError } = useErrorHandler('TaskBoard');
   const { ref, tasks, error, isLoading, taskStats } = useTaskBoard();
+
+  const handleClose = () => {
+    navigate('/');
+  };
 
   return (
     <ErrorBoundary
@@ -26,6 +31,7 @@ export const TaskBoardContainer: React.FC = () => {
         totalTasks={taskStats.total}
         completedTasks={taskStats.completed}
         error={error ?? undefined}
+        onClose={handleClose}
       />
     </ErrorBoundary>
   );
