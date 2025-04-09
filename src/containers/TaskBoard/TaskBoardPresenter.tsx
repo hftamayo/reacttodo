@@ -1,4 +1,5 @@
 import React, { forwardRef, useMemo } from 'react';
+import { FaTimes } from 'react-icons/fa';
 import { AddTaskForm } from '@/features/task/components/AddTaskForm';
 import { TaskRow } from '@/features/task/components/TaskRow';
 import { taskBoard } from '@/shared/utils/twind/styles';
@@ -6,7 +7,7 @@ import { TaskBoardPresenterProps } from '@/shared/types/api.type';
 import { showError } from '@/shared/services/notification/notificationService';
 
 const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
-  ({ tasks, isLoading, totalTasks, completedTasks, error }, ref) => {
+  ({ tasks, isLoading, totalTasks, completedTasks, error, onClose }, ref) => {
     const taskList = useMemo(() => {
       if (error) {
         showError(error.message);
@@ -37,7 +38,18 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
     return (
       <div className={taskBoard.bg}>
         <div className={taskBoard.container}>
-          <h3 className={taskBoard.heading}>Task Board</h3>
+          <div className="relative flex items-center justify-center mb-4">
+            <h3 className="text-3xl font-bold text-[var(--text-color)]">
+              Task Board
+            </h3>
+            <button
+              onClick={onClose}
+              className="absolute right-0 inline-flex items-center justify-center p-2 rounded-full hover:bg-gray-200 transition-colors duration-200"
+              aria-label="Close task board"
+            >
+              <FaTimes className="w-5 h-5 text-gray-600" />
+            </button>
+          </div>
           <AddTaskForm />
           {taskList}
           {totalTasks > 0 && (
