@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useAppSelector } from '@/shared/services/redux/hooks/useAppSelector';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { selectDropDownItems, selectMainMenuItems } from '../store/menuSlice';
@@ -8,29 +9,31 @@ export const useMenuOptions = (userRole: string) => {
   const mainMenuItems = useAppSelector(selectMainMenuItems);
   const { group } = useTranslation('sideBarDashboard');
 
-  if (!group) {
+  return useMemo(() => {
+    if (!group) {
+      return {
+        dropdownItems: [],
+        mainMenuItems: [],
+      };
+    }
+
+    const translatedDropdownItems = menuService
+      .filterItemsByRole(dropDownItems, userRole)
+      .map((item) => ({
+        ...item,
+        label: group[item.label] || item.label,
+      }));
+
+    const translatedMainItems = menuService
+      .filterItemsByRole(mainMenuItems, userRole)
+      .map((item) => ({
+        ...item,
+        label: group[item.label] || item.label,
+      }));
+
     return {
-      dropdownItems: [],
-      mainMenuItems: [],
+      dropdownItems: translatedDropdownItems,
+      mainMenuItems: translatedMainItems,
     };
-  }
-
-  const translatedDropdownItems = menuService
-    .filterItemsByRole(dropDownItems, userRole)
-    .map((item) => ({
-      ...item,
-      label: group[item.label] || item.label,
-    }));
-
-  const translatedMainItems = menuService
-    .filterItemsByRole(mainMenuItems, userRole)
-    .map((item) => ({
-      ...item,
-      label: group[item.label] || item.label,
-    }));
-
-  return {
-    dropdownItems: translatedDropdownItems,
-    mainMenuItems: translatedMainItems,
-  };
+  }, [dropDownItems, mainMenuItems, group, userRole]);
 };
