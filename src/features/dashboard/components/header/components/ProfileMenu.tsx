@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuGroup,
 } from '@/shared/components/ui/menu/DropDownMenu';
-import { ViewSettingsContainer } from '@/features/settings/ViewSettingsContainer';
+import { SettingsContainer } from '@/containers/Settings/SettingsContainer';
 import CustomModal from '@/shared/components/ui/modal/CustomModal';
 import { DashBoardHeaderProfileMenuStyles } from '@/shared/utils/twind/styles';
 
@@ -31,7 +31,7 @@ export const ProfileMenu: React.FC = () => {
 
   const handleSettingsClick = () => {
     setModalContent(
-      <ViewSettingsContainer
+      <SettingsContainer
         onCancel={() => setIsModalOpen(false)}
         onSubmit={() => {}}
       />

@@ -16,7 +16,7 @@ import {
 
 type SettingsContainerProps = Pick<SettingsFormProps, 'onCancel' | 'onSubmit'>;
 
-export const ViewSettingsContainer: React.FC<SettingsContainerProps> = ({
+export const SettingsContainer: React.FC<SettingsContainerProps> = ({
   onCancel,
   onSubmit,
 }) => {
