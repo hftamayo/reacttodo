@@ -1,12 +1,12 @@
 import React from 'react';
-import { SettingsFormActions } from './components/layout/SettingsFormActions';
-import { SettingsCard } from './components/layout/SettingsCard';
-import { useSettingsForm } from './hooks/useSettingsForm';
-import { LanguageComponent } from './components/sections/LanguageComponent';
-import { ThemeComponent } from './components/sections/ThemeComponent';
-import { TimeZoneComponent } from './components/sections/TimeZoneComponent';
-import { FontSizeComponent } from './components/sections/FontSizeComponent';
-import { BackUpComponent } from './components/sections/BackUpComponent';
+import { SettingsFormActions } from '../../features/settings/components/layout/SettingsFormActions';
+import { SettingsCard } from '../../features/settings/components/layout/SettingsCard';
+import { useSettingsForm } from '../../features/settings/hooks/useSettingsForm';
+import { LanguageComponent } from '../../features/settings/components/sections/LanguageComponent';
+import { ThemeComponent } from '../../features/settings/components/sections/ThemeComponent';
+import { TimeZoneComponent } from '../../features/settings/components/sections/TimeZoneComponent';
+import { FontSizeComponent } from '../../features/settings/components/sections/FontSizeComponent';
+import { BackUpComponent } from '../../features/settings/components/sections/BackUpComponent';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import {
   Language,
