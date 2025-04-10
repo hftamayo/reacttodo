@@ -24,6 +24,7 @@ export type SettingsCardProps = {
   title: string;
   description: string;
   children: React.ReactNode;
+  onClose?: () => void;
 };
 
 export type AppSettings = {
