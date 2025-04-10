@@ -21,7 +21,7 @@ export const SettingsPresenter: React.FC<SettingsPresenterProps> = ({
   onSubmit,
   onCancel,
 }) => (
-  <SettingsCard title={title} description={description}>
+  <SettingsCard title={title} description={description} onClose={onCancel}>
     <form onSubmit={handlers.submitHandler}>
       <div className="grid w-full items-center gap-4">
         <div className="flex flex-wrap -mx-2">
