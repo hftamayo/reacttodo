@@ -8,7 +8,11 @@ import {
   selectTheme,
 } from '../store/settingsSlice';
 import { settingsService } from '../services/SettingsService';
-import { AppSettings, SettingsFormProps } from '@/shared/types/settings.type';
+import {
+  AppSettings,
+  SettingsFormProps,
+  UseSettingsFormHandlers,
+} from '@/shared/types/settings.type';
 import { showError } from '@/shared/services/notification/notificationService';
 
 type SettingsFormHook = Pick<SettingsFormProps, 'onSubmit' | 'onCancel'>;
@@ -22,30 +26,32 @@ export const useSettingsForm = ({ onSubmit, onCancel }: SettingsFormHook) => {
     settingsService.getSettings()
   );
 
-  const handleSettingChange = <K extends keyof AppSettings>(
-    key: K,
-    value: AppSettings[K]
-  ) => {
-    setFormValues((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
+  const handlers: UseSettingsFormHandlers = {
+    handleSettingChange: <K extends keyof AppSettings>(
+      key: K,
+      value: AppSettings[K]
+    ) => {
+      setFormValues((prev) => ({
+        ...prev,
+        [key]: value,
+      }));
+    },
 
-  const submitHandler = async (event: React.FormEvent) => {
-    event.preventDefault();
-    try {
-      settingsService.saveSettings(formValues);
-      dispatch(updateSettings(formValues));
-      onSubmit(formValues);
-    } catch (error) {
-      showError('Failed to update settings');
-    }
-  };
+    submitHandler: async (event: React.FormEvent) => {
+      event.preventDefault();
+      try {
+        settingsService.saveSettings(formValues);
+        dispatch(updateSettings(formValues));
+        onSubmit(formValues);
+      } catch (error) {
+        showError('Failed to update settings');
+      }
+    },
 
-  const cancelHandler = () => {
-    setFormValues(settingsService.getSettings());
-    onCancel();
+    cancelHandler: () => {
+      setFormValues(settingsService.getSettings());
+      onCancel();
+    },
   };
 
   return {
@@ -53,11 +59,7 @@ export const useSettingsForm = ({ onSubmit, onCancel }: SettingsFormHook) => {
     language,
     theme,
     formValues,
-    handlers: {
-      handleSettingChange,
-      submitHandler,
-      cancelHandler,
-    },
+    handlers,
   } as const;
 };
 
