@@ -56,3 +56,34 @@ export type SettingsFormSpecialControlsProps<T> = {
     options?: { [key: string]: string };
   };
 };
+
+export type SettingsPresenterProps = {
+  title: string;
+  description: string;
+  formValues: AppSettings;
+  labels: {
+    language: string;
+    theme: string;
+    timezone: string;
+    fontSize: string;
+    backup: string;
+    cancel: string;
+    save: string;
+    themeLight: string;
+    themeDark: string;
+    timezonePlaceholder: string;
+    fontSizePlaceholder: string;
+  };
+  handlers: UseSettingsFormHandlers;
+  onSubmit: (values: AppSettings) => void;
+  onCancel: () => void;
+};
+
+export type UseSettingsFormHandlers = {
+  handleSettingChange: <K extends keyof AppSettings>(
+    key: K,
+    value: AppSettings[K]
+  ) => void;
+  submitHandler: (event: React.FormEvent) => void;
+  cancelHandler: () => void;
+};
