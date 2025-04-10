@@ -89,6 +89,9 @@ export const formSettingsStyles = {
   title: 'text-center text-2xl font-bold',
   description: 'text-center text-xl font-bold',
   grouptitle: 'font-bold underline',
+  closeButton:
+    'absolute top-4 right-4 p-2 rounded-full bg-[var(--cameo-600)] hover:bg-[var(--cameo-400)] transition-colors duration-200',
+  closeIcon: 'w-5 h-5 text-[var(--cameo-1000)]',
 };
 
 export const toasterMessages = {
