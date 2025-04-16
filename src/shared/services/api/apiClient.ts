@@ -37,7 +37,7 @@ export const beOps = {
   async appHealth(): Promise<ApiResponse<HealthCheckData<AppHealthDetails>>> {
     try {
       const startTime = performance.now();
-      const response = await fetch(`${BACKEND_URL}/healthcheck/app`, {
+      const response = await fetch(`${BACKEND_URL}/tasks/healthcheck/app`, {
         //credentials: 'include',
       });
       const data =
@@ -54,7 +54,7 @@ export const beOps = {
 
   async dbHealth(): Promise<ApiResponse<HealthCheckData<DbHealthDetails>>> {
     try {
-      const response = await fetch(`${BACKEND_URL}/healthcheck/db`, {
+      const response = await fetch(`${BACKEND_URL}/tasks/healthcheck/db`, {
         //credentials: 'include',
       });
       return await handleResponse<HealthCheckData<DbHealthDetails>>(response);
@@ -68,7 +68,7 @@ export const beOps = {
 export const taskOps = {
   async getTasks(): Promise<ApiResponse<TaskData>> {
     try {
-      const url = `${BACKEND_URL}/todos?limit=5&skip=10`;
+      const url = `${BACKEND_URL}/tasks/task/list?limit=5&skip=10`;
       const response = await fetch(url, {
         //credentials: 'include',
       });
