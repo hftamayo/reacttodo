@@ -10,34 +10,50 @@ import { Button } from '@/shared/components/ui/button/Button';
 
 import { taskRow } from '../../../shared/utils/twind/styles';
 
-export const TaskRow: React.FC<TaskProps> = (task: TaskProps) => {
+export const TaskRow: React.FC<TaskProps> = ({
+  id,
+  title,
+  description,
+  done,
+  owner,
+  createdAt,
+  updatedAt,
+  deletedAt,
+}) => {
   const { text: deleteRowButton } = useTranslation('deleteRowButton');
   const dispatch = useAppDispatch();
 
   const handleToggleComplete = () => {
-    dispatch(updateTask({ ...task, done: !task.done }));
+    dispatch(
+      updateTask({
+        id,
+        title,
+        description,
+        done: !done,
+        owner,
+        createdAt,
+        updatedAt,
+        deletedAt,
+      })
+    );
   };
 
   const handleDeleteTask = () => {
-    if (task.id) {
-      dispatch(deleteTask(task.id));
+    if (id) {
+      dispatch(deleteTask(id));
     }
   };
 
   return (
-    <li className={task.done ? taskRow.liComplete : taskRow.li}>
+    <li className={done ? taskRow.liComplete : taskRow.li}>
       <div className="flex">
-        <Input
-          type="checkbox"
-          checked={task.done}
-          onChange={handleToggleComplete}
-        />
+        <Input type="checkbox" checked={done} onChange={handleToggleComplete} />
         <Label
           size="large"
-          className={task.done ? taskRow.textComplete : taskRow.text}
+          className={done ? taskRow.textComplete : taskRow.text}
           onClick={handleToggleComplete}
         >
-          {task.title}
+          {title}
         </Label>
       </div>
       <Button
