@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAppDispatch } from '@/shared/services/redux/hooks/useAppDispatch';
 import { TaskProps } from '../../../shared/types/api.type';
-import { updateTask, deleteTask } from '../store/taskSlice';
+import { useTaskMutations } from '../hooks/useTaskMutations';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { Label } from '@/shared/components/ui/label/Label';
@@ -21,26 +21,24 @@ export const TaskRow: React.FC<TaskProps> = ({
   deletedAt,
 }) => {
   const { text: deleteRowButton } = useTranslation('deleteRowButton');
-  const dispatch = useAppDispatch();
+  const { deleteTask, updateTask } = useTaskMutations();
 
   const handleToggleComplete = () => {
-    dispatch(
-      updateTask({
-        id,
-        title,
-        description,
-        done: !done,
-        owner,
-        createdAt,
-        updatedAt,
-        deletedAt,
-      })
-    );
+    updateTask.mutate({
+      id,
+      title,
+      description,
+      done: !done,
+      owner,
+      createdAt,
+      updatedAt,
+      deletedAt,
+    });
   };
 
   const handleDeleteTask = () => {
     if (id) {
-      dispatch(deleteTask(id));
+      deleteTask.mutate(id);
     }
   };
 
