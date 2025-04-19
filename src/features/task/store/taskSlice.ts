@@ -14,44 +14,6 @@ import { showError } from '@/shared/services/notification/notificationService';
 export const getTotalTasks = (state: RootState) =>
   Object.keys(state.task.tasks).length;
 
-export const getTasks = createAsyncThunk(
-  'task/getTasks',
-  async (_, { rejectWithValue }) => {
-    try {
-      const response: ApiResponse<TaskData> = await taskService.fetchTasks();
-      // Convert to object instead of Map
-      const tasks = response.data.tasks
-        ? response.data.tasks.reduce(
-            (acc, task) => {
-              if (task.id) {
-                acc[task.id] = task;
-              }
-              return acc;
-            },
-            {} as Record<string, TaskProps>
-          )
-        : {};
-      return tasks;
-    } catch (error) {
-      showError(error as ApiError, 'Failed to fetch tasks');
-      return rejectWithValue((error as ApiError).resultMessage);
-    }
-  }
-);
-
-export const getTask = createAsyncThunk(
-  'task/getTask',
-  async (id: string, { rejectWithValue }) => {
-    try {
-      const response: ApiResponse<TaskData> = await taskService.fetchTask(id);
-      return response.data.task;
-    } catch (error) {
-      showError(error as ApiError, 'Failed to fetch tasks');
-      return rejectWithValue((error as ApiError).resultMessage);
-    }
-  }
-);
-
 export const addTask = createAsyncThunk(
   'task/addTask',
   async (task: AddTaskProps, { rejectWithValue }) => {
@@ -106,39 +68,7 @@ const tasksSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getTasks.pending, (state) => {
-        state.status = 'loading';
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(getTasks.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.loading = false;
-        state.tasks = action.payload;
-        state.error = null;
-      })
-      .addCase(getTasks.rejected, (state, action) => {
-        state.status = 'failed';
-        state.loading = false;
-        state.error = action.error.message as string;
-      })
-      .addCase(getTask.pending, (state) => {
-        state.status = 'loading';
-        state.loading = true;
-      })
-      .addCase(
-        getTask.fulfilled,
-        (state, action: PayloadAction<TaskProps | undefined>) => {
-          state.status = 'succeeded';
-          state.loading = false;
-          state.task = action.payload ?? null;
-        }
-      )
-      .addCase(getTask.rejected, (state, action) => {
-        state.status = 'failed';
-        state.loading = false;
-        state.error = action.payload as string;
-      })
+
       .addCase(addTask.pending, (state) => {
         state.status = 'loading';
         state.loading = true;
