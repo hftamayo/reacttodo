@@ -11,6 +11,7 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
     { tasks, isLoading, totalTasks, completedTasks, error, onClose, mutations },
     ref
   ) => {
+    console.log('mutations in TaskBoardPresenter', mutations);
     const taskList = useMemo(() => {
       if (error) {
         showError(error.message);
@@ -36,7 +37,7 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
           ))}
         </ul>
       );
-    }, [tasks, isLoading, error]);
+    }, [tasks, isLoading, error, mutations]);
 
     return (
       <div className={taskBoard.bg}>
