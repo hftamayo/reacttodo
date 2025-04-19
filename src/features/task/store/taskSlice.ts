@@ -6,7 +6,6 @@ import {
   ApiResponse,
   ApiError,
 } from '../../../shared/types/api.type';
-import { RootState } from '../../../shared/services/redux/rootReducer';
 import { taskService } from '../services/taskService';
 import { showError } from '@/shared/services/notification/notificationService';
 
