@@ -100,9 +100,42 @@ export const useTaskMutations = () => {
     },
   });
 
-  const deleteTask = useMutation<ApiResponse<TaskData>, Error, string>({
+  const deleteTask = useMutation<
+    ApiResponse<TaskData>,
+    Error,
+    string,
+    TaskContext
+  >({
     mutationFn: taskService.fetchDeleteTask,
-    onSuccess: () => {
+    onMutate: async (taskId: string) => {
+      await queryClient.cancelQueries({ queryKey: ['tasks'] });
+      const previousTasks = queryClient.getQueryData<ApiResponse<TaskData>>([
+        'tasks',
+      ]);
+
+      if (previousTasks) {
+        queryClient.setQueryData<ApiResponse<TaskData>>(['tasks'], {
+          ...previousTasks,
+          data: {
+            ...previousTasks.data,
+            tasks: previousTasks.data.tasks.filter(
+              (task) => task.id !== taskId
+            ),
+          },
+        });
+      }
+
+      return { previousTasks };
+    },
+    onError: (error, _, context) => {
+      if (error) {
+        showError('Delete task operation:', 'Failed to delete task');
+      }
+      if (context?.previousTasks) {
+        queryClient.setQueryData(['tasks'], context.previousTasks);
+      }
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
     },
   });
