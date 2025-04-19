@@ -6,7 +6,7 @@ import { navigate } from 'wouter/use-browser-location';
 
 export const TaskBoardContainer: React.FC = () => {
   const { handleError } = useErrorHandler('TaskBoard');
-  const { ref, tasks, error, isLoading, taskStats } = useTaskBoard();
+  const { ref, tasks, error, isLoading, taskStats, mutations } = useTaskBoard();
 
   const handleClose = () => {
     navigate('/');
@@ -32,6 +32,7 @@ export const TaskBoardContainer: React.FC = () => {
         completedTasks={taskStats.completed}
         error={error ?? undefined}
         onClose={handleClose}
+        mutations={mutations}
       />
     </ErrorBoundary>
   );
