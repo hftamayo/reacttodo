@@ -1,3 +1,5 @@
+import { useTaskMutations } from '@/features/task/hooks/useTaskMutations';
+
 //healthcheck types:
 export type AppHealthDetails = {
   timestamp: string;
@@ -98,13 +100,14 @@ export type TasksState = {
 };
 
 export type TaskBoardPresenterProps = {
-  ref: React.Ref<HTMLDivElement>;
   tasks: TaskProps[];
   isLoading: boolean;
   totalTasks: number;
   completedTasks: number;
   error?: Error;
   onClose: () => void;
+  mutations: ReturnType<typeof useTaskMutations>; // Add mutations
+  ref?: React.RefObject<HTMLDivElement>;
 };
 
 //common types:
