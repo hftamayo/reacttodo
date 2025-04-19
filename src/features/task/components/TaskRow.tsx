@@ -9,7 +9,11 @@ import { Button } from '@/shared/components/ui/button/Button';
 
 import { taskRow } from '../../../shared/utils/twind/styles';
 
-export const TaskRow: React.FC<TaskProps> = ({
+interface TaskRowProps extends TaskProps {
+  mutations: ReturnType<typeof useTaskMutations>;
+}
+
+export const TaskRow: React.FC<TaskRowProps> = ({
   id,
   title,
   description,
@@ -18,9 +22,10 @@ export const TaskRow: React.FC<TaskProps> = ({
   createdAt,
   updatedAt,
   deletedAt,
+  mutations,
 }) => {
   const { text: deleteRowButton } = useTranslation('deleteRowButton');
-  const { deleteTask, updateTask } = useTaskMutations();
+  const { deleteTask, updateTask } = mutations;
 
   const handleToggleComplete = () => {
     updateTask.mutate({
