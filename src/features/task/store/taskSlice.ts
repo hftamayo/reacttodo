@@ -80,20 +80,6 @@ export const updateTask = createAsyncThunk(
   }
 );
 
-export const deleteTask = createAsyncThunk(
-  'task/deleteTask',
-  async (id: string, { rejectWithValue }) => {
-    try {
-      const response: ApiResponse<TaskData> =
-        await taskService.fetchDeleteTask(id);
-      return { id, msg: response.resultMessage };
-    } catch (error) {
-      showError(error as ApiError, 'Failed to fetch tasks');
-      return rejectWithValue((error as ApiError).resultMessage);
-    }
-  }
-);
-
 // Update TasksState interface to use Record instead of Map
 interface UpdatedTasksState {
   tasks: Record<string, TaskProps>;
@@ -189,25 +175,6 @@ const tasksSlice = createSlice({
         }
       )
       .addCase(updateTask.rejected, (state, action) => {
-        state.status = 'failed';
-        state.loading = false;
-        state.error = action.payload as string;
-      })
-      .addCase(deleteTask.pending, (state) => {
-        state.status = 'loading';
-        state.loading = true;
-      })
-      .addCase(
-        deleteTask.fulfilled,
-        (state, action: PayloadAction<{ id: string; msg: string }>) => {
-          state.status = 'succeeded';
-          state.loading = false;
-          // Use delete operator instead of Map.delete
-          delete state.tasks[action.payload.id];
-          state.error = action.payload.msg;
-        }
-      )
-      .addCase(deleteTask.rejected, (state, action: PayloadAction<unknown>) => {
         state.status = 'failed';
         state.loading = false;
         state.error = action.payload as string;
