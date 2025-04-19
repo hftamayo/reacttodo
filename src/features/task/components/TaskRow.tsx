@@ -1,5 +1,4 @@
 import React from 'react';
-import { useAppDispatch } from '@/shared/services/redux/hooks/useAppDispatch';
 import { TaskProps } from '../../../shared/types/api.type';
 import { useTaskMutations } from '../hooks/useTaskMutations';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
