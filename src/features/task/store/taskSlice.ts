@@ -10,10 +10,6 @@ import { RootState } from '../../../shared/services/redux/rootReducer';
 import { taskService } from '../services/taskService';
 import { showError } from '@/shared/services/notification/notificationService';
 
-// Update the RootState type to reflect the new tasks structure
-export const getTotalTasks = (state: RootState) =>
-  Object.keys(state.task.tasks).length;
-
 export const addTask = createAsyncThunk(
   'task/addTask',
   async (task: AddTaskProps, { rejectWithValue }) => {
