@@ -7,7 +7,10 @@ import { TaskBoardPresenterProps } from '@/shared/types/api.type';
 import { showError } from '@/shared/services/notification/notificationService';
 
 const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
-  ({ tasks, isLoading, totalTasks, completedTasks, error, onClose }, ref) => {
+  (
+    { tasks, isLoading, totalTasks, completedTasks, error, onClose, mutations },
+    ref
+  ) => {
     const taskList = useMemo(() => {
       if (error) {
         showError(error.message);
@@ -29,7 +32,7 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
       return (
         <ul>
           {tasks.map((task) => (
-            <TaskRow key={task.id} {...task} />
+            <TaskRow key={task.id} {...task} mutations={mutations} />
           ))}
         </ul>
       );
