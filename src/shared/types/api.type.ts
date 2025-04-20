@@ -72,10 +72,10 @@ export type TaskProps = {
   title: string;
   description: string;
   done: boolean;
-  owner: string;
+  owner: number;
   createdAt?: string;
   updatedAt?: string;
-  deletedAt?: string;
+  deletedAt?: null | string;
 };
 
 export type AddTaskProps = Pick<TaskProps, 'title'>;
