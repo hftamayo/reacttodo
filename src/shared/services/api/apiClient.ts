@@ -68,7 +68,7 @@ export const beOps = {
 export const taskOps = {
   async getTasks(): Promise<ApiResponse<TaskData>> {
     try {
-      const url = `${BACKEND_URL}/tasks/task/list?limit=5&skip=10`;
+      const url = `${BACKEND_URL}/tasks/task/list?limit=5`;
       const response = await fetch(url, {
         //credentials: 'include',
       });
