@@ -3,7 +3,7 @@ import { taskService } from '../services/taskService';
 import {
   TaskContext,
   TaskData,
-  NewTaskProps,
+  AddTaskProps,
   TaskProps,
   ApiResponse,
 } from '@/shared/types/api.type';
@@ -15,11 +15,11 @@ export const useTaskMutations = () => {
   const addTask = useMutation<
     ApiResponse<TaskData>,
     Error,
-    NewTaskProps,
+    AddTaskProps,
     TaskContext
   >({
     mutationFn: taskService.fetchAddTask,
-    onMutate: async (newTask: NewTaskProps) => {
+    onMutate: async (newTask: AddTaskProps) => {
       await queryClient.cancelQueries({ queryKey: ['tasks'] });
       const previousTasks = queryClient.getQueryData<ApiResponse<TaskData>>([
         'tasks',
