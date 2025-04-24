@@ -13,7 +13,7 @@ export const isApiError = (error: any): error is ApiError => {
 };
 
 const getErrorMessage = (error: ApiError): string => {
-  return `${error.httpStatusCode} ${error.resultMessage}`;
+  return `${error.code} ${error.resultMessage}`;
 };
 
 export const showError = (error: ApiError | string, userMessage?: string) => {
