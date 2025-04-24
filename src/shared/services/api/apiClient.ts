@@ -17,7 +17,7 @@ const handleResponse = async <T>(
   if (!response.ok) {
     const errorData = await response.json();
     const error: ApiError = {
-      httpStatusCode: response.status,
+      code: response.status,
       resultMessage: `Network response was not ok: ${response.statusText}. Data: ${JSON.stringify(errorData)}`,
     };
     handleError(error);
@@ -72,30 +72,14 @@ export const taskOps = {
       const response = await fetch(url, {
         //credentials: 'include',
       });
-      const dataFetched = await handleResponse<TaskData>(response);
-
-      const tasks: TaskProps[] = dataFetched.data.tasks.map(
-        (todo: TaskProps) => ({
-          id: todo.id,
-          title: todo.title,
-          description: todo.description,
-          done: todo.done,
-          owner: todo.owner,
-        })
-      );
-
-      return {
-        httpStatusCode: 200,
-        resultMessage: 'Data fetched successfully',
-        data: { tasks },
-      };
+      return await handleResponse<TaskData>(response);
     } catch (error: unknown) {
       handleError(error);
       throw error;
     }
   },
 
-  async getTask(id: string): Promise<ApiResponse<TaskData>> {
+  async getTask(id: number): Promise<ApiResponse<TaskData>> {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
         //credentials: 'include',
@@ -141,7 +125,7 @@ export const taskOps = {
     }
   },
 
-  async deleteTask(id: string): Promise<ApiResponse<TaskData>> {
+  async deleteTask(id: number): Promise<ApiResponse<TaskData>> {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
         method: 'DELETE',
