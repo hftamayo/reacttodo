@@ -1,5 +1,12 @@
 import { useTaskMutations } from '@/features/task/hooks/useTaskMutations';
 
+export type PaginationProps = {
+  hasMore: boolean;
+  limit: number;
+  nextCursor: string | null;
+  totalCount: number;
+};
+
 //healthcheck types:
 export type AppHealthDetails = {
   timestamp: string;
@@ -81,8 +88,7 @@ export type TaskProps = {
 export type AddTaskProps = Pick<TaskProps, 'title'>;
 
 export type TaskData = {
-  newTask?: AddTaskProps;
-  task?: TaskProps;
+  pagination: PaginationProps;
   tasks: TaskProps[];
 };
 
