@@ -29,7 +29,7 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
         );
       }
 
-      if (tasks?.length) {
+      if (!tasks || tasks.length === 0) {
         return (
           <div className="flex justify-center p-4">
             <p>No ongoing tasks</p>
