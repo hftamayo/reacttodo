@@ -97,12 +97,8 @@ export type TaskProps = {
   deletedAt?: null | string;
 };
 
-export type NewTaskProps = Omit<
-  TaskProps,
-  'id' | 'createdAt' | 'updatedAt' | 'deletedAt'
->;
-
 export type AddTaskProps = Pick<TaskProps, 'title'>;
+//export type AddTaskProps = Pick<TaskProps, 'title' | 'description' | 'owner'>;
 
 export type TaskData = {
   pagination: PaginationProps;
