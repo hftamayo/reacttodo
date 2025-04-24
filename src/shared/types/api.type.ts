@@ -9,7 +9,7 @@ export type PaginationProps = {
 };
 
 export type ApiResponse<T> = {
-  httpStatusCode: number;
+  code: number;
   resultMessage: string;
   data: T;
 };
