@@ -1,10 +1,22 @@
 import { useTaskMutations } from '@/features/task/hooks/useTaskMutations';
 
+//common types:
 export type PaginationProps = {
   hasMore: boolean;
   limit: number;
   nextCursor: string | null;
   totalCount: number;
+};
+
+export type ApiResponse<T> = {
+  httpStatusCode: number;
+  resultMessage: string;
+  data: T;
+};
+
+export type ApiError = {
+  httpStatusCode: number;
+  resultMessage: string;
 };
 
 //healthcheck types:
@@ -75,7 +87,7 @@ export type UserData = {
 
 //task types:
 export type TaskProps = {
-  id?: string;
+  id: string;
   title: string;
   description: string;
   done: boolean;
@@ -114,16 +126,4 @@ export type TaskBoardPresenterProps = {
   onClose: () => void;
   mutations: ReturnType<typeof useTaskMutations>; // Add mutations
   ref?: React.RefObject<HTMLDivElement>;
-};
-
-//common types:
-export type ApiResponse<T> = {
-  httpStatusCode: number;
-  resultMessage: string;
-  data: T;
-};
-
-export type ApiError = {
-  httpStatusCode: number;
-  resultMessage: string;
 };
