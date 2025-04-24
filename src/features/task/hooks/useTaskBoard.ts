@@ -13,9 +13,16 @@ export const useTaskBoard = () => {
   const mutations = useTaskMutations();
 
   const tasks = useMemo(() => {
-    if (!data?.data?.tasks) return [];
+    if (isLoading) {
+      return [];
+    }
+
+    if (!data?.data?.tasks) {
+      console.error('No tasks found in the API response');
+      return [];
+    }
     return data.data.tasks;
-  }, [data]);
+  }, [data, isLoading]);
 
   const taskStats = useMemo(
     () => ({
