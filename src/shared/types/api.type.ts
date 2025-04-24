@@ -15,7 +15,7 @@ export type ApiResponse<T> = {
 };
 
 export type ApiError = {
-  httpStatusCode: number;
+  code: number;
   resultMessage: string;
 };
 
