@@ -11,11 +11,17 @@ export const useTaskQueries = {
       staleTime: 5 * 60 * 1000, // 5 minutes
       refetchOnWindowFocus: false,
       refetchOnMount: false,
+      retry: 2,
+      retryDelay: 1000,
+      select: (response) => {
+        return response;
+      },
     }),
 
-  getTask: (id: string) =>
+  getTask: (id: number) =>
     useQuery<ApiResponse<TaskData>, Error>({
       queryKey: ['task', id],
       queryFn: () => taskService.fetchTask(id),
+      enabled: !!id,
     }),
 };
