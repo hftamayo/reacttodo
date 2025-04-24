@@ -11,7 +11,6 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
     { tasks, isLoading, totalTasks, completedTasks, error, onClose, mutations },
     ref
   ) => {
-    console.log('mutations in TaskBoardPresenter', mutations);
     const taskList = useMemo(() => {
       if (error) {
         showError(error.message);
@@ -23,17 +22,25 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
       }
 
       if (isLoading) {
-        return <p>Loading data...</p>;
+        return (
+          <div className="flex justify-center p-4">
+            <p>Loading tasks...</p>
+          </div>
+        );
       }
 
-      if (tasks.length === 0) {
-        return <p>No ongoing tasks</p>;
+      if (tasks?.length) {
+        return (
+          <div className="flex justify-center p-4">
+            <p>No ongoing tasks</p>
+          </div>
+        );
       }
 
       return (
         <ul>
           {tasks.map((task) => (
-            <TaskRow key={task.id} {...task} mutations={mutations} />
+            <TaskRow key={task.id} mutations={mutations} {...task} />
           ))}
         </ul>
       );
@@ -54,7 +61,7 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
               <FaTimes className="w-5 h-5 text-gray-600" />
             </button>
           </div>
-          <AddTaskForm />
+          <AddTaskForm mutations={mutations} />
           {taskList}
           {totalTasks > 0 && (
             <p className={taskBoard.count}>
@@ -67,5 +74,7 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
     );
   }
 );
+
+TaskBoardPresenter.displayName = 'TaskBoardPresenter';
 
 export default React.memo(TaskBoardPresenter);
