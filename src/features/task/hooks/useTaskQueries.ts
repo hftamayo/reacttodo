@@ -7,8 +7,13 @@ export const useTaskQueries = {
     useQuery<ApiResponse<TaskData>, Error>({
       queryKey: ['tasks'],
       queryFn: async () => {
-        const response = await taskService.fetchTasks();
-        return response;
+        try {
+          const response = await taskService.fetchTasks();
+          return response;
+        } catch (error) {
+          console.error('Error fetching tasks:', error);
+          throw new Error('Failed to fetch tasks');
+        }
       },
       enabled,
       staleTime: 5 * 60 * 1000,
