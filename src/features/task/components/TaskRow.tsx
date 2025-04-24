@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { TaskProps } from '../../../shared/types/api.type';
 import { useTaskMutations } from '../hooks/useTaskMutations';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
@@ -13,59 +13,79 @@ interface TaskRowProps extends TaskProps {
   mutations: ReturnType<typeof useTaskMutations>;
 }
 
-export const TaskRow: React.FC<TaskRowProps> = ({
-  id,
-  title,
-  description,
-  done,
-  owner,
-  createdAt,
-  updatedAt,
-  deletedAt,
-  mutations,
-}) => {
-  const { text: deleteRowButton } = useTranslation('deleteRowButton');
-  const { deleteTask, updateTask } = mutations;
+export const TaskRow: React.FC<TaskRowProps> = memo(
+  ({
+    id,
+    title,
+    description,
+    done,
+    owner,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    mutations,
+  }) => {
+    const { text: deleteRowButton } = useTranslation('deleteRowButton');
+    const { deleteTask, updateTask } = mutations;
 
-  const handleToggleComplete = () => {
-    updateTask.mutate({
-      id,
-      title,
-      description,
-      done: !done,
-      owner,
-      createdAt,
-      updatedAt,
-      deletedAt,
-    });
-  };
+    const handleToggleComplete = () => {
+      if (updateTask.isPending) return;
 
-  const handleDeleteTask = () => {
-    if (id) {
+      updateTask.mutate({
+        id,
+        title,
+        description,
+        done: !done,
+        owner,
+        createdAt,
+        updatedAt,
+        deletedAt,
+      });
+    };
+
+    const handleDeleteTask = () => {
+      if (deleteTask.isPending) return;
+      if (!id) {
+        console.error('Task ID is undefined. Cannot delete task.');
+        return;
+      }
       deleteTask.mutate(id);
-    }
-  };
+    };
 
-  return (
-    <li className={done ? taskRow.liComplete : taskRow.li}>
-      <div className="flex">
-        <Input type="checkbox" checked={done} onChange={handleToggleComplete} />
-        <Label
-          size="large"
-          className={done ? taskRow.textComplete : taskRow.text}
-          onClick={handleToggleComplete}
-        >
-          {title}
-        </Label>
-      </div>
-      <Button
-        variant="destructive"
-        size="sm"
-        onClick={handleDeleteTask}
-        title={deleteRowButton}
+    return (
+      <li
+        className={done ? taskRow.liComplete : taskRow.li}
+        data-testid={`task-row-${id}`}
       >
-        <FaRegTrashAlt />
-      </Button>
-    </li>
-  );
-};
+        <div className="flex">
+          <Input
+            type="checkbox"
+            checked={done}
+            onChange={handleToggleComplete}
+            disabled={updateTask.isPending}
+            aria-label={`Mark "${title}" as ${done ? 'incomplete' : 'complete'}`}
+          />
+          <Label
+            size="large"
+            className={done ? taskRow.textComplete : taskRow.text}
+            onClick={handleToggleComplete}
+          >
+            {title}
+          </Label>
+        </div>
+        <Button
+          variant="destructive"
+          size="sm"
+          onClick={handleDeleteTask}
+          title={deleteRowButton}
+          disabled={deleteTask.isPending}
+          aria-label={`Delete task "${title}"`}
+        >
+          <FaRegTrashAlt />
+        </Button>
+      </li>
+    );
+  }
+);
+
+TaskRow.displayName = 'TaskRow';
