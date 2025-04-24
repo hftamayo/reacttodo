@@ -87,7 +87,7 @@ export type UserData = {
 
 //task types:
 export type TaskProps = {
-  id: string;
+  id: number;
   title: string;
   description: string;
   done: boolean;
@@ -96,6 +96,11 @@ export type TaskProps = {
   updatedAt?: string;
   deletedAt?: null | string;
 };
+
+export type NewTaskProps = Omit<
+  TaskProps,
+  'id' | 'createdAt' | 'updatedAt' | 'deletedAt'
+>;
 
 export type AddTaskProps = Pick<TaskProps, 'title'>;
 
