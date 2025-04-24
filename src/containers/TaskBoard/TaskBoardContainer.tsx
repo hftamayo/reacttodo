@@ -2,15 +2,24 @@ import { useTaskBoard } from '@/features/task/hooks/useTaskBoard';
 import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import { useErrorHandler } from '@/shared/hooks/useErrorHandler';
 import TaskBoardPresenter from './TaskBoardPresenter';
-import { navigate } from 'wouter/use-browser-location';
+import { useLocation } from 'wouter';
 
 export const TaskBoardContainer: React.FC = () => {
   const { handleError } = useErrorHandler('TaskBoard');
+  const [, setLocation] = useLocation();
   const { ref, tasks, error, isLoading, taskStats, mutations } = useTaskBoard();
 
   const handleClose = () => {
-    navigate('/');
+    setLocation('/');
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <p className="text-gray-600">Loading tasks...</p>
+      </div>
+    );
+  }
 
   return (
     <ErrorBoundary
