@@ -3,6 +3,7 @@ import { taskService } from '../services/taskService';
 import {
   TaskContext,
   TaskData,
+  NewTaskProps,
   TaskProps,
   ApiResponse,
 } from '@/shared/types/api.type';
@@ -14,21 +15,29 @@ export const useTaskMutations = () => {
   const addTask = useMutation<
     ApiResponse<TaskData>,
     Error,
-    TaskProps,
+    NewTaskProps,
     TaskContext
   >({
     mutationFn: taskService.fetchAddTask,
-    onMutate: async (newTask: TaskProps) => {
+    onMutate: async (newTask: NewTaskProps) => {
       await queryClient.cancelQueries({ queryKey: ['tasks'] });
       const previousTasks = queryClient.getQueryData<ApiResponse<TaskData>>([
         'tasks',
       ]);
       if (previousTasks) {
+        const tempId = Date.now();
         queryClient.setQueryData<ApiResponse<TaskData>>(['tasks'], {
           ...previousTasks,
           data: {
             ...previousTasks.data,
-            tasks: [...previousTasks.data.tasks, newTask],
+            tasks: [
+              ...previousTasks.data.tasks,
+              {
+                ...newTask,
+                id: tempId,
+                createdAt: new Date().toISOString(),
+              } as TaskProps,
+            ],
           },
         });
       }
@@ -68,7 +77,9 @@ export const useTaskMutations = () => {
 
       if (previousTasks) {
         const updatedTasks = previousTasks.data.tasks.map((task: TaskProps) =>
-          task.id === updatedTask.id ? updatedTask : task
+          task.id === updatedTask.id
+            ? { ...updatedTask, updatedAt: new Date().toISOString() }
+            : task
         );
 
         queryClient.setQueryData<ApiResponse<TaskData>>(['tasks'], {
@@ -103,11 +114,11 @@ export const useTaskMutations = () => {
   const deleteTask = useMutation<
     ApiResponse<TaskData>,
     Error,
-    string,
+    number,
     TaskContext
   >({
     mutationFn: taskService.fetchDeleteTask,
-    onMutate: async (taskId: string) => {
+    onMutate: async (taskId: number) => {
       await queryClient.cancelQueries({ queryKey: ['tasks'] });
       const previousTasks = queryClient.getQueryData<ApiResponse<TaskData>>([
         'tasks',
