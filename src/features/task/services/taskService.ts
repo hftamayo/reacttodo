@@ -7,27 +7,77 @@ import {
 } from '@/shared/types/api.type';
 
 const fetchTasks = async (): Promise<ApiResponse<TaskData>> => {
-  return taskOps.getTasks();
+  try {
+    return await taskOps.getTasks();
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Error fetching tasks:', error.message);
+    } else {
+      console.error('Error fetching tasks:', error);
+    }
+    throw new Error('Failed to fetch tasks');
+  }
 };
 
-const fetchTask = async (id: string): Promise<ApiResponse<TaskData>> => {
-  return taskOps.getTask(id);
+const fetchTask = async (id: number): Promise<ApiResponse<TaskData>> => {
+  try {
+    if (!id) throw new Error('Task ID is required');
+    return await taskOps.getTask(id);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(`Failed to fetch task with id: ${id}`, error.message);
+    } else {
+      console.error(`Failed to fetch task with id: ${id}`, error);
+    }
+    throw new Error(`Failed to fetch task with id: ${id}`);
+  }
 };
 
 const fetchAddTask = async (
   task: AddTaskProps
 ): Promise<ApiResponse<TaskData>> => {
-  return taskOps.addTask(task);
+  try {
+    if (!task.title) throw new Error('Task title is required');
+    return await taskOps.addTask(task);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Failed to add task', error.message);
+    } else {
+      console.error('Failed to add task', error);
+    }
+    throw new Error('Failed to add task');
+  }
 };
 
 const fetchUpdateTask = async (
   task: TaskProps
 ): Promise<ApiResponse<TaskData>> => {
-  return taskOps.updateTask(task);
+  try {
+    if (!task.id) throw new Error('Task ID is required');
+    if (!task.title) throw new Error('Task title is required');
+    return await taskOps.updateTask(task);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(`Failed to update task with id: ${task.id}`, error.message);
+    } else {
+      console.error(`Failed to update task with id: ${task.id}`, error);
+    }
+    throw new Error(`Failed to update task with id: ${task.id}`);
+  }
 };
 
-const fetchDeleteTask = async (id: string): Promise<ApiResponse<TaskData>> => {
-  return taskOps.deleteTask(id);
+const fetchDeleteTask = async (id: number): Promise<ApiResponse<TaskData>> => {
+  try {
+    if (!id) throw new Error('Task ID is required');
+    return await taskOps.deleteTask(id);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(`Failed to delete task with id: ${id}`, error.message);
+    } else {
+      console.error(`Failed to delete task with id: ${id}`, error);
+    }
+    throw new Error(`Failed to delete task with id: ${id}`);
+  }
 };
 
 export const taskService = {
