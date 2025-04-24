@@ -13,15 +13,16 @@ export const useTaskBoard = () => {
   const mutations = useTaskMutations();
 
   const tasks = useMemo(() => {
-    return data?.data.tasks ? Array.from(data.data.tasks.values()) : [];
+    if (!data?.data?.tasks) return [];
+    return data.data.tasks;
   }, [data]);
 
   const taskStats = useMemo(
     () => ({
-      total: tasks.length,
+      total: data?.data?.pagination.totalCount ?? 0,
       completed: tasks.filter((task) => task.done).length,
     }),
-    [tasks]
+    [data, tasks]
   );
 
   useEffect(() => {
