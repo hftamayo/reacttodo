@@ -3,6 +3,7 @@ import {
   ApiError,
   HealthCheckData,
   TaskProps,
+  SearchTaskProps,
   TaskData,
   ApiResponse,
   DbHealthDetails,
@@ -118,6 +119,26 @@ export const taskOps = {
         },
         body: JSON.stringify(task),
       });
+      return await handleResponse(response);
+    } catch (error: unknown) {
+      handleError(error);
+      throw error;
+    }
+  },
+
+  async toggleTaskDone(task: SearchTaskProps): Promise<ApiResponse<TaskData>> {
+    try {
+      const response = await fetch(
+        `${BACKEND_URL}/tasks/task/${task.id}/done`,
+        {
+          method: 'PATCH',
+          //credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(task),
+        }
+      );
       return await handleResponse(response);
     } catch (error: unknown) {
       handleError(error);
