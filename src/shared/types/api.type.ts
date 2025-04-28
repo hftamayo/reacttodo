@@ -100,6 +100,8 @@ export type TaskProps = {
 export type AddTaskProps = Pick<TaskProps, 'title'>;
 //export type AddTaskProps = Pick<TaskProps, 'title' | 'description' | 'owner'>;
 
+export type SearchTaskProps = Pick<TaskProps, 'id'>;
+
 export type TaskData = {
   pagination: PaginationProps;
   tasks: TaskProps[];
