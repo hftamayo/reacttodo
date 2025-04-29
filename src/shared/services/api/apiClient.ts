@@ -126,17 +126,18 @@ export const taskOps = {
     }
   },
 
-  async toggleTaskDone(task: SearchTaskProps): Promise<ApiResponse<TaskData>> {
+  async toggleTaskDone(
+    taskId: SearchTaskProps
+  ): Promise<ApiResponse<TaskData>> {
     try {
       const response = await fetch(
-        `${BACKEND_URL}/tasks/task/${task.id}/done`,
+        `${BACKEND_URL}/tasks/task/${taskId.id}/done`,
         {
           method: 'PATCH',
           //credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(task),
         }
       );
       return await handleResponse(response);
