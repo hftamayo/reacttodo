@@ -26,21 +26,12 @@ export const TaskRow: React.FC<TaskRowProps> = memo(
     mutations,
   }) => {
     const { text: deleteRowButton } = useTranslation('deleteRowButton');
-    const { deleteTask, updateTask } = mutations;
+    const { deleteTask, updateTask, toggleTaskDone } = mutations;
 
     const handleToggleComplete = () => {
-      if (updateTask.isPending) return;
+      if (toggleTaskDone.isPending) return;
 
-      updateTask.mutate({
-        id,
-        title,
-        description,
-        done: !done,
-        owner,
-        createdAt,
-        updatedAt,
-        deletedAt,
-      });
+      toggleTaskDone.mutate({ id });
     };
 
     const handleDeleteTask = () => {
