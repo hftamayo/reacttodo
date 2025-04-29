@@ -3,12 +3,12 @@ import {
   ApiError,
   HealthCheckData,
   TaskProps,
-  SearchTaskProps,
   TaskData,
   ApiResponse,
   DbHealthDetails,
   AppHealthDetails,
   AddTaskProps,
+  TaskIdentifier,
 } from '../../types/api.type';
 import { showError } from '../notification/notificationService';
 
@@ -126,9 +126,7 @@ export const taskOps = {
     }
   },
 
-  async toggleTaskDone(
-    taskId: SearchTaskProps
-  ): Promise<ApiResponse<TaskData>> {
+  async toggleTaskDone(taskId: TaskIdentifier): Promise<ApiResponse<TaskData>> {
     try {
       const response = await fetch(
         `${BACKEND_URL}/tasks/task/${taskId.id}/done`,
