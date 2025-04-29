@@ -5,6 +5,7 @@ import {
   TaskData,
   AddTaskProps,
   TaskProps,
+  TaskIdentifier,
   ApiResponse,
 } from '@/shared/types/api.type';
 import { showError } from '@/shared/services/notification/notificationService';
@@ -111,6 +112,49 @@ export const useTaskMutations = () => {
     },
   });
 
+  const toggleTaskDone = useMutation<
+    ApiResponse<TaskData>,
+    Error,
+    TaskIdentifier,
+    TaskContext
+  >({
+    mutationFn: taskService.fetchToggleTaskDone,
+    onMutate: async (taskId: TaskIdentifier) => {
+      await queryClient.cancelQueries({ queryKey: ['tasks'] });
+      const previousTasks = queryClient.getQueryData<ApiResponse<TaskData>>([
+        'tasks',
+      ]);
+
+      if (previousTasks) {
+        queryClient.setQueryData<ApiResponse<TaskData>>(['tasks'], {
+          ...previousTasks,
+          data: {
+            ...previousTasks.data,
+            tasks: previousTasks.data.tasks.map((task) =>
+              task.id === taskId.id ? { ...task, done: !task.done } : task
+            ),
+          },
+        });
+      }
+
+      return { previousTasks };
+    },
+    onError: (error, _, context) => {
+      if (error) {
+        showError(
+          'Toggle task operation:',
+          'Failed to toggle task completion status'
+        );
+      }
+      if (context?.previousTasks) {
+        queryClient.setQueryData(['tasks'], context.previousTasks);
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['tasks'] });
+    },
+  });
+
   const deleteTask = useMutation<
     ApiResponse<TaskData>,
     Error,
@@ -154,6 +198,7 @@ export const useTaskMutations = () => {
   return {
     addTask,
     updateTask,
+    toggleTaskDone,
     deleteTask,
   };
 };
