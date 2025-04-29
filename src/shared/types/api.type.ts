@@ -1,6 +1,13 @@
 import { useTaskMutations } from '@/features/task/hooks/useTaskMutations';
 
 //common types:
+export type MongoId = string;
+export type SqlId = number;
+
+export interface EntityIdentifier<T> {
+  id: T;
+}
+
 export type PaginationProps = {
   hasMore: boolean;
   limit: number;
@@ -86,8 +93,11 @@ export type UserData = {
 };
 
 //task types:
+export type TaskIdentifier = EntityIdentifier<SqlId>;
+export type MongoTaskIdentifier = EntityIdentifier<MongoId>;
+
 export type TaskProps = {
-  id: number;
+  id: SqlId;
   title: string;
   description: string;
   done: boolean;
@@ -99,8 +109,6 @@ export type TaskProps = {
 
 export type AddTaskProps = Pick<TaskProps, 'title'>;
 //export type AddTaskProps = Pick<TaskProps, 'title' | 'description' | 'owner'>;
-
-export type SearchTaskProps = Pick<TaskProps, 'id'>;
 
 export type TaskData = {
   pagination: PaginationProps;
