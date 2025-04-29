@@ -4,6 +4,7 @@ import {
   TaskProps,
   TaskData,
   ApiResponse,
+  TaskIdentifier,
 } from '@/shared/types/api.type';
 
 const fetchTasks = async (): Promise<ApiResponse<TaskData>> => {
@@ -66,6 +67,29 @@ const fetchUpdateTask = async (
   }
 };
 
+const fetchToggleTaskDone = async (
+  taskId: TaskIdentifier
+): Promise<ApiResponse<TaskData>> => {
+  try {
+    if (!taskId.id) throw new Error('Task ID is required');
+
+    return await taskOps.toggleTaskDone(taskId);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(
+        `Failed to toggle task done state for id: ${taskId.id}`,
+        error.message
+      );
+    } else {
+      console.error(
+        `Failed to toggle task done state for id: ${taskId.id}`,
+        error
+      );
+    }
+    throw new Error(`Failed to toggle task done state for id: ${taskId.id}`);
+  }
+};
+
 const fetchDeleteTask = async (id: number): Promise<ApiResponse<TaskData>> => {
   try {
     if (!id) throw new Error('Task ID is required');
@@ -85,5 +109,6 @@ export const taskService = {
   fetchTask,
   fetchAddTask,
   fetchUpdateTask,
+  fetchToggleTaskDone,
   fetchDeleteTask,
 };
