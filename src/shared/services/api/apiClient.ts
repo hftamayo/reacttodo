@@ -72,6 +72,11 @@ export const taskOps = {
       const url = `${BACKEND_URL}/tasks/task/list?limit=5`;
       const response = await fetch(url, {
         //credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        mode: 'cors',
       });
       return await handleResponse<TaskData>(response);
     } catch (error: unknown) {
@@ -84,6 +89,11 @@ export const taskOps = {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
         //credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        mode: 'cors',
       });
       return await handleResponse(response);
     } catch (error: unknown) {
@@ -99,7 +109,9 @@ export const taskOps = {
         //credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
+        mode: 'cors',
         body: JSON.stringify(task),
       });
       return await handleResponse(response);
@@ -116,7 +128,9 @@ export const taskOps = {
         //credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
+        mode: 'cors',
         body: JSON.stringify(task),
       });
       return await handleResponse(response);
@@ -135,7 +149,9 @@ export const taskOps = {
           //credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
+            Accept: 'application/json',
           },
+          mode: 'cors',
         }
       );
       return await handleResponse(response);
@@ -150,6 +166,11 @@ export const taskOps = {
       const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
         method: 'DELETE',
         //credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        mode: 'cors',
       });
       return await handleResponse(response);
     } catch (error: unknown) {
