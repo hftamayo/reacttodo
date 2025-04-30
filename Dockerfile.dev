@@ -15,8 +15,6 @@ WORKDIR /app
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .    
 
-# Environment setup
-ENV NODE_ENV=development
 EXPOSE 5173
 
 # Start development server
