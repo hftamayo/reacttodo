@@ -107,7 +107,7 @@ export type TaskProps = {
   deletedAt?: null | string;
 };
 
-export type AddTaskProps = Pick<TaskProps, 'title'>;
+export type AddTaskProps = Pick<TaskProps, 'title' | 'owner'>;
 //export type AddTaskProps = Pick<TaskProps, 'title' | 'description' | 'owner'>;
 
 export type TaskData = {
