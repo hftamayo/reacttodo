@@ -1,0 +1,121 @@
+/* dashboard palette */
+:root {
+  --background: var(--cameo-50);
+  --foreground: #1f2937;
+  --header-bg: var(--cameo-950);
+  --header-text: var(--cameo-0);  
+  --footer-bg: var(--cameo-950);
+  --footer-text: var(--cameo-0);
+  --card: #ffffff;
+  --card-foreground: #1f2937;
+  --popover: #ffffff;
+  --popover-foreground: #1f2937;
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #3b82f6;
+  --radius: 0.5rem;
+ 
+  /* Cameo Palette: https://uicolors.app/create */
+  --cameo-0: #ffffff;
+  --cameo-50: #faf6f2;
+  --cameo-100: #f3eae1;
+  --cameo-200: #e7d3c1;
+  --cameo-300: #d7b699;
+  --cameo-400: #c69371;
+  --cameo-500: #bb7a54;
+  --cameo-600: #ad6749;
+  --cameo-700: #90523e;
+  --cameo-800: #754437;
+  --cameo-900: #5f392f;
+  --cameo-950: #321c18;
+  --cameo-1000: #000000;
+
+
+/* Button palette */
+  --primary: #2F80ED;
+  --primary-foreground: #ffffff;
+  --secondary: #e5e7eb;
+  --secondary-foreground: #1f2937;
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
+  --accent: #f3f4f6;
+  --accent-foreground: #1f2937;
+  --additive: #10b981;
+  --additive-hover: #059669;
+  --additive-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-hover: #ef0000;
+  --destructive-foreground: #ffffff;
+
+/* Chart palette */
+  --chart-1: #f97316;
+  --chart-2: #10b981;
+  --chart-3: #3b82f6;
+  --chart-4: #facc15;
+  --chart-5: #ec4899;
+
+/* form palette */
+  --neutral-light: #e2e8f0; /* slate-200 */
+  --neutral-mid: #cbd5e1; /* slate-300 */
+  --neutral-dark: #94a3b8; /* slate-400 */
+}
+
+/* Dark Mode Colors */
+.dark {
+  --background: #000000;
+  --foreground: #ffffff;
+  --header-bg: var(--cameo-300);
+  --header-text: var(--cameo-1000);  
+  --footer-bg: var(--cameo-300);
+  --footer-text: var(--cameo-1000);
+  --card: #1f2937;
+  --card-foreground: #f9fafb;
+  --popover: #1f2937;
+  --popover-foreground: #f9fafb;
+  --border: #4b5563;
+  --input: #4b5563;
+  --ring: #8b5cf6;  
+
+  /* Cameo dark palette */
+  --cameo-0: #000000;
+  --cameo-50: #23272E;
+  --cameo-100: #343A46;
+  --cameo-200: #3A4252;
+  --cameo-300: #434E61;
+  --cameo-400: #526077;
+  --cameo-500: #64748B;
+  --cameo-600: #8695AA;
+  --cameo-700: #B1BBC8;
+  --cameo-800: #D5D9E2;
+  --cameo-900: #ECEEF2;
+  --cameo-950: #F6F7F9;
+  --cameo-1000: #ffffff;
+
+  /* Button dark palette */
+  --primary: #bb86fc;
+  --primary-foreground: #000000;
+  --secondary: #4b5563;
+  --secondary-foreground: #f9fafb;
+  --muted: #374151;
+  --muted-foreground: #d1d5db;
+  --accent: #374151;
+  --accent-foreground: #f9fafb;
+  --additive: #06b6d4;
+  --additive-hover: #0ea5e9;
+  --additive-foreground: #000000;
+  --destructive: #f87171;
+  --destructive-hover: #f90373;
+  --destructive-foreground: #000000;
+
+  /* Chart dark palette */
+  --chart-1: #f97316;
+  --chart-2: #10b981;
+  --chart-3: #3b82f6;
+  --chart-4: #facc15;
+  --chart-5: #ec4899;
+
+  /* form dark palette */
+  --neutral-light: #1e293b; /* slate-800 */
+  --neutral-mid: #2d3748; /* slate-700 */
+  --neutral-dark: #4a5568; /* slate-600 */
+}

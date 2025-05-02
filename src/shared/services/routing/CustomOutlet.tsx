@@ -1,18 +1,19 @@
 import React from 'react';
 import { useRoute, Switch, Route } from 'wouter';
-import SkeletonDashBoardAnalytics from '@/shared/components/ui/dashboard/skeleton/SkeletonDashBoardAnalytics';
-import TaskBoard from '@/containers/TaskBoard';
+import { DashBoardAnalyticsContainer } from '@/containers/DashBoard/DashBoardAnalyticsContainer';
+import { TaskBoardContainer } from '@/containers/TaskBoard/TaskBoardContainer';
 
-const CustomOutlet: React.FC = () => {
+export const CustomOutlet: React.FC = () => {
   const [match] = useRoute('/');
 
   return (
     <Switch>
-      {match && <Route path="/" component={SkeletonDashBoardAnalytics} />}
-      <Route path="/taskboard" component={TaskBoard} />
+      {match && <Route path="/" component={DashBoardAnalyticsContainer} />}
+      <Route
+        path="/dashboard/entities/taskboard"
+        component={TaskBoardContainer}
+      />
       {/* Add more routes as needed */}
     </Switch>
   );
 };
-
-export default CustomOutlet;
