@@ -33,7 +33,12 @@ export const AddTaskForm: React.FC<AddTaskFormProps> = ({ mutations }) => {
 
   const onSubmit: SubmitHandler<AddTaskProps> = async (data) => {
     try {
-      await addTask.mutateAsync(data);
+      const TaskWithOwner = {
+        ...data,
+        owner: 1, // Replace with actual owner ID
+      };
+      //await addTask.mutateAsync(data);
+      await addTask.mutateAsync(TaskWithOwner);
       reset();
     } catch (error) {
       showError('Failed to add task');
