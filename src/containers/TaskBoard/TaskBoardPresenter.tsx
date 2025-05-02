@@ -65,7 +65,7 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
           {taskList}
           {totalTasks > 0 && (
             <p className={taskBoard.count}>
-              {`You have ${totalTasks} tasks, ${completedTasks} completed`}
+              {`Tasks summary: ${totalTasks} actives, ${completedTasks} completed`}
             </p>
           )}
           <div ref={ref}></div>
