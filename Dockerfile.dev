@@ -1,0 +1,25 @@
+FROM node:18-alpine AS dependencies
+
+#Stage 1: dependencies
+WORKDIR /app
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile \
+    && yarn cache clean
+
+# Stage 2: Development
+FROM node:18-alpine AS development
+
+WORKDIR /app
+
+# Copy node_modules from dependencies stage
+COPY --from=dependencies /app/node_modules ./node_modules
+COPY . .    
+
+EXPOSE 5173
+
+# Start development server
+CMD ["yarn", "dev", "--host"]
+
+## how to use this file:
+# docker build --no-cache -t hftamayo/reacttodo:0.0.1-experimental -f Dockerfile.dev .
+# docker run -d --name reacttodo --network developer_network -p 8041:5173 --env-file .env hftamayo/reacttodo:0.0.1-experimental

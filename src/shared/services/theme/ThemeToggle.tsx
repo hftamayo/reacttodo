@@ -1,13 +1,12 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleTheme } from '../redux/themeSlice';
+import { useSettings } from '@/features/settings/hooks/useSettings';
 
-const ThemeToggle: React.FC = () => {
-  const dispatch = useDispatch();
-  const theme = useSelector((state: any) => state.theme.theme);
+export const ThemeToggle: React.FC = () => {
+  const { theme, updateSettings } = useSettings();
 
   const handleToggle = () => {
-    dispatch(toggleTheme());
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    updateSettings({ theme: newTheme });
   };
 
   return (
@@ -16,5 +15,3 @@ const ThemeToggle: React.FC = () => {
     </button>
   );
 };
-
-export default ThemeToggle;

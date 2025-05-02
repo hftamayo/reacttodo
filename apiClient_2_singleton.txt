@@ -1,0 +1,226 @@
+// apiClient.ts
+import { BACKEND_URL } from '@/shared/utils/envvars';
+import { ApiError, ApiResponse } from '@/shared/types/api.type';
+
+type ApiClientInstance = {
+  get: <T>(path: string) => Promise<ApiResponse<T>>;
+  post: <T>(path: string, data: unknown) => Promise<ApiResponse<T>>;
+  put: <T>(path: string, data: unknown) => Promise<ApiResponse<T>>;
+  delete: <T>(path: string) => Promise<ApiResponse<T>>;
+};
+
+const handleResponse = async <T>(response: Response): Promise<ApiResponse<T>> => {
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(
+      `Network response was not ok: ${response.statusText}. Data: ${JSON.stringify(errorData)}`
+    );
+  }
+  const data = await response.json();
+  return {
+    httpStatusCode: response.status,
+    resultMessage: response.statusText,
+    data
+  };
+};
+
+const handleError = (error: unknown): never => {
+  const apiError = error as ApiError;
+  throw new Error(`${apiError.httpStatusCode} ${apiError.resultMessage}`);
+};
+
+const createApiClient = () => {
+  let instance: ApiClientInstance | null = null;
+
+  const createMethods = (): ApiClientInstance => ({
+    get: async <T>(path: string): Promise<ApiResponse<T>> => {
+      try {
+        const response = await fetch(`${BACKEND_URL}${path}`, {
+          credentials: 'include'
+        });
+        return await handleResponse<T>(response);
+      } catch (error) {
+        handleError(error);
+      }
+    },
+
+    post: async <T>(path: string, data: unknown): Promise<ApiResponse<T>> => {
+      try {
+        const response = await fetch(`${BACKEND_URL}${path}`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        return await handleResponse<T>(response);
+      } catch (error) {
+        handleError(error);
+      }
+    },
+
+    put: async <T>(path: string, data: unknown): Promise<ApiResponse<T>> => {
+      try {
+        const response = await fetch(`${BACKEND_URL}${path}`, {
+          method: 'PUT',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        return await handleResponse<T>(response);
+      } catch (error) {
+        handleError(error);
+      }
+    },
+
+    delete: async <T>(path: string): Promise<ApiResponse<T>> => {
+      try {
+        const response = await fetch(`${BACKEND_URL}${path}`, {
+          method: 'DELETE',
+          credentials: 'include'
+        });
+        return await handleResponse<T>(response);
+      } catch (error) {
+        handleError(error);
+      }
+    }
+  });
+
+  return {
+    getInstance: () => {
+      if (!instance) {
+        instance = createMethods();
+      }
+      return instance;
+    }
+  };
+};
+
+export const apiClient = createApiClient().getInstance();
+
+// taskService.ts
+import { TaskProps, TaskData } from '@/shared/types/api.type';
+import { apiClient } from './apiClient';
+
+export const createTaskService = () => {
+  const getTasks = async () => {
+    const response = await apiClient.get<TaskData>('/todos?limit=5&skip=10');
+    if (response) {
+      const tasks = response.data.tasks.map((todo: TaskProps) => ({
+        id: todo.id,
+        name: todo.name,
+        completed: todo.completed,
+      }));
+      return {
+        ...response,
+        data: { tasks }
+      };
+    }
+  };
+
+  const getTask = async (id: string) => {
+    return await apiClient.get<TaskData>(`/tasks/task/${id}`);
+  };
+
+  const addTask = async (task: TaskProps) => {
+    return await apiClient.post<TaskData>('/tasks/task', task);
+  };
+
+  const updateTask = async (task: TaskProps) => {
+    return await apiClient.put<TaskData>(`/tasks/task/${task.id}`, task);
+  };
+
+  const deleteTask = async (id: string) => {
+    return await apiClient.delete<TaskData>(`/tasks/task/${id}`);
+  };
+
+  return {
+    getTasks,
+    getTask,
+    addTask,
+    updateTask,
+    deleteTask
+  };
+};
+
+// hooks/useTasks.ts
+import { useCallback } from 'react';
+import { useAppDispatch } from '@/shared/hooks/redux';
+import { taskActions } from '../store/taskSlice';
+import { createTaskService } from '../services/taskService';
+import { TaskProps } from '@/shared/types/api.type';
+
+export const useTasks = () => {
+  const dispatch = useAppDispatch();
+  const taskService = createTaskService();
+
+  const fetchTasks = useCallback(async () => {
+    try {
+      dispatch(taskActions.setLoading(true));
+      const response = await taskService.getTasks();
+      if (response) {
+        dispatch(taskActions.setTasks(response.data.tasks));
+        dispatch(taskActions.setMessage('Tasks fetched successfully'));
+      }
+    } catch (error) {
+      dispatch(taskActions.setError((error as Error).message));
+    } finally {
+      dispatch(taskActions.setLoading(false));
+    }
+  }, [dispatch]);
+
+  const addTask = useCallback(async (task: TaskProps) => {
+    try {
+      dispatch(taskActions.setLoading(true));
+      const response = await taskService.addTask(task);
+      if (response) {
+        dispatch(taskActions.addTask(response.data.task));
+        dispatch(taskActions.setMessage('Task added successfully'));
+      }
+    } catch (error) {
+      dispatch(taskActions.setError((error as Error).message));
+    } finally {
+      dispatch(taskActions.setLoading(false));
+    }
+  }, [dispatch]);
+
+  const updateTask = useCallback(async (task: TaskProps) => {
+    try {
+      dispatch(taskActions.setLoading(true));
+      const response = await taskService.updateTask(task);
+      if (response) {
+        dispatch(taskActions.updateTask(response.data.task));
+        dispatch(taskActions.setMessage('Task updated successfully'));
+      }
+    } catch (error) {
+      dispatch(taskActions.setError((error as Error).message));
+    } finally {
+      dispatch(taskActions.setLoading(false));
+    }
+  }, [dispatch]);
+
+  const deleteTask = useCallback(async (id: string) => {
+    try {
+      dispatch(taskActions.setLoading(true));
+      const response = await taskService.deleteTask(id);
+      if (response) {
+        dispatch(taskActions.deleteTask(id));
+        dispatch(taskActions.setMessage('Task deleted successfully'));
+      }
+    } catch (error) {
+      dispatch(taskActions.setError((error as Error).message));
+    } finally {
+      dispatch(taskActions.setLoading(false));
+    }
+  }, [dispatch]);
+
+  return {
+    fetchTasks,
+    addTask,
+    updateTask,
+    deleteTask
+  };
+};

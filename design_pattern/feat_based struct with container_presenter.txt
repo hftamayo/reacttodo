@@ -1,0 +1,67 @@
+src/
+├── containers/
+│   └── TaskBoard/
+│       ├── TaskBoardContainer.tsx
+│       └── TaskBoardPresenter.tsx
+├── features/
+│   ├── dashboard/
+│   │   ├── components/
+│   │   │   ├── content/
+│   │   │   │   ├── actions/
+│   │   │   │   │   └── ContentActions.tsx
+│   │   │   │   └── ContentComponent.tsx
+│   │   │   ├── footer/
+│   │   │   │   ├── actions/
+│   │   │   │   │   └── FooterActions.tsx
+│   │   │   │   └── FooterComponent.tsx
+│   │   │   ├── header/
+│   │   │   │   ├── actions/
+│   │   │   │   │   └── HeaderActions.tsx
+│   │   │   │   └── HeaderComponent.tsx
+│   │   │   ├── menu/
+│   │   │   │   ├── services/
+│   │   │   │   │   └── MenuService.ts
+│   │   │   │   └── MenuComponent.tsx
+│   │   │   └── DashboardContainer.tsx
+│   │   └── store/
+│   │       └── dashboardSlice.ts
+│   ├── hc/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   ├── store/
+│   │   └── index.ts
+│   ├── settings/
+│   │   ├── components/
+│   │   │   ├── ViewSettingsForm.tsx
+│   │   │   └── SettingsList.tsx
+│   │   ├── hooks/
+│   │   │   └── useSettings.ts
+│   │   ├── services/
+│   │   │   └── settingsService.ts
+│   │   ├── store/
+│   │   │   └── settingsSlice.ts
+│   │   └── index.ts
+├── shared/
+│   ├── assets/
+│   ├── components/
+│   │   ├── ui/
+│   │   │   ├── button/
+│   │   │   │   └── Button.tsx
+│   │   │   ├── card/
+│   │   │   │   └── Card.tsx
+│   │   │   ├── input/
+│   │   │   │   └── Input.tsx
+│   │   │   ├── label/
+│   │   │   │   └── Label.tsx
+│   │   │   ├── select/
+│   │   │   │   └── Select.tsx
+│   │   │   └── radio-group/
+│   │   │       └── RadioGroup.tsx
+│   ├── services/
+│   │   └── api.ts
+│   ├── types/
+│   │   └── index.ts
+│   └── utils/
+│       └── index.ts
+└── index.tsx

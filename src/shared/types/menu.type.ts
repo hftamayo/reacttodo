@@ -1,20 +1,28 @@
-type MenuOption = {
+export type MenuItemProps = {
   path: string;
   label: string;
   icon: React.ComponentType<any>;
+  roles: string[];
+  isDropDownItem?: boolean;
 };
 
-export type MenuOptionProps = {
-  option: MenuOption;
+export type MenuState = {
+  items: MenuItemProps[];
 };
 
-export type DropDownMenuProps = {
-  options: MenuOption[];
+export type DropDownMenuItemProps = {
+  userRole: string;
+  dropDownMenuOptions: string[];
 };
 
-export type MenuProps = {
-  options: MenuOption[];
-  isCollapsed: boolean;
+export type MenuLinkProps = {
+  option: MenuItemProps;
+  userRole: string;
+};
+
+export type MenuBarProps = {
+  userRole: string;
+  isCollapsed?: boolean;
 };
 
 export type ToggleButtonProps = {
