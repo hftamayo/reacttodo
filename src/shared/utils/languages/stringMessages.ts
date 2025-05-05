@@ -255,6 +255,18 @@ export const stringMessages: LanguageContextType = {
     },
   },
 
+  updateRowButton: {
+    en: {
+      text: 'Update a record',
+    },
+    es: {
+      text: 'Actualizar registro',
+    },
+    de: {
+      text: 'Eintrag aktualisieren',
+    },
+  },
+
   addTaskButton: {
     en: {
       text: 'Add a task',
