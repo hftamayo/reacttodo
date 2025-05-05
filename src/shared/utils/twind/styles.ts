@@ -77,12 +77,13 @@ export const taskBoard = {
 };
 
 export const taskRow = {
-  li: 'flex justify-between bg-[var(--cameo-200)] p-4 my-2 capitalize',
-  liComplete: 'flex justify-between bg-[var(--cameo-300)] p-4 my-2 capitalize',
-  row: 'flex',
+  li: 'flex items-center justify-between bg-[var(--cameo-200)] p-4 my-2 capitalize',
+  liComplete:
+    'flex items-center justify-between bg-[var(--cameo-300)] p-4 my-2 capitalize',
+  content: 'flex items-center flex-grow',
   text: 'ml-2 cursor-pointer',
   textComplete: 'ml-2 cursor-pointer line-through',
-  button: 'cursor-pointer flex items-center',
+  actions: 'flex items-center space-x-2',
 };
 
 export const formSettingsStyles = {
