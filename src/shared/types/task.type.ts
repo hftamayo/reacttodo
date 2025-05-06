@@ -2,7 +2,7 @@ export type FullTask = {
   id: string;
   title: string;
   description: string;
-  status: boolean;
+  done: boolean;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -10,9 +10,10 @@ export type FullTask = {
 export type TaskProps = Omit<FullTask, 'createdAt' | 'updatedAt'>;
 
 export type TaskCardProps = {
+  cardTitle: string;
   title: string;
   description: string;
-  status: boolean;
+  done: boolean;
   onClose?: () => void;
 };
 
