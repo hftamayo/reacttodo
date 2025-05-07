@@ -1,4 +1,6 @@
 import React from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { showError } from '@/shared/services/notification/notificationService';
 import {
   Card,
   CardContent,
@@ -12,6 +14,11 @@ import { FaTimes } from 'react-icons/fa';
 import { formSettingsStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { TaskCardProps } from '@/shared/types/task.type';
+import { useTaskMutations } from '../hooks/useTaskMutations';
+
+interface UpdateTaskCardProps {
+  mutations: ReturnType<typeof useTaskMutations>;
+}
 
 export const UpdateTaskCard: React.FC<TaskCardProps> = ({
   title,
