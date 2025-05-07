@@ -10,22 +10,28 @@ import { Input } from '@/shared/components/ui/input/Input';
 import { Checkbox } from '@/shared/components/ui/checkbox/Checkbox';
 import { FaTimes } from 'react-icons/fa';
 import { formSettingsStyles } from '@/shared/utils/twind/styles';
+import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { TaskCardProps } from '@/shared/types/task.type';
 
 export const UpdateTaskCard: React.FC<TaskCardProps> = ({
-  cardTitle,
   title,
   description,
   done,
   onClose,
 }) => {
+  const { group } = useTranslation('updateTaskCard');
+
+  if (!group) {
+    return null;
+  }
+
   return (
     <Card>
       <CardHeader>
         <div className="flex justify-between items-center">
           <div>
             <CardTitle className={formSettingsStyles.title}>
-              {cardTitle}
+              {group.cardTitle}
             </CardTitle>
           </div>
           {onClose && (
@@ -47,7 +53,7 @@ export const UpdateTaskCard: React.FC<TaskCardProps> = ({
                 className={formSettingsStyles.grouptitle}
                 htmlFor="txttitle"
               >
-                {labels.control01}
+                {group.lblTaskTitle}
               </Label>
               <Input id="txttitle" />
             </div>
@@ -56,7 +62,7 @@ export const UpdateTaskCard: React.FC<TaskCardProps> = ({
                 className={formSettingsStyles.grouptitle}
                 htmlFor="txtdescription"
               >
-                {labels.control01}
+                {group.lblTaskDescription}
               </Label>
               <Input id="txtdescription" />
             </div>
@@ -66,7 +72,7 @@ export const UpdateTaskCard: React.FC<TaskCardProps> = ({
                 htmlFor="txtdone"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
-                Task status
+                {group.lblTaskStatus}
               </label>
             </div>
           </div>

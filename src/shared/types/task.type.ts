@@ -10,7 +10,6 @@ export type FullTask = {
 export type TaskProps = Omit<FullTask, 'createdAt' | 'updatedAt'>;
 
 export type TaskCardProps = {
-  cardTitle: string;
   title: string;
   description: string;
   done: boolean;
