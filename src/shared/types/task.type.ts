@@ -3,6 +3,7 @@ export type FullTask = {
   title: string;
   description: string;
   done: boolean;
+  owner: number;
   createdAt: Date;
   updatedAt: Date;
 };
