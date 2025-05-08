@@ -86,13 +86,17 @@ export const taskRow = {
   actions: 'flex items-center space-x-2',
 };
 
-export const formSettingsStyles = {
+export const formStyles = {
   title: 'text-center text-2xl font-bold',
   description: 'text-center text-xl font-bold',
   grouptitle: 'font-bold underline',
   closeButton:
     'absolute top-4 right-4 p-2 rounded-full bg-[var(--cameo-600)] hover:bg-[var(--cameo-400)] transition-colors duration-200',
   closeIcon: 'w-5 h-5 text-[var(--cameo-1000)]',
+  cancelButton:
+    'bg-[var(--cameo-600)] text-[var(--cameo-1000)] px-4 py-2 rounded-md hover:bg-[var(--cameo-400)] transition-colors duration-200',
+  submitButton:
+    'bg-[var(--cameo-600)] text-[var(--cameo-1000)] px-4 py-2 rounded-md hover:bg-[var(--cameo-400)] transition-colors duration-200',
 };
 
 export const toasterMessages = {
