@@ -1,5 +1,5 @@
 export type FullTask = {
-  id: string;
+  id: number;
   title: string;
   description: string;
   done: boolean;
