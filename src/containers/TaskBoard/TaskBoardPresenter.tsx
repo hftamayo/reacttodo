@@ -13,6 +13,11 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
     ref
   ) => {
     const [editingTask, setEditingTask] = useState<TaskProps | null>(null);
+
+    const handleEdit = useCallback((task: TaskProps) => {
+      setEditingTask(task);
+    }, []);
+
     const taskList = useMemo(() => {
       if (error) {
         showError(error.message);
@@ -51,11 +56,7 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
           ))}
         </ul>
       );
-    }, [tasks, isLoading, error, mutations, editingTask]);
-
-    const handleEdit = useCallback((task: TaskProps) => {
-      setEditingTask(task);
-    }, []);
+    }, [tasks, isLoading, error, mutations]);
 
     return (
       <div className={taskBoard.bg}>
