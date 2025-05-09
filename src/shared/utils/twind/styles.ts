@@ -94,6 +94,7 @@ export const formStyles = {
   label: 'text-right mr-4', // Right-align labels
   input: 'w-full',
   footer: 'flex justify-center gap-4 mt-6',
+  error: 'text-red-500 text-sm mt-1',
 
   title: 'text-center text-2xl font-bold',
   description: 'text-center text-xl font-bold',
