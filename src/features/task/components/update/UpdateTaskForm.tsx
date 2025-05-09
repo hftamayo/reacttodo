@@ -14,25 +14,16 @@ export const UpdateTaskForm: FC<TaskCardFormProps> = ({
   const { group } = useTranslation('updateTaskCard');
   const { register, errors, isSubmitting, handleFormSubmit } = useTaskUpdate({
     initialData,
+    onSuccess: onCancel,
   });
 
   if (!group) {
     return null;
   }
 
-  const onSubmit = handleFormSubmit(async (data) => {
-    try {
-      await updateTask.mutateAsync(data);
-      onCancel();
-      return true;
-    } catch {
-      return false;
-    }
-  });
-
   return (
     <form
-      onSubmit={onSubmit}
+      onSubmit={handleFormSubmit}
       className={formStyles.form}
       aria-label="Update task"
     >
@@ -45,11 +36,16 @@ export const UpdateTaskForm: FC<TaskCardFormProps> = ({
           <Label className={formStyles.label} htmlFor="txttitle">
             {group.lblTaskTitle}
           </Label>
-          <Input
-            id="txttitle"
-            className={formStyles.input}
-            {...register('title', { required: 'Title is required' })}
-          />
+          <div>
+            <Input
+              id="txttitle"
+              className={formStyles.input}
+              {...register('title', { required: 'Title is required' })}
+            />
+            {errors.title && (
+              <span className={formStyles.error}>{errors.title.message}</span>
+            )}
+          </div>
         </div>
 
         <div className={formStyles.formRow}>
