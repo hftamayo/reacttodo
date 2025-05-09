@@ -2,15 +2,15 @@ import React, { memo } from 'react';
 import { TaskProps } from '../../../shared/types/api.type';
 import { useTaskMutations } from '../hooks/useTaskMutations';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
-import { FaRegTrashAlt } from 'react-icons/fa';
+import { FaRegTrashAlt, FaPencilAlt } from 'react-icons/fa';
 import { Label } from '@/shared/components/ui/label/Label';
 import { Input } from '@/shared/components/ui/input/Input';
 import { Button } from '@/shared/components/ui/button/Button';
-
 import { taskRow } from '../../../shared/utils/twind/styles';
 
 interface TaskRowProps extends TaskProps {
   mutations: ReturnType<typeof useTaskMutations>;
+  onEdit: (task: TaskProps) => void;
 }
 
 export const TaskRow: React.FC<TaskRowProps> = memo(
@@ -23,15 +23,33 @@ export const TaskRow: React.FC<TaskRowProps> = memo(
     createdAt,
     updatedAt,
     deletedAt,
+    onEdit,
     mutations,
   }) => {
     const { text: deleteRowButton } = useTranslation('deleteRowButton');
+    const { text: updateRowButton } = useTranslation('updateRowButton');
     const { deleteTask, updateTask, toggleTaskDone } = mutations;
 
     const handleToggleComplete = () => {
       if (toggleTaskDone.isPending) return;
 
       toggleTaskDone.mutate({ id });
+    };
+
+    const handleUpdateTask = () => {
+      if (updateTask.isPending) return;
+      if (!id) {
+        console.error('Task ID is undefined. Cannot update task.');
+        return;
+      }
+
+      onEdit({
+        id,
+        title,
+        description,
+        done,
+        owner,
+      });
     };
 
     const handleDeleteTask = () => {
@@ -48,7 +66,7 @@ export const TaskRow: React.FC<TaskRowProps> = memo(
         className={done ? taskRow.liComplete : taskRow.li}
         data-testid={`task-row-${id}`}
       >
-        <div className="flex">
+        <div className={taskRow.content}>
           <Input
             type="checkbox"
             checked={done}
@@ -64,16 +82,28 @@ export const TaskRow: React.FC<TaskRowProps> = memo(
             {title}
           </Label>
         </div>
-        <Button
-          variant="destructive"
-          size="sm"
-          onClick={handleDeleteTask}
-          title={deleteRowButton}
-          disabled={deleteTask.isPending}
-          aria-label={`Delete task "${title}"`}
-        >
-          <FaRegTrashAlt />
-        </Button>
+        <div className={taskRow.actions}>
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={handleDeleteTask}
+            title={deleteRowButton}
+            disabled={deleteTask.isPending}
+            aria-label={`Delete task "${title}"`}
+          >
+            <FaRegTrashAlt />
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={handleUpdateTask}
+            title={updateRowButton}
+            disabled={updateTask.isPending}
+            aria-label={`Edit task "${title}"`}
+          >
+            <FaPencilAlt />
+          </Button>
+        </div>
       </li>
     );
   }
