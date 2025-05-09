@@ -5,10 +5,9 @@ import { showError } from '@/shared/services/notification/notificationService';
 
 interface UseUpdateTaskProps {
   initialData: TaskProps;
-  onClose: () => void;
 }
 
-export const useUpdateTask = ({ initialData, onClose }: UseUpdateTaskProps) => {
+export const useTaskUpdate = ({ initialData }: UseUpdateTaskProps) => {
   const { updateTask } = useTaskMutations();
   const {
     register,
@@ -21,9 +20,10 @@ export const useUpdateTask = ({ initialData, onClose }: UseUpdateTaskProps) => {
   const handleFormSubmit = async (data: TaskProps) => {
     try {
       await updateTask.mutateAsync(data);
-      onClose();
+      return true;
     } catch (error) {
       showError('Failed to update task');
+      return false;
     }
   };
 
@@ -32,6 +32,6 @@ export const useUpdateTask = ({ initialData, onClose }: UseUpdateTaskProps) => {
     handleSubmit,
     errors,
     isSubmitting: updateTask.isPending,
-    handleFormSubmit,
+    handleFormSubmit: handleSubmit(handleFormSubmit),
   };
 };

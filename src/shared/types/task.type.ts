@@ -10,23 +10,11 @@ export type FullTask = {
 
 export type TaskProps = Omit<FullTask, 'createdAt' | 'updatedAt'>;
 
-export type TaskCardProps = {
-  id: number;
-  title: string;
-  description: string;
-  done: boolean;
-  owner: number;
+export type TaskCardProps = TaskProps & {
   onClose?: () => void;
 };
 
 export type TaskCardFormProps = {
-  initialData: {
-    id: number;
-    title: string;
-    description: string;
-    done: boolean;
-    owner: number;
-  };
+  initialData: TaskProps;
   onCancel: () => void;
-  onSubmit: (values: TaskProps) => void;
 };
