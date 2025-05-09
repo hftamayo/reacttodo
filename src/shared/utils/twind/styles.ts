@@ -87,6 +87,14 @@ export const taskRow = {
 };
 
 export const formStyles = {
+  form: 'w-full max-w-2xl mx-auto',
+  header: 'text-center mb-6',
+  formGrid: 'grid grid-cols-[200px_1fr] gap-4 mb-6', // Two column layout
+  formRow: 'flex items-center', // Align label and input
+  label: 'text-right mr-4', // Right-align labels
+  input: 'w-full',
+  footer: 'flex justify-center gap-4 mt-6',
+
   title: 'text-center text-2xl font-bold',
   description: 'text-center text-xl font-bold',
   grouptitle: 'font-bold underline',
