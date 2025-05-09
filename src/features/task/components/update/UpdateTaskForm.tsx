@@ -11,7 +11,7 @@ export const UpdateTaskForm: FC<TaskCardFormProps> = ({
   initialData,
   onCancel,
 }) => {
-  const { group } = useTranslation('updateTaskCard');
+  const { group } = useTranslation('updateTaskForm');
   const { register, errors, isSubmitting, handleFormSubmit } = useTaskUpdate({
     initialData,
     onSuccess: onCancel,
@@ -27,10 +27,6 @@ export const UpdateTaskForm: FC<TaskCardFormProps> = ({
       className={formStyles.form}
       aria-label="Update task"
     >
-      <div className={formStyles.header}>
-        <h2>{group.cardTitle}</h2>
-      </div>
-
       <div className={formStyles.formGrid}>
         <div className={formStyles.formRow}>
           <Label className={formStyles.label} htmlFor="txttitle">

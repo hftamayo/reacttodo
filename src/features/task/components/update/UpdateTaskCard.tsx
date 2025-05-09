@@ -19,7 +19,7 @@ export const UpdateTaskCard: React.FC<TaskCardProps> = ({
   owner,
   onClose,
 }) => {
-  const { group } = useTranslation('updateTaskCard');
+  const { group } = useTranslation('updateTaskForm');
 
   if (!group) {
     return null;
