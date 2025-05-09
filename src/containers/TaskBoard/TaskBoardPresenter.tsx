@@ -1,9 +1,10 @@
-import React, { forwardRef, useMemo } from 'react';
+import React, { useState, useCallback, forwardRef, useMemo } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { AddTaskForm } from '@/features/task/components/AddTaskForm';
+import { UpdateTaskCard } from '@/features/task/components/update/UpdateTaskCard';
 import { TaskRow } from '@/features/task/components/TaskRow';
 import { taskBoard } from '@/shared/utils/twind/styles';
-import { TaskBoardPresenterProps } from '@/shared/types/api.type';
+import { TaskProps, TaskBoardPresenterProps } from '@/shared/types/api.type';
 import { showError } from '@/shared/services/notification/notificationService';
 
 const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
@@ -11,6 +12,7 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
     { tasks, isLoading, totalTasks, completedTasks, error, onClose, mutations },
     ref
   ) => {
+    const [editingTask, setEditingTask] = useState<TaskProps | null>(null);
     const taskList = useMemo(() => {
       if (error) {
         showError(error.message);
@@ -40,11 +42,20 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
       return (
         <ul>
           {tasks.map((task) => (
-            <TaskRow key={task.id} mutations={mutations} {...task} />
+            <TaskRow
+              key={task.id}
+              mutations={mutations}
+              onEdit={handleEdit}
+              {...task}
+            />
           ))}
         </ul>
       );
-    }, [tasks, isLoading, error, mutations]);
+    }, [tasks, isLoading, error, mutations, editingTask]);
+
+    const handleEdit = useCallback((task: TaskProps) => {
+      setEditingTask(task);
+    }, []);
 
     return (
       <div className={taskBoard.bg}>
@@ -63,6 +74,12 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
           </div>
           <AddTaskForm mutations={mutations} />
           {taskList}
+          {editingTask && (
+            <UpdateTaskCard
+              {...editingTask}
+              onClose={() => setEditingTask(null)}
+            />
+          )}
           {totalTasks > 0 && (
             <p className={taskBoard.count}>
               {`Tasks summary: ${totalTasks} actives, ${completedTasks} completed`}
