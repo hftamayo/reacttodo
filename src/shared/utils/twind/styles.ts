@@ -96,11 +96,11 @@ export const formStyles = {
   footer: 'flex justify-center gap-4 mt-6',
   error: 'text-red-500 text-sm mt-1',
 
-  title: 'text-center text-2xl font-bold',
+  title: 'text-2xl font-bold text-center mb-2',
   description: 'text-center text-xl font-bold',
   grouptitle: 'font-bold underline',
   closeButton:
-    'absolute top-4 right-4 p-2 rounded-full bg-[var(--cameo-600)] hover:bg-[var(--cameo-400)] transition-colors duration-200',
+    'absolute top-4 right-4 p-2 rounded-full bg-[var(--cameo-400)] hover:bg-[var(--cameo-600)] transition-colors duration-200',
   closeIcon: 'w-5 h-5 text-[var(--cameo-1000)]',
   cancelButton:
     'bg-[var(--cameo-400)] text-[var(--cameo-1000)] px-4 py-2 rounded-md hover:bg-[var(--cameo-600)] transition-colors duration-200',
