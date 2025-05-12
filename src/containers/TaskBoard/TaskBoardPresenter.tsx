@@ -3,9 +3,11 @@ import { FaTimes } from 'react-icons/fa';
 import { AddTaskForm } from '@/features/task/components/AddTaskForm';
 import { UpdateTaskCard } from '@/features/task/components/update/UpdateTaskCard';
 import { TaskRow } from '@/features/task/components/TaskRow';
+import CustomModal from '@/shared/components/ui/modal/CustomModal';
 import { taskBoard } from '@/shared/utils/twind/styles';
 import { TaskProps, TaskBoardPresenterProps } from '@/shared/types/api.type';
 import { showError } from '@/shared/services/notification/notificationService';
+import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 
 const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
   (
@@ -13,9 +15,14 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
     ref
   ) => {
     const [editingTask, setEditingTask] = useState<TaskProps | null>(null);
+    const { group } = useTranslation('updateTaskForm');
 
     const handleEdit = useCallback((task: TaskProps) => {
       setEditingTask(task);
+    }, []);
+
+    const handleCloseModal = useCallback(() => {
+      setEditingTask(null);
     }, []);
 
     const taskList = useMemo(() => {
@@ -56,7 +63,7 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
           ))}
         </ul>
       );
-    }, [tasks, isLoading, error, mutations]);
+    }, [tasks, isLoading, error, mutations, handleEdit]);
 
     return (
       <div className={taskBoard.bg}>
@@ -75,12 +82,16 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
           </div>
           <AddTaskForm mutations={mutations} />
           {taskList}
-          {editingTask && (
-            <UpdateTaskCard
-              {...editingTask}
-              onClose={() => setEditingTask(null)}
-            />
-          )}
+          <CustomModal
+            isOpen={!!editingTask}
+            onDismiss={handleCloseModal}
+            //onClose={handleCloseModal}
+            //title={group?.cardTitle}
+          >
+            {editingTask && (
+              <UpdateTaskCard {...editingTask} onClose={handleCloseModal} />
+            )}
+          </CustomModal>
           {totalTasks > 0 && (
             <p className={taskBoard.count}>
               {`Tasks summary: ${totalTasks} actives, ${completedTasks} completed`}

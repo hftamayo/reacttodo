@@ -17,7 +17,7 @@ export const UpdateTaskCard: React.FC<TaskCardProps> = ({
   description,
   done,
   owner,
-  onClose,
+  onClose = () => {},
 }) => {
   const { group } = useTranslation('updateTaskForm');
 
@@ -27,17 +27,15 @@ export const UpdateTaskCard: React.FC<TaskCardProps> = ({
 
   const initialData = { id, title, description, done, owner };
 
-  const handleClose = () => {
-    if (onClose) {
-      onClose();
-    }
-  };
-
   return (
     <Card>
       <CardHeader>
-        <div className="flex flex-col items-center relative w-full">
-          <CardTitle className={formStyles.title}>{group.cardTitle}</CardTitle>
+        <div className="flex justify-between items-center">
+          <div>
+            <CardTitle className={formStyles.title}>
+              {group.cardTitle}
+            </CardTitle>
+          </div>
           <button
             onClick={onClose}
             className={formStyles.closeButton}
@@ -48,7 +46,7 @@ export const UpdateTaskCard: React.FC<TaskCardProps> = ({
         </div>
       </CardHeader>
       <CardContent>
-        <UpdateTaskForm initialData={initialData} onCancel={handleClose} />
+        <UpdateTaskForm initialData={initialData} onCancel={onClose} />
       </CardContent>
     </Card>
   );
