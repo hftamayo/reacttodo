@@ -89,9 +89,9 @@ export const taskRow = {
 export const formStyles = {
   form: 'w-full max-w-2xl mx-auto',
   header: 'text-center mb-6',
-  formGrid: 'grid grid-cols-[200px_1fr] gap-4 mb-6', // Two column layout
-  formRow: 'flex items-center', // Align label and input
-  label: 'text-right mr-4', // Right-align labels
+  formGrid: 'flex flex-col space-y-4',
+  formRow: 'flex flex-col space-y-2',
+  label: 'text-sm font-medium',
   input: 'w-full',
   footer: 'flex justify-center gap-4 mt-6',
   error: 'text-red-500 text-sm mt-1',
@@ -100,8 +100,8 @@ export const formStyles = {
   description: 'text-center text-xl font-bold',
   grouptitle: 'font-bold underline',
   closeButton:
-    'absolute top-4 right-4 p-2 rounded-full bg-[var(--cameo-400)] hover:bg-[var(--cameo-600)] transition-colors duration-200',
-  closeIcon: 'w-5 h-5 text-[var(--cameo-1000)]',
+    'absolute top-2 right-2 p-1.5 rounded-full bg-[var(--cameo-400)] hover:bg-[var(--cameo-600)] transition-colors duration-200',
+  closeIcon: 'w-4 h-4 text-[var(--cameo-1000)]',
   cancelButton:
     'bg-[var(--cameo-400)] text-[var(--cameo-1000)] px-4 py-2 rounded-md hover:bg-[var(--cameo-600)] transition-colors duration-200',
   submitButton:

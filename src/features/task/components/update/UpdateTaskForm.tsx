@@ -32,16 +32,14 @@ export const UpdateTaskForm: FC<TaskCardFormProps> = ({
           <Label className={formStyles.label} htmlFor="txttitle">
             {group.lblTaskTitle}
           </Label>
-          <div>
-            <Input
-              id="txttitle"
-              className={formStyles.input}
-              {...register('title', { required: 'Title is required' })}
-            />
-            {errors.title && (
-              <span className={formStyles.error}>{errors.title.message}</span>
-            )}
-          </div>
+          <Input
+            id="txttitle"
+            className={formStyles.input}
+            {...register('title', { required: 'Title is required' })}
+          />
+          {errors.title && (
+            <span className={formStyles.error}>{errors.title.message}</span>
+          )}
         </div>
 
         <div className={formStyles.formRow}>
@@ -56,10 +54,12 @@ export const UpdateTaskForm: FC<TaskCardFormProps> = ({
         </div>
 
         <div className={formStyles.formRow}>
-          <Label className={formStyles.label} htmlFor="txtdone">
-            {group.lblTaskStatus}
-          </Label>
-          <Checkbox id="txtdone" {...register('done')} />
+          <div className="flex items-center gap-2">
+            <Label className={formStyles.label} htmlFor="txtdone">
+              {group.lblTaskStatus}
+            </Label>
+            <Checkbox id="txtdone" {...register('done')} />
+          </div>
         </div>
       </div>
 
