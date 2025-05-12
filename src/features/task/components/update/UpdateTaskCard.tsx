@@ -31,7 +31,11 @@ export const UpdateTaskCard: React.FC<TaskCardProps> = ({
     <Card>
       <CardHeader>
         <div className="flex justify-between items-center">
-          <CardTitle className={formStyles.title}>{group.cardTitle}</CardTitle>
+          <div className="flex-1 text-center">
+            <CardTitle className={formStyles.title}>
+              {group.cardTitle}
+            </CardTitle>
+          </div>
           <button
             onClick={onClose}
             className={formStyles.closeButton}
