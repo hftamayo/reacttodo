@@ -20,7 +20,7 @@ export const SettingsCard: React.FC<SettingsCardProps> = ({
     <Card>
       <CardHeader>
         <div className="flex justify-between items-center">
-          <div>
+          <div className="flex-1 text-center">
             <CardTitle className={formStyles.title}>{title}</CardTitle>
             <CardDescription className={formStyles.description}>
               {description}
