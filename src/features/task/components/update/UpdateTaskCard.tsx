@@ -30,7 +30,7 @@ export const UpdateTaskCard: React.FC<TaskCardProps> = ({
   return (
     <Card>
       <CardHeader>
-        <div className="flex flex-col items-center relative w-full">
+        <div className="flex justify-between items-center">
           <CardTitle className={formStyles.title}>{group.cardTitle}</CardTitle>
           <button
             onClick={onClose}
