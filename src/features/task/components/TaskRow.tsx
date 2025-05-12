@@ -98,8 +98,8 @@ export const TaskRow: React.FC<TaskRowProps> = memo(
             size="sm"
             onClick={handleUpdateTask}
             title={updateRowButton}
-            disabled={updateTask.isPending}
-            aria-label={`Edit task "${title}"`}
+            disabled={updateTask.isPending || done}
+            aria-label={`Edit task "${title}" ${done ? '(disabled - task completed)' : ''}`}
           >
             <FaPencilAlt />
           </Button>
