@@ -124,7 +124,7 @@ export const taskOps = {
   async updateTask(task: TaskProps): Promise<ApiResponse<TaskData>> {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task/${task.id}`, {
-        method: 'PUT',
+        method: 'PATCH',
         //credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
