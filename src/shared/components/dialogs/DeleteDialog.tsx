@@ -7,34 +7,25 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '../ui/dialogs/alert-dialog';
-import { Button } from '@/shared/components/ui/button/Button';
-import { FaRegTrashAlt } from 'react-icons/fa';
 
 interface DeleteDialogProps {
   title: string;
+  isOpen: boolean;
   isDeleting: boolean;
   onConfirm: () => Promise<void>;
+  onCancel: () => void;
 }
 
-export const DeleteTaskDialog = ({
+export const DeleteDialog = ({
   title,
+  isOpen,
   isDeleting,
   onConfirm,
+  onCancel,
 }: DeleteDialogProps) => {
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button
-          variant="destructive"
-          size="sm"
-          disabled={isDeleting}
-          aria-label={`Delete entity "${title}"`}
-        >
-          <FaRegTrashAlt />
-        </Button>
-      </AlertDialogTrigger>
+    <AlertDialog open={isOpen} onOpenChange={(open) => !open && onCancel()}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Delete Entity</AlertDialogTitle>
@@ -44,9 +35,9 @@ export const DeleteTaskDialog = ({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel onClick={onCancel}>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={onConfirm} disabled={isDeleting}>
-            Delete
+            {isDeleting ? 'Deleting...' : 'Delete'}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
