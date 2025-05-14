@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { useState, memo } from 'react';
 import { TaskProps } from '../../../shared/types/api.type';
 import { useTaskOperations } from '../hooks/useTaskOperations';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
@@ -7,6 +7,7 @@ import { Label } from '@/shared/components/ui/label/Label';
 import { Input } from '@/shared/components/ui/input/Input';
 import { Button } from '@/shared/components/ui/button/Button';
 import { taskRow } from '../../../shared/utils/twind/styles';
+import { DeleteDialog } from '@/shared/components/dialogs/DeleteDialog';
 
 interface TaskRowProps extends TaskProps {
   onEdit: (task: TaskProps) => void;
@@ -24,6 +25,7 @@ export const TaskRow: React.FC<TaskRowProps> = memo(
     deletedAt,
     onEdit,
   }) => {
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const { text: deleteRowButton } = useTranslation('deleteRowButton');
     const { text: updateRowButton } = useTranslation('updateRowButton');
     const { handleToggle, handleDelete, isToggling, isDeleting } =
@@ -42,6 +44,7 @@ export const TaskRow: React.FC<TaskRowProps> = memo(
     const handleDeleteTask = async () => {
       if (!id) return;
       await handleDelete(id);
+      setIsDialogOpen(false);
     };
 
     return (
@@ -69,13 +72,21 @@ export const TaskRow: React.FC<TaskRowProps> = memo(
           <Button
             variant="destructive"
             size="sm"
-            onClick={handleDeleteTask}
+            onClick={() => setIsDialogOpen(true)}
             title={deleteRowButton}
             disabled={isDeleting}
             aria-label={`Delete task "${title}"`}
           >
             <FaRegTrashAlt />
           </Button>
+          <DeleteDialog
+            title={title}
+            isOpen={isDialogOpen}
+            isDeleting={isDeleting}
+            onConfirm={handleDeleteTask}
+            onCancel={() => setIsDialogOpen(false)}
+          />
+
           <Button
             variant="secondary"
             size="sm"
