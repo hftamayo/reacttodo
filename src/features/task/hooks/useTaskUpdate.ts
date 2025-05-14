@@ -1,14 +1,20 @@
 import { useForm } from 'react-hook-form';
 import { TaskProps } from '@/shared/types/api.type';
 import { useTaskMutations } from './useTaskMutations';
-import { showError } from '@/shared/services/notification/notificationService';
+import {
+  showError,
+  showSuccess,
+} from '@/shared/services/notification/notificationService';
 
 interface UseUpdateTaskProps {
   initialData: TaskProps;
   onSuccess?: () => void;
 }
 
-export const useTaskUpdate = ({ initialData, onSuccess }: UseUpdateTaskProps) => {
+export const useTaskUpdate = ({
+  initialData,
+  onSuccess,
+}: UseUpdateTaskProps) => {
   const { updateTask } = useTaskMutations();
   const {
     register,
@@ -22,6 +28,7 @@ export const useTaskUpdate = ({ initialData, onSuccess }: UseUpdateTaskProps) =>
     try {
       await updateTask.mutateAsync(data);
       onSuccess?.();
+      showSuccess('Task updated successfully');
       return true;
     } catch (error) {
       showError('Failed to update task');
