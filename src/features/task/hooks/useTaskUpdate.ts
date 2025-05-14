@@ -31,6 +31,7 @@ export const useTaskUpdate = ({
       showSuccess('Task updated successfully');
       return true;
     } catch (error) {
+      console.error('Error updating task:', error);
       showError('Failed to update task');
       return false;
     }
