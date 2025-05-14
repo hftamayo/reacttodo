@@ -41,6 +41,7 @@ export const AddTaskForm: React.FC<AddTaskFormProps> = ({ mutations }) => {
       await addTask.mutateAsync(TaskWithOwner);
       reset();
     } catch (error) {
+      console.error('Error adding task:', error);
       showError('Failed to add task');
     }
   };

@@ -7,7 +7,6 @@ import CustomModal from '@/shared/components/ui/modal/CustomModal';
 import { taskBoard } from '@/shared/utils/twind/styles';
 import { TaskProps, TaskBoardPresenterProps } from '@/shared/types/api.type';
 import { showError } from '@/shared/services/notification/notificationService';
-import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 
 const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
   (
@@ -15,7 +14,6 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
     ref
   ) => {
     const [editingTask, setEditingTask] = useState<TaskProps | null>(null);
-    const { group } = useTranslation('updateTaskForm');
 
     const handleEdit = useCallback((task: TaskProps) => {
       setEditingTask(task);
@@ -54,12 +52,7 @@ const TaskBoardPresenter = forwardRef<HTMLDivElement, TaskBoardPresenterProps>(
       return (
         <ul>
           {tasks.map((task) => (
-            <TaskRow
-              key={task.id}
-              mutations={mutations}
-              onEdit={handleEdit}
-              {...task}
-            />
+            <TaskRow key={task.id} onEdit={handleEdit} {...task} />
           ))}
         </ul>
       );
