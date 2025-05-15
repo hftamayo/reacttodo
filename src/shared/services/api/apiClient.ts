@@ -9,6 +9,7 @@ import {
   AppHealthDetails,
   AddTaskProps,
   TaskIdentifier,
+  CursorParams,
 } from '../../types/api.type';
 import { showError } from '../notification/notificationService';
 
@@ -67,9 +68,18 @@ export const beOps = {
 };
 
 export const taskOps = {
-  async getTasks(): Promise<ApiResponse<TaskData>> {
+  async getTasks({
+    limit,
+    cursor,
+  }: CursorParams): Promise<ApiResponse<TaskData>> {
     try {
-      const url = `${BACKEND_URL}/tasks/task/list?limit=5`;
+      const queryParams = new URLSearchParams();
+      queryParams.append('limit', String(limit));
+      if (cursor) {
+        queryParams.append('cursor', cursor);
+      }
+
+      const url = `${BACKEND_URL}/tasks/task/list?${queryParams.toString()}`;
       const response = await fetch(url, {
         //credentials: 'include',
         headers: {
