@@ -5,11 +5,18 @@ import {
   TaskData,
   ApiResponse,
   TaskIdentifier,
+  CursorParams,
 } from '@/shared/types/api.type';
 
-const fetchTasks = async (): Promise<ApiResponse<TaskData>> => {
+const fetchTasks = async ({
+  limit,
+  cursor,
+}: CursorParams): Promise<ApiResponse<TaskData>> => {
   try {
-    return await taskOps.getTasks();
+    return await taskOps.getTasks({
+      limit,
+      cursor,
+    });
   } catch (error) {
     if (error instanceof Error) {
       console.error('Error fetching tasks:', error.message);
