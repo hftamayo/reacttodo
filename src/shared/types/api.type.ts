@@ -1,4 +1,5 @@
 import { useTaskMutations } from '@/features/task/hooks/useTaskMutations';
+import React from 'react';
 
 //common types:
 export type MongoId = string;
@@ -103,15 +104,22 @@ export type TaskProps = {
 export type AddTaskProps = Pick<TaskProps, 'title' | 'owner'>;
 //export type AddTaskProps = Pick<TaskProps, 'title' | 'description' | 'owner'>;
 
-export type PaginationMetadata = {
-  currentPage: number;
-  totalPages: number;
-  totalCount: number;
+//pagination and task related ops
+
+export type CursorPagination = {
+  hasMore: boolean;
   limit: number;
+  nextCursor: string | null;
+  totalCount: number;
+};
+
+export type TaskStats = {
+  total: number;
+  completed: number;
 };
 
 export type TaskData = {
-  pagination: PaginationMetadata;
+  pagination: CursorPagination;
   tasks: TaskProps[];
 };
 
@@ -119,13 +127,22 @@ export type TaskContext = {
   previousTasks?: ApiResponse<TaskData>;
 };
 
-export type TasksState = {
-  tasks: Map<string, TaskProps>;
-  task: TaskProps | null;
-  loading: boolean;
-  status: 'idle' | 'loading' | 'failed' | 'succeeded';
-  error: string | null;
-  msg: string | null;
+export type TaskBoardState = {
+  ref?: React.RefObject<HTMLDivElement>;
+  tasks: TaskProps[];
+  isLoading: boolean;
+  error: Error | null;
+  pagination: {
+    hasMore: boolean;
+    nextCursor: string | null;
+  };
+  taskStats: TaskStats;
+  mutations: ReturnType<typeof useTaskMutations>;
+};
+
+export type CursorParams = {
+  limit: number;
+  cursor?: string | null;
 };
 
 export type TaskBoardPresenterProps = {
@@ -144,9 +161,4 @@ export type CustomPaginationProps = {
   totalPages: number;
   onPageChange: (page: number) => void;
   className?: string;
-};
-
-export type PaginationParams = {
-  page: number;
-  limit: number;
 };
