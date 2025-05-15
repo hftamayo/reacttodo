@@ -133,8 +133,11 @@ export type TaskBoardPresenterProps = {
   isLoading: boolean;
   totalTasks: number;
   completedTasks: number;
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
   error?: Error;
   onClose: () => void;
-  mutations: ReturnType<typeof useTaskMutations>; // Add mutations
+  mutations: ReturnType<typeof useTaskMutations>;
   ref?: React.RefObject<HTMLDivElement>;
 };
