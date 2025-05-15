@@ -8,13 +8,6 @@ export interface EntityIdentifier<T> {
   id: T;
 }
 
-export type PaginationProps = {
-  hasMore: boolean;
-  limit: number;
-  nextCursor: string | null;
-  totalCount: number;
-};
-
 export type ApiResponse<T> = {
   code: number;
   resultMessage: string;
@@ -110,8 +103,15 @@ export type TaskProps = {
 export type AddTaskProps = Pick<TaskProps, 'title' | 'owner'>;
 //export type AddTaskProps = Pick<TaskProps, 'title' | 'description' | 'owner'>;
 
+export type PaginationMetadata = {
+  currentPage: number;
+  totalPages: number;
+  totalCount: number;
+  limit: number;
+};
+
 export type TaskData = {
-  pagination: PaginationProps;
+  pagination: PaginationMetadata;
   tasks: TaskProps[];
 };
 
@@ -144,4 +144,9 @@ export type CustomPaginationProps = {
   totalPages: number;
   onPageChange: (page: number) => void;
   className?: string;
+};
+
+export type PaginationParams = {
+  page: number;
+  limit: number;
 };
