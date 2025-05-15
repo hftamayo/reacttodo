@@ -133,11 +133,15 @@ export type TaskBoardPresenterProps = {
   isLoading: boolean;
   totalTasks: number;
   completedTasks: number;
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
   error?: Error;
   onClose: () => void;
   mutations: ReturnType<typeof useTaskMutations>;
   ref?: React.RefObject<HTMLDivElement>;
+};
+
+export type CustomPaginationProps = {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+  className?: string;
 };
