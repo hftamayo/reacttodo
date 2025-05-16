@@ -150,10 +150,11 @@ export type TaskBoardPresenterProps = {
   isLoading: boolean;
   totalTasks: number;
   completedTasks: number;
+  hasMore: boolean;
+  onLoadMore: () => void;
   error?: Error;
   onClose: () => void;
   mutations: ReturnType<typeof useTaskMutations>;
-  ref?: React.RefObject<HTMLDivElement>;
 };
 
 export type CustomPaginationProps = {
