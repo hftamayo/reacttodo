@@ -160,5 +160,7 @@ export type CustomPaginationProps = {
   hasMore: boolean;
   isLoading: boolean;
   onLoadMore: () => void;
+  children: React.ReactNode;
   className?: string;
+  maxHeight?: string;
 };
