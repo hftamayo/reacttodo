@@ -4,18 +4,18 @@ import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { showError } from '@/shared/services/notification/notificationService';
 import { useTaskQueries } from './useTaskQueries';
 import { useTaskMutations } from './useTaskMutations';
-import { PaginationParams, TaskBoardState } from '@/shared/types/api.type';
+import { CursorParams, TaskBoardState } from '@/shared/types/api.type';
 
 export const useTaskBoard = ({
-  currentPage,
   limit,
-}: PaginationParams): TaskBoardState => {
+  cursor,
+}: CursorParams): TaskBoardState => {
   const { ref, shouldFetch } = useLazyLoad();
-  const { data, error, isLoading } = useTaskQueries.getTasks(
-    shouldFetch,
-    currentPage,
-    limit
-  );
+  const { data, error, isLoading } = useTaskQueries.getTasks({
+    enabled: shouldFetch,
+    limit,
+    cursor,
+  });
   const { text: errorMessage = 'An error occurred' } =
     useTranslation('errorComponent');
   const mutations = useTaskMutations();
@@ -28,15 +28,15 @@ export const useTaskBoard = ({
   const { pagination, stats } = useMemo(
     () => ({
       pagination: {
-        currentPage: data?.data?.pagination?.currentPage ?? currentPage,
-        totalPages: data?.data?.pagination?.totalPages ?? 1,
+        hasMore: data?.data?.pagination?.hasMore ?? false,
+        nextCursor: data?.data?.pagination?.nextCursor ?? null,
       },
       stats: {
         total: data?.data?.pagination?.totalCount ?? 0,
         completed: tasks.filter((task) => task.done).length,
       },
     }),
-    [data, tasks, currentPage]
+    [data, tasks]
   );
 
   useEffect(() => {
