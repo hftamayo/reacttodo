@@ -1,52 +1,46 @@
-import React from 'react';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '../ui/pagination/pagination';
+import React, { useEffect, useRef } from 'react';
+import { ScrollArea } from '../ui/pagination/scroll-area';
+import { Skeleton } from '../ui/skeleton/Skeleton';
 import { CustomPaginationProps } from '@/shared/types/api.type';
 
 export const CustomPagination: React.FC<CustomPaginationProps> = ({
-  currentPage,
-  totalPages,
-  onPageChange,
+  hasMore,
+  isLoading,
+  onLoadMore,
+  children,
   className,
+  maxHeight = '600px',
 }) => {
-  if (totalPages <= 1) return null;
+  const observerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hasMore && !isLoading) {
+          onLoadMore();
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasMore, isLoading, onLoadMore]);
+
   return (
-    <div className={`flex justify-center mt-4 ${className}`}>
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              onClick={() => onPageChange(currentPage - 1)}
-              isActive={currentPage === 1}
-            />
-          </PaginationItem>
-
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <PaginationItem key={page}>
-              <PaginationLink
-                onClick={() => onPageChange(page)}
-                isActive={currentPage === page}
-              >
-                {page}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
-
-          <PaginationItem>
-            <PaginationNext
-              onClick={() => onPageChange(currentPage + 1)}
-              isActive={currentPage === totalPages}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
-      ;
-    </div>
+    <ScrollArea className={className} style={{ maxHeight }}>
+      {children}
+      <div ref={observerRef}>
+        {isLoading && (
+          <div className="space-y-2 p-4">
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-2/3" />
+          </div>
+        )}
+      </div>
+    </ScrollArea>
   );
 };
