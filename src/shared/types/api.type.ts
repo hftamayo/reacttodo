@@ -157,8 +157,8 @@ export type TaskBoardPresenterProps = {
 };
 
 export type CustomPaginationProps = {
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
+  hasMore: boolean;
+  isLoading: boolean;
+  onLoadMore: () => void;
   className?: string;
 };
