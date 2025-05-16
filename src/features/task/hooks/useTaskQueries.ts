@@ -1,14 +1,22 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { taskService } from '../services/taskService';
-import { TaskData, ApiResponse } from '../../../shared/types/api.type';
+import {
+  TaskData,
+  ApiResponse,
+  CursorParams,
+} from '../../../shared/types/api.type';
+
+interface GetTasksParams extends CursorParams {
+  enabled: boolean;
+}
 
 export const useTaskQueries = {
-  getTasks: (enabled: boolean) =>
+  getTasks: ({ enabled, limit, cursor }: GetTasksParams) =>
     useQuery<ApiResponse<TaskData>, Error>({
-      queryKey: ['tasks'],
+      queryKey: ['tasks', { limit, cursor }],
       queryFn: async () => {
         try {
-          const response = await taskService.fetchTasks();
+          const response = await taskService.fetchTasks({ limit, cursor });
           return response;
         } catch (error) {
           console.error('Error fetching tasks:', error);
