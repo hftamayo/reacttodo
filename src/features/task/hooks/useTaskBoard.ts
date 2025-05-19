@@ -8,6 +8,7 @@ import {
   CursorParams,
   CursorPagination,
   TaskBoardState,
+  PaginationMetadata,
 } from '@/shared/types/api.type';
 
 export const useTaskBoard = ({
@@ -17,7 +18,7 @@ export const useTaskBoard = ({
   const { ref, shouldFetch } = useLazyLoad();
   const { data, error, isLoading } = useTaskQueries.getTasks({
     enabled: shouldFetch,
-    paginationType: 'cursor', // Added this parameter
+    paginationType: 'cursor',
     limit,
     cursor,
   });
@@ -31,11 +32,11 @@ export const useTaskBoard = ({
   }, [data, isLoading]);
 
   const { pagination, stats } = useMemo(() => {
-    const paginationData = data?.data?.pagination;
+    const paginationData = data?.data?.pagination as CursorPagination;
 
     return {
       pagination: {
-        type: 'cursor' as const,
+        type: 'cursor',
         limit: paginationData?.limit ?? 5,
         totalCount: paginationData?.totalCount ?? 0,
         hasMore: paginationData?.hasMore ?? false,
