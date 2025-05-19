@@ -180,7 +180,7 @@ export type TaskBoardPresenterProps = {
   error?: Error;
   onClose: () => void;
   mutations: ReturnType<typeof useTaskMutations>;
-  paginationType: 'cursor' | 'offset';
+  paginationType: 'cursor';
 };
 
 export type CursorPaginationProps = {
