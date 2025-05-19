@@ -1,21 +1,26 @@
+import { useState } from 'react';
 import { useTaskBoard } from '@/features/task/hooks/useTaskBoard';
 import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import { useErrorHandler } from '@/shared/hooks/useErrorHandler';
 import { TaskBoardPresenter } from './TaskBoardPresenter';
 import { useLocation } from 'wouter';
+import { CursorPagination } from '@/shared/types/api.type';
 
 export const TaskBoardContainer: React.FC = () => {
   const { handleError } = useErrorHandler('TaskBoard');
   const [, setLocation] = useLocation();
+  const [currentCursor, setCurrentCursor] = useState<string | null>(null);
+
   const { ref, tasks, error, isLoading, pagination, taskStats, mutations } =
     useTaskBoard({
+      type: 'cursor',
       limit: 5,
-      cursor: null,
+      cursor: currentCursor,
     });
 
   const handleLoadMore = () => {
-    if (pagination.hasMore && pagination.nextCursor) {
-      // useTaskBoard will handle the next page fetch
+    if (pagination.hasMore && (pagination as CursorPagination).nextCursor) {
+      setCurrentCursor((pagination as CursorPagination).nextCursor);
     }
   };
 
@@ -54,6 +59,7 @@ export const TaskBoardContainer: React.FC = () => {
         onLoadMore={handleLoadMore}
         onClose={handleClose}
         mutations={mutations}
+        paginationType="cursor"
       />
     </ErrorBoundary>
   );
