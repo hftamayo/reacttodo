@@ -81,8 +81,16 @@ export const taskOps = {
       }
 
       const url = `${BACKEND_URL}/tasks/task/list?${queryParams.toString()}`;
-      return await handleFetch(url);
-    } catch (error) {
+      const response = await fetch(url, {
+        //credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        mode: 'cors',
+      });
+      return await handleResponse<TaskData>(response);
+    } catch (error: unknown) {
       handleError(error);
       throw error;
     }
@@ -94,8 +102,16 @@ export const taskOps = {
   }: OffsetParams): Promise<ApiResponse<TaskData>> {
     try {
       const url = `${BACKEND_URL}/tasks/task/list/page?page=${page}&limit=${limit}`;
-      return await handleFetch(url);
-    } catch (error) {
+      const response = await fetch(url, {
+        //credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        mode: 'cors',
+      });
+      return await handleResponse<TaskData>(response);
+    } catch (error: unknown) {
       handleError(error);
       throw error;
     }
