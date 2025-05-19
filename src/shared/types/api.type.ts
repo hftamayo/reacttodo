@@ -183,7 +183,7 @@ export type TaskBoardPresenterProps = {
   paginationType: 'cursor' | 'offset';
 };
 
-export type CustomPaginationProps = {
+export type CursorPaginationProps = {
   hasMore: boolean;
   isLoading: boolean;
   onLoadMore: () => void;
