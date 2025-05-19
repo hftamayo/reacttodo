@@ -105,22 +105,55 @@ export type AddTaskProps = Pick<TaskProps, 'title' | 'owner'>;
 //export type AddTaskProps = Pick<TaskProps, 'title' | 'description' | 'owner'>;
 
 //pagination and task related ops
-
-export type CursorPagination = {
-  hasMore: boolean;
+// Base pagination metadata shared between both types
+export interface BasePagination {
   limit: number;
-  nextCursor: string | null;
   totalCount: number;
+  hasMore: boolean;
+  currentPage: number;
+  totalPages: number;
+  order: 'desc' | 'asc';
+}
+
+// Cursor-based pagination metadata
+export interface CursorPagination extends BasePagination {
+  type: 'cursor';
+  nextCursor: string | null;
+  prevCursor: string | null;
+}
+
+// Offset-based pagination metadata
+export interface OffsetPagination extends BasePagination {
+  type: 'offset';
+  page: number;
+}
+
+// Union type for both pagination styles
+export type PaginationMetadata = CursorPagination | OffsetPagination;
+
+// Parameters for API calls
+export type CursorParams = {
+  type: 'cursor';
+  limit: number;
+  cursor?: string | null;
+};
+
+export type OffsetParams = {
+  type: 'offset';
+  page: number;
+  limit: number;
+};
+
+export type PaginationParams = CursorParams | OffsetParams;
+
+export type TaskData = {
+  pagination: PaginationMetadata;
+  tasks: TaskProps[];
 };
 
 export type TaskStats = {
   total: number;
   completed: number;
-};
-
-export type TaskData = {
-  pagination: CursorPagination;
-  tasks: TaskProps[];
 };
 
 export type TaskContext = {
@@ -132,17 +165,9 @@ export type TaskBoardState = {
   tasks: TaskProps[];
   isLoading: boolean;
   error: Error | null;
-  pagination: {
-    hasMore: boolean;
-    nextCursor: string | null;
-  };
+  pagination: PaginationMetadata;
   taskStats: TaskStats;
   mutations: ReturnType<typeof useTaskMutations>;
-};
-
-export type CursorParams = {
-  limit: number;
-  cursor?: string | null;
 };
 
 export type TaskBoardPresenterProps = {
@@ -155,6 +180,7 @@ export type TaskBoardPresenterProps = {
   error?: Error;
   onClose: () => void;
   mutations: ReturnType<typeof useTaskMutations>;
+  paginationType: 'cursor' | 'offset';
 };
 
 export type CustomPaginationProps = {
