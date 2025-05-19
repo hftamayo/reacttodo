@@ -3,7 +3,7 @@ import { FaTimes } from 'react-icons/fa';
 import { AddTaskForm } from '@/features/task/components/AddTaskForm';
 import { UpdateTaskCard } from '@/features/task/components/update/UpdateTaskCard';
 import { TaskRow } from '@/features/task/components/TaskRow';
-import { CustomPagination } from '@/shared/components/pagination/CustomPagination';
+import { CursorPagination } from '@/shared/components/pagination/CursorPagination';
 import CustomModal from '@/shared/components/ui/modal/CustomModal';
 import { taskBoard } from '@/shared/utils/twind/styles';
 import { TaskProps, TaskBoardPresenterProps } from '@/shared/types/api.type';
@@ -24,6 +24,7 @@ export const TaskBoardPresenter = forwardRef<
       error,
       onClose,
       mutations,
+      paginationType,
     },
     ref
   ) => {
@@ -80,7 +81,7 @@ export const TaskBoardPresenter = forwardRef<
             </button>
           </div>
           <AddTaskForm mutations={mutations} />
-          <CustomPagination
+          <CursorPagination
             hasMore={hasMore}
             isLoading={isLoading}
             onLoadMore={onLoadMore}
@@ -88,7 +89,7 @@ export const TaskBoardPresenter = forwardRef<
             maxHeight="600px"
           >
             {taskList}
-          </CustomPagination>
+          </CursorPagination>
           <CustomModal isOpen={!!editingTask} onDismiss={handleCloseModal}>
             {editingTask && (
               <UpdateTaskCard {...editingTask} onClose={handleCloseModal} />
@@ -104,3 +105,5 @@ export const TaskBoardPresenter = forwardRef<
     );
   }
 );
+
+TaskBoardPresenter.displayName = 'TaskBoardPresenter';
