@@ -1,6 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { taskService } from '../services/taskService';
-import { TaskData, ApiResponse } from '../../../shared/types/api.type';
+import {
+  CursorParams,
+  OffsetParams,
+  TaskData,
+  ApiResponse,
+} from '../../../shared/types/api.type';
 
 interface GetTasksParams {
   enabled: boolean;
@@ -22,16 +27,23 @@ export const useTaskQueries = {
       queryFn: async () => {
         try {
           if (paginationType === 'cursor') {
-            return await taskService.fetchTasksWithCursor({ limit, cursor });
-          } else {
-            return await taskService.fetchTasksWithOffset({
-              page: page || 1,
+            const cursorParams: CursorParams = {
+              type: 'cursor',
               limit,
-            });
+              cursor,
+            };
+            return await taskService.fetchTasksWithCursor(cursorParams);
+          } else {
+            const offsetParams: OffsetParams = {
+              type: 'offset',
+              page: page ?? 1,
+              limit,
+            };
+            return await taskService.fetchTasksWithOffset(offsetParams);
           }
         } catch (error) {
-          console.error('Error fetching tasks:', error);
-          throw new Error('Failed to fetch tasks');
+          console.error('Task fetch error:', error);
+          throw new Error('Unable to load tasks. Please try again later.');
         }
       },
       enabled,
