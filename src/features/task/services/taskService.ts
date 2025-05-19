@@ -6,24 +6,30 @@ import {
   ApiResponse,
   TaskIdentifier,
   CursorParams,
+  OffsetParams,
 } from '@/shared/types/api.type';
 
-const fetchTasks = async ({
+const fetchTasksWithCursor = async ({
   limit,
   cursor,
 }: CursorParams): Promise<ApiResponse<TaskData>> => {
   try {
-    return await taskOps.getTasks({
-      limit,
-      cursor,
-    });
+    return await taskOps.getTasksWithCursor({ limit, cursor });
   } catch (error) {
-    if (error instanceof Error) {
-      console.error('Error fetching tasks:', error.message);
-    } else {
-      console.error('Error fetching tasks:', error);
-    }
-    throw new Error('Failed to fetch tasks');
+    handleError(error);
+    console.error('Error fetching tasks with cursor:', error);
+  }
+};
+
+const fetchTasksWithOffset = async ({
+  page,
+  limit,
+}: OffsetParams): Promise<ApiResponse<TaskData>> => {
+  try {
+    return await taskOps.getTasksWithOffset({ page, limit });
+  } catch (error) {
+    handleError(error);
+    console.error('Error fetching tasks with offset:', error);
   }
 };
 
@@ -112,7 +118,8 @@ const fetchDeleteTask = async (id: number): Promise<ApiResponse<TaskData>> => {
 };
 
 export const taskService = {
-  fetchTasks,
+  fetchTasksWithCursor,
+  fetchTasksWithOffset,
   fetchTask,
   fetchAddTask,
   fetchUpdateTask,

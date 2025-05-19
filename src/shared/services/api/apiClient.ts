@@ -10,6 +10,7 @@ import {
   AddTaskProps,
   TaskIdentifier,
   CursorParams,
+  OffsetParams,
 } from '../../types/api.type';
 import { showError } from '../notification/notificationService';
 
@@ -68,7 +69,7 @@ export const beOps = {
 };
 
 export const taskOps = {
-  async getTasks({
+  async getTasksWithCursor({
     limit,
     cursor,
   }: CursorParams): Promise<ApiResponse<TaskData>> {
@@ -80,16 +81,21 @@ export const taskOps = {
       }
 
       const url = `${BACKEND_URL}/tasks/task/list?${queryParams.toString()}`;
-      const response = await fetch(url, {
-        //credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        mode: 'cors',
-      });
-      return await handleResponse<TaskData>(response);
-    } catch (error: unknown) {
+      return await handleFetch(url);
+    } catch (error) {
+      handleError(error);
+      throw error;
+    }
+  },
+
+  async getTasksWithOffset({
+    page,
+    limit,
+  }: OffsetParams): Promise<ApiResponse<TaskData>> {
+    try {
+      const url = `${BACKEND_URL}/tasks/task/list/page?page=${page}&limit=${limit}`;
+      return await handleFetch(url);
+    } catch (error) {
       handleError(error);
       throw error;
     }
