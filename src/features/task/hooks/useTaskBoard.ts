@@ -4,7 +4,11 @@ import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { showError } from '@/shared/services/notification/notificationService';
 import { useTaskQueries } from './useTaskQueries';
 import { useTaskMutations } from './useTaskMutations';
-import { CursorParams, TaskBoardState } from '@/shared/types/api.type';
+import {
+  CursorParams,
+  CursorPagination,
+  TaskBoardState,
+} from '@/shared/types/api.type';
 
 export const useTaskBoard = ({
   limit,
@@ -13,6 +17,7 @@ export const useTaskBoard = ({
   const { ref, shouldFetch } = useLazyLoad();
   const { data, error, isLoading } = useTaskQueries.getTasks({
     enabled: shouldFetch,
+    paginationType: 'cursor', // Added this parameter
     limit,
     cursor,
   });
@@ -25,25 +30,27 @@ export const useTaskBoard = ({
     return data.data.tasks;
   }, [data, isLoading]);
 
-  const { pagination, stats } = useMemo(
-    () => ({
+  const { pagination, stats } = useMemo(() => {
+    const paginationData = data?.data?.pagination;
+
+    return {
       pagination: {
-        hasMore: data?.data?.pagination?.hasMore ?? false,
-        nextCursor: data?.data?.pagination?.nextCursor ?? null,
-      },
+        type: 'cursor' as const,
+        limit: paginationData?.limit ?? 5,
+        totalCount: paginationData?.totalCount ?? 0,
+        hasMore: paginationData?.hasMore ?? false,
+        currentPage: paginationData?.currentPage ?? 1,
+        totalPages: paginationData?.totalPages ?? 1,
+        order: paginationData?.order ?? 'desc',
+        nextCursor: paginationData?.nextCursor ?? null,
+        prevCursor: paginationData?.prevCursor ?? null,
+      } as CursorPagination,
       stats: {
-        total: data?.data?.pagination?.totalCount ?? 0,
+        total: paginationData?.totalCount ?? 0,
         completed: tasks.filter((task) => task.done).length,
       },
-    }),
-    [data, tasks]
-  );
-
-  useEffect(() => {
-    if (error) {
-      showError('unexpected UI error', errorMessage);
-    }
-  }, [error]);
+    };
+  }, [data, tasks]);
 
   return {
     ref,
