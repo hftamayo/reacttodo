@@ -14,10 +14,20 @@ const fetchTasksWithCursor = async ({
   cursor,
 }: CursorParams): Promise<ApiResponse<TaskData>> => {
   try {
-    return await taskOps.getTasksWithCursor({ limit, cursor });
+    const response = await taskOps.getTasksWithCursor({
+      type: 'cursor',
+      limit,
+      cursor,
+    });
+
+    if (!response) {
+      throw new Error('No response from server');
+    }
+
+    return response;
   } catch (error) {
-    handleError(error);
     console.error('Error fetching tasks with cursor:', error);
+    throw error; // Let the caller handle the error
   }
 };
 
@@ -26,10 +36,20 @@ const fetchTasksWithOffset = async ({
   limit,
 }: OffsetParams): Promise<ApiResponse<TaskData>> => {
   try {
-    return await taskOps.getTasksWithOffset({ page, limit });
+    const response = await taskOps.getTasksWithOffset({
+      type: 'offset',
+      page,
+      limit,
+    });
+
+    if (!response) {
+      throw new Error('No response from server');
+    }
+
+    return response;
   } catch (error) {
-    handleError(error);
     console.error('Error fetching tasks with offset:', error);
+    throw error; // Let the caller handle the error
   }
 };
 
