@@ -4,24 +4,21 @@ import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import { useErrorHandler } from '@/shared/hooks/useErrorHandler';
 import { TaskBoardPresenter } from './TaskBoardPresenter';
 import { useLocation } from 'wouter';
-import { CursorPagination } from '@/shared/types/api.type';
 
 export const TaskBoardContainer: React.FC = () => {
   const { handleError } = useErrorHandler('TaskBoard');
   const [, setLocation] = useLocation();
-  const [currentCursor, setCurrentCursor] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 5;
 
-  const { ref, tasks, error, isLoading, pagination, taskStats, mutations } =
+  const { tasks, error, isLoading, pagination, taskStats, mutations } =
     useTaskBoard({
-      type: 'cursor',
-      limit: 5,
-      cursor: currentCursor,
+      page: currentPage,
+      limit: ITEMS_PER_PAGE,
     });
 
-  const handleLoadMore = () => {
-    if (pagination.hasMore && (pagination as CursorPagination).nextCursor) {
-      setCurrentCursor((pagination as CursorPagination).nextCursor);
-    }
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   const handleClose = () => {
@@ -49,17 +46,16 @@ export const TaskBoardContainer: React.FC = () => {
       onError={handleError}
     >
       <TaskBoardPresenter
-        ref={ref}
         tasks={tasks}
         isLoading={isLoading}
         totalTasks={taskStats.total}
         completedTasks={taskStats.completed}
+        currentPage={pagination.currentPage}
+        totalPages={pagination.totalPages}
+        onPageChange={handlePageChange}
         error={error ?? undefined}
-        hasMore={pagination.hasMore}
-        onLoadMore={handleLoadMore}
         onClose={handleClose}
         mutations={mutations}
-        paginationType="cursor"
       />
     </ErrorBoundary>
   );
