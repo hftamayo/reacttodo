@@ -24,9 +24,9 @@ export const useTaskQueries = {
         }
       },
       enabled,
-      staleTime: 5 * 60 * 1000,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
+      staleTime: 0,
+      refetchOnWindowFocus: true,
+      refetchOnMount: true,
       retry: 2,
       retryDelay: 1000,
     }),

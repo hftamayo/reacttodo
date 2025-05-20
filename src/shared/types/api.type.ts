@@ -1,5 +1,6 @@
 import { useTaskMutations } from '@/features/task/hooks/useTaskMutations';
 import React from 'react';
+import { QueryKey } from '@tanstack/react-query';
 
 //common types:
 export type MongoId = string;
@@ -130,7 +131,10 @@ export type TaskStats = {
 };
 
 export type TaskContext = {
-  previousTasks?: ApiResponse<TaskData>;
+  previousQueries?: Array<{
+    queryKey: QueryKey;
+    data: ApiResponse<TaskData> | undefined;
+  }>;
 };
 
 export type TaskBoardState = {
