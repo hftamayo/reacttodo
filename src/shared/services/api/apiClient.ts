@@ -4,13 +4,12 @@ import {
   HealthCheckData,
   TaskProps,
   TaskData,
+  PaginationParams,
   ApiResponse,
   DbHealthDetails,
   AppHealthDetails,
   AddTaskProps,
   TaskIdentifier,
-  CursorParams,
-  OffsetParams,
 } from '../../types/api.type';
 import { showError } from '../notification/notificationService';
 
@@ -69,37 +68,10 @@ export const beOps = {
 };
 
 export const taskOps = {
-  async getTasksWithCursor({
-    limit,
-    cursor,
-  }: CursorParams): Promise<ApiResponse<TaskData>> {
-    try {
-      const queryParams = new URLSearchParams();
-      queryParams.append('limit', String(limit));
-      if (cursor) {
-        queryParams.append('cursor', cursor);
-      }
-
-      const url = `${BACKEND_URL}/tasks/task/list?${queryParams.toString()}`;
-      const response = await fetch(url, {
-        //credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        mode: 'cors',
-      });
-      return await handleResponse<TaskData>(response);
-    } catch (error: unknown) {
-      handleError(error);
-      throw error;
-    }
-  },
-
   async getTasksWithOffset({
     page,
     limit,
-  }: OffsetParams): Promise<ApiResponse<TaskData>> {
+  }: PaginationParams): Promise<ApiResponse<TaskData>> {
     try {
       const url = `${BACKEND_URL}/tasks/task/list/page?page=${page}&limit=${limit}`;
       const response = await fetch(url, {
