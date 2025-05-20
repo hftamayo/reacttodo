@@ -5,39 +5,15 @@ import {
   TaskData,
   ApiResponse,
   TaskIdentifier,
-  CursorParams,
-  OffsetParams,
+  PaginationParams,
 } from '@/shared/types/api.type';
-
-const fetchTasksWithCursor = async ({
-  limit,
-  cursor,
-}: CursorParams): Promise<ApiResponse<TaskData>> => {
-  try {
-    const response = await taskOps.getTasksWithCursor({
-      type: 'cursor',
-      limit,
-      cursor,
-    });
-
-    if (!response) {
-      throw new Error('No response from server');
-    }
-
-    return response;
-  } catch (error) {
-    console.error('Error fetching tasks with cursor:', error);
-    throw error; // Let the caller handle the error
-  }
-};
 
 const fetchTasksWithOffset = async ({
   page,
   limit,
-}: OffsetParams): Promise<ApiResponse<TaskData>> => {
+}: PaginationParams): Promise<ApiResponse<TaskData>> => {
   try {
     const response = await taskOps.getTasksWithOffset({
-      type: 'offset',
       page,
       limit,
     });
@@ -138,7 +114,6 @@ const fetchDeleteTask = async (id: number): Promise<ApiResponse<TaskData>> => {
 };
 
 export const taskService = {
-  fetchTasksWithCursor,
   fetchTasksWithOffset,
   fetchTask,
   fetchAddTask,
