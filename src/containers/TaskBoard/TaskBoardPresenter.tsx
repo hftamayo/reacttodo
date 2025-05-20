@@ -9,26 +9,19 @@ import { taskBoard } from '@/shared/utils/twind/styles';
 import { TaskProps, TaskBoardPresenterProps } from '@/shared/types/api.type';
 import { showError } from '@/shared/services/notification/notificationService';
 
-export const TaskBoardPresenter = forwardRef<
-  HTMLDivElement,
-  TaskBoardPresenterProps
->(
-  (
-    {
-      tasks,
-      isLoading,
-      totalTasks,
-      hasMore,
-      onLoadMore,
-      completedTasks,
-      error,
-      onClose,
-      mutations,
-      paginationType,
-    },
-    ref
-  ) => {
-    const [editingTask, setEditingTask] = useState<TaskProps | null>(null);
+export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
+  tasks,
+  isLoading,
+  totalTasks,
+  currentPage,
+  totalPages,
+  onPageChange,
+  completedTasks,
+  error,
+  onClose,
+  mutations,
+}) => {
+  const [editingTask, setEditingTask] = useState<TaskProps | null>(null);
 
     const handleEdit = useCallback((task: TaskProps) => {
       setEditingTask(task);
@@ -81,15 +74,15 @@ export const TaskBoardPresenter = forwardRef<
             </button>
           </div>
           <AddTaskForm mutations={mutations} />
-          <CursorPagination
-            hasMore={hasMore}
-            isLoading={isLoading}
-            onLoadMore={onLoadMore}
-            className="mb-4"
-            maxHeight="600px"
-          >
-            {taskList}
-          </CursorPagination>
+        <div className="mb-4">
+          {taskList}
+          <OffsetPagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={onPageChange}
+            className="mt-4"
+          />
+        </div>
           <CustomModal isOpen={!!editingTask} onDismiss={handleCloseModal}>
             {editingTask && (
               <UpdateTaskCard {...editingTask} onClose={handleCloseModal} />
