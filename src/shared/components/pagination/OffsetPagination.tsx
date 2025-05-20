@@ -1,46 +1,56 @@
-import React, { useEffect, useRef } from 'react';
-import { ScrollArea } from '../ui/pagination/scroll-area';
-import { Skeleton } from '../ui/skeleton/Skeleton';
-import { CursorPaginationProps } from '@/shared/types/api.type';
+import React from 'react';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationPrevious,
+  PaginationNext,
+} from '../ui/pagination/pagination';
+import { OffsetPaginationProps } from '@/shared/types/api.type';
 
-export const CursorPagination: React.FC<CursorPaginationProps> = ({
-  hasMore,
-  isLoading,
-  onLoadMore,
-  children,
+export const OffsetPagination: React.FC<OffsetPaginationProps> = ({
+  currentPage,
+  totalPages,
+  onPageChange,
   className,
-  maxHeight = '600px',
 }) => {
-  const observerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && hasMore && !isLoading) {
-          onLoadMore();
-        }
-      },
-      { threshold: 0.5 }
-    );
-
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      onPageChange(currentPage - 1);
     }
+  };
 
-    return () => observer.disconnect();
-  }, [hasMore, isLoading, onLoadMore]);
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      onPageChange(currentPage + 1);
+    }
+  };
+
+  if (totalPages <= 1) return null;
 
   return (
-    <ScrollArea className={className} style={{ maxHeight }}>
-      {children}
-      <div ref={observerRef}>
-        {isLoading && (
-          <div className="space-y-2 p-4">
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-2/3" />
-          </div>
-        )}
-      </div>
-    </ScrollArea>
+    <Pagination className={className}>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious
+            onClick={handlePrevious}
+            isActive={currentPage === 1}
+            aria-label="Go to previous page"
+          />
+        </PaginationItem>
+        <PaginationItem className="flex items-center">
+          <span className="text-sm">
+            Page {currentPage} of {totalPages}
+          </span>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationNext
+            onClick={handleNext}
+            isActive={currentPage === totalPages}
+            aria-label="Go to next page"
+          />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
   );
 };
