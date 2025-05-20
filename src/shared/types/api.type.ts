@@ -106,45 +106,18 @@ export type AddTaskProps = Pick<TaskProps, 'title' | 'owner'>;
 
 //pagination and task related ops
 // Base pagination metadata shared between both types
-export interface BasePagination {
+export type PaginationMetadata = {
   limit: number;
   totalCount: number;
-  hasMore: boolean;
   currentPage: number;
   totalPages: number;
   order: 'desc' | 'asc';
-}
-
-// Cursor-based pagination metadata
-export interface CursorPagination extends BasePagination {
-  type: 'cursor';
-  nextCursor: string | null;
-  prevCursor: string | null;
-}
-
-// Offset-based pagination metadata
-export interface OffsetPagination extends BasePagination {
-  type: 'offset';
-  page: number;
-}
-
-// Union type for both pagination styles
-export type PaginationMetadata = CursorPagination | OffsetPagination;
-
-// Parameters for API calls
-export type CursorParams = {
-  type: 'cursor';
-  limit: number;
-  cursor?: string | null;
 };
 
-export type OffsetParams = {
-  type: 'offset';
+export type PaginationParams = {
   page: number;
   limit: number;
 };
-
-export type PaginationParams = CursorParams | OffsetParams;
 
 export type TaskData = {
   pagination: PaginationMetadata;
@@ -175,19 +148,17 @@ export type TaskBoardPresenterProps = {
   isLoading: boolean;
   totalTasks: number;
   completedTasks: number;
-  hasMore: boolean;
-  onLoadMore: () => void;
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
   error?: Error;
   onClose: () => void;
   mutations: ReturnType<typeof useTaskMutations>;
-  paginationType: 'cursor';
 };
 
-export type CursorPaginationProps = {
-  hasMore: boolean;
-  isLoading: boolean;
-  onLoadMore: () => void;
-  children: React.ReactNode;
+export type OffsetPaginationProps = {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
   className?: string;
-  maxHeight?: string;
 };
