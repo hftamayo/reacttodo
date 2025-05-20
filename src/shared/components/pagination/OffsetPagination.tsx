@@ -39,7 +39,7 @@ export const OffsetPagination: React.FC<OffsetPaginationProps> = ({
           />
         </PaginationItem>
         <PaginationItem className="flex items-center">
-          <span className="text-sm">
+          <span className="text-sm font-bold">
             Page {currentPage} of {totalPages}
           </span>
         </PaginationItem>
