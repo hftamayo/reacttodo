@@ -21,6 +21,7 @@ import { selectIsTaskOptimistic } from '../store/taskSelectors';
 
 interface TaskRowProps extends TaskProps {
   onEdit: (task: TaskProps) => void;
+  isOptimistic?: boolean;
 }
 
 export const TaskRow: React.FC<TaskRowProps> = ({
@@ -36,7 +37,7 @@ export const TaskRow: React.FC<TaskRowProps> = ({
   const { text: deleteRowButton } = useTranslation('deleteRowButton');
   const { text: updateRowButton } = useTranslation('updateRowButton');
   const { toggleTaskDone, deleteTask } = useTaskMutations();
-  
+
   const isOptimistic = useSelector(selectIsTaskOptimistic(id));
 
   const handleToggleComplete = async () => {
@@ -50,14 +51,14 @@ export const TaskRow: React.FC<TaskRowProps> = ({
           task: { id, title, description, done: newDoneState, owner },
         })
       );
-      
+
       // Update completed count
       if (done) {
         dispatch(decrementCompletedCount());
       } else {
         dispatch(incrementCompletedCount());
       }
-      
+
       // Perform the actual mutation
       await toggleTaskDone.mutateAsync({ id });
     } catch (error) {
@@ -73,7 +74,7 @@ export const TaskRow: React.FC<TaskRowProps> = ({
       if (done) {
         dispatch(decrementCompletedCount());
       }
-      
+
       // Perform the actual mutation
       await deleteTask.mutateAsync(id);
       setIsDialogOpen(false);
