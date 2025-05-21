@@ -1,7 +1,9 @@
+import { IconName } from '@/features/dashboard/components/menu/constants/iconMap';
+
 export type MenuItemProps = {
   path: string;
   label: string;
-  icon: React.ComponentType<any>;
+  iconName: IconName;
   roles: string[];
   isDropDownItem?: boolean;
 };
