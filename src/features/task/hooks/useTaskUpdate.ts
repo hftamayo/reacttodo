@@ -19,23 +19,25 @@ export const useTaskUpdate = ({
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = useForm<TaskProps>({
     defaultValues: initialData,
   });
 
   const handleFormSubmit = async (data: TaskProps) => {
     try {
-      // Only send necessary fields for update
-      const updateData = {
-        id: data.id,
-        title: data.title,
-        description: data.description,
-        done: data.done,
-        owner: data.owner,
+      // Only send fields that have changed
+      const updateData: Partial<TaskProps> = {
+        id: data.id, // Always include ID
       };
 
-      await updateTask.mutateAsync(updateData);
+      // Only include fields that have changed
+      if (dirtyFields.title) updateData.title = data.title;
+      if (dirtyFields.description) updateData.description = data.description;
+      if (dirtyFields.done) updateData.done = data.done;
+      if (dirtyFields.owner) updateData.owner = data.owner;
+
+      await updateTask.mutateAsync(updateData as TaskProps);
       onSuccess?.();
       showSuccess('Task updated successfully');
       return true;
