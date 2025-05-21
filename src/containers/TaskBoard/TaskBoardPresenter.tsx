@@ -1,5 +1,6 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
 import { AddTaskForm } from '@/features/task/components/AddTaskForm';
 import { UpdateTaskCard } from '@/features/task/components/update/UpdateTaskCard';
 import { TaskRow } from '@/features/task/components/TaskRow';
@@ -8,6 +9,13 @@ import CustomModal from '@/shared/components/ui/modal/CustomModal';
 import { taskBoard } from '@/shared/utils/twind/styles';
 import { TaskProps, TaskBoardPresenterProps } from '@/shared/types/api.type';
 import { showError } from '@/shared/services/notification/notificationService';
+import { RootState } from '@/shared/services/redux/rootReducer';
+import { setLastOperation, clearAllOptimisticUpdates } from '@/features/task/store/taskSlice';
+import { 
+  selectOptimisticUpdates, 
+  selectLastOperation,
+  selectIsOperationInProgress 
+} from '@/features/task/store/taskSelectors';
 
 export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
   tasks,
@@ -21,11 +29,23 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
   onClose,
   mutations,
 }) => {
+  const dispatch = useDispatch();
   const [editingTask, setEditingTask] = useState<TaskProps | null>(null);
+  const optimisticUpdates = useSelector(selectOptimisticUpdates);
+  const lastOperation = useSelector(selectLastOperation);
+  const isOperationInProgress = useSelector(selectIsOperationInProgress);
+
+  // Clear optimistic updates after operation completes
+  useEffect(() => {
+    if (lastOperation.timestamp && !isOperationInProgress) {
+      dispatch(clearAllOptimisticUpdates());
+    }
+  }, [lastOperation.timestamp, isOperationInProgress, dispatch]);
 
   const handleEdit = useCallback((task: TaskProps) => {
     setEditingTask(task);
-  }, []);
+    dispatch(setLastOperation({ type: 'update', taskId: task.id }));
+  }, [dispatch]);
 
   const handleCloseModal = useCallback(() => {
     setEditingTask(null);
@@ -49,14 +69,25 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
       );
     }
 
+    // Merge optimistic updates with actual tasks
+    const mergedTasks = tasks.map(task => ({
+      ...task,
+      ...(optimisticUpdates[task.id] || {}),
+    }));
+
     return (
       <ul>
-        {tasks.map((task) => (
-          <TaskRow key={task.id} onEdit={handleEdit} {...task} />
+        {mergedTasks.map((task) => (
+          <TaskRow 
+            key={task.id} 
+            onEdit={handleEdit} 
+            {...task}
+            isOptimistic={!!optimisticUpdates[task.id]}
+          />
         ))}
       </ul>
     );
-  }, [tasks, error, handleEdit]);
+  }, [tasks, error, handleEdit, optimisticUpdates]);
 
   return (
     <div className={taskBoard.bg}>
