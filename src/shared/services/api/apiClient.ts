@@ -22,17 +22,24 @@ const handleResponse = async <T>(
       code: response.status,
       resultMessage: `Network response was not ok: ${response.statusText}. Data: ${JSON.stringify(errorData)}`,
     };
-    handleError(error);
+    throw error;
   }
   return await response.json();
 };
 
 const handleError = (error: unknown) => {
-  showError(
-    error as ApiError,
-    'An error occurred while processing your request.'
-  );
-  throw new Error((error as ApiError).resultMessage);
+  if (error instanceof Error) {
+    showError(
+      { code: 500, resultMessage: error.message },
+      'An error occurred while processing your request.'
+    );
+  } else {
+    showError(
+      error as ApiError,
+      'An error occurred while processing your request.'
+    );
+  }
+  throw error;
 };
 
 export const beOps = {
