@@ -26,7 +26,16 @@ export const useTaskUpdate = ({
 
   const handleFormSubmit = async (data: TaskProps) => {
     try {
-      await updateTask.mutateAsync(data);
+      // Only send necessary fields for update
+      const updateData = {
+        id: data.id,
+        title: data.title,
+        description: data.description,
+        done: data.done,
+        owner: data.owner,
+      };
+
+      await updateTask.mutateAsync(updateData);
       onSuccess?.();
       showSuccess('Task updated successfully');
       return true;
