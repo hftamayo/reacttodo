@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TaskProps } from '../../../shared/types/api.type';
+import { TaskProps } from '@/shared/types/api.type';
 
 interface TaskUIState {
   selectedTaskId: number | null;
@@ -13,6 +13,10 @@ interface TaskUIState {
   optimisticUpdates: {
     [key: number]: TaskProps;
   };
+  taskStats: {
+    total: number;
+    completed: number;
+  };
 }
 
 const initialState: TaskUIState = {
@@ -25,6 +29,10 @@ const initialState: TaskUIState = {
     timestamp: null,
   },
   optimisticUpdates: {},
+  taskStats: {
+    total: 0,
+    completed: 0,
+  },
 };
 
 const taskSlice = createSlice({
@@ -64,6 +72,24 @@ const taskSlice = createSlice({
     clearAllOptimisticUpdates: (state) => {
       state.optimisticUpdates = {};
     },
+    updateTaskStats: (
+      state,
+      action: PayloadAction<{ total: number; completed: number }>
+    ) => {
+      state.taskStats = action.payload;
+    },
+    incrementTaskCount: (state) => {
+      state.taskStats.total += 1;
+    },
+    decrementTaskCount: (state) => {
+      state.taskStats.total -= 1;
+    },
+    incrementCompletedCount: (state) => {
+      state.taskStats.completed += 1;
+    },
+    decrementCompletedCount: (state) => {
+      state.taskStats.completed -= 1;
+    },
   },
 });
 
@@ -75,6 +101,11 @@ export const {
   setOptimisticUpdate,
   clearOptimisticUpdate,
   clearAllOptimisticUpdates,
+  updateTaskStats,
+  incrementTaskCount,
+  decrementTaskCount,
+  incrementCompletedCount,
+  decrementCompletedCount,
 } = taskSlice.actions;
 
 export default taskSlice.reducer;
