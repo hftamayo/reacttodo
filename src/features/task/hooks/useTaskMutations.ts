@@ -50,18 +50,40 @@ export const useTaskMutations = () => {
         ...newTask,
         id: tempId,
         createdAt: new Date().toISOString(),
+        done: false,
       } as TaskProps;
 
       // Update all task queries in cache
       taskQueries.forEach(({ queryKey, data }) => {
         if (data) {
-          queryClient.setQueryData<ApiResponse<TaskData>>(queryKey, {
-            ...data,
-            data: {
-              ...data.data,
-              tasks: [...data.data.tasks, newTaskWithId],
-            },
-          });
+          const currentPage = (queryKey[1] as { page: number })?.page || 1;
+          const isFirstPage = currentPage === 1;
+          
+          if (isFirstPage) {
+            queryClient.setQueryData<ApiResponse<TaskData>>(queryKey, {
+              ...data,
+              data: {
+                ...data.data,
+                tasks: [newTaskWithId, ...data.data.tasks],
+                pagination: {
+                  ...data.data.pagination,
+                  totalCount: data.data.pagination.totalCount + 1,
+                },
+              },
+            });
+          } else {
+            // For other pages, just update the total count
+            queryClient.setQueryData<ApiResponse<TaskData>>(queryKey, {
+              ...data,
+              data: {
+                ...data.data,
+                pagination: {
+                  ...data.data.pagination,
+                  totalCount: data.data.pagination.totalCount + 1,
+                },
+              },
+            });
+          }
         }
       });
 
@@ -108,13 +130,13 @@ export const useTaskMutations = () => {
             data: {
               ...data.data,
               tasks: data.data.tasks.map((task: TaskProps) =>
-                task.id === updatedTask.id
-                  ? { ...updatedTask, updatedAt: new Date().toISOString() }
-                  : task
+          task.id === updatedTask.id
+            ? { ...updatedTask, updatedAt: new Date().toISOString() }
+            : task
               ),
-            },
-          });
-        }
+          },
+        });
+      }
       });
 
       return { previousQueries: taskQueries };
@@ -130,7 +152,7 @@ export const useTaskMutations = () => {
       context?.previousQueries?.forEach(({ queryKey, data }) => {
         if (data) {
           queryClient.setQueryData(queryKey, data);
-        }
+      }
       });
     },
     onSettled: () => {
@@ -157,14 +179,14 @@ export const useTaskMutations = () => {
         if (data) {
           queryClient.setQueryData<ApiResponse<TaskData>>(queryKey, {
             ...data,
-            data: {
+          data: {
               ...data.data,
               tasks: data.data.tasks.map((task) =>
-                task.id === taskId.id ? { ...task, done: !task.done } : task
-              ),
-            },
-          });
-        }
+              task.id === taskId.id ? { ...task, done: !task.done } : task
+            ),
+          },
+        });
+      }
       });
 
       return { previousQueries: taskQueries };
@@ -180,7 +202,7 @@ export const useTaskMutations = () => {
       context?.previousQueries?.forEach(({ queryKey, data }) => {
         if (data) {
           queryClient.setQueryData(queryKey, data);
-        }
+      }
       });
     },
     onSettled: () => {
@@ -207,12 +229,12 @@ export const useTaskMutations = () => {
         if (data) {
           queryClient.setQueryData<ApiResponse<TaskData>>(queryKey, {
             ...data,
-            data: {
+          data: {
               ...data.data,
               tasks: data.data.tasks.filter((task) => task.id !== taskId),
-            },
-          });
-        }
+          },
+        });
+      }
       });
 
       return { previousQueries: taskQueries };
@@ -225,7 +247,7 @@ export const useTaskMutations = () => {
       context?.previousQueries?.forEach(({ queryKey, data }) => {
         if (data) {
           queryClient.setQueryData(queryKey, data);
-        }
+      }
       });
     },
     onSettled: () => {
