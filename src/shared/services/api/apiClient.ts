@@ -13,6 +13,16 @@ import {
 } from '../../types/api.type';
 import { showError } from '../notification/notificationService';
 
+interface CacheRecord {
+  etag?: string;
+  lastModified?: string;
+  data?: any;
+  timestamp: number;
+  ttl: number; // in seconds
+}
+
+const cache = new Map<string, CacheRecord>();
+
 const handleResponse = async <T>(
   response: Response
 ): Promise<ApiResponse<T>> => {
@@ -81,18 +91,82 @@ export const taskOps = {
   }: PaginationParams): Promise<ApiResponse<TaskData>> {
     try {
       const url = `${BACKEND_URL}/tasks/task/list/page?page=${page}&limit=${limit}`;
+      const cacheKey = url;
+      const cachedRecord = cache.get(cacheKey);
+
+      // Prepare headers
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      };
+
+      // Add conditional headers if we have cached values
+      if (cachedRecord) {
+        if (cachedRecord.etag) {
+          headers['If-None-Match'] = cachedRecord.etag;
+        }
+        if (cachedRecord.lastModified) {
+          headers['If-Modified-Since'] = cachedRecord.lastModified;
+        }
+
+        // Check if cache is still valid based on TTL
+        const now = Date.now();
+        if (cachedRecord.timestamp + cachedRecord.ttl * 1000 > now) {
+          // Return cached data if TTL is still valid
+          return cachedRecord.data;
+        }
+      }
+
       const response = await fetch(url, {
-        //credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
+        headers,
         mode: 'cors',
       });
-      return await handleResponse<TaskData>(response);
+
+      // Handle 304 Not Modified - use cached data
+      if (response.status === 304 && cachedRecord) {
+        // Update timestamp to extend TTL
+        cache.set(cacheKey, {
+          ...cachedRecord,
+          timestamp: Date.now(),
+        });
+        return cachedRecord.data;
+      }
+
+      // Handle normal response
+      if (response.ok) {
+        const data: ApiResponse<TaskData> = await response.json();
+
+        // Store in cache
+        cache.set(cacheKey, {
+          etag: response.headers.get('ETag') ?? undefined,
+          lastModified: response.headers.get('Last-Modified') ?? undefined,
+          data,
+          timestamp: Date.now(),
+          ttl: data.cacheTTL ?? 60, // Use server TTL or default to 60 seconds
+        });
+
+        return data;
+      } else {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
     } catch (error: unknown) {
       handleError(error);
       throw error;
+    }
+  },
+
+  // Invalidate cache for a specific task or all tasks
+  invalidateCache(taskId?: number) {
+    if (taskId) {
+      // Invalidate specific task
+      cache.delete(`${BACKEND_URL}/tasks/task/${taskId}`);
+    }
+
+    // Invalidate all task lists
+    for (const key of cache.keys()) {
+      if (key.includes('task/list')) {
+        cache.delete(key);
+      }
     }
   },
 
