@@ -8,14 +8,21 @@ import {
   PaginationParams,
 } from '@/shared/types/api.type';
 
-const fetchTasksWithOffset = async ({
+const fetchTasks = async ({
   page,
   limit,
-}: PaginationParams): Promise<ApiResponse<TaskData>> => {
+  forceRefresh = false,
+}: PaginationParams & { forceRefresh?: boolean }): Promise<
+  ApiResponse<TaskData>
+> => {
   try {
-    const response = await taskOps.getTasksWithOffset({
+    const response = await taskOps.getTasks({
       page,
       limit,
+      cacheOptions: {
+        useCache: !forceRefresh,
+        invalidateCache: forceRefresh,
+      },
     });
 
     if (!response) {
@@ -24,14 +31,23 @@ const fetchTasksWithOffset = async ({
 
     return response;
   } catch (error) {
-    console.error('Error fetching tasks with offset:', error);
+    console.error('Error fetching tasks:', error);
     throw error; // Let the caller handle the error
   }
 };
 
-const fetchTask = async (id: number): Promise<ApiResponse<TaskData>> => {
+const fetchTask = async (
+  id: number,
+  forceRefresh = false
+): Promise<ApiResponse<TaskData>> => {
   try {
     if (!id) throw new Error('Task ID is required');
+
+    // Invalidate cache first if force refresh is requested
+    if (forceRefresh) {
+      taskOps.invalidateCache(id);
+    }
+
     return await taskOps.getTask(id);
   } catch (error) {
     if (error instanceof Error) {
@@ -114,7 +130,7 @@ const fetchDeleteTask = async (id: number): Promise<ApiResponse<TaskData>> => {
 };
 
 export const taskService = {
-  fetchTasksWithOffset,
+  fetchTasks,
   fetchTask,
   fetchAddTask,
   fetchUpdateTask,
