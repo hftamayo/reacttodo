@@ -267,43 +267,57 @@ export const useTaskMutations = () => {
     },
   });
 
-  const deleteTask = useMutation({
+  const deleteTask = useMutation<
+    ApiResponse<TaskData>,
+    Error,
+    number,
+    { previousTasksData: unknown }
+  >({
     mutationFn: (id: number) => taskService.fetchDeleteTask(id),
     onMutate: async (deletedId) => {
-      // Cancel outgoing queries
       await queryClient.cancelQueries({
         predicate: (query) => query.queryKey[0] === 'tasks',
       });
 
-      // Get snapshot of current state
-      const previousTasksData = queryClient.getQueryData(['tasks']);
+      const taskQueries = getCurrentTasksData();
 
-      // Perform optimistic update
-      queryClient.setQueriesData({ queryKey: ['tasks'] }, (old: any) => {
-        if (!old?.data?.tasks) return old;
-
-        return {
-          ...old,
-          data: {
-            ...old.data,
-            tasks: old.data.tasks.filter((task) => task.id !== deletedId),
-            pagination: {
-              ...old.data.pagination,
-              totalCount: old.data.pagination.totalCount - 1,
+      // Update all task queries in cache
+      taskQueries.forEach(({ queryKey, data }) => {
+        if (data) {
+          queryClient.setQueryData<ApiResponse<TaskData>>(queryKey, {
+            ...data,
+            data: {
+              ...data.data,
+              tasks: data.data.tasks.filter((task) => task.id !== deletedId),
+              pagination: {
+                ...data.data.pagination,
+                totalCount: data.data.pagination.totalCount - 1,
+              },
             },
-          },
-        };
+          });
+        }
       });
 
-      return { previousTasksData };
+      return { previousTasksData: taskQueries };
     },
     onError: (error, _, context) => {
-      // Restore previous state on error
-      if (context?.previousTasksData) {
-        queryClient.setQueriesData(
-          { queryKey: ['tasks'] },
-          context.previousTasksData
+      if (error) {
+        showError(
+          'Delete task operation:',
+          'An error occurred while deleting the task.'
         );
+      }
+      // Restore previous state for all queries
+      if (context?.previousTasksData) {
+        const previousQueries = context.previousTasksData as {
+          queryKey: QueryKey;
+          data: ApiResponse<TaskData>;
+        }[];
+        previousQueries.forEach(({ queryKey, data }) => {
+          if (data) {
+            queryClient.setQueryData(queryKey, data);
+          }
+        });
       }
     },
     onSuccess: (_, deletedId) => {
