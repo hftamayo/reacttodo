@@ -1,23 +1,31 @@
-import { ApiResponse, TaskData } from '@/shared/types/api.type';
+import { ApiResponse, CacheRecord } from '@/shared/types/api.type';
 import { cacheService } from './cacheService';
 
 export function addConditionalCacheHeaders(
-  headers: HeadersInit,
-  cachedRecord: any | undefined
+  headers: Headers | Record<string, string>,
+  cachedRecord: CacheRecord<unknown> | undefined
 ): void {
   if (cachedRecord) {
     if (cachedRecord.etag) {
-      headers['If-None-Match'] = cachedRecord.etag;
+      if (headers instanceof Headers) {
+        headers.set('If-None-Match', cachedRecord.etag);
+      } else {
+        headers['If-None-Match'] = cachedRecord.etag;
+      }
     }
     if (cachedRecord.lastModified) {
-      headers['If-Modified-Since'] = cachedRecord.lastModified;
+      if (headers instanceof Headers) {
+        headers.set('If-Modified-Since', cachedRecord.lastModified);
+      } else {
+        headers['If-Modified-Since'] = cachedRecord.lastModified;
+      }
     }
   }
 }
 
-export function saveToCache(
+export function saveToCache<T>(
   cacheKey: string,
-  data: ApiResponse<any>,
+  data: ApiResponse<T>,
   response: Response
 ): void {
   cacheService.set(
@@ -31,7 +39,7 @@ export function saveToCache(
 
 export function logCacheStatus(
   cacheKey: string,
-  cachedRecord: any | undefined,
+  cachedRecord: CacheRecord<unknown> | undefined,
   response?: Response
 ): void {
   if (process.env.NODE_ENV === 'development') {
