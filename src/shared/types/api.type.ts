@@ -171,6 +171,8 @@ export type TaskBoardState = {
     lastFetched: string;
     remainingTTL: number;
   };
+  refetch?: () => void;
+  ref?: React.RefObject<HTMLElement>;
 };
 
 export type TaskBoardPresenterProps = {
