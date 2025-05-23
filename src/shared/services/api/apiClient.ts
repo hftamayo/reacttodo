@@ -129,17 +129,44 @@ export const taskOps = {
     }
   },
 
-  async getTask(id: number): Promise<ApiResponse<TaskData>> {
+  async getTask(id: number): Promise<ApiResponse<TaskProps>> {
     try {
-      const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
-        //credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
+      const url = `${BACKEND_URL}/tasks/task/${id}`;
+      const cacheKey = url;
+      const cachedRecord = cacheService.get<TaskProps>(cacheKey);
+
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      };
+
+      addConditionalCacheHeaders(headers, cachedRecord);
+
+      if (cachedRecord && cacheService.isValid(cacheKey)) {
+        logCacheStatus(cacheKey, cachedRecord);
+        return cachedRecord.data as ApiResponse<TaskProps>;
+      }
+
+      const response = await fetch(url, {
+        headers,
         mode: 'cors',
       });
-      return await handleResponse(response);
+
+      if (response.status === 304 && cachedRecord) {
+        cacheService.updateTimestamp(cacheKey);
+        logCacheStatus(cacheKey, cachedRecord, response);
+        return cachedRecord.data as ApiResponse<TaskProps>;
+      }
+
+      if (response.ok) {
+        const data: ApiResponse<TaskProps> = await response.json();
+
+        saveToCache(cacheKey, data, response);
+        logCacheStatus(cacheKey, cachedRecord, response);
+        return data;
+      } else {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
     } catch (error: unknown) {
       handleError(error);
       throw error;
