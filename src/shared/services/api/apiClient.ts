@@ -177,7 +177,6 @@ export const taskOps = {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task`, {
         method: 'POST',
-        //credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -185,7 +184,20 @@ export const taskOps = {
         mode: 'cors',
         body: JSON.stringify(task),
       });
-      return await handleResponse(response);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      this.invalidateCache();
+
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Task added, cache invalidated');
+      }
+
+      return data;
     } catch (error: unknown) {
       handleError(error);
       throw error;
