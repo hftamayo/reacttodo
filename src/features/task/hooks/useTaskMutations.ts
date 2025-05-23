@@ -8,16 +8,16 @@ import {
   TaskIdentifier,
   ApiResponse,
 } from '@/shared/types/api.type';
+import { taskOps } from '@/shared/services/api/apiClient';
 import { showError } from '@/shared/services/notification/notificationService';
 
 export const useTaskMutations = () => {
   const queryClient = useQueryClient();
 
   const invalidateTasks = () => {
-    // Invalidate all task queries including pagination parameters
-    queryClient.invalidateQueries({
-      predicate: (query) => query.queryKey[0] === 'tasks',
-    });
+    // Helper to invalidate tasks in React Query and HTTP cache
+    queryClient.invalidateQueries({ queryKey: ['tasks'] });
+    taskOps.invalidateCache();
   };
 
   const getCurrentTasksData = () => {
@@ -25,10 +25,10 @@ export const useTaskMutations = () => {
     const queries = queryClient.getQueryCache().findAll({
       predicate: (query) => query.queryKey[0] === 'tasks',
     });
-    
-    return queries.map(query => ({
+
+    return queries.map((query) => ({
       queryKey: query.queryKey,
-      data: query.state.data as ApiResponse<TaskData> | undefined
+      data: query.state.data as ApiResponse<TaskData> | undefined,
     }));
   };
 
@@ -58,7 +58,7 @@ export const useTaskMutations = () => {
         if (data) {
           const currentPage = (queryKey[1] as { page: number })?.page || 1;
           const isFirstPage = currentPage === 1;
-          
+
           if (isFirstPage) {
             queryClient.setQueryData<ApiResponse<TaskData>>(queryKey, {
               ...data,
@@ -130,13 +130,13 @@ export const useTaskMutations = () => {
             data: {
               ...data.data,
               tasks: data.data.tasks.map((task: TaskProps) =>
-          task.id === updatedTask.id
-            ? { ...updatedTask, updatedAt: new Date().toISOString() }
-            : task
+                task.id === updatedTask.id
+                  ? { ...updatedTask, updatedAt: new Date().toISOString() }
+                  : task
               ),
-          },
-        });
-      }
+            },
+          });
+        }
       });
 
       return { previousQueries: taskQueries };
@@ -152,7 +152,7 @@ export const useTaskMutations = () => {
       context?.previousQueries?.forEach(({ queryKey, data }) => {
         if (data) {
           queryClient.setQueryData(queryKey, data);
-      }
+        }
       });
     },
     onSettled: () => {
@@ -179,14 +179,14 @@ export const useTaskMutations = () => {
         if (data) {
           queryClient.setQueryData<ApiResponse<TaskData>>(queryKey, {
             ...data,
-          data: {
+            data: {
               ...data.data,
               tasks: data.data.tasks.map((task) =>
-              task.id === taskId.id ? { ...task, done: !task.done } : task
-            ),
-          },
-        });
-      }
+                task.id === taskId.id ? { ...task, done: !task.done } : task
+              ),
+            },
+          });
+        }
       });
 
       return { previousQueries: taskQueries };
@@ -202,7 +202,7 @@ export const useTaskMutations = () => {
       context?.previousQueries?.forEach(({ queryKey, data }) => {
         if (data) {
           queryClient.setQueryData(queryKey, data);
-      }
+        }
       });
     },
     onSettled: () => {
@@ -210,48 +210,51 @@ export const useTaskMutations = () => {
     },
   });
 
-  const deleteTask = useMutation<
-    ApiResponse<TaskData>,
-    Error,
-    number,
-    TaskContext
-  >({
-    mutationFn: taskService.fetchDeleteTask,
-    onMutate: async (taskId: number) => {
+  const deleteTask = useMutation({
+    mutationFn: (id: number) => taskService.fetchDeleteTask(id),
+    onMutate: async (deletedId) => {
+      // Cancel outgoing queries
       await queryClient.cancelQueries({
         predicate: (query) => query.queryKey[0] === 'tasks',
       });
 
-      const taskQueries = getCurrentTasksData();
+      // Get snapshot of current state
+      const previousTasksData = queryClient.getQueryData(['tasks']);
 
-      // Update all task queries in cache
-      taskQueries.forEach(({ queryKey, data }) => {
-        if (data) {
-          queryClient.setQueryData<ApiResponse<TaskData>>(queryKey, {
-            ...data,
+      // Perform optimistic update
+      queryClient.setQueriesData({ queryKey: ['tasks'] }, (old: any) => {
+        if (!old?.data?.tasks) return old;
+
+        return {
+          ...old,
           data: {
-              ...data.data,
-              tasks: data.data.tasks.filter((task) => task.id !== taskId),
+            ...old.data,
+            tasks: old.data.tasks.filter((task) => task.id !== deletedId),
+            pagination: {
+              ...old.data.pagination,
+              totalCount: old.data.pagination.totalCount - 1,
+            },
           },
-        });
-      }
+        };
       });
 
-      return { previousQueries: taskQueries };
+      return { previousTasksData };
     },
     onError: (error, _, context) => {
-      if (error) {
-        showError('Delete task operation:', 'Failed to delete task');
+      // Restore previous state on error
+      if (context?.previousTasksData) {
+        queryClient.setQueriesData(
+          { queryKey: ['tasks'] },
+          context.previousTasksData
+        );
       }
-      // Restore previous state for all queries
-      context?.previousQueries?.forEach(({ queryKey, data }) => {
-        if (data) {
-          queryClient.setQueryData(queryKey, data);
-      }
-      });
     },
-    onSettled: () => {
+    onSuccess: (_, deletedId) => {
+      // Invalidate all related caches
       invalidateTasks();
+
+      // Also invalidate specific task
+      taskOps.invalidateCache(deletedId);
     },
   });
 

@@ -97,7 +97,7 @@ export const taskOps = {
       }
 
       if (cachedRecord && cacheService.isValid(cacheKey)) {
-        return cachedRecord.data;
+        return cachedRecord.data as ApiResponse<TaskData>;
       }
 
       const headers: HeadersInit = {
@@ -112,7 +112,7 @@ export const taskOps = {
       if (response.status === 304 && cachedRecord) {
         cacheService.updateTimestamp(cacheKey);
         logCacheStatus(cacheKey, cachedRecord, response);
-        return cachedRecord.data;
+        return cachedRecord.data as ApiResponse<TaskData>;
       }
 
       if (response.ok) {
