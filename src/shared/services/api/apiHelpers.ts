@@ -51,6 +51,6 @@ export function logCacheStatus(
 }
 
 export function createResourceUrl(path: string): string {
-  const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:8001';
-  return `${BACKEND_URL}${path.startsWith('/') ? path : `/${path}`}`;
+  const BACKEND_URL = process.env.BACKEND_URL ?? 'http://localhost:8001';
+  return `${BACKEND_URL}${path.startsWith('/') ? path : '/' + path}`;
 }
