@@ -119,7 +119,7 @@ export const taskOps = {
         const data: ApiResponse<TaskData> = await response.json();
         saveToCache(cacheKey, data, response);
         logCacheStatus(cacheKey, cachedRecord, response);
-        return data;
+        return await handleResponse(data);
       }
 
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -163,7 +163,7 @@ export const taskOps = {
 
         saveToCache(cacheKey, data, response);
         logCacheStatus(cacheKey, cachedRecord, response);
-        return data;
+        return await handleResponse(data);
       } else {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -185,12 +185,10 @@ export const taskOps = {
         body: JSON.stringify(task),
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      // Let handleResponse take care of error checking and parsing
+      const data = await handleResponse<TaskData>(response);
 
-      const data = await response.json();
-
+      // After successful addition, invalidate task list caches
       this.invalidateCache();
 
       if (process.env.NODE_ENV === 'development') {
@@ -208,7 +206,6 @@ export const taskOps = {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task/${task.id}`, {
         method: 'PATCH',
-        //credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -216,7 +213,16 @@ export const taskOps = {
         mode: 'cors',
         body: JSON.stringify(task),
       });
-      return await handleResponse(response);
+
+      const data = await handleResponse<TaskData>(response);
+
+      this.invalidateCache(task.id);
+
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`Task ${task.id} updated, cache invalidated`);
+      }
+
+      return data;
     } catch (error: unknown) {
       handleError(error);
       throw error;
@@ -237,7 +243,17 @@ export const taskOps = {
           mode: 'cors',
         }
       );
-      return await handleResponse(response);
+
+      const data = await handleResponse<TaskData>(response);
+
+      // After successful addition, invalidate task list caches
+      this.invalidateCache();
+
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`Task ${taskId.id} status updated, cache invalidated`);
+      }
+
+      return data;
     } catch (error: unknown) {
       handleError(error);
       throw error;
