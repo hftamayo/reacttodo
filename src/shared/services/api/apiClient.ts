@@ -1,6 +1,13 @@
 import { BACKEND_URL } from '@/shared/utils/envvars';
 import { cacheService } from './cacheService';
 import {
+  addConditionalCacheHeaders,
+  saveToCache,
+  logCacheStatus,
+  createResourceUrl,
+} from './apiHelpers';
+import { showError } from '../notification/notificationService';
+import {
   ApiError,
   HealthCheckData,
   TaskProps,
@@ -12,7 +19,6 @@ import {
   AddTaskProps,
   TaskIdentifier,
 } from '../../types/api.type';
-import { showError } from '../notification/notificationService';
 
 const handleResponse = async <T>(
   response: Response
@@ -90,60 +96,33 @@ export const taskOps = {
         cacheService.invalidateCache(BACKEND_URL);
       }
 
-      // Prepare headers
+      if (cachedRecord && cacheService.isValid(cacheKey)) {
+        return cachedRecord.data;
+      }
+
       const headers: HeadersInit = {
         'Content-Type': 'application/json',
         Accept: 'application/json',
       };
 
-      // Add conditional headers if we have cached values
-      if (cachedRecord) {
-        if (cachedRecord.etag) {
-          headers['If-None-Match'] = cachedRecord.etag;
-        }
-        if (cachedRecord.lastModified) {
-          headers['If-Modified-Since'] = cachedRecord.lastModified;
-        }
+      addConditionalCacheHeaders(headers, cachedRecord);
 
-        if (cacheService.isValid(cacheKey)) {
-          return cachedRecord.data;
-        }
-      }
+      const response = await fetch(url, { headers, mode: 'cors' });
 
-      const response = await fetch(url, {
-        headers,
-        mode: 'cors',
-      });
-
-      // Handle 304 Not Modified - use cached data
       if (response.status === 304 && cachedRecord) {
         cacheService.updateTimestamp(cacheKey);
+        logCacheStatus(cacheKey, cachedRecord, response);
         return cachedRecord.data;
       }
 
-      // Handle normal response
       if (response.ok) {
         const data: ApiResponse<TaskData> = await response.json();
-
-        // Store in cache
-        cacheService.set(
-          cacheKey,
-          data,
-          response.headers.get('ETag') ?? undefined,
-          response.headers.get('Last-Modified') ?? undefined,
-          data.cacheTTL ?? 60
-        );
-
-        if (process.env.NODE_ENV === 'development') {
-          console.log(`Cache ${cachedRecord ? 'HIT' : 'MISS'} for ${cacheKey}`);
-          if (response?.status === 304)
-            console.log(`304 Not Modified: ${cacheKey}`);
-        }
-
+        saveToCache(cacheKey, data, response);
+        logCacheStatus(cacheKey, cachedRecord, response);
         return data;
-      } else {
-        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      throw new Error(`HTTP error! status: ${response.status}`);
     } catch (error: unknown) {
       handleError(error);
       throw error;
