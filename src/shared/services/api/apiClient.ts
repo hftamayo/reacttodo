@@ -1,4 +1,5 @@
 import { BACKEND_URL } from '@/shared/utils/envvars';
+import { cacheService } from './cacheService';
 import {
   ApiError,
   HealthCheckData,
@@ -12,16 +13,6 @@ import {
   TaskIdentifier,
 } from '../../types/api.type';
 import { showError } from '../notification/notificationService';
-
-interface CacheRecord {
-  etag?: string;
-  lastModified?: string;
-  data?: any;
-  timestamp: number;
-  ttl: number; // in seconds
-}
-
-const cache = new Map<string, CacheRecord>();
 
 const handleResponse = async <T>(
   response: Response
@@ -85,14 +76,19 @@ export const beOps = {
 };
 
 export const taskOps = {
-  async getTasksWithOffset({
+  async getTasks({
     page,
     limit,
+    cacheOptions = { useCache: true },
   }: PaginationParams): Promise<ApiResponse<TaskData>> {
     try {
       const url = `${BACKEND_URL}/tasks/task/list/page?page=${page}&limit=${limit}`;
       const cacheKey = url;
-      const cachedRecord = cache.get(cacheKey);
+      const cachedRecord = cacheService.get(cacheKey);
+
+      if (cacheOptions.invalidateCache) {
+        cacheService.invalidateCache(BACKEND_URL);
+      }
 
       // Prepare headers
       const headers: HeadersInit = {
@@ -109,10 +105,7 @@ export const taskOps = {
           headers['If-Modified-Since'] = cachedRecord.lastModified;
         }
 
-        // Check if cache is still valid based on TTL
-        const now = Date.now();
-        if (cachedRecord.timestamp + cachedRecord.ttl * 1000 > now) {
-          // Return cached data if TTL is still valid
+        if (cacheService.isValid(cacheKey)) {
           return cachedRecord.data;
         }
       }
@@ -124,11 +117,7 @@ export const taskOps = {
 
       // Handle 304 Not Modified - use cached data
       if (response.status === 304 && cachedRecord) {
-        // Update timestamp to extend TTL
-        cache.set(cacheKey, {
-          ...cachedRecord,
-          timestamp: Date.now(),
-        });
+        cacheService.updateTimestamp(cacheKey);
         return cachedRecord.data;
       }
 
@@ -137,13 +126,19 @@ export const taskOps = {
         const data: ApiResponse<TaskData> = await response.json();
 
         // Store in cache
-        cache.set(cacheKey, {
-          etag: response.headers.get('ETag') ?? undefined,
-          lastModified: response.headers.get('Last-Modified') ?? undefined,
+        cacheService.set(
+          cacheKey,
           data,
-          timestamp: Date.now(),
-          ttl: data.cacheTTL ?? 60, // Use server TTL or default to 60 seconds
-        });
+          response.headers.get('ETag') ?? undefined,
+          response.headers.get('Last-Modified') ?? undefined,
+          data.cacheTTL ?? 60
+        );
+
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`Cache ${cachedRecord ? 'HIT' : 'MISS'} for ${cacheKey}`);
+          if (response?.status === 304)
+            console.log(`304 Not Modified: ${cacheKey}`);
+        }
 
         return data;
       } else {
@@ -155,20 +150,8 @@ export const taskOps = {
     }
   },
 
-  // Invalidate cache for a specific task or all tasks
-  invalidateCache(taskId?: number) {
-    if (taskId) {
-      // Invalidate specific task
-      cache.delete(`${BACKEND_URL}/tasks/task/${taskId}`);
-    }
-
-    // Invalidate all task lists
-    for (const key of cache.keys()) {
-      if (key.includes('task/list')) {
-        cache.delete(key);
-      }
-    }
-  },
+  invalidateCache: (taskId?: number) =>
+    cacheService.invalidateCache(BACKEND_URL, taskId),
 
   async getTask(id: number): Promise<ApiResponse<TaskData>> {
     try {
