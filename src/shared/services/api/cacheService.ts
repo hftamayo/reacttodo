@@ -1,22 +1,22 @@
-import { CacheRecord } from '@/shared/types/api.type';
+import { CacheRecord, ApiResponse } from '@/shared/types/api.type';
 
 // In-memory cache
-const cache = new Map<string, CacheRecord>();
+const cache = new Map<string, CacheRecord<any>>();
 
 export const cacheService = {
   /**
    * Gets a value from cache
    */
-  get<T>(cacheKey: string): CacheRecord | undefined {
-    return cache.get(cacheKey);
+  get<T>(cacheKey: string): CacheRecord<T> | undefined {
+    return cache.get(cacheKey) as CacheRecord<T> | undefined;
   },
 
   /**
    * Sets a value in cache
    */
-  set(
+  set<T>(
     cacheKey: string,
-    data: any,
+    data: ApiResponse<T>,
     etag?: string,
     lastModified?: string,
     ttl: number = 60
@@ -27,7 +27,7 @@ export const cacheService = {
       data,
       timestamp: Date.now(),
       ttl,
-    });
+    } as CacheRecord<T>);
   },
 
   /**
@@ -105,7 +105,6 @@ export const cacheService = {
         : null,
     };
   },
-
   /**
    * Clear the entire cache
    */
