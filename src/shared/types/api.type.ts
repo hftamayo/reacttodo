@@ -14,6 +14,8 @@ export type ApiResponse<T> = {
   code: number;
   resultMessage: string;
   data: T;
+  timestamp?: number;
+  cacheTTL?: number;
 };
 
 export type ApiError = {
@@ -106,28 +108,49 @@ export type AddTaskProps = Pick<TaskProps, 'title' | 'owner'>;
 //export type AddTaskProps = Pick<TaskProps, 'title' | 'description' | 'owner'>;
 
 //pagination and task related ops
-// Base pagination metadata shared between both types
+export type CacheRecord<T> = {
+  etag?: string;
+  lastModified?: string;
+  data?: ApiResponse<T>;
+  timestamp: number;
+  ttl: number;
+};
+
 export type PaginationMetadata = {
   limit: number;
   totalCount: number;
   currentPage: number;
   totalPages: number;
   order: 'desc' | 'asc';
+  hasMore: boolean;
+  hasPrev: boolean;
+  isFirstPage: boolean;
+  isLastPage: boolean;
+};
+
+export type TaskData = {
+  tasks: TaskProps[];
+  pagination: PaginationMetadata;
+  etag?: string;
+  lastModified?: string;
+};
+
+export type HttpCacheOptions = {
+  useCache?: boolean;
+  invalidateCache?: boolean;
+  ttl?: number;
 };
 
 export type PaginationParams = {
   page: number;
   limit: number;
-};
-
-export type TaskData = {
-  pagination: PaginationMetadata;
-  tasks: TaskProps[];
+  cacheOptions?: HttpCacheOptions;
 };
 
 export type TaskStats = {
   total: number;
   completed: number;
+  lastUpdated?: string;
 };
 
 export type TaskContext = {
@@ -138,13 +161,17 @@ export type TaskContext = {
 };
 
 export type TaskBoardState = {
-  ref?: React.RefObject<HTMLDivElement>;
   tasks: TaskProps[];
   isLoading: boolean;
   error: Error | null;
   pagination: PaginationMetadata;
   taskStats: TaskStats;
   mutations: ReturnType<typeof useTaskMutations>;
+  cacheInfo?: {
+    isCached: boolean;
+    lastFetched: string;
+    remainingTTL: number;
+  };
 };
 
 export type TaskBoardPresenterProps = {
@@ -158,6 +185,17 @@ export type TaskBoardPresenterProps = {
   error?: Error;
   onClose: () => void;
   mutations: ReturnType<typeof useTaskMutations>;
+  // New optional properties to enhance UI
+  cacheInfo?: {
+    isCached: boolean;
+    lastFetched: string;
+    remainingTTL: number;
+  };
+  // Enhanced pagination flags
+  isFirstPage?: boolean;
+  isLastPage?: boolean;
+  hasMore?: boolean;
+  hasPrev?: boolean;
 };
 
 export type OffsetPaginationProps = {
@@ -165,4 +203,11 @@ export type OffsetPaginationProps = {
   totalPages: number;
   onPageChange: (page: number) => void;
   className?: string;
+  // Enhanced pagination flags to improve UI controls
+  isFirstPage?: boolean;
+  isLastPage?: boolean;
+  hasMore?: boolean;
+  hasPrev?: boolean;
+  // Optional loading state
+  isLoading?: boolean;
 };
