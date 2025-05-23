@@ -4,7 +4,6 @@ import {
   addConditionalCacheHeaders,
   saveToCache,
   logCacheStatus,
-  createResourceUrl,
 } from './apiHelpers';
 import { showError } from '../notification/notificationService';
 import {
@@ -116,10 +115,10 @@ export const taskOps = {
       }
 
       if (response.ok) {
-        const data: ApiResponse<TaskData> = await response.json();
+        const data = await handleResponse<TaskData>(response);
         saveToCache(cacheKey, data, response);
         logCacheStatus(cacheKey, cachedRecord, response);
-        return await handleResponse(data);
+        return data;
       }
 
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -129,11 +128,11 @@ export const taskOps = {
     }
   },
 
-  async getTask(id: number): Promise<ApiResponse<TaskProps>> {
+  async getTask(id: number): Promise<ApiResponse<TaskData>> {
     try {
       const url = `${BACKEND_URL}/tasks/task/${id}`;
       const cacheKey = url;
-      const cachedRecord = cacheService.get<TaskProps>(cacheKey);
+      const cachedRecord = cacheService.get<TaskData>(cacheKey);
 
       const headers: HeadersInit = {
         'Content-Type': 'application/json',
@@ -144,7 +143,7 @@ export const taskOps = {
 
       if (cachedRecord && cacheService.isValid(cacheKey)) {
         logCacheStatus(cacheKey, cachedRecord);
-        return cachedRecord.data as ApiResponse<TaskProps>;
+        return cachedRecord.data as ApiResponse<TaskData>;
       }
 
       const response = await fetch(url, {
@@ -155,15 +154,16 @@ export const taskOps = {
       if (response.status === 304 && cachedRecord) {
         cacheService.updateTimestamp(cacheKey);
         logCacheStatus(cacheKey, cachedRecord, response);
-        return cachedRecord.data as ApiResponse<TaskProps>;
+        return cachedRecord.data as ApiResponse<TaskData>;
       }
 
       if (response.ok) {
-        const data: ApiResponse<TaskProps> = await response.json();
+        const responseClone = response.clone(); // Clone the response to read twice
+        const data = (await response.json()) as ApiResponse<TaskData>;
 
-        saveToCache(cacheKey, data, response);
+        saveToCache(cacheKey, data, responseClone);
         logCacheStatus(cacheKey, cachedRecord, response);
-        return await handleResponse(data);
+        return data;
       } else {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -264,14 +264,22 @@ export const taskOps = {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
         method: 'DELETE',
-        //credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },
         mode: 'cors',
       });
-      return await handleResponse(response);
+
+      const data = await handleResponse<TaskData>(response);
+
+      this.invalidateCache(id);
+
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`Task ${id} deleted, cache invalidated`);
+      }
+
+      return data;
     } catch (error: unknown) {
       handleError(error);
       throw error;
