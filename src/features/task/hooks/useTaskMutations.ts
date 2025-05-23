@@ -106,6 +106,25 @@ export const useTaskMutations = () => {
     onSettled: () => {
       invalidateTasks();
     },
+    onSuccess: (data) => {
+      // Update individual task cache if needed
+      if (data?.data?.tasks?.[0]) {
+        const newTask = data.data.tasks[0];
+        queryClient.setQueryData(['task', newTask.id], {
+          code: 200,
+          resultMessage: 'Success',
+          data: {
+            tasks: [newTask],
+            pagination: {
+              totalCount: 1,
+              limit: 1,
+              currentPage: 1,
+              totalPages: 1,
+            },
+          },
+        });
+      }
+    },
   });
 
   const updateTask = useMutation<
@@ -158,6 +177,25 @@ export const useTaskMutations = () => {
     onSettled: () => {
       invalidateTasks();
     },
+    onSuccess: (data) => {
+      // Update individual task cache if needed
+      if (data?.data?.tasks?.[0]) {
+        const newTask = data.data.tasks[0];
+        queryClient.setQueryData(['task', newTask.id], {
+          code: 200,
+          resultMessage: 'Success',
+          data: {
+            tasks: [newTask],
+            pagination: {
+              totalCount: 1,
+              limit: 1,
+              currentPage: 1,
+              totalPages: 1,
+            },
+          },
+        });
+      }
+    },
   });
 
   const toggleTaskDone = useMutation<
@@ -207,6 +245,25 @@ export const useTaskMutations = () => {
     },
     onSettled: () => {
       invalidateTasks();
+    },
+    onSuccess: (data) => {
+      // Update individual task cache if needed
+      if (data?.data?.tasks?.[0]) {
+        const newTask = data.data.tasks[0];
+        queryClient.setQueryData(['task', newTask.id], {
+          code: 200,
+          resultMessage: 'Success',
+          data: {
+            tasks: [newTask],
+            pagination: {
+              totalCount: 1,
+              limit: 1,
+              currentPage: 1,
+              totalPages: 1,
+            },
+          },
+        });
+      }
     },
   });
 
