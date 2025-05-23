@@ -129,9 +129,6 @@ export const taskOps = {
     }
   },
 
-  invalidateCache: (taskId?: number) =>
-    cacheService.invalidateCache(BACKEND_URL, taskId),
-
   async getTask(id: number): Promise<ApiResponse<TaskData>> {
     try {
       const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
@@ -225,4 +222,7 @@ export const taskOps = {
       throw error;
     }
   },
+
+  invalidateCache: (taskId?: number) =>
+    cacheService.invalidateCache(BACKEND_URL, taskId),
 };
