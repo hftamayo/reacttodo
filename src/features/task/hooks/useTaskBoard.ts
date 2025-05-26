@@ -9,6 +9,7 @@ import {
   TaskStats,
 } from '@/shared/types/api.type';
 import { cacheService } from '@/shared/services/api/cacheService';
+import { BACKEND_URL } from '@/shared/utils/envvars';
 
 export const useTaskBoard = ({
   page,
@@ -33,7 +34,7 @@ export const useTaskBoard = ({
 
   const { pagination, stats, cacheInfo } = useMemo(() => {
     const paginationData = data?.data?.pagination;
-    const cacheKey = `${process.env.BACKEND_URL ?? ''}/tasks/task/list/page?page=${page}&limit=${limit}`;
+    const cacheKey = `${BACKEND_URL}/tasks/task/list/page?page=${page}&limit=${limit}`;
     const cachedRecord = cacheService.get(cacheKey);
     const now = Date.now();
 
