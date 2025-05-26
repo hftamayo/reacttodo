@@ -9,6 +9,3 @@ export type MenuState = RootState['menu'];
 
 // Type for the last operation in TaskUI
 export type TaskOperationType = TaskUIState['lastOperation']['type'];
-
-// Type for optimistic updates
-export type OptimisticUpdates = TaskUIState['optimisticUpdates']; 
