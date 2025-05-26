@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { FaTimes } from 'react-icons/fa';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { AddTaskForm } from '@/features/task/components/AddTaskForm';
 import { UpdateTaskCard } from '@/features/task/components/update/UpdateTaskCard';
 import { TaskRow } from '@/features/task/components/TaskRow';
@@ -10,7 +10,6 @@ import { taskBoard } from '@/shared/utils/twind/styles';
 import { TaskProps, TaskBoardPresenterProps } from '@/shared/types/api.type';
 import { showError } from '@/shared/services/notification/notificationService';
 import { setLastOperation } from '@/features/task/store/taskSlice';
-import { selectOptimisticUpdates } from '@/features/task/store/taskSelectors';
 
 export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
   tasks,
@@ -26,7 +25,6 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
 }) => {
   const dispatch = useDispatch();
   const [editingTask, setEditingTask] = useState<TaskProps | null>(null);
-  const optimisticUpdates = useSelector(selectOptimisticUpdates);
 
   const handleEdit = useCallback(
     (task: TaskProps) => {
@@ -58,25 +56,19 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
       );
     }
 
-    // Merge optimistic updates with actual tasks
-    const mergedTasks = tasks.map((task) => ({
-      ...task,
-      ...(optimisticUpdates[task.id] ?? {}),
-    }));
+    // Safely merge optimistic updates with actual tasks
+    const validTasks = tasks.filter(
+      (task) => task && typeof task === 'object' && task.id
+    );
 
     return (
       <ul>
-        {mergedTasks.map((task) => (
-          <TaskRow
-            key={task.id}
-            onEdit={handleEdit}
-            {...task}
-            isOptimistic={!!optimisticUpdates[task.id]}
-          />
+        {validTasks.map((task) => (
+          <TaskRow key={task.id} onEdit={handleEdit} {...task} />
         ))}
       </ul>
     );
-  }, [tasks, error, handleEdit, optimisticUpdates]);
+  }, [tasks, error, handleEdit]);
 
   return (
     <div className={taskBoard.bg}>
@@ -94,15 +86,22 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
           </button>
         </div>
         <AddTaskForm mutations={mutations} />
-        <div className="mb-4">
-          {taskList}
-          <OffsetPagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={onPageChange}
-            className="mt-4"
-          />
-        </div>
+        {isLoading && !tasks.length ? (
+          <div className="flex justify-center py-4">
+            <p>Loading tasks...</p>
+          </div>
+        ) : (
+          <div className="mb-4">
+            {taskList}
+            <OffsetPagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={onPageChange}
+              className="mt-4"
+              isLoading={isLoading}
+            />
+          </div>
+        )}
         <CustomModal
           isOpen={!!editingTask}
           onDismiss={handleCloseModal}
