@@ -8,11 +8,14 @@ import {
 } from '../ui/pagination/pagination';
 import { OffsetPaginationProps } from '@/shared/types/api.type';
 
-export const OffsetPagination: React.FC<OffsetPaginationProps> = ({
+export const OffsetPagination: React.FC<OffsetPaginationProps> & {
+  isLoading?: boolean;
+} = ({
   currentPage,
   totalPages,
   onPageChange,
   className,
+  isLoading = false,
 }) => {
   const handlePrevious = () => {
     if (currentPage > 1) {
@@ -34,7 +37,7 @@ export const OffsetPagination: React.FC<OffsetPaginationProps> = ({
         <PaginationItem>
           <PaginationPrevious
             onClick={handlePrevious}
-            isActive={currentPage === 1}
+            isActive={isLoading || currentPage === 1}
             aria-label="Go to previous page"
           />
         </PaginationItem>
@@ -46,7 +49,7 @@ export const OffsetPagination: React.FC<OffsetPaginationProps> = ({
         <PaginationItem>
           <PaginationNext
             onClick={handleNext}
-            isActive={currentPage === totalPages}
+            isActive={isLoading || currentPage === totalPages}
             aria-label="Go to next page"
           />
         </PaginationItem>
