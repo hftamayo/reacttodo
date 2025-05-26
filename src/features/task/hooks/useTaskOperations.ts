@@ -25,7 +25,7 @@ export const useTaskOperations = () => {
       showSuccess('Task deleted successfully');
       return true;
     } catch (error) {
-      console.error('Error updating task status:', error);
+      console.error('Error deleting task :', error);
       showError('Failed to delete task');
       return false;
     }
