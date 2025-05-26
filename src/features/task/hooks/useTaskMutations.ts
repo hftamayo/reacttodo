@@ -237,18 +237,15 @@ export const useTaskMutations = () => {
         }
       });
     },
-    onSettled: () => {
-      invalidateTasks();
-    },
     onSuccess: (data) => {
-      // Update individual task cache if needed
+      // Only update the specific task in cache
       if (data?.data?.tasks?.[0]) {
-        const newTask = data.data.tasks[0];
-        queryClient.setQueryData(['task', newTask.id], {
+        const updatedTask = data.data.tasks[0];
+        queryClient.setQueryData(['task', updatedTask.id], {
           code: 200,
           resultMessage: 'Success',
           data: {
-            tasks: [newTask],
+            tasks: [updatedTask],
             pagination: {
               totalCount: 1,
               limit: 1,
