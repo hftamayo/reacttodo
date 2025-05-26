@@ -40,9 +40,7 @@ export const useTaskMutations = () => {
   >({
     mutationFn: taskService.fetchAddTask,
     onMutate: async (newTask: AddTaskProps) => {
-      await queryClient.cancelQueries({
-        predicate: (query) => query.queryKey[0] === 'tasks',
-      });
+      await queryClient.cancelQueries({ queryKey: ['tasks'] });
 
       const taskQueries = getCurrentTasksData();
       const tempId = Date.now();
@@ -135,9 +133,7 @@ export const useTaskMutations = () => {
   >({
     mutationFn: taskService.fetchUpdateTask,
     onMutate: async (updatedTask: TaskProps) => {
-      await queryClient.cancelQueries({
-        predicate: (query) => query.queryKey[0] === 'tasks',
-      });
+      await queryClient.cancelQueries({ queryKey: ['tasks'] });
 
       const taskQueries = getCurrentTasksData();
 
@@ -206,9 +202,7 @@ export const useTaskMutations = () => {
   >({
     mutationFn: taskService.fetchToggleTaskDone,
     onMutate: async (taskId: TaskIdentifier) => {
-      await queryClient.cancelQueries({
-        predicate: (query) => query.queryKey[0] === 'tasks',
-      });
+      await queryClient.cancelQueries({ queryKey: ['tasks'] });
 
       const taskQueries = getCurrentTasksData();
 
@@ -275,9 +269,7 @@ export const useTaskMutations = () => {
   >({
     mutationFn: (id: number) => taskService.fetchDeleteTask(id),
     onMutate: async (deletedId) => {
-      await queryClient.cancelQueries({
-        predicate: (query) => query.queryKey[0] === 'tasks',
-      });
+      await queryClient.cancelQueries({ queryKey: ['tasks'] });
 
       const taskQueries = getCurrentTasksData();
 
