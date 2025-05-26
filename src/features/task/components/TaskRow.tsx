@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TaskProps } from '@/shared/types/api.type';
-import { useTaskMutations } from '../hooks/useTaskMutations';
+import { useTaskOperations } from '../hooks/useTaskOperations';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { FaRegTrashAlt, FaPencilAlt } from 'react-icons/fa';
 import { Label } from '@/shared/components/ui/label/Label';
@@ -9,19 +9,12 @@ import { Button } from '@/shared/components/ui/button/Button';
 import { taskRow } from '../../../shared/utils/twind/styles';
 import { DeleteDialog } from '@/shared/components/dialogs/DeleteDialog';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  setLastOperation,
-  setOptimisticUpdate,
-  clearOptimisticUpdate,
-  incrementCompletedCount,
-  decrementCompletedCount,
-  decrementTaskCount,
-} from '../store/taskSlice';
+import { setLastOperation } from '../store/taskSlice';
 import { selectIsTaskOptimistic } from '../store/taskSelectors';
+import { showError } from '@/shared/services/notification/notificationService';
 
 interface TaskRowProps extends TaskProps {
   onEdit: (task: TaskProps) => void;
-  isOptimistic?: boolean;
 }
 
 export const TaskRow: React.FC<TaskRowProps> = ({
@@ -36,33 +29,19 @@ export const TaskRow: React.FC<TaskRowProps> = ({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { text: deleteRowButton } = useTranslation('deleteRowButton');
   const { text: updateRowButton } = useTranslation('updateRowButton');
-  const { toggleTaskDone, deleteTask } = useTaskMutations();
+  const { handleToggle, handleDelete, isToggling, isDeleting } =
+    useTaskOperations();
 
   const isOptimistic = useSelector(selectIsTaskOptimistic(id));
 
   const handleToggleComplete = async () => {
     try {
-      const newDoneState = !done;
       // Set optimistic update in Redux
       dispatch(setLastOperation({ type: 'toggle', taskId: id }));
-      dispatch(
-        setOptimisticUpdate({
-          taskId: id,
-          task: { id, title, description, done: newDoneState, owner },
-        })
-      );
-
-      // Update completed count
-      if (done) {
-        dispatch(decrementCompletedCount());
-      } else {
-        dispatch(incrementCompletedCount());
-      }
-
-      // Perform the actual mutation
-      await toggleTaskDone.mutateAsync({ id });
+      await handleToggle(id);
     } catch (error) {
       console.error('Error toggling task:', error);
+      showError('Failed to toggle task completion');
     }
   };
 
@@ -70,16 +49,11 @@ export const TaskRow: React.FC<TaskRowProps> = ({
     try {
       // Set optimistic update in Redux
       dispatch(setLastOperation({ type: 'delete', taskId: id }));
-      dispatch(decrementTaskCount());
-      if (done) {
-        dispatch(decrementCompletedCount());
-      }
-
-      // Perform the actual mutation
-      await deleteTask.mutateAsync(id);
+      await handleDelete(id);
       setIsDialogOpen(false);
     } catch (error) {
       console.error('Error deleting task:', error);
+      showError('Failed to delete task');
     }
   };
 
@@ -97,7 +71,7 @@ export const TaskRow: React.FC<TaskRowProps> = ({
           type="checkbox"
           checked={done}
           onChange={handleToggleComplete}
-          disabled={toggleTaskDone.isPending}
+          disabled={isToggling || isDeleting}
           aria-label={`Mark "${title}" as ${done ? 'incomplete' : 'complete'}`}
         />
         <Label
@@ -114,7 +88,7 @@ export const TaskRow: React.FC<TaskRowProps> = ({
           size="sm"
           onClick={() => setIsDialogOpen(true)}
           title={deleteRowButton}
-          disabled={deleteTask.isPending}
+          disabled={isToggling || isDeleting}
           aria-label={`Delete task "${title}"`}
         >
           <FaRegTrashAlt />
@@ -122,7 +96,7 @@ export const TaskRow: React.FC<TaskRowProps> = ({
         <DeleteDialog
           title={title}
           isOpen={isDialogOpen}
-          isDeleting={deleteTask.isPending}
+          isDeleting={isDeleting}
           onConfirm={handleDeleteTask}
           onCancel={() => setIsDialogOpen(false)}
         />
