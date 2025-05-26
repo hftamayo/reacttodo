@@ -3,7 +3,7 @@ import { FaTimes } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { AddTaskForm } from '@/features/task/components/AddTaskForm';
 import { UpdateTaskCard } from '@/features/task/components/update/UpdateTaskCard';
-import { TaskRow } from '@/features/task/components/TaskRow';
+import { TaskRowContainer } from '@/features/task/containers/TaskRowContainer';
 import { OffsetPagination } from '@/shared/components/pagination/OffsetPagination';
 import CustomModal from '@/shared/components/ui/modal/CustomModal';
 import { taskBoard } from '@/shared/utils/twind/styles';
@@ -64,7 +64,11 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
     return (
       <ul>
         {validTasks.map((task) => (
-          <TaskRow key={task.id} onEdit={handleEdit} {...task} />
+          <TaskRowContainer
+            key={task.id}
+            task={task}
+            onEdit={handleEdit}
+          />
         ))}
       </ul>
     );
