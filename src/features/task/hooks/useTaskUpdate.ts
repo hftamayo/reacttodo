@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { TaskProps } from '@/shared/types/api.type';
 import { useTaskMutations } from './useTaskMutations';
@@ -15,11 +16,13 @@ export const useTaskUpdate = ({
   initialData,
   onSuccess,
 }: UseUpdateTaskProps) => {
+  const queryClient = useQueryClient();
   const { updateTask } = useTaskMutations();
   const {
     register,
     handleSubmit,
-    formState: { errors, dirtyFields },
+    reset,
+    formState: { errors, dirtyFields, isDirty },
   } = useForm<TaskProps>({
     defaultValues: initialData,
   });
@@ -38,6 +41,7 @@ export const useTaskUpdate = ({
       if (dirtyFields.owner) updateData.owner = data.owner;
 
       await updateTask.mutateAsync(updateData as TaskProps);
+      queryClient.invalidateQueries({ queryKey: ['task', data.id] });
       onSuccess?.();
       showSuccess('Task updated successfully');
       return true;
@@ -51,6 +55,8 @@ export const useTaskUpdate = ({
   return {
     register,
     handleSubmit,
+    reset,
+    isDirty,
     errors,
     isSubmitting: updateTask.isPending,
     handleFormSubmit: handleSubmit(handleFormSubmit),
