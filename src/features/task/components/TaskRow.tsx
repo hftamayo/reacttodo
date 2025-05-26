@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { TaskProps } from '@/shared/types/api.type';
-import { useTaskOperations } from '../hooks/useTaskOperations';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { FaRegTrashAlt, FaPencilAlt } from 'react-icons/fa';
 import { Label } from '@/shared/components/ui/label/Label';
@@ -8,13 +7,15 @@ import { Input } from '@/shared/components/ui/input/Input';
 import { Button } from '@/shared/components/ui/button/Button';
 import { taskRow } from '../../../shared/utils/twind/styles';
 import { DeleteDialog } from '@/shared/components/dialogs/DeleteDialog';
-import { useDispatch, useSelector } from 'react-redux';
-import { setLastOperation } from '../store/taskSlice';
+import { useSelector } from 'react-redux';
 import { selectIsTaskOptimistic } from '../store/taskSelectors';
-import { showError } from '@/shared/services/notification/notificationService';
 
 interface TaskRowProps extends TaskProps {
   onEdit: (task: TaskProps) => void;
+  onToggle: () => Promise<void>;
+  onDelete: () => Promise<void>;
+  isToggling: boolean;
+  isDeleting: boolean;
 }
 
 export const TaskRow: React.FC<TaskRowProps> = ({
@@ -24,41 +25,19 @@ export const TaskRow: React.FC<TaskRowProps> = ({
   done = false,
   owner,
   onEdit,
+  onToggle,
+  onDelete,
+  isToggling,
+  isDeleting,
 }) => {
-  const dispatch = useDispatch();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { text: deleteRowButton } = useTranslation('deleteRowButton');
   const { text: updateRowButton } = useTranslation('updateRowButton');
-  const { handleToggle, handleDelete, isToggling, isDeleting } =
-    useTaskOperations();
-
   const isOptimistic = useSelector(selectIsTaskOptimistic(id));
 
-  const handleToggleComplete = async () => {
-    try {
-      // Set optimistic update in Redux
-      dispatch(setLastOperation({ type: 'toggle', taskId: id }));
-      await handleToggle(id);
-    } catch (error) {
-      console.error('Error toggling task:', error);
-      showError('Failed to toggle task completion');
-    }
-  };
-
   const handleDeleteTask = async () => {
-    try {
-      // Set optimistic update in Redux
-      dispatch(setLastOperation({ type: 'delete', taskId: id }));
-      await handleDelete(id);
-      setIsDialogOpen(false);
-    } catch (error) {
-      console.error('Error deleting task:', error);
-      showError('Failed to delete task');
-    }
-  };
-
-  const handleUpdateTask = () => {
-    onEdit({ id, title, description, done, owner });
+    await onDelete();
+    setIsDialogOpen(false);
   };
 
   return (
@@ -70,14 +49,14 @@ export const TaskRow: React.FC<TaskRowProps> = ({
         <Input
           type="checkbox"
           checked={done}
-          onChange={handleToggleComplete}
+          onChange={onToggle}
           disabled={isToggling || isDeleting}
           aria-label={`Mark "${title}" as ${done ? 'incomplete' : 'complete'}`}
         />
         <Label
           size="large"
           className={done ? taskRow.textComplete : taskRow.text}
-          onClick={handleToggleComplete}
+          onClick={onToggle}
         >
           {title}
         </Label>
@@ -104,7 +83,7 @@ export const TaskRow: React.FC<TaskRowProps> = ({
         <Button
           variant="secondary"
           size="sm"
-          onClick={handleUpdateTask}
+          onClick={() => onEdit({ id, title, description, done, owner })}
           title={updateRowButton}
           disabled={done}
           aria-label={`Edit task "${title}" ${done ? '(disabled - task completed)' : ''}`}
