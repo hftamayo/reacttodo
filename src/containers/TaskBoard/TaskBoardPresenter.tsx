@@ -18,6 +18,7 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
   currentPage,
   totalPages,
   onPageChange,
+  onTaskDeleted,
   completedTasks,
   error,
   onClose,
@@ -37,6 +38,10 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
   const handleCloseModal = useCallback(() => {
     setEditingTask(null);
   }, []);
+
+  const handleTaskDeleted = useCallback((deletedTaskId: number) => {
+    onTaskDeleted?.(deletedTaskId);
+  }, [onTaskDeleted]);
 
   const taskList = useMemo(() => {
     if (error) {
@@ -68,11 +73,12 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
             key={task.id}
             task={task}
             onEdit={handleEdit}
+            onTaskDeleted={handleTaskDeleted}
           />
         ))}
       </ul>
     );
-  }, [tasks, error, handleEdit]);
+  }, [tasks, error, handleEdit, handleTaskDeleted]);
 
   return (
     <div className={taskBoard.bg}>

@@ -1,15 +1,18 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useTaskBoard } from '@/features/task/hooks/useTaskBoard';
 import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import { useErrorHandler } from '@/shared/hooks/useErrorHandler';
 import { TaskBoardPresenter } from './TaskBoardPresenter';
 import { useLocation } from 'wouter';
+import { useQueryClient } from '@tanstack/react-query';
+import { showError } from '@/shared/services/notification/notificationService';
 
 export const TaskBoardContainer: React.FC = () => {
   const { handleError } = useErrorHandler('TaskBoard');
   const [, setLocation] = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 5;
+  const queryClient = useQueryClient();
 
   const { tasks, error, isLoading, pagination, taskStats, mutations } =
     useTaskBoard({
@@ -17,9 +20,55 @@ export const TaskBoardContainer: React.FC = () => {
       limit: ITEMS_PER_PAGE,
     });
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
-  };
+  }, []);
+
+  const handleTaskDeleted = useCallback(async (deletedTaskId: number) => {
+    try {
+      // Remove the task from the cache immediately
+      queryClient.setQueryData(['tasks', { page: currentPage, limit: ITEMS_PER_PAGE }], (oldData: any) => {
+        if (!oldData?.data?.tasks) return oldData;
+        return {
+          ...oldData,
+          data: {
+            ...oldData.data,
+            tasks: oldData.data.tasks.filter((task: any) => task.id !== deletedTaskId)
+          }
+        };
+      });
+
+      // Invalidate all task-related queries
+      await queryClient.invalidateQueries({ 
+        queryKey: ['tasks'],
+        refetchType: 'all'
+      });
+      
+      // If we're on the last page and it's the last item, go to previous page
+      if (tasks.length === 1 && currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      }
+      // If we're on a page that's now empty, go to the first page
+      else if (tasks.length === 1 && currentPage === 1) {
+        setCurrentPage(1);
+      }
+      
+      // Force a refetch of all task-related queries
+      await Promise.all([
+        queryClient.refetchQueries({ 
+          queryKey: ['tasks'],
+          type: 'active'
+        }),
+        queryClient.refetchQueries({ 
+          queryKey: ['tasks', { page: currentPage, limit: ITEMS_PER_PAGE }],
+          type: 'active'
+        })
+      ]);
+    } catch (error) {
+      console.error('Error handling task deletion:', error);
+      showError('Failed to update task list after deletion');
+    }
+  }, [tasks.length, currentPage, queryClient, ITEMS_PER_PAGE]);
 
   const handleClose = () => {
     setLocation('/');
@@ -53,6 +102,7 @@ export const TaskBoardContainer: React.FC = () => {
         currentPage={pagination.currentPage}
         totalPages={pagination.totalPages}
         onPageChange={handlePageChange}
+        onTaskDeleted={handleTaskDeleted}
         error={error ?? undefined}
         onClose={handleClose}
         mutations={mutations}
