@@ -80,6 +80,7 @@ export const AddTaskForm: React.FC<AddTaskFormProps> = ({ mutations }) => {
           size="lg"
           type="submit"
           title={addTaskButton}
+          disabled={addTask.isPending}
         >
           <AiOutlinePlus size={30} />
         </Button>
