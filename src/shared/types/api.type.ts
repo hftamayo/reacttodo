@@ -172,10 +172,10 @@ export type TaskBoardPresenterProps = {
     remainingTTL: number;
   };
   // Enhanced pagination flags
-  isFirstPage?: boolean;
-  isLastPage?: boolean;
-  hasMore?: boolean;
-  hasPrev?: boolean;
+  isFirstPage: boolean;
+  isLastPage: boolean;
+  hasMore: boolean;
+  hasPrev: boolean;
 };
 
 export type OffsetPaginationProps = {
