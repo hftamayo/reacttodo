@@ -1,12 +1,7 @@
 import { showError } from '../notification/notificationService';
-import { cacheService } from './cacheService';
+import { ApiError, ApiResponse } from '../../types/api.type';
 
-import {
-  ApiError,
-  ApiResponse,
-} from '../../types/api.type';
-
-const handleResponse = async <T>(
+export const handleResponse = async <T>(
   response: Response
 ): Promise<ApiResponse<T>> => {
   if (!response.ok) {
@@ -20,7 +15,7 @@ const handleResponse = async <T>(
   return await response.json();
 };
 
-const handleError = (error: unknown) => {
+export const handleError = (error: unknown) => {
   if (error instanceof Error) {
     showError(
       { code: 500, resultMessage: error.message },
@@ -35,76 +30,48 @@ const handleError = (error: unknown) => {
   throw error;
 };
 
-const makeRequest = async <T>(
+export const makeRequest = async <T>(
   url: string,
-  options: RequestInit = {},
-  cacheOptions = { useCache: true, invalidateCache: false }
+  options: RequestInit = {}
 ): Promise<ApiResponse<T>> => {
   try {
-    // "Request interceptor" logic
+    // Set up standard headers
     const headers = new Headers(options.headers || {});
     headers.set('Content-Type', 'application/json');
     headers.set('Accept', 'application/json');
 
-    const cacheKey = url;
-    const cachedRecord = cacheOptions.useCache
-      ? cacheService.get(cacheKey)
-      : null;
-
-    if (cacheOptions.invalidateCache) {
-      cacheService.invalidateCache(BACKEND_URL);
-    }
-
-    // Add cache headers if we have a cached record
-    if (
-      cachedRecord &&
-      cacheService.isValid(cacheKey) &&
-      options.method === 'GET'
-    ) {
-      addConditionalCacheHeaders(headers, cachedRecord);
-
-      // Return from cache if valid
-      if (cacheOptions.useCache) {
-        logCacheStatus(cacheKey, cachedRecord);
-        return cachedRecord.data as ApiResponse<T>;
-      }
-    }
-
-    // Make the request with the modified headers
+    // Make the request
     const response = await fetch(url, {
       ...options,
       headers,
       mode: 'cors',
     });
 
-    // Handle 304 Not Modified
-    if (response.status === 304 && cachedRecord) {
-      cacheService.updateTimestamp(cacheKey);
-      logCacheStatus(cacheKey, cachedRecord, response);
-      return cachedRecord.data as ApiResponse<T>;
-    }
-
-    // "Response interceptor" logic
+    // Handle response
     if (response.ok) {
-      const responseClone = response.clone();
-      const data = await handleResponse<T>(response);
-
-      // Save to cache for GET requests
-      if (options.method === 'GET' || !options.method) {
-        saveToCache(cacheKey, data, responseClone);
-        logCacheStatus(cacheKey, cachedRecord, response);
-      }
-
-      return data;
+      return await response.json();
     }
 
-    throw new Error(`HTTP error! status: ${response.status}`);
+    // Handle error
+    const errorData = await response.json().catch(() => ({}));
+    const error: ApiError = {
+      code: response.status,
+      resultMessage: `Request failed: ${response.statusText}. ${JSON.stringify(errorData)}`,
+    };
+    throw error;
   } catch (error: unknown) {
-    handleError(error);
+    // Handle network errors and other exceptions
+    if (!(error as ApiError).code) {
+      showError(
+        {
+          code: 500,
+          resultMessage: error instanceof Error ? error.message : String(error),
+        },
+        'Network error occurred'
+      );
+    } else {
+      showError(error as ApiError, 'Request failed');
+    }
     throw error;
   }
-};
-
-  invalidateCache: (taskId?: number) =>
-    cacheService.invalidateCache(BACKEND_URL, taskId),
 };
