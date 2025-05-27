@@ -1,11 +1,7 @@
-import { useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { TaskProps } from '@/shared/types/api.type';
 import { useTaskMutations } from './useTaskMutations';
-import {
-  showError,
-  showSuccess,
-} from '@/shared/services/notification/notificationService';
+import { showSuccess } from '@/shared/services/notification/notificationService';
 
 interface UseUpdateTaskProps {
   initialData: TaskProps;
@@ -16,7 +12,6 @@ export const useTaskUpdate = ({
   initialData,
   onSuccess,
 }: UseUpdateTaskProps) => {
-  const queryClient = useQueryClient();
   const { updateTask } = useTaskMutations();
   const {
     register,
@@ -40,14 +35,16 @@ export const useTaskUpdate = ({
       if (dirtyFields.done) updateData.done = data.done;
       if (dirtyFields.owner) updateData.owner = data.owner;
 
+      // Use the mutation which handles cache invalidation internally
       await updateTask.mutateAsync(updateData as TaskProps);
-      queryClient.invalidateQueries({ queryKey: ['task', data.id] });
-      onSuccess?.();
+
+      // Only show success here - error handling happens in the mutation
       showSuccess('Task updated successfully');
+      onSuccess?.();
       return true;
     } catch (error) {
-      console.error('Error updating task:', error);
-      showError('Failed to update task');
+      // We only need minimal error handling here since the mutation will show errors
+      console.error('Form submission error:', error);
       return false;
     }
   };
