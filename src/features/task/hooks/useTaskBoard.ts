@@ -32,7 +32,6 @@ export const useTaskBoard = ({
     useTaskQueries.getTasks({
       page,
       limit,
-      cacheOptions: {},
     });
 
   // Access task mutation hooks
