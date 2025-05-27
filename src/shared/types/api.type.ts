@@ -138,13 +138,6 @@ export type TaskStats = {
   lastUpdated?: string;
 };
 
-export type TaskContext = {
-  previousQueries?: Array<{
-    queryKey: QueryKey;
-    data: ApiResponse<TaskData> | undefined;
-  }>;
-};
-
 export type TaskBoardState = {
   tasks: TaskProps[];
   isLoading: boolean;
