@@ -1,108 +1,161 @@
 import { useMemo, useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useLazyLoad } from '@/shared/services/lazyloading/hooks/useLazyLoad';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { useTaskQueries } from './useTaskQueries';
 import { useTaskMutations } from './useTaskMutations';
+import { useTaskPrefetching } from './useTaskPreFetching';
+import { taskKeys } from './queryKeys';
 import {
   PaginationParams,
   TaskBoardState,
   TaskStats,
+  PaginationMetadata,
 } from '@/shared/types/api.type';
-import { cacheService } from '@/shared/services/api/cacheService';
-import { BACKEND_URL } from '@/shared/utils/envvars';
 
 export const useTaskBoard = ({
   page,
   limit,
-  forceRefresh = false,
-}: PaginationParams & { forceRefresh?: boolean }): TaskBoardState => {
+}: PaginationParams): TaskBoardState => {
+  // Get references for lazy loading
   const { ref, shouldFetch } = useLazyLoad();
-  const { data, error, isLoading, refetch } = useTaskQueries.getTasks({
-    enabled: shouldFetch,
-    page,
-    limit,
-    forceRefresh,
-  });
+
+  // Access translation service
   const { text: errorMessage = 'An error occurred' } =
     useTranslation('errorComponent');
+
+  // Access query client for cache information
+  const queryClient = useQueryClient();
+
+  // Access task data fetching hooks
+  const { data, error, isLoading, refetch, isFetching } =
+    useTaskQueries.getTasks({
+      page,
+      limit,
+      cacheOptions: {},
+    });
+
+  // Access task mutation hooks
   const mutations = useTaskMutations();
 
+  // Access prefetching functionality
+  const { prefetchTasksPage } = useTaskPrefetching();
+
+  // Extract and memoize tasks array
   const tasks = useMemo(() => {
     if (isLoading || !data?.data?.tasks) return [];
     return data.data.tasks;
   }, [data, isLoading]);
 
-  const { pagination, stats, cacheInfo } = useMemo(() => {
+  // Calculate pagination state with all necessary properties
+  const pagination = useMemo((): PaginationMetadata => {
     const paginationData = data?.data?.pagination;
-    const cacheKey = `${BACKEND_URL}/tasks/task/list/page?page=${page}&limit=${limit}`;
-    const cachedRecord = cacheService.get(cacheKey);
-    const now = Date.now();
+    const currentPage = paginationData?.currentPage ?? page;
+    const totalPages = paginationData?.totalPages ?? 1;
 
-    // Calculate cache information
-    const cacheTTL = cachedRecord?.ttl ?? 0;
-    const cacheTimestamp = cachedRecord?.timestamp ?? 0;
+    return {
+      currentPage,
+      totalPages,
+      totalCount: paginationData?.totalCount ?? 0,
+      limit: paginationData?.limit ?? limit,
+      order: paginationData?.order ?? 'desc',
+      // Adding the additional required properties
+      hasMore: currentPage < totalPages,
+      hasPrev: currentPage > 1,
+      isFirstPage: currentPage === 1,
+      isLastPage: currentPage === totalPages,
+    };
+  }, [data?.data?.pagination, page, limit]);
+
+  // Calculate task statistics
+  const taskStats = useMemo((): TaskStats => {
+    const totalTasks = pagination.totalCount;
+    const completedTasks = tasks.filter((task) => task.done).length;
+
+    return {
+      total: totalTasks,
+      completed: completedTasks,
+      lastUpdated: data?.data?.lastModified // Using lastModified from TaskData
+        ? new Date(data.data.lastModified).toLocaleString()
+        : new Date().toLocaleString(),
+    };
+  }, [tasks, pagination.totalCount, data?.data?.lastModified]);
+
+  // Get cache information from React Query
+  const cacheInfo = useMemo(() => {
+    const queryState = queryClient.getQueryState(
+      taskKeys.list({ page, limit })
+    );
+
+    // Calculate a simulated remainingTTL for compatibility
+    const now = Date.now();
+    const lastFetched = queryState?.dataUpdatedAt ?? now;
+    const staleTime = 5 * 60 * 1000; // 5 minutes in milliseconds (from your queryClient config)
+    const elapsedTime = now - lastFetched;
     const remainingTTL = Math.max(
       0,
-      Math.floor((cacheTimestamp + cacheTTL * 1000 - now) / 1000)
+      Math.floor((staleTime - elapsedTime) / 1000)
     );
 
     return {
-      pagination: {
-        limit: paginationData?.limit ?? 5,
-        totalCount: paginationData?.totalCount ?? 0,
-        currentPage: paginationData?.currentPage ?? 1,
-        totalPages: paginationData?.totalPages ?? 1,
-        order: paginationData?.order ?? 'desc',
-        hasMore:
-          (paginationData?.currentPage ?? 1) <
-          (paginationData?.totalPages ?? 1),
-        hasPrev: (paginationData?.currentPage ?? 1) > 1,
-        isFirstPage: (paginationData?.currentPage ?? 1) === 1,
-        isLastPage:
-          (paginationData?.currentPage ?? 1) ===
-          (paginationData?.totalPages ?? 1),
-      },
-      stats: {
-        total: paginationData?.totalCount ?? 0,
-        completed: tasks.filter((task) => task.done).length,
-        pending:
-          (paginationData?.totalCount ?? 0) -
-          tasks.filter((task) => task.done).length,
-      } as TaskStats,
-      cacheInfo: {
-        isCached: !!cachedRecord && remainingTTL > 0,
-        lastFetched: cachedRecord
-          ? new Date(cacheTimestamp).toLocaleString()
-          : 'Not cached',
-        remainingTTL,
-      },
+      isCached:
+        queryState?.status === 'success' && !!queryState?.dataUpdateCount,
+      lastFetched: queryState?.dataUpdatedAt
+        ? new Date(queryState.dataUpdatedAt).toLocaleString()
+        : 'Not cached',
+      remainingTTL: remainingTTL,
     };
-  }, [data, tasks, page, limit]);
+  }, [queryClient, page, limit]);
 
-  // Debug pagination in development
+  // Prefetch adjacent pages for smoother pagination
   useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Pagination state:', {
-        requestedPage: page,
-        requestedLimit: limit,
-        currentPage: pagination.currentPage,
+    // Prefetch next page if not on last page
+    if (pagination.hasMore && !isLoading) {
+      prefetchTasksPage({ page: page + 1, limit });
+    }
+
+    // Prefetch previous page if not on first page
+    if (pagination.hasPrev && !isLoading) {
+      prefetchTasksPage({ page: page - 1, limit });
+    }
+  }, [
+    pagination.hasMore,
+    pagination.hasPrev,
+    page,
+    limit,
+    isLoading,
+    prefetchTasksPage,
+  ]);
+
+  // Development logging
+  useEffect(() => {
+    if (import.meta.env.DEV) {
+      console.log('TaskBoard State:', {
+        page,
+        limit,
         totalPages: pagination.totalPages,
+        totalCount: pagination.totalCount,
+        isLoading,
+        isFetching,
+        error: error ? 'Error fetching data' : undefined,
+        taskCount: tasks.length,
         hasMore: pagination.hasMore,
-        isFirstPage: pagination.isFirstPage,
-        isLastPage: pagination.isLastPage,
+        hasPrev: pagination.hasPrev,
       });
     }
-  }, [page, limit, pagination]);
+  }, [page, limit, pagination, isLoading, isFetching, error, tasks.length]);
 
   return {
     tasks,
     isLoading,
-    error,
+    error, // error is already correctly typed
     pagination,
-    taskStats: stats,
+    taskStats,
     mutations,
-    refetch,
     cacheInfo,
-    ref, // Expose the ref for attaching to the container element
+    refetch: () => {
+      refetch();
+    },
+    ref: ref as React.RefObject<HTMLElement>, // Cast to match the expected type
   };
 };
