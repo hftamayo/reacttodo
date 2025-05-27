@@ -127,16 +127,9 @@ export type TaskData = {
   lastModified?: string;
 };
 
-export type HttpCacheOptions = {
-  useCache?: boolean;
-  invalidateCache?: boolean;
-  ttl?: number;
-};
-
 export type PaginationParams = {
   page: number;
   limit: number;
-  cacheOptions?: HttpCacheOptions;
 };
 
 export type TaskStats = {
