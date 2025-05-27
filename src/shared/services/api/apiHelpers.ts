@@ -32,7 +32,8 @@ export const handleError = (error: unknown) => {
 
 export const makeRequest = async <T>(
   url: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
+  errorContext?: string
 ): Promise<ApiResponse<T>> => {
   try {
     // Set up standard headers
@@ -40,12 +41,18 @@ export const makeRequest = async <T>(
     headers.set('Content-Type', 'application/json');
     headers.set('Accept', 'application/json');
 
-    // Make the request
+    // Make the request with timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
     const response = await fetch(url, {
       ...options,
       headers,
       mode: 'cors',
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     // Handle response
     if (response.ok) {
@@ -60,18 +67,27 @@ export const makeRequest = async <T>(
     };
     throw error;
   } catch (error: unknown) {
+    // Handle aborted requests
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      const timeoutError: ApiError = {
+        code: 408,
+        resultMessage: 'Request timed out',
+      };
+      showError(timeoutError, errorContext ?? 'Network timeout');
+      throw timeoutError;
+    }
+
     // Handle network errors and other exceptions
     if (!(error as ApiError).code) {
-      showError(
-        {
-          code: 500,
-          resultMessage: error instanceof Error ? error.message : String(error),
-        },
-        'Network error occurred'
-      );
+      const networkError: ApiError = {
+        code: 500,
+        resultMessage: error instanceof Error ? error.message : String(error),
+      };
+      showError(networkError, errorContext ?? 'Network error occurred');
+      throw networkError;
     } else {
-      showError(error as ApiError, 'Request failed');
+      showError(error as ApiError, errorContext ?? 'Request failed');
+      throw error;
     }
-    throw error;
   }
 };
