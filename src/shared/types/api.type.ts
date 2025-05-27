@@ -107,13 +107,6 @@ export type AddTaskProps = Pick<TaskProps, 'title' | 'owner'>;
 //export type AddTaskProps = Pick<TaskProps, 'title' | 'description' | 'owner'>;
 
 //pagination and task related ops
-export type CacheRecord<T> = {
-  etag?: string;
-  lastModified?: string;
-  data?: ApiResponse<T>;
-  timestamp: number;
-  ttl: number;
-};
 
 export type PaginationMetadata = {
   limit: number;
