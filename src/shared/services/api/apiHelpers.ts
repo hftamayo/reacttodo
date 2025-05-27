@@ -1,56 +1,110 @@
-import { ApiResponse, CacheRecord } from '@/shared/types/api.type';
+import { showError } from '../notification/notificationService';
 import { cacheService } from './cacheService';
 
-export function addConditionalCacheHeaders(
-  headers: Headers | Record<string, string>,
-  cachedRecord: CacheRecord<unknown> | undefined
-): void {
-  if (cachedRecord) {
-    if (cachedRecord.etag) {
-      if (headers instanceof Headers) {
-        headers.set('If-None-Match', cachedRecord.etag);
-      } else {
-        headers['If-None-Match'] = cachedRecord.etag;
-      }
-    }
-    if (cachedRecord.lastModified) {
-      if (headers instanceof Headers) {
-        headers.set('If-Modified-Since', cachedRecord.lastModified);
-      } else {
-        headers['If-Modified-Since'] = cachedRecord.lastModified;
-      }
-    }
-  }
-}
+import {
+  ApiError,
+  ApiResponse,
+} from '../../types/api.type';
 
-export function saveToCache<T>(
-  cacheKey: string,
-  data: ApiResponse<T>,
+const handleResponse = async <T>(
   response: Response
-): void {
-  cacheService.set(
-    cacheKey,
-    data,
-    response.headers.get('ETag') ?? undefined,
-    response.headers.get('Last-Modified') ?? undefined,
-    data.cacheTTL ?? 60
-  );
-}
-
-export function logCacheStatus(
-  cacheKey: string,
-  cachedRecord: CacheRecord<unknown> | undefined,
-  response?: Response
-): void {
-  if (process.env.NODE_ENV === 'development') {
-    console.log(`Cache ${cachedRecord ? 'HIT' : 'MISS'} for ${cacheKey}`);
-    if (response?.status === 304) {
-      console.log(`304 Not Modified: ${cacheKey}`);
-    }
+): Promise<ApiResponse<T>> => {
+  if (!response.ok) {
+    const errorData = await response.json();
+    const error: ApiError = {
+      code: response.status,
+      resultMessage: `Network response was not ok: ${response.statusText}. Data: ${JSON.stringify(errorData)}`,
+    };
+    throw error;
   }
-}
+  return await response.json();
+};
 
-export function createResourceUrl(path: string): string {
-  const BACKEND_URL = process.env.BACKEND_URL ?? 'http://localhost:8001';
-  return `${BACKEND_URL}${path.startsWith('/') ? path : '/' + path}`;
-}
+const handleError = (error: unknown) => {
+  if (error instanceof Error) {
+    showError(
+      { code: 500, resultMessage: error.message },
+      'An error occurred while processing your request.'
+    );
+  } else {
+    showError(
+      error as ApiError,
+      'An error occurred while processing your request.'
+    );
+  }
+  throw error;
+};
+
+const makeRequest = async <T>(
+  url: string,
+  options: RequestInit = {},
+  cacheOptions = { useCache: true, invalidateCache: false }
+): Promise<ApiResponse<T>> => {
+  try {
+    // "Request interceptor" logic
+    const headers = new Headers(options.headers || {});
+    headers.set('Content-Type', 'application/json');
+    headers.set('Accept', 'application/json');
+
+    const cacheKey = url;
+    const cachedRecord = cacheOptions.useCache
+      ? cacheService.get(cacheKey)
+      : null;
+
+    if (cacheOptions.invalidateCache) {
+      cacheService.invalidateCache(BACKEND_URL);
+    }
+
+    // Add cache headers if we have a cached record
+    if (
+      cachedRecord &&
+      cacheService.isValid(cacheKey) &&
+      options.method === 'GET'
+    ) {
+      addConditionalCacheHeaders(headers, cachedRecord);
+
+      // Return from cache if valid
+      if (cacheOptions.useCache) {
+        logCacheStatus(cacheKey, cachedRecord);
+        return cachedRecord.data as ApiResponse<T>;
+      }
+    }
+
+    // Make the request with the modified headers
+    const response = await fetch(url, {
+      ...options,
+      headers,
+      mode: 'cors',
+    });
+
+    // Handle 304 Not Modified
+    if (response.status === 304 && cachedRecord) {
+      cacheService.updateTimestamp(cacheKey);
+      logCacheStatus(cacheKey, cachedRecord, response);
+      return cachedRecord.data as ApiResponse<T>;
+    }
+
+    // "Response interceptor" logic
+    if (response.ok) {
+      const responseClone = response.clone();
+      const data = await handleResponse<T>(response);
+
+      // Save to cache for GET requests
+      if (options.method === 'GET' || !options.method) {
+        saveToCache(cacheKey, data, responseClone);
+        logCacheStatus(cacheKey, cachedRecord, response);
+      }
+
+      return data;
+    }
+
+    throw new Error(`HTTP error! status: ${response.status}`);
+  } catch (error: unknown) {
+    handleError(error);
+    throw error;
+  }
+};
+
+  invalidateCache: (taskId?: number) =>
+    cacheService.invalidateCache(BACKEND_URL, taskId),
+};
