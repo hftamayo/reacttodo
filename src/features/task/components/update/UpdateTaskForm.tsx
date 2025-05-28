@@ -5,16 +5,18 @@ import { Checkbox } from '@/shared/components/ui/checkbox/Checkbox';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { formStyles } from '@/shared/utils/twind/styles';
 import { useTaskUpdate } from '../../hooks/useTaskUpdate';
-import { TaskCardFormProps } from '@/shared/types/task.type';
+import { TaskUpdateProps } from '@/shared/types/task.type';
 
-export const UpdateTaskForm: FC<TaskCardFormProps> = ({
+export const UpdateTaskForm: FC<TaskUpdateProps> = ({
   initialData,
   onCancel,
+  onUpdateTask,
 }) => {
   const { group } = useTranslation('updateTaskForm');
   const { register, errors, isSubmitting, handleFormSubmit } = useTaskUpdate({
     initialData,
     onSuccess: onCancel,
+    onUpdateTask,
   });
 
   if (!group) {
