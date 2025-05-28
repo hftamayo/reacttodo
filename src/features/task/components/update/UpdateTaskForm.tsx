@@ -7,10 +7,11 @@ import { formStyles } from '@/shared/utils/twind/styles';
 import { useTaskUpdate } from '../../hooks/useTaskUpdate';
 import { TaskUpdateProps } from '@/shared/types/task.type';
 
-export const UpdateTaskForm: FC<TaskUpdateProps> = ({
+export const UpdateTaskForm: FC<TaskUpdateProps & { isUpdating?: boolean }> = ({
   initialData,
   onCancel,
   onUpdateTask,
+  isUpdating = false,
 }) => {
   const { group } = useTranslation('updateTaskForm');
   const { register, errors, isSubmitting, handleFormSubmit } = useTaskUpdate({
@@ -22,6 +23,8 @@ export const UpdateTaskForm: FC<TaskUpdateProps> = ({
   if (!group) {
     return null;
   }
+
+  const isDisabled = isSubmitting || isUpdating;
 
   return (
     <form
@@ -38,6 +41,7 @@ export const UpdateTaskForm: FC<TaskUpdateProps> = ({
             id="txttitle"
             className={formStyles.input}
             {...register('title', { required: 'Title is required' })}
+            disabled={isDisabled}
           />
           {errors.title && (
             <span className={formStyles.error}>{errors.title.message}</span>
@@ -52,6 +56,7 @@ export const UpdateTaskForm: FC<TaskUpdateProps> = ({
             id="txtdescription"
             className={formStyles.input}
             {...register('description')}
+            disabled={isDisabled}
           />
         </div>
 
@@ -60,7 +65,7 @@ export const UpdateTaskForm: FC<TaskUpdateProps> = ({
             <Label className={formStyles.label} htmlFor="txtdone">
               {group.lblTaskStatus}
             </Label>
-            <Checkbox id="txtdone" {...register('done')} />
+            <Checkbox id="txtdone" {...register('done')} disabled={isDisabled} />
           </div>
         </div>
       </div>
@@ -70,15 +75,16 @@ export const UpdateTaskForm: FC<TaskUpdateProps> = ({
           type="button"
           onClick={onCancel}
           className={formStyles.cancelButton}
+          disabled={isDisabled}
         >
           {group.btnCancel}
         </button>
         <button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isDisabled}
           className={formStyles.submitButton}
         >
-          {group.btnUpdate}
+          {isDisabled ? group.btnUpdating || 'Updating...' : group.btnUpdate}
         </button>
       </div>
     </form>

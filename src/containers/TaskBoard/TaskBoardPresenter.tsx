@@ -8,7 +8,7 @@ import CustomModal from '@/shared/components/ui/modal/CustomModal';
 import { taskBoard } from '@/shared/utils/twind/styles';
 import { TaskProps, TaskBoardPresenterProps } from '@/shared/types/api.type';
 import { showError } from '@/shared/services/notification/notificationService';
-import { setLastOperation } from '@/features/task/store/taskSlice';
+import { LoadingSpinner } from '@/shared/components/ui/loading/LoadingSpinner';
 
 export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
   tasks,
@@ -40,16 +40,18 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
     if (error) {
       showError(error.message);
       return (
-        <p className={taskBoard.error}>
-          Failed to load data. Incident reported
-        </p>
+        <div className="flex flex-col items-center justify-center p-4 text-red-600">
+          <p className="font-semibold">Failed to load data</p>
+          <p className="text-sm">Please try refreshing the page</p>
+        </div>
       );
     }
 
     if (!tasks || tasks.length === 0) {
       return (
-        <div className="flex justify-center p-4">
-          <p>No ongoing tasks</p>
+        <div className="flex flex-col items-center justify-center p-4 text-gray-600">
+          <p className="font-semibold">No tasks found</p>
+          <p className="text-sm">Add a new task to get started</p>
         </div>
       );
     }
@@ -60,7 +62,7 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
     );
 
     return (
-      <ul>
+      <ul className="space-y-2">
         {validTasks.map((task) => (
           <TaskRowContainer
             key={task.id}
@@ -84,42 +86,58 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
     isDeleting,
   ]);
 
+  const renderContent = () => {
+    if (isLoading && !tasks.length) {
+      return (
+        <div className="flex flex-col items-center justify-center py-8">
+          <LoadingSpinner size="lg" />
+          <p className="mt-4 text-gray-600">Loading tasks...</p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-4">
+        {taskList}
+        {pagination.totalPages > 1 && (
+          <OffsetPagination
+            currentPage={pagination.currentPage}
+            totalPages={pagination.totalPages}
+            onPageChange={onPageChange}
+            className="mt-4"
+            isLoading={isLoading}
+            isFirstPage={pagination.isFirstPage}
+            isLastPage={pagination.isLastPage}
+            hasMore={pagination.hasMore}
+            hasPrev={pagination.hasPrev}
+          />
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className={taskBoard.bg}>
       <div className={taskBoard.container}>
-        <div className="relative flex items-center justify-center mb-4">
+        <div className="relative flex items-center justify-between mb-6">
           <h3 className="text-3xl font-bold text-[var(--text-color)]">
             Task Board
           </h3>
           <button
             onClick={onClose}
-            className="absolute right-0 inline-flex items-center justify-center p-2 rounded-full hover:bg-gray-200 transition-colors duration-200"
+            className="inline-flex items-center justify-center p-2 rounded-full hover:bg-gray-200 transition-colors duration-200"
             aria-label="Close task board"
           >
             <FaTimes className="w-5 h-5 text-gray-600" />
           </button>
         </div>
-        <AddTaskForm onAddTask={onAddTask} isAddingTask={isAdding} />
-        {isLoading && !tasks.length ? (
-          <div className="flex justify-center py-4">
-            <p>Loading tasks...</p>
-          </div>
-        ) : (
-          <div className="mb-4">
-            {taskList}
-            <OffsetPagination
-              currentPage={pagination.currentPage}
-              totalPages={pagination.totalPages}
-              onPageChange={onPageChange}
-              className="mt-4"
-              isLoading={isLoading}
-              isFirstPage={pagination.isFirstPage}
-              isLastPage={pagination.isLastPage}
-              hasMore={pagination.hasMore}
-              hasPrev={pagination.hasPrev}
-            />
-          </div>
-        )}
+
+        <div className="mb-6">
+          <AddTaskForm onAddTask={onAddTask} isAddingTask={isAdding} />
+        </div>
+
+        {renderContent()}
+
         <CustomModal
           isOpen={!!editingTask}
           onDismiss={handleCloseModal}
@@ -130,14 +148,23 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
               {...editingTask}
               onClose={handleCloseModal}
               onUpdateTask={onUpdateTask}
+              isUpdating={isUpdating}
             />
           )}
         </CustomModal>
 
         {pagination.totalCount > 0 && (
-          <p className={taskBoard.count}>
-            {`Tasks summary: ${pagination.totalCount} total, ${pagination.completedCount || 0} completed`}
-          </p>
+          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+            <p className="text-sm text-gray-600">
+              <span className="font-semibold">Total Tasks:</span> {pagination.totalCount}
+            </p>
+            <p className="text-sm text-gray-600">
+              <span className="font-semibold">Completed:</span> {pagination.completedCount || 0}
+            </p>
+            <p className="text-sm text-gray-600">
+              <span className="font-semibold">Remaining:</span> {pagination.totalCount - (pagination.completedCount || 0)}
+            </p>
+          </div>
         )}
       </div>
     </div>

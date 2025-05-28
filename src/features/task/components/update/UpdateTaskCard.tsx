@@ -11,7 +11,7 @@ import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { TaskCardProps } from '@/shared/types/task.type';
 import { UpdateTaskForm } from './UpdateTaskForm';
 
-export const UpdateTaskCard: React.FC<TaskCardProps> = ({
+export const UpdateTaskCard: React.FC<TaskCardProps & { isUpdating?: boolean }> = ({
   id,
   title,
   description,
@@ -19,6 +19,7 @@ export const UpdateTaskCard: React.FC<TaskCardProps> = ({
   owner,
   onClose = () => {},
   onUpdateTask,
+  isUpdating = false,
 }) => {
   const { group } = useTranslation('updateTaskForm');
 
@@ -53,6 +54,7 @@ export const UpdateTaskCard: React.FC<TaskCardProps> = ({
             onClick={onClose}
             className={formStyles.closeButton}
             aria-label="Close Form"
+            disabled={isUpdating}
           >
             <FaTimes className={formStyles.closeIcon} />
           </button>
@@ -63,6 +65,7 @@ export const UpdateTaskCard: React.FC<TaskCardProps> = ({
           initialData={initialData}
           onCancel={onClose}
           onUpdateTask={handleUpdateTask}
+          isUpdating={isUpdating}
         />
       </CardContent>
     </Card>
