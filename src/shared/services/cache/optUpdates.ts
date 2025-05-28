@@ -8,7 +8,7 @@ import {
   ApiResponse,
 } from '@/shared/types/api.type';
 
-export const taskCacheUtils = {
+export const optUpdates = {
   /**
    * Optimistically adds a task to the cache
    */
