@@ -14,7 +14,7 @@ export type TaskCardProps = TaskProps & {
   onClose?: () => void;
 };
 
-export type TaskCardFormProps = {
+export type TaskUpdateProps = {
   initialData: TaskProps;
   onCancel: () => void;
   onUpdateTask: (task: TaskProps) => Promise<void>;
