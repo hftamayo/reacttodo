@@ -1,0 +1,239 @@
+import { QueryClient } from '@tanstack/react-query';
+import { taskKeys } from '@/features/task/hooks/queryKeys';
+import {
+  AddTaskProps,
+  TaskProps,
+  TaskIdentifier,
+  TaskData,
+  ApiResponse,
+} from '@/shared/types/api.type';
+
+export const taskCacheUtils = {
+  /**
+   * Optimistically adds a task to the cache
+   */
+  optimisticAddTask: (queryClient: QueryClient, newTask: AddTaskProps) => {
+    // Get current query cache for first page
+    const previousTasks = queryClient.getQueryData<ApiResponse<TaskData>>(
+      taskKeys.list({ page: 1, limit: 10 })
+    );
+
+    // Create an optimistic task with temporary ID and default values
+    const optimisticTask: TaskProps = {
+      id: Date.now(), // Temporary ID
+      title: newTask.title,
+      description: '',
+      done: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      owner: newTask.owner,
+    };
+
+    // Add the optimistic task to the cache
+    if (previousTasks?.data) {
+      queryClient.setQueryData(taskKeys.list({ page: 1, limit: 10 }), {
+        ...previousTasks,
+        data: {
+          ...previousTasks.data,
+          tasks: [optimisticTask, ...previousTasks.data.tasks],
+          pagination: {
+            ...previousTasks.data.pagination,
+            totalCount: previousTasks.data.pagination.totalCount + 1,
+          },
+        },
+      });
+    }
+
+    return { previousTasks };
+  },
+
+  /**
+   * Optimistically updates a task in the cache
+   */
+  optimisticUpdateTask: (queryClient: QueryClient, updatedTask: TaskProps) => {
+    // Get current query cache for task detail
+    const previousTask = queryClient.getQueryData<ApiResponse<TaskData>>(
+      taskKeys.detail(updatedTask.id)
+    );
+
+    // Get current query cache for all task lists that might show this task
+    const previousLists: { [key: string]: ApiResponse<TaskData> } = {};
+
+    // Store all potentially affected list queries for rollback
+    const listQueries = queryClient.getQueriesData<ApiResponse<TaskData>>({
+      queryKey: taskKeys.lists(),
+    });
+
+    listQueries.forEach(([queryKey, data]) => {
+      if (data) {
+        previousLists[JSON.stringify(queryKey)] = data;
+      }
+    });
+
+    // Update the task in the detail view
+    if (previousTask) {
+      queryClient.setQueryData(taskKeys.detail(updatedTask.id), {
+        ...previousTask,
+        data: {
+          ...previousTask.data,
+          tasks: [
+            {
+              ...previousTask.data?.tasks[0],
+              ...updatedTask,
+              updatedAt: new Date().toISOString(),
+            },
+          ],
+        },
+      });
+    }
+
+    // Update the task in all list views
+    listQueries.forEach(([queryKey, data]) => {
+      if (data?.data?.tasks) {
+        const tasks = [...data.data.tasks];
+        const taskIndex = tasks.findIndex((t) => t.id === updatedTask.id);
+
+        if (taskIndex !== -1) {
+          tasks[taskIndex] = {
+            ...tasks[taskIndex],
+            ...updatedTask,
+            updatedAt: new Date().toISOString(),
+          };
+
+          queryClient.setQueryData(queryKey, {
+            ...data,
+            data: {
+              ...data.data,
+              tasks,
+            },
+          });
+        }
+      }
+    });
+
+    return { previousTask, previousLists };
+  },
+
+  /**
+   * Optimistically toggles a task's done status in the cache
+   */
+  optimisticToggleTask: (queryClient: QueryClient, taskId: TaskIdentifier) => {
+    // Store previous values
+    const previousTask = queryClient.getQueryData<ApiResponse<TaskData>>(
+      taskKeys.detail(taskId.id)
+    );
+
+    const previousLists: { [key: string]: ApiResponse<TaskData> } = {};
+
+    // Store all potentially affected list queries
+    const listQueries = queryClient.getQueriesData<ApiResponse<TaskData>>({
+      queryKey: taskKeys.lists(),
+    });
+
+    listQueries.forEach(([queryKey, data]) => {
+      if (data) {
+        previousLists[JSON.stringify(queryKey)] = data;
+      }
+    });
+
+    // Optimistically update the detail view
+    if (previousTask?.data?.tasks?.[0]) {
+      const currentTask = previousTask.data.tasks[0];
+
+      queryClient.setQueryData(taskKeys.detail(taskId.id), {
+        ...previousTask,
+        data: {
+          ...previousTask.data,
+          tasks: [
+            {
+              ...currentTask,
+              done: !currentTask.done,
+              updatedAt: new Date().toISOString(),
+            },
+          ],
+        },
+      });
+    }
+
+    // Optimistically update all list views
+    listQueries.forEach(([queryKey, data]) => {
+      if (data?.data?.tasks) {
+        const tasks = [...data.data.tasks];
+        const taskIndex = tasks.findIndex((t) => t.id === taskId.id);
+
+        if (taskIndex !== -1) {
+          tasks[taskIndex] = {
+            ...tasks[taskIndex],
+            done: !tasks[taskIndex].done,
+            updatedAt: new Date().toISOString(),
+          };
+
+          queryClient.setQueryData(queryKey, {
+            ...data,
+            data: {
+              ...data.data,
+              tasks,
+            },
+          });
+        }
+      }
+    });
+
+    return { previousTask, previousLists };
+  },
+
+  /**
+   * Optimistically removes a task from the cache
+   */
+  optimisticDeleteTask: (queryClient: QueryClient, id: number) => {
+    // Store previous data for potential rollback
+    const previousLists: { [key: string]: ApiResponse<TaskData> } = {};
+
+    // Store all potentially affected list queries
+    const listQueries = queryClient.getQueriesData<ApiResponse<TaskData>>({
+      queryKey: taskKeys.lists(),
+    });
+
+    listQueries.forEach(([queryKey, data]) => {
+      if (data) {
+        previousLists[JSON.stringify(queryKey)] = data;
+      }
+    });
+
+    // Remove the task from all list views
+    listQueries.forEach(([queryKey, data]) => {
+      if (data?.data?.tasks) {
+        const tasks = data.data.tasks.filter((t) => t.id !== id);
+
+        queryClient.setQueryData(queryKey, {
+          ...data,
+          data: {
+            ...data.data,
+            tasks,
+            pagination: {
+              ...data.data.pagination,
+              totalCount: data.data.pagination.totalCount - 1,
+            },
+          },
+        });
+      }
+    });
+
+    // Remove the task detail from cache
+    queryClient.removeQueries({ queryKey: taskKeys.detail(id) });
+
+    return { previousLists };
+  },
+
+  /**
+   * Restores previous list data to the cache (for error handling)
+   */
+  restoreLists: (
+    queryClient: QueryClient,
+    previousLists: { [key: string]: ApiResponse<TaskData> }
+  ) => {
+    Object.entries(previousLists).forEach(([queryKeyStr, data]) => {
+      queryClient.setQueryData(JSON.parse(queryKeyStr), data);
+    });
+  },
+};
