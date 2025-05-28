@@ -155,27 +155,36 @@ export type TaskBoardState = {
 };
 
 export type TaskBoardPresenterProps = {
+  // Data
   tasks: TaskProps[];
-  isLoading: boolean;
-  totalTasks: number;
-  completedTasks: number;
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
-  error?: Error;
-  onClose: () => void;
-  mutations: ReturnType<typeof useTaskMutations>;
-  // New optional properties to enhance UI
-  cacheInfo?: {
-    isCached: boolean;
-    lastFetched: string;
-    remainingTTL: number;
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    totalCount: number;
+    completedCount?: number;
+    isFirstPage: boolean;
+    isLastPage: boolean;
+    hasMore: boolean;
+    hasPrev: boolean;
   };
-  // Enhanced pagination flags
-  isFirstPage: boolean;
-  isLastPage: boolean;
-  hasMore: boolean;
-  hasPrev: boolean;
+
+  // Loading states
+  isLoading: boolean;
+  isAdding?: boolean;
+  isUpdating?: boolean;
+  isToggling?: boolean;
+  isDeleting?: boolean;
+
+  // Error handling
+  error?: Error;
+
+  // Callbacks
+  onAddTask: (task: AddTaskProps) => Promise<void>;
+  onUpdateTask: (task: TaskProps) => Promise<void>;
+  onToggleTask: (id: number) => Promise<void>;
+  onDeleteTask: (id: number) => Promise<void>;
+  onPageChange: (page: number) => void;
+  onClose: () => void;
 };
 
 export type OffsetPaginationProps = {
