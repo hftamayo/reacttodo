@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { taskOps } from '@/shared/services/api/apiClient';
 import { taskKeys } from './queryKeys';
-import { optUpdates } from '@/shared/services/cache/optUpdates';
+import { optUpdates } from '@/features/task/services/optUpdates';
 import {
   AddTaskProps,
   TaskProps,
