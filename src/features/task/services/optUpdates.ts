@@ -6,94 +6,89 @@ import {
   TaskIdentifier,
   TaskData,
   ApiResponse,
+  PaginationParams
 } from '@/shared/types/api.type';
+
+type OptimisticUpdateResult = {
+  previousData: ApiResponse<TaskData> | undefined;
+};
+
+type OptimisticListUpdateResult = {
+  previousData: { [key: string]: ApiResponse<TaskData> };
+};
+
+type OptimisticDeleteResult = OptimisticListUpdateResult & {
+  shouldNavigateToPreviousPage: boolean;
+  emptyPageNumber: number;
+};
 
 export const optUpdates = {
   /**
    * Optimistically adds a task to the cache
    */
-  optimisticAddTask: (queryClient: QueryClient, newTask: AddTaskProps) => {
-    // Get current query cache for first page
-    const previousTasks = queryClient.getQueryData<ApiResponse<TaskData>>(
-      taskKeys.list({ page: 1, limit: 10 })
+  optimisticAddTask: (
+    queryClient: QueryClient, 
+    newTask: AddTaskProps,
+    paginationParams: PaginationParams
+  ): OptimisticUpdateResult => {
+    // Get current query cache for the current page
+    const currentPageData = queryClient.getQueryData<ApiResponse<TaskData>>(
+      taskKeys.list(paginationParams)
     );
 
-    // Create an optimistic task with temporary ID and default values
+    // Create an optimistic task
     const optimisticTask: TaskProps = {
       id: Date.now(), // Temporary ID
       title: newTask.title,
-      description: '',
+      description: '', // Default empty description since it's not in AddTaskProps
       done: false,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       owner: newTask.owner,
     };
 
-    // Add the optimistic task to the cache
-    if (previousTasks?.data) {
-      queryClient.setQueryData(taskKeys.list({ page: 1, limit: 10 }), {
-        ...previousTasks,
+    // Update the current page if it exists
+    if (currentPageData?.data) {
+      queryClient.setQueryData(taskKeys.list(paginationParams), {
+        ...currentPageData,
         data: {
-          ...previousTasks.data,
-          tasks: [optimisticTask, ...previousTasks.data.tasks],
+          ...currentPageData.data,
+          tasks: [optimisticTask, ...currentPageData.data.tasks],
           pagination: {
-            ...previousTasks.data.pagination,
-            totalCount: previousTasks.data.pagination.totalCount + 1,
+            ...currentPageData.data.pagination,
+            totalCount: currentPageData.data.pagination.totalCount + 1,
             totalPages: Math.ceil(
-              (previousTasks.data.pagination.totalCount + 1) /
-                previousTasks.data.pagination.limit
+              (currentPageData.data.pagination.totalCount + 1) /
+                currentPageData.data.pagination.limit
             ),
           },
         },
       });
     }
 
-    return { previousTasks };
+    return { previousData: currentPageData };
   },
 
   /**
    * Optimistically updates a task in the cache
    */
-  optimisticUpdateTask: (queryClient: QueryClient, updatedTask: TaskProps) => {
-    // Get current query cache for task detail
-    const previousTask = queryClient.getQueryData<ApiResponse<TaskData>>(
-      taskKeys.detail(updatedTask.id)
-    );
-
-    // Get current query cache for all task lists that might show this task
-    const previousLists: { [key: string]: ApiResponse<TaskData> } = {};
-
-    // Store all potentially affected list queries for rollback
+  optimisticUpdateTask: (
+    queryClient: QueryClient, 
+    updatedTask: TaskProps,
+    paginationParams: PaginationParams
+  ): OptimisticListUpdateResult => {
+    // Get all list queries that might contain this task
     const listQueries = queryClient.getQueriesData<ApiResponse<TaskData>>({
       queryKey: taskKeys.lists(),
     });
 
-    listQueries.forEach(([queryKey, data]) => {
-      if (data) {
-        previousLists[JSON.stringify(queryKey)] = data;
-      }
-    });
-
-    // Update the task in the detail view
-    if (previousTask) {
-      queryClient.setQueryData(taskKeys.detail(updatedTask.id), {
-        ...previousTask,
-        data: {
-          ...previousTask.data,
-          tasks: [
-            {
-              ...previousTask.data?.tasks[0],
-              ...updatedTask,
-              updatedAt: new Date().toISOString(),
-            },
-          ],
-        },
-      });
-    }
+    const previousData: { [key: string]: ApiResponse<TaskData> } = {};
 
     // Update the task in all list views
     listQueries.forEach(([queryKey, data]) => {
       if (data?.data?.tasks) {
+        previousData[JSON.stringify(queryKey)] = data;
+        
         const tasks = [...data.data.tasks];
         const taskIndex = tasks.findIndex((t) => t.id === updatedTask.id);
 
@@ -115,53 +110,28 @@ export const optUpdates = {
       }
     });
 
-    return { previousTask, previousLists };
+    return { previousData };
   },
 
   /**
-   * Optimistically toggles a task's done status in the cache
+   * Optimistically toggles a task's done status
    */
-  optimisticToggleTask: (queryClient: QueryClient, taskId: TaskIdentifier) => {
-    // Store previous values
-    const previousTask = queryClient.getQueryData<ApiResponse<TaskData>>(
-      taskKeys.detail(taskId.id)
-    );
-
-    const previousLists: { [key: string]: ApiResponse<TaskData> } = {};
-
-    // Store all potentially affected list queries
+  optimisticToggleTask: (
+    queryClient: QueryClient, 
+    taskId: TaskIdentifier,
+    paginationParams: PaginationParams
+  ): OptimisticListUpdateResult => {
     const listQueries = queryClient.getQueriesData<ApiResponse<TaskData>>({
       queryKey: taskKeys.lists(),
     });
 
-    listQueries.forEach(([queryKey, data]) => {
-      if (data) {
-        previousLists[JSON.stringify(queryKey)] = data;
-      }
-    });
+    const previousData: { [key: string]: ApiResponse<TaskData> } = {};
 
-    // Optimistically update the detail view
-    if (previousTask?.data?.tasks?.[0]) {
-      const currentTask = previousTask.data.tasks[0];
-
-      queryClient.setQueryData(taskKeys.detail(taskId.id), {
-        ...previousTask,
-        data: {
-          ...previousTask.data,
-          tasks: [
-            {
-              ...currentTask,
-              done: !currentTask.done,
-              updatedAt: new Date().toISOString(),
-            },
-          ],
-        },
-      });
-    }
-
-    // Optimistically update all list views
+    // Update all list views
     listQueries.forEach(([queryKey, data]) => {
       if (data?.data?.tasks) {
+        previousData[JSON.stringify(queryKey)] = data;
+        
         const tasks = [...data.data.tasks];
         const taskIndex = tasks.findIndex((t) => t.id === taskId.id);
 
@@ -183,47 +153,37 @@ export const optUpdates = {
       }
     });
 
-    return { previousTask, previousLists };
+    return { previousData };
   },
 
   /**
    * Optimistically removes a task from the cache
    */
-  optimisticDeleteTask: (queryClient: QueryClient, id: number) => {
-    // Store previous data for potential rollback
-    const previousLists: { [key: string]: ApiResponse<TaskData> } = {};
-
-    // Variables to track empty page detection
-    let shouldNavigateToPreviousPage = false;
-    let emptyPageNumber = 0;
-
-    // Store all potentially affected list queries
+  optimisticDeleteTask: (
+    queryClient: QueryClient, 
+    id: number,
+    paginationParams: PaginationParams
+  ): OptimisticDeleteResult => {
     const listQueries = queryClient.getQueriesData<ApiResponse<TaskData>>({
       queryKey: taskKeys.lists(),
     });
 
-    listQueries.forEach(([queryKey, data]) => {
-      if (data) {
-        previousLists[JSON.stringify(queryKey)] = data;
-      }
-    });
+    const previousData: { [key: string]: ApiResponse<TaskData> } = {};
+    let shouldNavigateToPreviousPage = false;
+    let emptyPageNumber = 0;
 
-    // Remove the task from all list views
+    // Update all list views
     listQueries.forEach(([queryKey, data]) => {
       if (data?.data?.tasks) {
+        previousData[JSON.stringify(queryKey)] = data;
+        
         const tasks = data.data.tasks.filter((t) => t.id !== id);
-
-        // Check if task was actually removed from this page
         const wasRemoved = tasks.length < data.data.tasks.length;
 
-        // Extract page information from query key
-        const keyObj = JSON.parse(JSON.stringify(queryKey));
-        const page = keyObj[1]?.page || 1;
-
-        // Calculate if this page will be empty after deletion
-        if (wasRemoved && tasks.length === 0 && page > 1) {
+        // Check if this page will be empty after deletion
+        if (wasRemoved && tasks.length === 0 && paginationParams.page > 1) {
           shouldNavigateToPreviousPage = true;
-          emptyPageNumber = page;
+          emptyPageNumber = paginationParams.page;
         }
 
         queryClient.setQueryData(queryKey, {
@@ -248,11 +208,8 @@ export const optUpdates = {
       }
     });
 
-    // Remove the task detail from cache
-    queryClient.removeQueries({ queryKey: taskKeys.detail(id) });
-
     return {
-      previousLists,
+      previousData,
       shouldNavigateToPreviousPage,
       emptyPageNumber,
     };
