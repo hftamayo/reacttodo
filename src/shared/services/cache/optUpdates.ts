@@ -39,6 +39,10 @@ export const optUpdates = {
           pagination: {
             ...previousTasks.data.pagination,
             totalCount: previousTasks.data.pagination.totalCount + 1,
+            totalPages: Math.ceil(
+              (previousTasks.data.pagination.totalCount + 1) /
+                previousTasks.data.pagination.limit
+            ),
           },
         },
       });
