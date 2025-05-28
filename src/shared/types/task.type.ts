@@ -10,16 +10,6 @@ export type FullTask = {
 
 export type TaskProps = Omit<FullTask, 'createdAt' | 'updatedAt'>;
 
-export type TaskBaseProps = {
-  onClose?: () => void;
-};
-
-// Props for UpdateTaskCard component
-export type TaskCardProps = TaskProps &
-  TaskBaseProps & {
-    onUpdateTask?: (task: TaskProps) => Promise<void>;
-  };
-
 // Props for the UpdateTaskForm component
 export type TaskUpdateProps = {
   initialData: TaskProps;
@@ -27,9 +17,16 @@ export type TaskUpdateProps = {
   onUpdateTask: (task: TaskProps) => Promise<void>;
 };
 
+// Props for UpdateTaskCard component
+export type TaskCardProps = TaskProps & {
+  onClose?: () => void;
+  onUpdateTask?: TaskUpdateProps['onUpdateTask'];
+};
+
 // Props for the useTaskUpdate hook
-export type UseUpdateTaskProps = {
-  initialData: TaskProps;
+export type UseUpdateTaskProps = Pick<
+  TaskUpdateProps,
+  'initialData' | 'onUpdateTask'
+> & {
   onSuccess?: () => void;
-  onUpdateTask: (task: TaskProps) => Promise<void>;
 };
