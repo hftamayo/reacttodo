@@ -7,8 +7,6 @@ import { Input } from '@/shared/components/ui/input/Input';
 import { Button } from '@/shared/components/ui/button/Button';
 import { taskRow } from '../../../shared/utils/twind/styles';
 import { DeleteDialog } from '@/shared/components/dialogs/DeleteDialog';
-import { useSelector } from 'react-redux';
-import { selectIsTaskOptimistic } from '../store/taskSelectors';
 
 interface TaskRowProps extends TaskProps {
   onEdit: (task: TaskProps) => void;
@@ -16,6 +14,7 @@ interface TaskRowProps extends TaskProps {
   onDelete: () => Promise<void>;
   isToggling: boolean;
   isDeleting: boolean;
+  isOptimistic?: boolean;
 }
 
 export const TaskRow: React.FC<TaskRowProps> = ({
@@ -29,11 +28,11 @@ export const TaskRow: React.FC<TaskRowProps> = ({
   onDelete,
   isToggling,
   isDeleting,
+  isOptimistic,
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { text: deleteRowButton } = useTranslation('deleteRowButton');
   const { text: updateRowButton } = useTranslation('updateRowButton');
-  const isOptimistic = useSelector(selectIsTaskOptimistic(id));
 
   const handleDeleteTask = async () => {
     await onDelete();
