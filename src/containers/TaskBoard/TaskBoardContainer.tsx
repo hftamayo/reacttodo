@@ -4,7 +4,11 @@ import { TaskBoardPresenter } from './TaskBoardPresenter';
 import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import { useErrorHandler } from '@/shared/hooks/useErrorHandler';
 import { useTaskBoard } from '@/features/task/hooks/useTaskBoard';
-import { AddTaskProps, TaskProps, PaginationParams } from '@/shared/types/api.type';
+import {
+  AddTaskProps,
+  TaskProps,
+  PaginationParams,
+} from '@/shared/types/api.type';
 import { useSearchParams } from '@/shared/hooks/useSearchParams';
 
 export const TaskBoardContainer: React.FC = () => {
@@ -35,10 +39,10 @@ export const TaskBoardContainer: React.FC = () => {
 
   const handlePageChange = (newPage: number) => {
     if (newPage < 1 || newPage > pagination.totalPages) return;
-    
+
     // Update URL with new page
     setSearchParam('page', newPage.toString());
-    
+
     // Update current page in the application layer
     setCurrentPage(newPage);
   };
@@ -51,7 +55,7 @@ export const TaskBoardContainer: React.FC = () => {
     try {
       await mutations.addTask.mutateAsync(newTask);
     } catch (error) {
-      handleError(error as Error);
+      handleError(error as Error, { componentStack: '' });
     }
   };
 
@@ -59,7 +63,7 @@ export const TaskBoardContainer: React.FC = () => {
     try {
       await mutations.updateTask.mutateAsync(task);
     } catch (error) {
-      handleError(error as Error);
+      handleError(error as Error, { componentStack: '' });
     }
   };
 
@@ -67,7 +71,7 @@ export const TaskBoardContainer: React.FC = () => {
     try {
       await mutations.toggleTaskDone.mutateAsync({ id });
     } catch (error) {
-      handleError(error as Error);
+      handleError(error as Error, { componentStack: '' });
     }
   };
 
@@ -75,7 +79,7 @@ export const TaskBoardContainer: React.FC = () => {
     try {
       await mutations.deleteTask.mutateAsync(id);
     } catch (error) {
-      handleError(error as Error);
+      handleError(error as Error, { componentStack: '' });
     }
   };
 
