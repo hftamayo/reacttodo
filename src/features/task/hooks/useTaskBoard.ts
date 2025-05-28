@@ -34,8 +34,8 @@ export const useTaskBoard = ({
       limit,
     });
 
-  // Access task mutation hooks
-  const mutations = useTaskMutations();
+  // Access task mutation hooks with pagination params
+  const mutations = useTaskMutations({ page, limit });
 
   // Access prefetching functionality
   const { prefetchTasksPage } = useTaskPrefetching();
@@ -58,7 +58,6 @@ export const useTaskBoard = ({
       totalCount: paginationData?.totalCount ?? 0,
       limit: paginationData?.limit ?? limit,
       order: paginationData?.order ?? 'desc',
-      // Adding the additional required properties
       hasMore: currentPage < totalPages,
       hasPrev: currentPage > 1,
       isFirstPage: currentPage === 1,
@@ -74,7 +73,7 @@ export const useTaskBoard = ({
     return {
       total: totalTasks,
       completed: completedTasks,
-      lastUpdated: data?.data?.lastModified // Using lastModified from TaskData
+      lastUpdated: data?.data?.lastModified
         ? new Date(data.data.lastModified).toLocaleString()
         : new Date().toLocaleString(),
     };
@@ -86,10 +85,9 @@ export const useTaskBoard = ({
       taskKeys.list({ page, limit })
     );
 
-    // Calculate a simulated remainingTTL for compatibility
     const now = Date.now();
     const lastFetched = queryState?.dataUpdatedAt ?? now;
-    const staleTime = 5 * 60 * 1000; // 5 minutes in milliseconds (from your queryClient config)
+    const staleTime = 5 * 60 * 1000; // 5 minutes
     const elapsedTime = now - lastFetched;
     const remainingTTL = Math.max(
       0,
@@ -106,14 +104,27 @@ export const useTaskBoard = ({
     };
   }, [queryClient, page, limit]);
 
+  // Handle page changes
+  const setCurrentPage = (newPage: number) => {
+    if (newPage < 1 || newPage > pagination.totalPages) return;
+    
+    // Check if the new page will be empty
+    const newPageData = queryClient.getQueryData(
+      taskKeys.list({ page: newPage, limit })
+    );
+    
+    if (!newPageData) {
+      // Prefetch the page if not in cache
+      prefetchTasksPage({ page: newPage, limit });
+    }
+  };
+
   // Prefetch adjacent pages for smoother pagination
   useEffect(() => {
-    // Prefetch next page if not on last page
     if (pagination.hasMore && !isLoading) {
       prefetchTasksPage({ page: page + 1, limit });
     }
 
-    // Prefetch previous page if not on first page
     if (pagination.hasPrev && !isLoading) {
       prefetchTasksPage({ page: page - 1, limit });
     }
@@ -147,7 +158,7 @@ export const useTaskBoard = ({
   return {
     tasks,
     isLoading,
-    error, // error is already correctly typed
+    error,
     pagination,
     taskStats,
     mutations,
@@ -155,6 +166,7 @@ export const useTaskBoard = ({
     refetch: () => {
       refetch();
     },
-    ref: ref as React.RefObject<HTMLElement>, // Cast to match the expected type
+    setCurrentPage,
+    ref: ref as React.RefObject<HTMLElement>,
   };
 };

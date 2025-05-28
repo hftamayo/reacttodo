@@ -151,6 +151,7 @@ export type TaskBoardState = {
     remainingTTL: number;
   };
   refetch?: () => void;
+  setCurrentPage: (page: number) => void;
   ref?: React.RefObject<HTMLElement>;
 };
 
