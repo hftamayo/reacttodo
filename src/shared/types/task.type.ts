@@ -19,3 +19,9 @@ export type TaskUpdateProps = {
   onCancel: () => void;
   onUpdateTask: (task: TaskProps) => Promise<void>;
 };
+
+export type UseUpdateTaskProps = {
+  initialData: TaskUpdateProps['initialData'];
+  onSuccess?: () => void;
+  onUpdateTask: TaskUpdateProps['onUpdateTask'];
+};
