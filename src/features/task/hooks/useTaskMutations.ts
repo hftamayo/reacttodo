@@ -17,15 +17,11 @@ export const useTaskMutations = (paginationParams: PaginationParams) => {
   const addTask = useMutation({
     mutationFn: (newTask: AddTaskProps) => taskOps.addTask(newTask),
     onMutate: async (newTask) => {
-      // Cancel any outgoing refetches
       await queryClient.cancelQueries({ queryKey: taskKeys.lists() });
-      
-      // Perform optimistic update
       return optUpdates.optimisticAddTask(queryClient, newTask, paginationParams);
     },
     onSuccess: () => {
       showSuccess('Task added successfully');
-      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
     },
     onError: (error) => {

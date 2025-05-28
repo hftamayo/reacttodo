@@ -4,18 +4,43 @@ import { TaskBoardPresenter } from './TaskBoardPresenter';
 import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import { useErrorHandler } from '@/shared/hooks/useErrorHandler';
 import { useTaskBoard } from '@/features/task/hooks/useTaskBoard';
-import { AddTaskProps, TaskProps } from '@/shared/types/api.type';
+import { AddTaskProps, TaskProps, PaginationParams } from '@/shared/types/api.type';
+import { useSearchParams } from '@/shared/hooks/useSearchParams';
 
 export const TaskBoardContainer: React.FC = () => {
   const { handleError } = useErrorHandler('TaskBoard');
   const [, setLocation] = useLocation();
+  const { getSearchParam, setSearchParam } = useSearchParams();
 
-  const { tasks, pagination, isLoading, error, mutations, setCurrentPage } =
-    useTaskBoard();
+  // Get pagination params from URL
+  const page = Number(getSearchParam('page')) || 1;
+  const limit = Number(getSearchParam('limit')) || 10;
 
-  const handlePageChange = (page: number) => {
-    if (page < 1 || page > pagination.totalPages) return;
-    setCurrentPage(page);
+  const paginationParams: PaginationParams = {
+    page,
+    limit,
+  };
+
+  const {
+    tasks,
+    pagination,
+    isLoading,
+    error,
+    mutations,
+    setCurrentPage,
+    taskStats,
+    cacheInfo,
+    refetch,
+  } = useTaskBoard(paginationParams);
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || newPage > pagination.totalPages) return;
+    
+    // Update URL with new page
+    setSearchParam('page', newPage.toString());
+    
+    // Update current page in the application layer
+    setCurrentPage(newPage);
   };
 
   const handleClose = () => {
@@ -23,20 +48,37 @@ export const TaskBoardContainer: React.FC = () => {
   };
 
   const handleAddTask = async (newTask: AddTaskProps) => {
-    await mutations.addTask.mutateAsync(newTask);
+    try {
+      await mutations.addTask.mutateAsync(newTask);
+    } catch (error) {
+      handleError(error as Error);
+    }
   };
 
   const handleUpdateTask = async (task: TaskProps) => {
-    await mutations.updateTask.mutateAsync(task);
+    try {
+      await mutations.updateTask.mutateAsync(task);
+    } catch (error) {
+      handleError(error as Error);
+    }
   };
 
   const handleToggleTask = async (id: number) => {
-    await mutations.toggleTaskDone.mutateAsync({ id });
+    try {
+      await mutations.toggleTaskDone.mutateAsync({ id });
+    } catch (error) {
+      handleError(error as Error);
+    }
   };
 
   const handleDeleteTask = async (id: number) => {
-    await mutations.deleteTask.mutateAsync(id);
+    try {
+      await mutations.deleteTask.mutateAsync(id);
+    } catch (error) {
+      handleError(error as Error);
+    }
   };
+
   return (
     <ErrorBoundary
       fallback={
@@ -51,8 +93,15 @@ export const TaskBoardContainer: React.FC = () => {
     >
       <TaskBoardPresenter
         tasks={tasks}
-        pagination={pagination}
+        pagination={{
+          ...pagination,
+          completedCount: taskStats.completed,
+        }}
         isLoading={isLoading}
+        isAdding={mutations.addTask.isPending}
+        isUpdating={mutations.updateTask.isPending}
+        isToggling={mutations.toggleTaskDone.isPending}
+        isDeleting={mutations.deleteTask.isPending}
         error={error as Error}
         onClose={handleClose}
         onAddTask={handleAddTask}
