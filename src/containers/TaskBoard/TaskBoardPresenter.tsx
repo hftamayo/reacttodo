@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { FaTimes } from 'react-icons/fa';
-import { useDispatch } from 'react-redux';
 import { AddTaskForm } from '@/features/task/components/AddTaskForm';
 import { UpdateTaskCard } from '@/features/task/components/update/UpdateTaskCard';
 import { TaskRowContainer } from '@/features/task/containers/TaskRowContainer';
@@ -13,35 +12,29 @@ import { setLastOperation } from '@/features/task/store/taskSlice';
 
 export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
   tasks,
+  pagination,
   isLoading,
-  totalTasks,
-  currentPage,
-  totalPages,
-  onPageChange,
-  onTaskDeleted,
-  completedTasks,
   error,
+  onAddTask,
+  onUpdateTask,
+  onToggleTask,
+  onDeleteTask,
+  onPageChange,
   onClose,
-  mutations,
+  isAdding = false,
+  isUpdating = false,
+  isToggling = false,
+  isDeleting = false,
 }) => {
-  const dispatch = useDispatch();
   const [editingTask, setEditingTask] = useState<TaskProps | null>(null);
 
-  const handleEdit = useCallback(
-    (task: TaskProps) => {
-      setEditingTask(task);
-      dispatch(setLastOperation({ type: 'update', taskId: task.id }));
-    },
-    [dispatch]
-  );
+  const handleEdit = useCallback((task: TaskProps) => {
+    setEditingTask(task);
+  }, []);
 
   const handleCloseModal = useCallback(() => {
     setEditingTask(null);
   }, []);
-
-  const handleTaskDeleted = useCallback((deletedTaskId: number) => {
-    onTaskDeleted?.(deletedTaskId);
-  }, [onTaskDeleted]);
 
   const taskList = useMemo(() => {
     if (error) {
@@ -73,12 +66,23 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
             key={task.id}
             task={task}
             onEdit={handleEdit}
-            onTaskDeleted={handleTaskDeleted}
+            onToggleTask={onToggleTask}
+            onDeleteTask={onDeleteTask}
+            isToggling={isToggling}
+            isDeleting={isDeleting}
           />
         ))}
       </ul>
     );
-  }, [tasks, error, handleEdit, handleTaskDeleted]);
+  }, [
+    tasks,
+    error,
+    handleEdit,
+    onToggleTask,
+    onDeleteTask,
+    isToggling,
+    isDeleting,
+  ]);
 
   return (
     <div className={taskBoard.bg}>
@@ -95,7 +99,7 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
             <FaTimes className="w-5 h-5 text-gray-600" />
           </button>
         </div>
-        <AddTaskForm mutations={mutations} />
+        <AddTaskForm onAddTask={onAddTask} isAddingTask={isAdding} />
         {isLoading && !tasks.length ? (
           <div className="flex justify-center py-4">
             <p>Loading tasks...</p>
@@ -104,11 +108,15 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
           <div className="mb-4">
             {taskList}
             <OffsetPagination
-              currentPage={currentPage}
-              totalPages={totalPages}
+              currentPage={pagination.currentPage}
+              totalPages={pagination.totalPages}
               onPageChange={onPageChange}
               className="mt-4"
               isLoading={isLoading}
+              isFirstPage={pagination.isFirstPage}
+              isLastPage={pagination.isLastPage}
+              hasMore={pagination.hasMore}
+              hasPrev={pagination.hasPrev}
             />
           </div>
         )}
@@ -118,12 +126,17 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
           aria-labelledby="update-task-modal"
         >
           {editingTask && (
-            <UpdateTaskCard {...editingTask} onClose={handleCloseModal} />
+            <UpdateTaskCard
+              {...editingTask}
+              onClose={handleCloseModal}
+              onUpdateTask={onUpdateTask}
+            />
           )}
         </CustomModal>
-        {totalTasks > 0 && (
+
+        {pagination.totalCount > 0 && (
           <p className={taskBoard.count}>
-            {`Tasks summary: ${totalTasks} actives, ${completedTasks} completed`}
+            {`Tasks summary: ${pagination.totalCount} total, ${pagination.completedCount || 0} completed`}
           </p>
         )}
       </div>

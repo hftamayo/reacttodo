@@ -54,6 +54,7 @@ export const TaskBoardContainer: React.FC = () => {
         pagination={pagination}
         isLoading={isLoading}
         error={error as Error}
+        onClose={handleClose}
         onAddTask={handleAddTask}
         onUpdateTask={handleUpdateTask}
         onToggleTask={handleToggleTask}
