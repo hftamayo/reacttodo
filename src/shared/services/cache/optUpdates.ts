@@ -193,6 +193,10 @@ export const optUpdates = {
     // Store previous data for potential rollback
     const previousLists: { [key: string]: ApiResponse<TaskData> } = {};
 
+    // Variables to track empty page detection
+    let shouldNavigateToPreviousPage = false;
+    let emptyPageNumber = 0;
+
     // Store all potentially affected list queries
     const listQueries = queryClient.getQueriesData<ApiResponse<TaskData>>({
       queryKey: taskKeys.lists(),
@@ -209,6 +213,19 @@ export const optUpdates = {
       if (data?.data?.tasks) {
         const tasks = data.data.tasks.filter((t) => t.id !== id);
 
+        // Check if task was actually removed from this page
+        const wasRemoved = tasks.length < data.data.tasks.length;
+
+        // Extract page information from query key
+        const keyObj = JSON.parse(JSON.stringify(queryKey));
+        const page = keyObj[1]?.page || 1;
+
+        // Calculate if this page will be empty after deletion
+        if (wasRemoved && tasks.length === 0 && page > 1) {
+          shouldNavigateToPreviousPage = true;
+          emptyPageNumber = page;
+        }
+
         queryClient.setQueryData(queryKey, {
           ...data,
           data: {
@@ -216,7 +233,15 @@ export const optUpdates = {
             tasks,
             pagination: {
               ...data.data.pagination,
-              totalCount: data.data.pagination.totalCount - 1,
+              totalCount: wasRemoved
+                ? data.data.pagination.totalCount - 1
+                : data.data.pagination.totalCount,
+              totalPages: wasRemoved
+                ? Math.ceil(
+                    (data.data.pagination.totalCount - 1) /
+                      data.data.pagination.limit
+                  )
+                : data.data.pagination.totalPages,
             },
           },
         });
@@ -226,18 +251,10 @@ export const optUpdates = {
     // Remove the task detail from cache
     queryClient.removeQueries({ queryKey: taskKeys.detail(id) });
 
-    return { previousLists };
-  },
-
-  /**
-   * Restores previous list data to the cache (for error handling)
-   */
-  restoreLists: (
-    queryClient: QueryClient,
-    previousLists: { [key: string]: ApiResponse<TaskData> }
-  ) => {
-    Object.entries(previousLists).forEach(([queryKeyStr, data]) => {
-      queryClient.setQueryData(JSON.parse(queryKeyStr), data);
-    });
+    return {
+      previousLists,
+      shouldNavigateToPreviousPage,
+      emptyPageNumber,
+    };
   },
 };
