@@ -18,6 +18,7 @@ export const UpdateTaskCard: React.FC<TaskCardProps> = ({
   done,
   owner,
   onClose = () => {},
+  onUpdateTask,
 }) => {
   const { group } = useTranslation('updateTaskForm');
 
@@ -26,6 +27,18 @@ export const UpdateTaskCard: React.FC<TaskCardProps> = ({
   }
 
   const initialData = { id, title, description, done, owner };
+
+  const handleUpdateTask = async (updatedTask: typeof initialData) => {
+    try {
+      // Only proceed if onUpdateTask is provided
+      if (onUpdateTask) {
+        await onUpdateTask(updatedTask);
+        onClose();
+      }
+    } catch (error) {
+      console.error('Error updating task:', error);
+    }
+  };
 
   return (
     <Card>
@@ -46,7 +59,11 @@ export const UpdateTaskCard: React.FC<TaskCardProps> = ({
         </div>
       </CardHeader>
       <CardContent>
-        <UpdateTaskForm initialData={initialData} onCancel={onClose} />
+        <UpdateTaskForm
+          initialData={initialData}
+          onCancel={onClose}
+          onUpdateTask={handleUpdateTask}
+        />
       </CardContent>
     </Card>
   );
