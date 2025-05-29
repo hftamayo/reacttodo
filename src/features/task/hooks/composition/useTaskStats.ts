@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
-import { TaskProps, TaskStats } from '@/shared/types/api.type';
+import { TaskProps, TaskStatsProps } from '@/shared/types/api.type';
 
 export const useTaskStats = (
   tasks: TaskProps[],
   totalCount: number,
   lastModified?: string
 ) => {
-  return useMemo((): TaskStats => {
+  return useMemo((): TaskStatsProps => {
     const completedTasks = tasks.filter((task) => task.done).length;
 
     return {
