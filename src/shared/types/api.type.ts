@@ -1,5 +1,4 @@
-import { useTaskMutations } from '@/features/task/hooks/useTaskMutations';
-import { QueryKey } from '@tanstack/react-query';
+import { useTaskMutations } from '@/features/task/hooks/core/useTaskMutations';
 
 //common types:
 export type MongoId = string;

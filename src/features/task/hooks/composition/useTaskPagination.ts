@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { taskKeys } from '../queryKeys';
-import { useTaskPrefetching } from '../useTaskPreFetching';
+import { taskKeys } from '../core/queryKeys';
+import { useTaskPrefetching } from '../core/useTaskPreFetching';
 import { PaginationMetadata } from '@/shared/types/api.type';
 
 export const useTaskPagination = (

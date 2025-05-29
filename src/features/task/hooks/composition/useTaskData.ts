@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useTaskQueries } from '../useTaskQueries';
+import { useTaskQueries } from '../core/useTaskQueries';
 import { PaginationParams, PaginationMetadata } from '@/shared/types/api.type';
 
 export const useTaskData = (paginationParams: PaginationParams) => {

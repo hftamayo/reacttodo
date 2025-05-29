@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { taskKeys } from '../queryKeys';
+import { taskKeys } from '../core/queryKeys';
 
 export const useTaskCacheInfo = (page: number, limit: number) => {
   const queryClient = useQueryClient();

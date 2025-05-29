@@ -1,12 +1,12 @@
 import { QueryClient } from '@tanstack/react-query';
-import { taskKeys } from '@/features/task/hooks/queryKeys';
+import { taskKeys } from '@/features/task/hooks/core/queryKeys';
 import {
   AddTaskProps,
   TaskProps,
   TaskIdentifier,
   TaskData,
   ApiResponse,
-  PaginationParams
+  PaginationParams,
 } from '@/shared/types/api.type';
 
 type OptimisticUpdateResult = {
@@ -27,7 +27,7 @@ export const optUpdates = {
    * Optimistically adds a task to the cache
    */
   optimisticAddTask: (
-    queryClient: QueryClient, 
+    queryClient: QueryClient,
     newTask: AddTaskProps,
     paginationParams: PaginationParams
   ): OptimisticUpdateResult => {
@@ -73,7 +73,7 @@ export const optUpdates = {
    * Optimistically updates a task in the cache
    */
   optimisticUpdateTask: (
-    queryClient: QueryClient, 
+    queryClient: QueryClient,
     updatedTask: TaskProps,
     paginationParams: PaginationParams
   ): OptimisticListUpdateResult => {
@@ -88,7 +88,7 @@ export const optUpdates = {
     listQueries.forEach(([queryKey, data]) => {
       if (data?.data?.tasks) {
         previousData[JSON.stringify(queryKey)] = data;
-        
+
         const tasks = [...data.data.tasks];
         const taskIndex = tasks.findIndex((t) => t.id === updatedTask.id);
 
@@ -117,7 +117,7 @@ export const optUpdates = {
    * Optimistically toggles a task's done status
    */
   optimisticToggleTask: (
-    queryClient: QueryClient, 
+    queryClient: QueryClient,
     taskId: TaskIdentifier,
     paginationParams: PaginationParams
   ): OptimisticListUpdateResult => {
@@ -131,7 +131,7 @@ export const optUpdates = {
     listQueries.forEach(([queryKey, data]) => {
       if (data?.data?.tasks) {
         previousData[JSON.stringify(queryKey)] = data;
-        
+
         const tasks = [...data.data.tasks];
         const taskIndex = tasks.findIndex((t) => t.id === taskId.id);
 
@@ -160,7 +160,7 @@ export const optUpdates = {
    * Optimistically removes a task from the cache
    */
   optimisticDeleteTask: (
-    queryClient: QueryClient, 
+    queryClient: QueryClient,
     id: number,
     paginationParams: PaginationParams
   ): OptimisticDeleteResult => {
@@ -176,7 +176,7 @@ export const optUpdates = {
     listQueries.forEach(([queryKey, data]) => {
       if (data?.data?.tasks) {
         previousData[JSON.stringify(queryKey)] = data;
-        
+
         const tasks = data.data.tasks.filter((t) => t.id !== id);
         const wasRemoved = tasks.length < data.data.tasks.length;
 
