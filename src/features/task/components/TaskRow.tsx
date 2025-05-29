@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TaskProps } from '@/shared/types/api.type';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { FaRegTrashAlt, FaPencilAlt } from 'react-icons/fa';
@@ -21,7 +21,7 @@ export const TaskRow: React.FC<TaskRowProps> = ({
   id,
   title,
   description,
-  done = false,
+  done,
   owner,
   onEdit,
   onToggle,
@@ -30,6 +30,26 @@ export const TaskRow: React.FC<TaskRowProps> = ({
   isDeleting,
   isOptimistic,
 }) => {
+  useEffect(() => {
+    console.log(`TaskRow ${id} EFFECT - done changed to:`, done);
+
+    // Log the actual DOM element's classes
+    const element = document.querySelector(`[data-testid="task-row-${id}"]`);
+    if (element) {
+      const styles = window.getComputedStyle(element);
+      console.log(`TaskRow ${id} computed bg color:`, styles.backgroundColor);
+    }
+  }, [id, done]);
+
+  // Calculate classes
+  const liClass = done ? taskRow.liComplete : taskRow.li;
+  const textClass = done ? taskRow.textComplete : taskRow.text;
+
+  console.log(`TaskRow ${id} RENDER - done:${done}, classes:`, {
+    liClass,
+    textClass,
+  });
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { text: deleteRowButton } = useTranslation('deleteRowButton');
   const { text: updateRowButton } = useTranslation('updateRowButton');
@@ -40,10 +60,7 @@ export const TaskRow: React.FC<TaskRowProps> = ({
   };
 
   return (
-    <li
-      className={`${done ? taskRow.liComplete : taskRow.li} ${isOptimistic ? 'bg-blue-50' : ''}`}
-      data-testid={`task-row-${id}`}
-    >
+    <li className={liClass} data-testid={`task-row-${id}`}>
       <div className={taskRow.content}>
         <Input
           type="checkbox"

@@ -121,11 +121,13 @@ export const optUpdates = {
     taskId: TaskIdentifier,
     paginationParams: PaginationParams
   ): OptimisticListUpdateResult => {
+    console.log(`optimisticToggleTask: Starting for task ${taskId.id}`);
     const listQueries = queryClient.getQueriesData<ApiResponse<TaskData>>({
       queryKey: taskKeys.lists(),
     });
 
     const previousData: { [key: string]: ApiResponse<TaskData> } = {};
+    console.log(`Saved previous state for ${previousData.length} queries`);
 
     // Update all list views
     listQueries.forEach(([queryKey, data]) => {
@@ -152,7 +154,7 @@ export const optUpdates = {
         }
       }
     });
-
+    console.log(`✅ optimisticToggleTask: Completed for task ${taskId.id}`);
     return { previousData };
   },
 

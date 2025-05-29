@@ -1,9 +1,8 @@
-import React from 'react';
-import { TaskProps, ApiResponse, TaskData } from '@/shared/types/api.type';
+import React, { useState, useEffect } from 'react';
+import { TaskProps } from '@/shared/types/api.type';
 import { TaskRow } from '../components/TaskRow';
 import { showError } from '@/shared/services/notification/notificationService';
 import { useQueryClient } from '@tanstack/react-query';
-import { taskKeys } from '../hooks/core/queryKeys';
 
 interface TaskRowContainerProps {
   task: TaskProps;
@@ -23,30 +22,41 @@ export const TaskRowContainer: React.FC<TaskRowContainerProps> = ({
   isDeleting = false,
 }) => {
   const queryClient = useQueryClient();
+  const [localDone, setLocalDone] = useState(task.done);
+
+  useEffect(() => {
+    setLocalDone(task.done);
+    console.log(
+      `TaskRowContainer received updated task ${task.id}, done: ${task.done}`
+    );
+  }, [task.done]);
 
   // Check if the task is in an optimistic state by looking at the query cache
   const isOptimistic = React.useMemo(() => {
-    const queries = queryClient.getQueriesData<ApiResponse<TaskData>>({
-      queryKey: taskKeys.lists(),
-    });
-    return queries.some(([_, data]) => {
-      if (!data?.data?.tasks) return false;
-      const taskInCache = data.data.tasks.find(
-        (t: TaskProps) => t.id === task.id
+    const pendingMutations = queryClient
+      .getMutationCache()
+      .getAll()
+      .filter(
+        (mutation) =>
+          mutation.state.status === 'pending' &&
+          (mutation.state.variables as { id?: number })?.id === task.id
       );
-      return taskInCache && taskInCache.updatedAt !== task.updatedAt;
-    });
-  }, [queryClient, task.id, task.updatedAt]);
+    return pendingMutations.length > 0;
+  }, [queryClient, task.id]);
 
   const handleToggleComplete = async () => {
+    console.log(`Before toggle, id:${task.id}, status: ${task.done}`);
+    setLocalDone(!localDone);
+
     try {
       await onToggleTask(task.id);
+      console.log(`After toggle, id:${task.id}, local status: ${!localDone}`);
     } catch (error) {
+      setLocalDone((prev) => prev); // Revert to previous state on error
       console.error('Error toggling task:', error);
       showError('Failed to toggle task completion');
     }
   };
-
   const handleDeleteTask = async () => {
     try {
       await onDeleteTask(task.id);
@@ -58,7 +68,9 @@ export const TaskRowContainer: React.FC<TaskRowContainerProps> = ({
 
   return (
     <TaskRow
+      key={`task-${task.id}-${localDone}`}
       {...task}
+      done={localDone}
       onEdit={onEdit}
       onToggle={handleToggleComplete}
       onDelete={handleDeleteTask}
