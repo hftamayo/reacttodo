@@ -5,6 +5,7 @@ import { UpdateTaskCard } from '@/features/task/components/update/UpdateTaskCard
 import { TaskRowContainer } from '@/features/task/containers/TaskRowContainer';
 import { OffsetPagination } from '@/shared/components/pagination/OffsetPagination';
 import CustomModal from '@/shared/components/ui/modal/CustomModal';
+import { TaskBoardStats } from '@/features/task/components/TaskBoardStats';
 import { taskBoard } from '@/shared/utils/twind/styles';
 import { TaskProps, TaskBoardPresenterProps } from '@/shared/types/api.type';
 import { showError } from '@/shared/services/notification/notificationService';
@@ -152,20 +153,10 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
             />
           )}
         </CustomModal>
-
-        {pagination.totalCount > 0 && (
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600">
-              <span className="font-semibold">Total Tasks:</span> {pagination.totalCount}
-            </p>
-            <p className="text-sm text-gray-600">
-              <span className="font-semibold">Completed:</span> {pagination.completedCount || 0}
-            </p>
-            <p className="text-sm text-gray-600">
-              <span className="font-semibold">Remaining:</span> {pagination.totalCount - (pagination.completedCount || 0)}
-            </p>
-          </div>
-        )}
+        <TaskBoardStats
+          total={pagination.totalCount}
+          completed={pagination.completedCount ?? 0}
+        />
       </div>
     </div>
   );
