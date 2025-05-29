@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from 'react';
+import { useMemo, useEffect, useCallback, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useLazyLoad } from '@/shared/services/lazyloading/hooks/useLazyLoad';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
@@ -8,15 +8,20 @@ import { useTaskPrefetching } from './useTaskPreFetching';
 import { taskKeys } from './queryKeys';
 import {
   PaginationParams,
-  TaskBoardState,
   TaskStats,
   PaginationMetadata,
 } from '@/shared/types/api.type';
+import { PAGINATION_LIMIT, EXECUTION_MODE } from '@/shared/utils/envvars';
 
-export const useTaskBoard = ({
-  page,
-  limit,
-}: PaginationParams): TaskBoardState => {
+export const useTaskBoard = (initialParams?: Partial<PaginationParams>) => {
+  // Default or initial values
+  const [paginationState, setPaginationState] = useState({
+    page: initialParams?.page ?? 1,
+    limit: initialParams?.limit ?? PAGINATION_LIMIT,
+  });
+
+  const { page, limit } = paginationState;
+
   // Get references for lazy loading
   const { ref, shouldFetch } = useLazyLoad();
 
@@ -105,19 +110,25 @@ export const useTaskBoard = ({
   }, [queryClient, page, limit]);
 
   // Handle page changes
-  const setCurrentPage = (newPage: number) => {
-    if (newPage < 1 || newPage > pagination.totalPages) return;
-    
-    // Check if the new page will be empty
-    const newPageData = queryClient.getQueryData(
-      taskKeys.list({ page: newPage, limit })
-    );
-    
-    if (!newPageData) {
-      // Prefetch the page if not in cache
-      prefetchTasksPage({ page: newPage, limit });
-    }
-  };
+  const setCurrentPage = useCallback(
+    (newPage: number) => {
+      if (newPage < 1 || newPage > (pagination.totalPages || 1)) return;
+
+      // Check if the new page will be empty
+      const newPageData = queryClient.getQueryData(
+        taskKeys.list({ page: newPage, limit })
+      );
+
+      if (!newPageData) {
+        // Prefetch the page if not in cache
+        prefetchTasksPage({ page: newPage, limit });
+      }
+
+      // Update the pagination state
+      setPaginationState((prev) => ({ ...prev, page: newPage }));
+    },
+    [pagination.totalPages, queryClient, limit, prefetchTasksPage]
+  );
 
   // Prefetch adjacent pages for smoother pagination
   useEffect(() => {
@@ -139,7 +150,7 @@ export const useTaskBoard = ({
 
   // Development logging
   useEffect(() => {
-    if (import.meta.env.DEV) {
+    if (EXECUTION_MODE === 'development') {
       console.log('TaskBoard State:', {
         page,
         limit,

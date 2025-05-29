@@ -4,26 +4,11 @@ import { TaskBoardPresenter } from './TaskBoardPresenter';
 import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import { useErrorHandler } from '@/shared/hooks/useErrorHandler';
 import { useTaskBoard } from '@/features/task/hooks/useTaskBoard';
-import {
-  AddTaskProps,
-  TaskProps,
-  PaginationParams,
-} from '@/shared/types/api.type';
-import { useSearchParams } from '@/shared/hooks/useSearchParams';
+import { AddTaskProps, TaskProps } from '@/shared/types/api.type';
 
 export const TaskBoardContainer: React.FC = () => {
   const { handleError } = useErrorHandler('TaskBoard');
   const [, setLocation] = useLocation();
-  const { getSearchParam, setSearchParam } = useSearchParams();
-
-  // Get pagination params from URL
-  const page = Number(getSearchParam('page')) || 1;
-  const limit = Number(getSearchParam('limit')) || 10;
-
-  const paginationParams: PaginationParams = {
-    page,
-    limit,
-  };
 
   const {
     tasks,
@@ -35,15 +20,9 @@ export const TaskBoardContainer: React.FC = () => {
     taskStats,
     cacheInfo,
     refetch,
-  } = useTaskBoard(paginationParams);
+  } = useTaskBoard();
 
   const handlePageChange = (newPage: number) => {
-    if (newPage < 1 || newPage > pagination.totalPages) return;
-
-    // Update URL with new page
-    setSearchParam('page', newPage.toString());
-
-    // Update current page in the application layer
     setCurrentPage(newPage);
   };
 
