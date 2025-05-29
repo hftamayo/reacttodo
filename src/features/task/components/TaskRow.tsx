@@ -17,7 +17,7 @@ interface TaskRowProps extends TaskProps {
   isOptimistic?: boolean;
 }
 
-export const TaskRow: React.FC<TaskRowProps> = ({
+const TaskRowComponent: React.FC<TaskRowProps> = ({
   id,
   title,
   description,
@@ -110,5 +110,7 @@ export const TaskRow: React.FC<TaskRowProps> = ({
     </li>
   );
 };
+
+export const TaskRow = React.memo(TaskRowComponent);
 
 TaskRow.displayName = 'TaskRow';
