@@ -5,3 +5,6 @@ export const HEALTH_CHECK_INTERVAL =
 export const OFFLINE_CHECK_INTERVAL =
   import.meta.env.OFFLINE_CHECK_INTERVAL ?? 5000;
 export const MAX_RETRIES = import.meta.env.MAX_RETRIES ?? 3;
+export const PAGINATION_LIMIT = import.meta.env.VITE_PAGINATION_LIMIT
+  ? Number(import.meta.env.VITE_PAGINATION_LIMIT)
+  : 5;
