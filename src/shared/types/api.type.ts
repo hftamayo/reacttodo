@@ -131,7 +131,7 @@ export type PaginationParams = {
   limit: number;
 };
 
-export type TaskStats = {
+export type TaskStatsProps = {
   total: number;
   completed: number;
   lastUpdated?: string;
@@ -142,7 +142,7 @@ export type TaskBoardState = {
   isLoading: boolean;
   error: Error | null;
   pagination: PaginationMetadata;
-  taskStats: TaskStats;
+  taskStats: TaskStatsProps;
   mutations: ReturnType<typeof useTaskMutations>;
   cacheInfo?: {
     isCached: boolean;
