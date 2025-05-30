@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { AddTaskForm } from '@/features/task/components/AddTaskForm';
 import { UpdateTaskCard } from '@/features/task/components/update/UpdateTaskCard';
-import { TaskRowContainer } from '@/features/task/containers/TaskRowContainer';
+import { TaskRowContainer } from '@/features/task/components/row/TaskRowContainer';
 import { OffsetPagination } from '@/shared/components/pagination/OffsetPagination';
 import CustomModal from '@/shared/components/ui/modal/CustomModal';
 import { TaskBoardStats } from '@/features/task/components/TaskBoardStats';

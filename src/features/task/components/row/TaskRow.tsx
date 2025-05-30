@@ -5,7 +5,7 @@ import { FaRegTrashAlt, FaPencilAlt } from 'react-icons/fa';
 import { Label } from '@/shared/components/ui/label/Label';
 import { Input } from '@/shared/components/ui/input/Input';
 import { Button } from '@/shared/components/ui/button/Button';
-import { taskRow } from '../../../shared/utils/twind/styles';
+import { taskRow } from '../../../../shared/utils/twind/styles';
 import { DeleteDialog } from '@/shared/components/dialogs/DeleteDialog';
 
 interface TaskRowProps extends TaskProps {
