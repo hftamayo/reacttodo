@@ -26,9 +26,6 @@ export const TaskRowContainer: React.FC<TaskRowContainerProps> = ({
 
   useEffect(() => {
     setLocalDone(task.done);
-    console.log(
-      `TaskRowContainer received updated task ${task.id}, done: ${task.done}`
-    );
   }, [task.done]);
 
   // Check if the task is in an optimistic state by looking at the query cache
@@ -45,15 +42,13 @@ export const TaskRowContainer: React.FC<TaskRowContainerProps> = ({
   }, [queryClient, task.id]);
 
   const handleToggleComplete = async () => {
-    console.log(`Before toggle, id:${task.id}, status: ${task.done}`);
     setLocalDone(!localDone);
 
     try {
       await onToggleTask(task.id);
-      console.log(`After toggle, id:${task.id}, local status: ${!localDone}`);
     } catch (error) {
       setLocalDone((prev) => prev); // Revert to previous state on error
-      console.error('Error toggling task:', error);
+      console.error('Error toggling task completion:', error);
       showError('Failed to toggle task completion');
     }
   };

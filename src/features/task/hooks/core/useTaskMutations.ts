@@ -62,9 +62,7 @@ export const useTaskMutations = (paginationParams: PaginationParams) => {
   const toggleTaskDone = useMutation({
     mutationFn: (taskId: TaskIdentifier) => taskOps.toggleTaskDone(taskId),
     onMutate: async (taskId) => {
-      console.log(`⏳ Beginning optimistic update for task ${taskId.id}`);
       await queryClient.cancelQueries({ queryKey: taskKeys.lists() });
-      console.log(`Cancelled outgoing queries for taskKeys.lists()`);
       return optUpdates.optimisticToggleTask(
         queryClient,
         taskId,
@@ -72,7 +70,6 @@ export const useTaskMutations = (paginationParams: PaginationParams) => {
       );
     },
     onSuccess: () => {
-      console.log('Task status updated');
       queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
     },
     onError: (error) => {
