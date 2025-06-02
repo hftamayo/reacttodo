@@ -1,16 +1,18 @@
-// src/shared/services/redux/store.ts
 import { configureStore } from '@reduxjs/toolkit';
 import { rootReducer } from './rootReducer';
+import { EXECUTION_MODE } from '@/shared/utils/envvars';
 import logger from 'redux-logger'; // for development
 
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) => {
     const middlewares = getDefaultMiddleware();
-    if (process.env.NODE_ENV === 'development') {
+    if (EXECUTION_MODE === 'development') {
       middlewares.push(logger);
     }
     return middlewares;
   },
-  devTools: process.env.NODE_ENV !== 'production',
+  devTools: EXECUTION_MODE !== 'production',
 });
+
+export type AppDispatch = typeof store.dispatch;
