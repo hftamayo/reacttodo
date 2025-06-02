@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useLazyLoad } from '@/shared/services/lazyloading/hooks/useLazyLoad';
 import { useTaskMutations } from './core/useTaskMutations';
 import { usePaginationState } from '@/shared/services/redux/hooks/usePaginationState';
@@ -39,6 +39,10 @@ export const useTaskBoard = (initialParams?: Partial<PaginationParams>) => {
     setPage
   );
 
+  const memoizedRefetch = useCallback(() => {
+    return refetch();
+  }, [refetch]);
+
   // Development logging
   useEffect(() => {
     if (EXECUTION_MODE === 'development') {
@@ -65,11 +69,14 @@ export const useTaskBoard = (initialParams?: Partial<PaginationParams>) => {
 
     // State
     isLoading,
+    isFetching,
     error,
 
     // Actions
     mutations,
     setCurrentPage,
-    refetch: () => refetch(),
+    refetch: memoizedRefetch,
+    ref,
+    shouldFetch,
   };
 };
