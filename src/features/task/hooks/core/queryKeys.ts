@@ -3,6 +3,7 @@ import { PaginationParams } from '@/shared/types/api.type';
 export const taskKeys = {
   // Base key
   all: ['tasks'] as const,
+  tasks: () => taskKeys.all,
 
   // List-related keys
   lists: () => [...taskKeys.all, 'list'] as const,
