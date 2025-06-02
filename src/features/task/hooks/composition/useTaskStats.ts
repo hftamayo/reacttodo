@@ -16,5 +16,11 @@ export const useTaskStats = (
         ? new Date(lastModified).toLocaleString()
         : new Date().toLocaleString(),
     };
-  }, [tasks, totalCount, lastModified]);
+  }, [
+    tasks,
+    tasks.length,
+    tasks.filter((t) => t.done).length,
+    totalCount,
+    lastModified,
+  ]);
 };
