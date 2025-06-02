@@ -11,8 +11,8 @@ export const useTaskData = (paginationParams: PaginationParams) => {
   // Extract and memoize tasks array
   const tasks = useMemo(() => {
     if (isLoading || !data?.data?.tasks) return [];
-    return data.data.tasks;
-  }, [data, isLoading]);
+    return [...data.data.tasks];
+  }, [data?.data?.tasks, isLoading]);
 
   // Calculate pagination metadata
   const pagination = useMemo((): PaginationMetadata => {
