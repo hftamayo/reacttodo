@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { taskOps } from '@/shared/services/api/apiClient';
 import { taskKeys } from './queryKeys';
-import { optUpdates } from '@/features/task/services/optUpdates';
 import {
   showSuccess,
   showError,
@@ -19,14 +18,6 @@ export const useTaskMutations = (paginationParams: PaginationParams) => {
   // Add Task Mutation
   const addTask = useMutation({
     mutationFn: (newTask: AddTaskProps) => taskOps.addTask(newTask),
-    onMutate: async (newTask) => {
-      await queryClient.cancelQueries({ queryKey: taskKeys.lists() });
-      return optUpdates.optimisticAddTask(
-        queryClient,
-        newTask,
-        paginationParams
-      );
-    },
     onSuccess: () => {
       showSuccess('Task added successfully');
       queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
@@ -40,14 +31,6 @@ export const useTaskMutations = (paginationParams: PaginationParams) => {
   // Update Task Mutation
   const updateTask = useMutation({
     mutationFn: (task: TaskProps) => taskOps.updateTask(task),
-    onMutate: async (updatedTask) => {
-      await queryClient.cancelQueries({ queryKey: taskKeys.lists() });
-      return optUpdates.optimisticUpdateTask(
-        queryClient,
-        updatedTask,
-        paginationParams
-      );
-    },
     onSuccess: () => {
       showSuccess('Task updated successfully');
       queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
@@ -61,14 +44,6 @@ export const useTaskMutations = (paginationParams: PaginationParams) => {
   // Toggle Task Done Mutation
   const toggleTaskDone = useMutation({
     mutationFn: (taskId: TaskIdentifier) => taskOps.toggleTaskDone(taskId),
-    onMutate: async (taskId) => {
-      await queryClient.cancelQueries({ queryKey: taskKeys.lists() });
-      return optUpdates.optimisticToggleTask(
-        queryClient,
-        taskId,
-        paginationParams
-      );
-    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
     },
@@ -81,10 +56,6 @@ export const useTaskMutations = (paginationParams: PaginationParams) => {
   // Delete Task Mutation
   const deleteTask = useMutation({
     mutationFn: (id: number) => taskOps.deleteTask(id),
-    onMutate: async (id) => {
-      await queryClient.cancelQueries({ queryKey: taskKeys.lists() });
-      return optUpdates.optimisticDeleteTask(queryClient, id, paginationParams);
-    },
     onSuccess: () => {
       showSuccess('Task deleted successfully');
       queryClient.invalidateQueries({ queryKey: taskKeys.lists() });

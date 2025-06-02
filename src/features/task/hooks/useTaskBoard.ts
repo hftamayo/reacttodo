@@ -4,7 +4,6 @@ import { useTaskMutations } from './core/useTaskMutations';
 import { usePaginationState } from '@/shared/services/redux/hooks/usePaginationState';
 import { useTaskData } from './composition/useTaskData';
 import { useTaskStats } from './composition/useTaskStats';
-import { useTaskCacheInfo } from './composition/useTaskCacheInfo';
 import { useTaskPagination } from './composition/useTaskPagination';
 import { PaginationParams } from '@/shared/types/api.type';
 import { EXECUTION_MODE } from '@/shared/utils/envvars';
@@ -27,9 +26,6 @@ export const useTaskBoard = (initialParams?: Partial<PaginationParams>) => {
     pagination.totalCount,
     data?.data?.lastModified
   );
-
-  // Get cache information
-  const cacheInfo = useTaskCacheInfo(page, limit);
 
   // Access mutations
   const mutations = useTaskMutations({ page, limit });
@@ -75,9 +71,5 @@ export const useTaskBoard = (initialParams?: Partial<PaginationParams>) => {
     mutations,
     setCurrentPage,
     refetch: () => refetch(),
-
-    // Utilities
-    cacheInfo,
-    ref: ref as React.RefObject<HTMLElement>,
   };
 };
