@@ -144,11 +144,6 @@ export type TaskBoardState = {
   pagination: PaginationMetadata;
   taskStats: TaskStatsProps;
   mutations: ReturnType<typeof useTaskMutations>;
-  cacheInfo?: {
-    isCached: boolean;
-    lastFetched: string;
-    remainingTTL: number;
-  };
   refetch?: () => void;
   setCurrentPage: (page: number) => void;
   ref?: React.RefObject<HTMLElement>;
