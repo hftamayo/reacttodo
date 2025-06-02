@@ -18,7 +18,6 @@ export const TaskBoardContainer: React.FC = () => {
     mutations,
     setCurrentPage,
     taskStats,
-    cacheInfo,
     refetch,
   } = useTaskBoard();
 
