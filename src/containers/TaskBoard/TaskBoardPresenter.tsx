@@ -27,6 +27,10 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
   isToggling = false,
   isDeleting = false,
 }) => {
+  console.log(
+    'TaskBoardPresenter rendering with tasks:',
+    tasks.map((t) => t.id)
+  );
   const [editingTask, setEditingTask] = useState<TaskProps | null>(null);
 
   const handleEdit = useCallback((task: TaskProps) => {
@@ -38,6 +42,11 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
   }, []);
 
   const taskList = useMemo(() => {
+    console.log(
+      'taskList memoized function running with tasks:',
+      tasks.map((t) => t.id)
+    );
+
     if (error) {
       showError(error.message);
       return (
@@ -57,14 +66,9 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
       );
     }
 
-    // Safely merge optimistic updates with actual tasks
-    const validTasks = tasks.filter(
-      (task) => task && typeof task === 'object' && task.id
-    );
-
     return (
       <ul className="space-y-2">
-        {validTasks.map((task) => (
+        {tasks.map((task) => (
           <TaskRowContainer
             key={task.id}
             task={task}
@@ -79,6 +83,7 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
     );
   }, [
     tasks,
+    tasks.length,
     error,
     handleEdit,
     onToggleTask,
