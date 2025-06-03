@@ -31,7 +31,7 @@ export const useTaskMutations = (paginationParams: PaginationParams) => {
         const timestamp = Date.now();
         const freshData = await taskOps.getTasks({
           ...paginationParams,
-          _t: timestamp, // Cache-busting parameter
+          delay: timestamp, // Cache-busting parameter
         });
 
         queryClient.setQueryData(taskKeys.list(paginationParams), freshData);
