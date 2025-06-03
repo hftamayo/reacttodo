@@ -129,7 +129,7 @@ export type TaskData = {
 export type PaginationParams = {
   page: number;
   limit: number;
-  delay?: number; // Optional delay for testing purposes
+  _t?: number; // Optional delay for testing purposes
 };
 
 export type TaskStatsProps = {

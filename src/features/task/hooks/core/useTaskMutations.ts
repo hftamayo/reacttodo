@@ -24,14 +24,14 @@ export const useTaskMutations = (paginationParams: PaginationParams) => {
       queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
       //console.log('addTask: cache invalidated successfully');
       //console.log('attempting to refetch task list');
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       try {
         // Add cache-busting timestamp
         const timestamp = Date.now();
         const freshData = await taskOps.getTasks({
           ...paginationParams,
-          delay: timestamp, // Cache-busting parameter
+          _t: timestamp, // Cache-busting parameter
         });
 
         queryClient.setQueryData(taskKeys.list(paginationParams), freshData);
