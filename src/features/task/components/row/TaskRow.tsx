@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { TaskProps } from '@/shared/types/api.type';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { FaRegTrashAlt, FaPencilAlt } from 'react-icons/fa';
@@ -94,6 +94,6 @@ const TaskRowComponent: React.FC<TaskRowProps> = ({
   );
 };
 
-export const TaskRow = React.memo(TaskRowComponent);
+export const TaskRow = TaskRowComponent;
 
 TaskRow.displayName = 'TaskRow';
