@@ -27,10 +27,10 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
   isToggling = false,
   isDeleting = false,
 }) => {
-  console.log(
-    'TaskBoardPresenter rendering with tasks:',
-    tasks.map((t) => t.id)
-  );
+  // console.log(
+  //   'TaskBoardPresenter rendering with tasks:',
+  //   tasks.map((t) => t.id)
+  // );
   const [editingTask, setEditingTask] = useState<TaskProps | null>(null);
 
   const handleEdit = useCallback((task: TaskProps) => {
@@ -42,10 +42,10 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
   }, []);
 
   const taskList = useMemo(() => {
-    console.log(
-      'taskList memoized function running with tasks:',
-      tasks.map((t) => t.id)
-    );
+    // console.log(
+    //   'taskList memoized function running with tasks:',
+    //   tasks.map((t) => t.id)
+    // );
 
     if (error) {
       showError(error.message);
