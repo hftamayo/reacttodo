@@ -48,8 +48,11 @@ export const taskOps = {
   async getTasks({
     page,
     limit,
+    delay,
   }: PaginationParams): Promise<ApiResponse<TaskData>> {
-    const url = `${BACKEND_URL}/tasks/task/list/page?page=${page}&limit=${limit}`;
+    const cacheParam = delay ? `&_t=${Date.now()}` : '';
+
+    const url = `${BACKEND_URL}/tasks/task/list/page?page=${page}&limit=${limit}${cacheParam}`;
     return makeRequest<TaskData>(url);
   },
 
