@@ -30,6 +30,22 @@ export const handleError = (error: unknown) => {
   throw error;
 };
 
+//functions related to caching
+const cachedResponses = new Map<string, { data: any; timestamp: number }>();
+
+const getCachedData = (url: string) => {
+  const cached = cachedResponses.get(url);
+  if (cached && Date.now() - cached.timestamp < 60000) {
+    // 1 minute cache
+    return cached.data;
+  }
+  return null;
+};
+
+const setCachedData = (url: string, data: any) => {
+  cachedResponses.set(url, { data, timestamp: Date.now() });
+};
+
 export const makeRequest = async <T>(
   url: string,
   options: RequestInit = {},
@@ -56,7 +72,37 @@ export const makeRequest = async <T>(
 
     // Handle response
     if (response.ok) {
-      return await response.json();
+      const data = await response.json();
+      setCachedData(url, data);
+      return data;
+    }
+
+    if (response.status === 429) {
+      console.warn(
+        `Rate limit exceeded for ${url}, using cached data if available`
+      );
+
+      // Check for cached data
+      const cachedData = getCachedData(url);
+      if (cachedData) {
+        console.log('Returning cached data');
+        return cachedData;
+      }
+
+      // Determine if this is a prefetch request (typically these have _t parameter)
+      const isPrefetch = url.includes('_t=') || url.includes('page=');
+
+      // For prefetch requests, don't show errors to users
+      if (isPrefetch) {
+        console.log('Prefetch request rate limited, returning empty result');
+        return {
+          code: 200,
+          resultMessage: 'CACHED_RESPONSE',
+          data: { tasks: [] } as any,
+          timestamp: Date.now(),
+          cacheTTL: 60,
+        };
+      }
     }
 
     // Handle error
@@ -67,6 +113,33 @@ export const makeRequest = async <T>(
     };
     throw error;
   } catch (error: unknown) {
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      ((error as ApiError).code === 429 ||
+        ('status' in error && (error as { status?: number }).status === 429))
+    ) {
+      console.warn('Rate limit exception caught, checking cache...');
+
+      const cachedData = getCachedData(url);
+      if (cachedData) {
+        console.log('Returning cached data from exception handler');
+        return cachedData;
+      }
+
+      // Is this a prefetch request?
+      const isPrefetch = url.includes('_t=') || url.includes('page=');
+      if (isPrefetch) {
+        console.log('Prefetch request rate limited in exception handler');
+        return {
+          code: 200,
+          resultMessage: 'EMPTY_RESPONSE_DUE_TO_RATE_LIMIT',
+          data: { tasks: [] } as any,
+          timestamp: Date.now(),
+          cacheTTL: 60,
+        };
+      }
+    }
     // Handle aborted requests
     if (error instanceof DOMException && error.name === 'AbortError') {
       const timeoutError: ApiError = {
@@ -86,7 +159,14 @@ export const makeRequest = async <T>(
       showError(networkError, errorContext ?? 'Network error occurred');
       throw networkError;
     } else {
-      showError(error as ApiError, errorContext ?? 'Request failed');
+      if (!url.includes('_t=') && !url.includes('page=')) {
+        showError(error as ApiError, errorContext ?? 'Request failed');
+      } else {
+        console.warn(
+          'Suppressing error notification for prefetch request:',
+          (error as ApiError).resultMessage
+        );
+      }
       throw error;
     }
   }

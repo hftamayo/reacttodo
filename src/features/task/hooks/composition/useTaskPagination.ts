@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { taskKeys } from '../core/queryKeys';
 import { useTaskPrefetching } from '../core/useTaskPreFetching';
 import { PaginationMetadata } from '@/shared/types/api.type';
+import debounce from 'lodash/debounce';
 
 export const useTaskPagination = (
   page: number,
@@ -13,11 +14,12 @@ export const useTaskPagination = (
 ) => {
   const queryClient = useQueryClient();
   const { prefetchTasksPage } = useTaskPrefetching();
+  const totalPages = pagination.totalPages ?? 1;
 
   // Smart page change with prefetching
   const setCurrentPage = useCallback(
     (newPage: number) => {
-      if (newPage < 1 || newPage > (pagination.totalPages || 1)) return;
+      if (newPage < 1 || newPage > totalPages) return;
 
       // Check if the new page will be empty
       const newPageData = queryClient.getQueryData(
@@ -32,26 +34,47 @@ export const useTaskPagination = (
       // Update the pagination state
       setPage(newPage);
     },
-    [pagination.totalPages, queryClient, limit, prefetchTasksPage, setPage]
+    [totalPages, queryClient, limit, prefetchTasksPage, setPage]
   );
 
-  // Prefetch adjacent pages for smoother pagination
+  const debouncedPrefetch = useCallback(
+    debounce((pageNum: number, pageLimit: number) => {
+      //console.log(`Debounced prefetch for page ${pageNum}`);
+      prefetchTasksPage({ page: pageNum, limit: pageLimit });
+    }, 500), // Increased to 500ms for better rate limit handling
+    [prefetchTasksPage]
+  );
+
+  // Unified prefetching logic - combines solution #2 (debouncing) and #3 (conditional)
   useEffect(() => {
-    if (pagination.hasMore && !isLoading) {
-      prefetchTasksPage({ page: page + 1, limit });
+    if (isLoading) return; // Don't prefetch while loading
+
+    // Check next page
+    if (page < totalPages) {
+      const hasNextPageData = queryClient.getQueryData(
+        taskKeys.list({ page: page + 1, limit })
+      );
+
+      // Only prefetch if we don't already have the data
+      if (!hasNextPageData) {
+        //console.log(`Conditionally prefetching next page ${page + 1}`);
+        debouncedPrefetch(page + 1, limit);
+      }
     }
 
-    if (pagination.hasPrev && !isLoading) {
-      prefetchTasksPage({ page: page - 1, limit });
+    // Check previous page
+    if (page > 1) {
+      const hasPrevPageData = queryClient.getQueryData(
+        taskKeys.list({ page: page - 1, limit })
+      );
+
+      // Only prefetch if we don't already have the data
+      if (!hasPrevPageData) {
+        //console.log(`Conditionally prefetching previous page ${page - 1}`);
+        debouncedPrefetch(page - 1, limit);
+      }
     }
-  }, [
-    pagination.hasMore,
-    pagination.hasPrev,
-    page,
-    limit,
-    isLoading,
-    prefetchTasksPage,
-  ]);
+  }, [page, limit, totalPages, isLoading, queryClient, debouncedPrefetch]);
 
   return { setCurrentPage };
 };
