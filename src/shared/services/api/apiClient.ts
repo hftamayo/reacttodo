@@ -1,38 +1,16 @@
+import { handleResponse, handleError, makeRequest } from './apiHelpers';
 import { BACKEND_URL } from '@/shared/utils/envvars';
 import {
-  ApiError,
   HealthCheckData,
   TaskProps,
   TaskData,
+  PaginationParams,
   ApiResponse,
   DbHealthDetails,
   AppHealthDetails,
   AddTaskProps,
   TaskIdentifier,
 } from '../../types/api.type';
-import { showError } from '../notification/notificationService';
-
-const handleResponse = async <T>(
-  response: Response
-): Promise<ApiResponse<T>> => {
-  if (!response.ok) {
-    const errorData = await response.json();
-    const error: ApiError = {
-      code: response.status,
-      resultMessage: `Network response was not ok: ${response.statusText}. Data: ${JSON.stringify(errorData)}`,
-    };
-    handleError(error);
-  }
-  return await response.json();
-};
-
-const handleError = (error: unknown) => {
-  showError(
-    error as ApiError,
-    'An error occurred while processing your request.'
-  );
-  throw new Error((error as ApiError).resultMessage);
-};
 
 export const beOps = {
   async appHealth(): Promise<ApiResponse<HealthCheckData<AppHealthDetails>>> {
@@ -67,115 +45,53 @@ export const beOps = {
 };
 
 export const taskOps = {
-  async getTasks(): Promise<ApiResponse<TaskData>> {
-    try {
-      const url = `${BACKEND_URL}/tasks/task/list?limit=5`;
-      const response = await fetch(url, {
-        //credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        mode: 'cors',
-      });
-      return await handleResponse<TaskData>(response);
-    } catch (error: unknown) {
-      handleError(error);
-      throw error;
-    }
+  async getTasks({
+    page,
+    limit,
+    _t,
+  }: PaginationParams): Promise<ApiResponse<TaskData>> {
+    const timestamp = _t ?? Date.now();
+
+    const url = `${BACKEND_URL}/tasks/task/list/page?page=${page}&limit=${limit}&_t=${timestamp}`;
+    return makeRequest<TaskData>(url);
   },
 
   async getTask(id: number): Promise<ApiResponse<TaskData>> {
-    try {
-      const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
-        //credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        mode: 'cors',
-      });
-      return await handleResponse(response);
-    } catch (error: unknown) {
-      handleError(error);
-      throw error;
-    }
+    const url = `${BACKEND_URL}/tasks/task/${id}`;
+    return makeRequest<TaskData>(url);
   },
 
   async addTask(task: AddTaskProps): Promise<ApiResponse<TaskData>> {
-    try {
-      const response = await fetch(`${BACKEND_URL}/tasks/task`, {
-        method: 'POST',
-        //credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        mode: 'cors',
-        body: JSON.stringify(task),
-      });
-      return await handleResponse(response);
-    } catch (error: unknown) {
-      handleError(error);
-      throw error;
-    }
+    const url = `${BACKEND_URL}/tasks/task`;
+    return makeRequest<TaskData>(url, {
+      method: 'POST',
+      //credentials: 'include',
+      body: JSON.stringify(task),
+    });
   },
 
   async updateTask(task: TaskProps): Promise<ApiResponse<TaskData>> {
-    try {
-      const response = await fetch(`${BACKEND_URL}/tasks/task/${task.id}`, {
-        method: 'PUT',
-        //credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        mode: 'cors',
-        body: JSON.stringify(task),
-      });
-      return await handleResponse(response);
-    } catch (error: unknown) {
-      handleError(error);
-      throw error;
-    }
+    const url = `${BACKEND_URL}/tasks/task/${task.id}`;
+    return makeRequest<TaskData>(url, {
+      method: 'PATCH',
+      //credentials: 'include',
+      body: JSON.stringify(task),
+    });
   },
 
   async toggleTaskDone(taskId: TaskIdentifier): Promise<ApiResponse<TaskData>> {
-    try {
-      const response = await fetch(
-        `${BACKEND_URL}/tasks/task/${taskId.id}/done`,
-        {
-          method: 'PATCH',
-          //credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          mode: 'cors',
-        }
-      );
-      return await handleResponse(response);
-    } catch (error: unknown) {
-      handleError(error);
-      throw error;
-    }
+    const url = `${BACKEND_URL}/tasks/task/${taskId.id}/done`;
+    return makeRequest<TaskData>(url, {
+      method: 'PATCH',
+      //credentials: 'include',
+    });
   },
 
   async deleteTask(id: number): Promise<ApiResponse<TaskData>> {
-    try {
-      const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
-        method: 'DELETE',
-        //credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        mode: 'cors',
-      });
-      return await handleResponse(response);
-    } catch (error: unknown) {
-      handleError(error);
-      throw error;
-    }
+    const url = `${BACKEND_URL}/tasks/task/${id}`;
+    return makeRequest<TaskData>(url, {
+      method: 'DELETE',
+      //credentials: 'include',
+    });
   },
 };

@@ -1,4 +1,4 @@
-import { useTaskMutations } from '@/features/task/hooks/useTaskMutations';
+import { useTaskMutations } from '@/features/task/hooks/core/useTaskMutations';
 
 //common types:
 export type MongoId = string;
@@ -8,17 +8,12 @@ export interface EntityIdentifier<T> {
   id: T;
 }
 
-export type PaginationProps = {
-  hasMore: boolean;
-  limit: number;
-  nextCursor: string | null;
-  totalCount: number;
-};
-
 export type ApiResponse<T> = {
   code: number;
   resultMessage: string;
   data: T;
+  timestamp?: number;
+  cacheTTL?: number;
 };
 
 export type ApiError = {
@@ -110,31 +105,94 @@ export type TaskProps = {
 export type AddTaskProps = Pick<TaskProps, 'title' | 'owner'>;
 //export type AddTaskProps = Pick<TaskProps, 'title' | 'description' | 'owner'>;
 
+//pagination and task related ops
+
+export type PaginationMetadata = {
+  limit: number;
+  totalCount: number;
+  currentPage: number;
+  totalPages: number;
+  order: 'desc' | 'asc';
+  hasMore: boolean;
+  hasPrev: boolean;
+  isFirstPage: boolean;
+  isLastPage: boolean;
+};
+
 export type TaskData = {
-  pagination: PaginationProps;
   tasks: TaskProps[];
+  pagination: PaginationMetadata;
+  etag?: string;
+  lastModified?: string;
 };
 
-export type TaskContext = {
-  previousTasks?: ApiResponse<TaskData>;
+export type PaginationParams = {
+  page: number;
+  limit: number;
+  _t?: number; // Optional delay for testing purposes
 };
 
-export type TasksState = {
-  tasks: Map<string, TaskProps>;
-  task: TaskProps | null;
-  loading: boolean;
-  status: 'idle' | 'loading' | 'failed' | 'succeeded';
-  error: string | null;
-  msg: string | null;
+export type TaskStatsProps = {
+  total: number;
+  completed: number;
+  lastUpdated?: string;
+};
+
+export type TaskBoardState = {
+  tasks: TaskProps[];
+  isLoading: boolean;
+  error: Error | null;
+  pagination: PaginationMetadata;
+  taskStats: TaskStatsProps;
+  mutations: ReturnType<typeof useTaskMutations>;
+  refetch?: () => void;
+  setCurrentPage: (page: number) => void;
+  ref?: React.RefObject<HTMLElement>;
 };
 
 export type TaskBoardPresenterProps = {
+  // Data
   tasks: TaskProps[];
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    totalCount: number;
+    completedCount?: number;
+    isFirstPage: boolean;
+    isLastPage: boolean;
+    hasMore: boolean;
+    hasPrev: boolean;
+  };
+
+  // Loading states
   isLoading: boolean;
-  totalTasks: number;
-  completedTasks: number;
+  isAdding?: boolean;
+  isUpdating?: boolean;
+  isToggling?: boolean;
+  isDeleting?: boolean;
+
+  // Error handling
   error?: Error;
+
+  // Callbacks
+  onAddTask: (task: AddTaskProps) => Promise<void>;
+  onUpdateTask: (task: TaskProps) => Promise<void>;
+  onToggleTask: (id: number) => Promise<void>;
+  onDeleteTask: (id: number) => Promise<void>;
+  onPageChange: (page: number) => void;
   onClose: () => void;
-  mutations: ReturnType<typeof useTaskMutations>; // Add mutations
-  ref?: React.RefObject<HTMLDivElement>;
+};
+
+export type OffsetPaginationProps = {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+  className?: string;
+  // Enhanced pagination flags to improve UI controls
+  isFirstPage?: boolean;
+  isLastPage?: boolean;
+  hasMore?: boolean;
+  hasPrev?: boolean;
+  // Optional loading state
+  isLoading?: boolean;
 };

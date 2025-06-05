@@ -7,18 +7,20 @@ import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { taskBoard } from '@/shared/utils/twind/styles';
 import { AddTaskProps } from '@/shared/types/api.type';
 import { AiOutlinePlus } from 'react-icons/ai';
-import { useTaskMutations } from '../hooks/useTaskMutations';
 
 interface AddTaskFormProps {
-  mutations: ReturnType<typeof useTaskMutations>;
+  onAddTask: (task: AddTaskProps) => Promise<void>;
+  isAddingTask: boolean;
 }
 
-export const AddTaskForm: React.FC<AddTaskFormProps> = ({ mutations }) => {
+export const AddTaskForm: React.FC<AddTaskFormProps> = ({
+  onAddTask,
+  isAddingTask,
+}) => {
   const { text: addTaskButton } = useTranslation('addTaskButton');
   const { text: errorComponent = 'An error occurred' } =
     useTranslation('errorComponent');
   const { group } = useTranslation('addTaskForm');
-  const { addTask } = mutations;
 
   const {
     register,
@@ -38,9 +40,10 @@ export const AddTaskForm: React.FC<AddTaskFormProps> = ({ mutations }) => {
         owner: 1, // Replace with actual owner ID
       };
       //await addTask.mutateAsync(data);
-      await addTask.mutateAsync(TaskWithOwner);
+      await onAddTask(TaskWithOwner);
       reset();
     } catch (error) {
+      console.error('Error adding task:', error);
       showError('Failed to add task');
     }
   };
@@ -64,7 +67,7 @@ export const AddTaskForm: React.FC<AddTaskFormProps> = ({ mutations }) => {
           type="text"
           ctrlsize="large"
           placeholder={group.lblplaceholder}
-          disabled={addTask.isPending}
+          disabled={isAddingTask}
           aria-invalid={errors.title ? 'true' : 'false'}
           {...register('title', {
             required: `${group.lblregister}`,
@@ -79,6 +82,7 @@ export const AddTaskForm: React.FC<AddTaskFormProps> = ({ mutations }) => {
           size="lg"
           type="submit"
           title={addTaskButton}
+          disabled={isAddingTask}
         >
           <AiOutlinePlus size={30} />
         </Button>

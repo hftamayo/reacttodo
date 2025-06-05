@@ -77,21 +77,35 @@ export const taskBoard = {
 };
 
 export const taskRow = {
-  li: 'flex justify-between bg-[var(--cameo-200)] p-4 my-2 capitalize',
-  liComplete: 'flex justify-between bg-[var(--cameo-300)] p-4 my-2 capitalize',
-  row: 'flex',
+  li: 'flex items-center justify-between bg-[var(--cameo-200)] p-4 my-2 capitalize',
+  liComplete:
+    'flex items-center justify-between bg-[var(--cameo-300)] p-4 my-2 capitalize',
+  content: 'flex items-center flex-grow',
   text: 'ml-2 cursor-pointer',
   textComplete: 'ml-2 cursor-pointer line-through',
-  button: 'cursor-pointer flex items-center',
+  actions: 'flex items-center space-x-2',
 };
 
-export const formSettingsStyles = {
-  title: 'text-center text-2xl font-bold',
+export const formStyles = {
+  form: 'w-full max-w-2xl mx-auto',
+  header: 'text-center mb-6',
+  formGrid: 'flex flex-col space-y-4',
+  formRow: 'flex flex-col space-y-2',
+  label: 'text-sm font-medium',
+  input: 'w-full',
+  footer: 'flex justify-center gap-4 mt-6',
+  error: 'text-red-500 text-sm mt-1',
+
+  title: 'text-2xl font-bold text-center mb-2',
   description: 'text-center text-xl font-bold',
   grouptitle: 'font-bold underline',
   closeButton:
-    'absolute top-4 right-4 p-2 rounded-full bg-[var(--cameo-600)] hover:bg-[var(--cameo-400)] transition-colors duration-200',
-  closeIcon: 'w-5 h-5 text-[var(--cameo-1000)]',
+    'absolute top-2 right-2 p-1.5 rounded-full bg-[var(--cameo-400)] hover:bg-[var(--cameo-600)] transition-colors duration-200',
+  closeIcon: 'w-4 h-4 text-[var(--cameo-1000)]',
+  cancelButton:
+    'bg-[var(--cameo-400)] text-[var(--cameo-1000)] px-4 py-2 rounded-md hover:bg-[var(--cameo-600)] transition-colors duration-200',
+  submitButton:
+    'bg-[var(--cameo-400)] text-[var(--cameo-1000)] px-4 py-2 rounded-md hover:bg-[var(--cameo-600)] transition-colors duration-200',
 };
 
 export const toasterMessages = {

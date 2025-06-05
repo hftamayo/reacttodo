@@ -1,50 +1,82 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useLazyLoad } from '@/shared/services/lazyloading/hooks/useLazyLoad';
-import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
-import { showError } from '@/shared/services/notification/notificationService';
-import { useTaskQueries } from './useTaskQueries';
-import { useTaskMutations } from './useTaskMutations';
+import { useTaskMutations } from './core/useTaskMutations';
+import { usePaginationState } from '@/shared/services/redux/hooks/usePaginationState';
+import { useTaskData } from './composition/useTaskData';
+import { useTaskStats } from './composition/useTaskStats';
+import { useTaskPagination } from './composition/useTaskPagination';
+import { PaginationParams } from '@/shared/types/api.type';
+import { EXECUTION_MODE } from '@/shared/utils/envvars';
 
-export const useTaskBoard = () => {
+export const useTaskBoard = (initialParams?: Partial<PaginationParams>) => {
+  // Manage pagination state
+  const paginationState = usePaginationState(initialParams);
+  const { page, limit, setPage } = paginationState;
+
+  // Get lazy loading reference
   const { ref, shouldFetch } = useLazyLoad();
-  const { data, error, isLoading } = useTaskQueries.getTasks(shouldFetch);
-  const { text: errorMessage = 'An error occurred' } =
-    useTranslation('errorComponent');
-  const mutations = useTaskMutations();
 
-  const tasks = useMemo(() => {
-    if (isLoading) {
-      return [];
-    }
+  // Fetch task data
+  const { tasks, pagination, isLoading, isFetching, error, refetch, data } =
+    useTaskData({ page, limit });
 
-    if (!data?.data?.tasks) {
-      console.error('No tasks found in the API response');
-      return [];
-    }
-    return data.data.tasks;
-  }, [data, isLoading]);
-
-  const taskStats = useMemo(
-    () => ({
-      total: data?.data?.pagination.totalCount ?? 0,
-      completed: tasks.filter((task) => task.done).length,
-    }),
-    [data, tasks]
+  // Calculate task statistics
+  const taskStats = useTaskStats(
+    tasks,
+    pagination.totalCount,
+    data?.data?.lastModified
   );
 
+  // Access mutations
+  const mutations = useTaskMutations({ page, limit });
+
+  // Setup pagination with prefetching
+  const { setCurrentPage } = useTaskPagination(
+    page,
+    limit,
+    pagination,
+    isLoading,
+    setPage
+  );
+
+  const memoizedRefetch = useCallback(() => {
+    return refetch();
+  }, [refetch]);
+
+  // Development logging
   useEffect(() => {
-    if (error) {
-      showError('unexpected UI error', errorMessage);
+    if (EXECUTION_MODE === 'development') {
+      console.log('TaskBoard State:', {
+        page,
+        limit,
+        totalPages: pagination.totalPages,
+        totalCount: pagination.totalCount,
+        isLoading,
+        isFetching,
+        error: error ? 'Error fetching data' : undefined,
+        taskCount: tasks.length,
+        hasMore: pagination.hasMore,
+        hasPrev: pagination.hasPrev,
+      });
     }
-  }, [error, errorMessage]);
+  }, [page, limit, pagination, isLoading, isFetching, error, tasks.length]);
 
   return {
-    ref,
+    // Data
     tasks,
-    error,
-    isLoading,
-    errorMessage,
+    pagination,
     taskStats,
+
+    // State
+    isLoading,
+    isFetching,
+    error,
+
+    // Actions
     mutations,
+    setCurrentPage,
+    refetch: memoizedRefetch,
+    ref,
+    shouldFetch,
   };
 };

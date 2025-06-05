@@ -1,22 +1,29 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { TaskProps } from '../../../shared/types/api.type';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface TaskUIState {
   selectedTaskId: number | null;
   viewMode: 'list' | 'grid';
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
 
 const initialState: TaskUIState = {
   selectedTaskId: null,
   viewMode: 'list',
-  status: 'idle',
 };
 
 const taskSlice = createSlice({
   name: 'taskUI',
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectedTask: (state, action: PayloadAction<number | null>) => {
+      state.selectedTaskId = action.payload;
+    },
+    setViewMode: (state, action: PayloadAction<'list' | 'grid'>) => {
+      state.viewMode = action.payload;
+    },
+  },
 });
+
+export const { setSelectedTask, setViewMode } =
+  taskSlice.actions;
 
 export default taskSlice.reducer;

@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from '@/shared/components/ui/card/Card';
 import { FaTimes } from 'react-icons/fa';
-import { formSettingsStyles } from '@/shared/utils/twind/styles';
+import { formStyles } from '@/shared/utils/twind/styles';
 import { SettingsCardProps } from '@/shared/types/settings.type';
 
 export const SettingsCard: React.FC<SettingsCardProps> = ({
@@ -20,19 +20,19 @@ export const SettingsCard: React.FC<SettingsCardProps> = ({
     <Card>
       <CardHeader>
         <div className="flex justify-between items-center">
-          <div>
-            <CardTitle className={formSettingsStyles.title}>{title}</CardTitle>
-            <CardDescription className={formSettingsStyles.description}>
+          <div className="flex-1 text-center">
+            <CardTitle className={formStyles.title}>{title}</CardTitle>
+            <CardDescription className={formStyles.description}>
               {description}
             </CardDescription>
           </div>
           {onClose && (
             <button
               onClick={onClose}
-              className={formSettingsStyles.closeButton}
+              className={formStyles.closeButton}
               aria-label="Close settings"
             >
-              <FaTimes className={formSettingsStyles.closeIcon} />
+              <FaTimes className={formStyles.closeIcon} />
             </button>
           )}
         </div>

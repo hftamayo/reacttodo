@@ -14,11 +14,11 @@ const buttonVariants = cva(
         additive:
           'bg-[var(--cameo-300)] text-[var(--cameo-1000)] shadow-sm hover:bg-[var(--cameo-600)]',
         destructive:
-          'bg-[var(--cameo-500)] text-[var(--cameo-1000)] shadow-sm hover:bg-[var(--cameo-600)]',
+          'bg-[var(--cameo-500)] text-[var(--cameo-1000)] shadow-sm hover:bg-[var(--cameo-600)] hover:text-[var(--cameo-0)]',
         outline:
-          'border border-[var(--input)] bg-[var(--background)] shadow-sm hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)]',
+          'bg-[var(--cameo-400)] text-[var(--cameo-1000)] shadow-sm hover:bg-[var(--cameo-600)]',
         secondary:
-          'bg-[var(--secondary)] text-[var(--secondary-foreground)] shadow-sm hover:bg-[var(--secondary-hover)]',
+          'border border-[var(--cameo-600)] bg-[var(--cameo-300)] text-[var(--cameo-1000)] shadow-sm hover:bg-[var(--cameo-600)] hover:text-[var(--cameo-0)]',
         ghost: 'hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)]',
         link: 'text-[var(--primary)] underline-offset-4 hover:underline',
       },

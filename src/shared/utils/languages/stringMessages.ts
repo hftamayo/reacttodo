@@ -1,4 +1,5 @@
 import { LanguageContextType } from '@/shared/types/settings.type';
+import { LucideBlend } from 'lucide-react';
 
 export const stringMessages: LanguageContextType = {
   //dashboard header components:
@@ -255,6 +256,18 @@ export const stringMessages: LanguageContextType = {
     },
   },
 
+  updateRowButton: {
+    en: {
+      text: 'Update a record',
+    },
+    es: {
+      text: 'Actualizar registro',
+    },
+    de: {
+      text: 'Eintrag aktualisieren',
+    },
+  },
+
   addTaskButton: {
     en: {
       text: 'Add a task',
@@ -287,6 +300,39 @@ export const stringMessages: LanguageContextType = {
         lblplaceholder: 'Eine Aufgabe hinzufügen',
         lblregister: 'Aufgabenname ist erforderlich',
         lblminlength: 'Der Aufgabenname muss mindestens 5 Zeichen lang sein',
+      },
+    },
+  },
+
+  updateTaskForm: {
+    en: {
+      group: {
+        cardTitle: 'Update Task',
+        lblTaskTitle: 'Task Title',
+        lblTaskDescription: 'Task Description',
+        lblTaskStatus: 'Task Status',
+        btnCancel: 'Cancel',
+        btnUpdate: 'Update',
+      },
+    },
+    es: {
+      group: {
+        cardTitle: 'Actualizar tarea',
+        lblTaskTitle: 'Título de la tarea',
+        lblTaskDescription: 'Descripción de la tarea',
+        lblTaskStatus: 'Estado de la tarea',
+        btnCancel: 'Cancelar',
+        btnUpdate: 'Actualizar',
+      },
+    },
+    de: {
+      group: {
+        cardTitle: 'Aufgabe aktualisieren',
+        lblTaskTitle: 'Aufgaben Titel',
+        lblTaskDescription: 'Aufgabenbeschreibung',
+        lblTaskStatus: 'Aufgabenstatus',
+        btnCancel: 'Abbrechen',
+        btnUpdate: 'Aktualisieren',
       },
     },
   },
