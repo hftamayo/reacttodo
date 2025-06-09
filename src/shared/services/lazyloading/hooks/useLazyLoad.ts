@@ -9,7 +9,6 @@ export const useLazyLoad = () => {
       (entries) => {
         const [entry] = entries;
         if (entry.isIntersecting) {
-          //console.log('Target element is visible, enabling fetch');
           setShouldFetch(true);
         }
       },
@@ -23,20 +22,16 @@ export const useLazyLoad = () => {
     const currentRef = ref.current;
     if (currentRef) {
       observer.observe(currentRef);
-      //console.log('Observer attached to target element');
     }
 
     return () => {
       if (currentRef) {
         observer.unobserve(currentRef);
-        //console.log('Observer cleaned up');
       }
     };
   }, []);
 
-  useEffect(() => {
-    //console.log('Lazy load state updated:', { shouldFetch });
-  }, [shouldFetch]);
+  useEffect(() => {}, [shouldFetch]);
 
   return { ref, shouldFetch };
 };
