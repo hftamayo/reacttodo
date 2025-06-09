@@ -50,7 +50,7 @@ export class ErrorBoundary extends Component<
               Something went wrong
             </h1>
             <p className="text-gray-600">
-              {this.state.error?.message || 'An unexpected error occurred'}
+              {this.state.error?.message ?? 'An unexpected error occurred'}
             </p>
           </div>
         )

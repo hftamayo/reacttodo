@@ -39,7 +39,6 @@ export const AddTaskForm: React.FC<AddTaskFormProps> = ({
         ...data,
         owner: 1, // Replace with actual owner ID
       };
-      //await addTask.mutateAsync(data);
       await onAddTask(TaskWithOwner);
       reset();
     } catch (error) {
