@@ -1,12 +1,26 @@
 import React from 'react';
-import { useSettings } from '@/features/settings/hooks/useSettings';
+import { useSettingsForm } from '@/features/settings/hooks/useSettingsForm';
+import { updateSettings } from '@/features/settings/store/settingsSlice';
+import { settingsService } from '@/features/settings/services/SettingsService';
+import { useAppDispatch } from '@/shared/services/redux/hooks/useAppDispatch';
 
 export const ThemeToggle: React.FC = () => {
-  const { theme, updateSettings } = useSettings();
+  const dispatch = useAppDispatch();
+  const { theme } = useSettingsForm({
+    onSubmit: () => {},
+    onCancel: () => {},
+  });
 
   const handleToggle = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
-    updateSettings({ theme: newTheme });
+    const updatedSettings = settingsService.getSettings();
+    const newSettings = {
+      ...updatedSettings,
+      theme: newTheme,
+    };
+
+    //settingsService.saveSettings(newSettings);
+    //dispatch(updateSettings(newSettings));
   };
 
   return (
