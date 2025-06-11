@@ -14,7 +14,6 @@ interface TaskRowProps extends TaskProps {
   onDelete: () => Promise<void>;
   isToggling: boolean;
   isDeleting: boolean;
-  isOptimistic?: boolean;
 }
 
 const TaskRowComponent: React.FC<TaskRowProps> = ({
@@ -28,7 +27,6 @@ const TaskRowComponent: React.FC<TaskRowProps> = ({
   onDelete,
   isToggling,
   isDeleting,
-  isOptimistic,
 }) => {
   // Calculate classes
   const liClass = done ? taskRow.liComplete : taskRow.li;
