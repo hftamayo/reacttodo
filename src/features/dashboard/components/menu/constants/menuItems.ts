@@ -1,5 +1,4 @@
 import { MenuItemProps } from '@/shared/types/menu.type';
-import { IconName } from './iconMap';
 
 export const MENU_ITEMS: MenuItemProps[] = [
   {

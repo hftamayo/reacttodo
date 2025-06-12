@@ -37,15 +37,18 @@ export const useSettingsForm = ({ onSubmit, onCancel }: SettingsFormHook) => {
       }));
     },
 
-    submitHandler: async (event: React.FormEvent) => {
+    submitHandler: (event: React.FormEvent) => {
       event.preventDefault();
-      try {
-        settingsService.saveSettings(formValues);
-        dispatch(updateSettings(formValues));
-        onSubmit(formValues);
-      } catch (error) {
-        showError('Failed to update settings');
-      }
+      (async () => {
+        try {
+          settingsService.saveSettings(formValues);
+          dispatch(updateSettings(formValues));
+          onSubmit(formValues);
+        } catch (error) {
+          console.error('Error updating settings:', error);
+          showError('Failed to update settings');
+        }
+      })();
     },
 
     cancelHandler: () => {

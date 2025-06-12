@@ -19,6 +19,11 @@ export const SearchText: React.FC = () => {
         placeholder={textHolder}
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            handleSearch(searchValue);
+          }
+        }}
       />
     </div>
   );

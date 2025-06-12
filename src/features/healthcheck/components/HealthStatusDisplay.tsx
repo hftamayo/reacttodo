@@ -23,9 +23,13 @@ export const HealthStatusDisplay: React.FC = () => {
   const { text: statusChecking = 'Checking Status...' } =
     useTranslation('statusChecking');
 
+  const retryMsg =
+    metrics.failureCount > 0
+      ? '(Retry ' + metrics.failureCount + '/' + MAX_RETRIES + ')'
+      : '';
   const statusMessage = {
     ONLINE: 'Backend: Online',
-    OFFLINE: `Backend: Offline ${metrics.failureCount > 0 ? `(Retry ${metrics.failureCount}/${MAX_RETRIES})` : ''}`,
+    OFFLINE: 'Backend: Offline ' + retryMsg,
     NO_CONNECTION: 'Backend: No Connection',
     CHECKING: `Backend: Checking${'.'.repeat((metrics.failureCount % 3) + 1)}`,
   }[metrics.status];

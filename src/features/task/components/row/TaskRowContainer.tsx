@@ -71,7 +71,6 @@ export const TaskRowContainer: React.FC<TaskRowContainerProps> = ({
       onDelete={handleDeleteTask}
       isToggling={isToggling}
       isDeleting={isDeleting}
-      isOptimistic={isOptimistic}
     />
   );
 };

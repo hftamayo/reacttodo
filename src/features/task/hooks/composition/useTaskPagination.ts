@@ -39,7 +39,6 @@ export const useTaskPagination = (
 
   const debouncedPrefetch = useCallback(
     debounce((pageNum: number, pageLimit: number) => {
-      //console.log(`Debounced prefetch for page ${pageNum}`);
       prefetchTasksPage({ page: pageNum, limit: pageLimit });
     }, 500), // Increased to 500ms for better rate limit handling
     [prefetchTasksPage]
@@ -57,7 +56,6 @@ export const useTaskPagination = (
 
       // Only prefetch if we don't already have the data
       if (!hasNextPageData) {
-        //console.log(`Conditionally prefetching next page ${page + 1}`);
         debouncedPrefetch(page + 1, limit);
       }
     }
@@ -70,7 +68,6 @@ export const useTaskPagination = (
 
       // Only prefetch if we don't already have the data
       if (!hasPrevPageData) {
-        //console.log(`Conditionally prefetching previous page ${page - 1}`);
         debouncedPrefetch(page - 1, limit);
       }
     }
