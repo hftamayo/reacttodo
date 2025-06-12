@@ -10,3 +10,4 @@ export const PAGINATION_LIMIT = import.meta.env.VITE_PAGINATION_LIMIT
   : 5;
 export const EXECUTION_MODE =
   import.meta.env.VITE_EXECUTION_MODE ?? 'development';
+export const DATALAYER_TYPE = import.meta.env.VITE_DATALAYER_TYPE ?? 'sql';
