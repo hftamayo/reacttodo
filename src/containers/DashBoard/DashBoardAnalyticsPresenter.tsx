@@ -1,5 +1,5 @@
 import React from 'react';
-import { HealthMetrics } from '@/shared/types/healthcheck.type';
+import { HealthMetrics } from '@/shared/types/healthcheck/healthcheck.type';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 
 export const DashBoardAnalyticsPresenter: React.FC<{

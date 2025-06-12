@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { HealthMetrics } from '@/shared/types/healthcheck.type';
+import { HealthMetrics } from '@/shared/types/healthcheck/healthcheck.type';
 import { healthService } from '../services/HealthService';
 
 export const useHealthCheck = () => {
