@@ -8,7 +8,7 @@ import {
   showSuccess,
   showError,
 } from '@/shared/services/notification/notificationService';
-import { SettingsFormProps } from '@/shared/types/settings.type';
+import { SettingsFormProps } from '@/shared/types/settings/settings.type';
 
 type BackUpProps = Pick<SettingsFormProps, 'labels'>;
 

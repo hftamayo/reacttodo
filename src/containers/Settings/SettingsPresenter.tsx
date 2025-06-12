@@ -10,7 +10,7 @@ import {
   Language,
   Theme,
   SettingsPresenterProps,
-} from '@/shared/types/settings.type';
+} from '@/shared/types/settings/settings.type';
 
 export const SettingsPresenter: React.FC<SettingsPresenterProps> = ({
   title,

@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from '@/shared/components/ui/select/Select';
 import { formStyles } from '@/shared/utils/twind/styles';
-import { SettingsFormSpecialControlsProps } from '@/shared/types/settings.type';
+import { SettingsFormSpecialControlsProps } from '@/shared/types/settings/settings.type';
 
 export const TimeZoneComponent: React.FC<
   SettingsFormSpecialControlsProps<string>

@@ -12,7 +12,7 @@ import {
   AppSettings,
   SettingsFormProps,
   UseSettingsFormHandlers,
-} from '@/shared/types/settings.type';
+} from '@/shared/types/settings/settings.type';
 import { showError } from '@/shared/services/notification/notificationService';
 
 type SettingsFormHook = Pick<SettingsFormProps, 'onSubmit' | 'onCancel'>;

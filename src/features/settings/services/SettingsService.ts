@@ -1,4 +1,4 @@
-import { AppSettings } from '@/shared/types/settings.type';
+import { AppSettings } from '@/shared/types/settings/settings.type';
 
 const STORAGE_KEY = 'app_settings';
 

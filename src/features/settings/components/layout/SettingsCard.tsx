@@ -8,7 +8,7 @@ import {
 } from '@/shared/components/ui/card/Card';
 import { FaTimes } from 'react-icons/fa';
 import { formStyles } from '@/shared/utils/twind/styles';
-import { SettingsCardProps } from '@/shared/types/settings.type';
+import { SettingsCardProps } from '@/shared/types/settings/settings.type';
 
 export const SettingsCard: React.FC<SettingsCardProps> = ({
   title,
