@@ -8,7 +8,7 @@ import {
 import { FaTimes } from 'react-icons/fa';
 import { formStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
-import { TaskCardProps } from '@/shared/types/task/task.type';
+import { TaskCardProps } from '@/shared/types/domains/task.type';
 import { UpdateTaskForm } from './UpdateTaskForm';
 
 export const UpdateTaskCard: React.FC<
