@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { TaskProps } from '@/shared/types/api.type';
 import { showSuccess } from '@/shared/services/notification/notificationService';
-import { UseUpdateTaskProps } from '@/shared/types/task.type';
+import { UseUpdateTaskProps } from '@/shared/types/task/task.type';
 
 export const useTaskUpdate = ({
   initialData,

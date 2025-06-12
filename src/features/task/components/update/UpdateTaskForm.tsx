@@ -5,7 +5,7 @@ import { Checkbox } from '@/shared/components/ui/checkbox/Checkbox';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { formStyles } from '@/shared/utils/twind/styles';
 import { useTaskUpdate } from '../../hooks/core/useTaskUpdate';
-import { TaskUpdateProps } from '@/shared/types/task.type';
+import { TaskUpdateProps } from '@/shared/types/task/task.type';
 
 export const UpdateTaskForm: FC<TaskUpdateProps & { isUpdating?: boolean }> = ({
   initialData,

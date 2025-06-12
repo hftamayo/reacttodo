@@ -8,10 +8,12 @@ import {
 import { FaTimes } from 'react-icons/fa';
 import { formStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
-import { TaskCardProps } from '@/shared/types/task.type';
+import { TaskCardProps } from '@/shared/types/task/task.type';
 import { UpdateTaskForm } from './UpdateTaskForm';
 
-export const UpdateTaskCard: React.FC<TaskCardProps & { isUpdating?: boolean }> = ({
+export const UpdateTaskCard: React.FC<
+  TaskCardProps & { isUpdating?: boolean }
+> = ({
   id,
   title,
   description,
