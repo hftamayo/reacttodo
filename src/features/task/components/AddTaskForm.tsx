@@ -5,7 +5,7 @@ import { Input } from '@/shared/components/ui/input/Input';
 import { Button } from '@/shared/components/ui/button/Button';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { taskBoard } from '@/shared/utils/twind/styles';
-import { AddTaskProps } from '@/shared/types/api.type';
+import { AddTaskProps } from '@/shared/types/domains/task.type';
 import { AiOutlinePlus } from 'react-icons/ai';
 
 interface AddTaskFormProps {
