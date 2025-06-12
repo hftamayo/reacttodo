@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'wouter';
 import { FaBars } from 'react-icons/fa';
-import { ToggleButtonProps } from '@/shared/types/menu.type';
+import { ToggleButtonProps } from '@/shared/types/dashboard/menu.type';
 import { DashBoardHeaderActionsStyles } from '@/shared/utils/twind/styles';
 
 export const ToggleButton: React.FC<ToggleButtonProps> = ({
