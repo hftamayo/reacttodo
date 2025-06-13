@@ -56,8 +56,8 @@ export const taskOps = {
     return makeRequest<TaskData>(url);
   },
 
-  async getTask(id: number): Promise<ApiResponse<TaskData>> {
-    const url = `${BACKEND_URL}/tasks/task/${id}`;
+  async getTask(taskId: number): Promise<ApiResponse<TaskData>> {
+    const url = `${BACKEND_URL}/tasks/task/${taskId}`;
     return makeRequest<TaskData>(url);
   },
 
@@ -87,8 +87,8 @@ export const taskOps = {
     });
   },
 
-  async deleteTask(id: number): Promise<ApiResponse<TaskData>> {
-    const url = `${BACKEND_URL}/tasks/task/${id}`;
+  async deleteTask(taskId: number): Promise<ApiResponse<TaskData>> {
+    const url = `${BACKEND_URL}/tasks/task/${taskId}`;
     return makeRequest<TaskData>(url, {
       method: 'DELETE',
       //credentials: 'include',
