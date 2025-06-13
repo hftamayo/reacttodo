@@ -47,7 +47,7 @@ export const TaskBoardContainer: React.FC = () => {
 
   const handleToggleTask = async (id: number) => {
     try {
-      await mutations.toggleTaskDone.mutateAsync({ id });
+      await mutations.toggleTaskDone.mutateAsync(id);
     } catch (error) {
       handleError(error as Error, { componentStack: '' });
     }
