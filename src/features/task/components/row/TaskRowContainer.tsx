@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TaskProps } from '@/shared/types/api.type';
+import { TaskProps } from '@/shared/types/domains/task.type';
 import { TaskRow } from './TaskRow';
 import { showError } from '@/shared/services/notification/notificationService';
 import { useQueryClient } from '@tanstack/react-query';
