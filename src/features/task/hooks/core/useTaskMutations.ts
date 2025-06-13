@@ -5,12 +5,8 @@ import {
   showSuccess,
   showError,
 } from '@/shared/services/notification/notificationService';
-import {
-  AddTaskProps,
-  TaskProps,
-  TaskIdentifier,
-  PaginationParams,
-} from '@/shared/types/api.type';
+import { AddTaskProps, TaskProps } from '@/shared/types/domains/task.type';
+import { PaginationParams } from '@/shared/types/api.type';
 
 export const useTaskMutations = (paginationParams: PaginationParams) => {
   const queryClient = useQueryClient();
@@ -35,7 +31,7 @@ export const useTaskMutations = (paginationParams: PaginationParams) => {
 
   // Toggle Task Done Mutation
   const toggleTaskDone = useMutation({
-    mutationFn: (taskId: TaskIdentifier) => taskOps.toggleTaskDone(taskId),
+    mutationFn: (taskId: number) => taskOps.toggleTaskDone(taskId),
     onSuccess: async () => {
       showSuccess('Task status updated successfully');
       await refreshTasksAfterMutation();
