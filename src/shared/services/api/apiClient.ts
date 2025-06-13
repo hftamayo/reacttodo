@@ -1,16 +1,16 @@
 import { handleResponse, handleError, makeRequest } from './apiHelpers';
 import { BACKEND_URL } from '@/shared/utils/envvars';
+import { PaginationParams, ApiResponse } from '../../types/api.type';
 import {
   HealthCheckData,
+  AppHealthDetails,
+  DbHealthDetails,
+} from '@/shared/types/healthcheck/healthcheck.type';
+import {
   TaskProps,
   TaskData,
-  PaginationParams,
-  ApiResponse,
-  DbHealthDetails,
-  AppHealthDetails,
   AddTaskProps,
-  TaskIdentifier,
-} from '../../types/api.type';
+} from '@/shared/types/domains/task.type';
 
 export const beOps = {
   async appHealth(): Promise<ApiResponse<HealthCheckData<AppHealthDetails>>> {
@@ -79,8 +79,8 @@ export const taskOps = {
     });
   },
 
-  async toggleTaskDone(taskId: TaskIdentifier): Promise<ApiResponse<TaskData>> {
-    const url = `${BACKEND_URL}/tasks/task/${taskId.id}/done`;
+  async toggleTaskDone(taskId: number): Promise<ApiResponse<TaskData>> {
+    const url = `${BACKEND_URL}/tasks/task/${taskId}/done`;
     return makeRequest<TaskData>(url, {
       method: 'PATCH',
       //credentials: 'include',
