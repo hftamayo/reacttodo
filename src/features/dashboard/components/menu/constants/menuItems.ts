@@ -1,4 +1,4 @@
-import { MenuItemProps } from '@/shared/types/menu.type';
+import { MenuItemProps } from '@/shared/types/dashboard/menu.type';
 
 export const MENU_ITEMS: MenuItemProps[] = [
   {

@@ -1,3 +1,5 @@
+import { PaginationMetadata } from '@/shared/types/api.type';
+
 export type FullTask = {
   id: number;
   title: string;
@@ -6,9 +8,22 @@ export type FullTask = {
   owner: number;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt: null | Date;
 };
 
-export type TaskProps = Omit<FullTask, 'createdAt' | 'updatedAt'>;
+export type AddTaskProps = Pick<
+  FullTask,
+  'title' | 'owner' | 'createdAt' | 'updatedAt' | 'deletedAt'
+>;
+
+export type TaskProps = Omit<FullTask, 'createdAt' | 'updatedAt' | 'deletedAt'>;
+
+export type TaskData = {
+  tasks: TaskProps[];
+  pagination: PaginationMetadata;
+  etag?: string;
+  lastModified?: string;
+};
 
 // Props for the UpdateTaskForm component
 export type TaskUpdateProps = {

@@ -2,7 +2,7 @@ import React from 'react';
 import { useSettingsForm } from '../../features/settings/hooks/useSettingsForm';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { SettingsPresenter } from './SettingsPresenter';
-import { SettingsFormProps } from '@/shared/types/settings.type';
+import { SettingsFormProps } from '@/shared/types/settings/settings.type';
 
 type SettingsContainerProps = Pick<SettingsFormProps, 'onCancel' | 'onSubmit'>;
 

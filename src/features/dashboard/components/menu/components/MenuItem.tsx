@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'wouter';
 import { DashBoardMenuBarStyles } from '@/shared/utils/twind/styles';
-import { MenuLinkProps } from '@/shared/types/menu.type';
+import { MenuLinkProps } from '@/shared/types/dashboard/menu.type';
 import { iconMap } from '../constants/iconMap';
 
 export const MenuItem: React.FC<MenuLinkProps> = ({ option, userRole }) => {

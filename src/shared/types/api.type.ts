@@ -1,12 +1,5 @@
 import { useTaskMutations } from '@/features/task/hooks/core/useTaskMutations';
-
-//common types:
-export type MongoId = string;
-export type SqlId = number;
-
-export interface EntityIdentifier<T> {
-  id: T;
-}
+import { TaskProps, AddTaskProps } from './domains/task.type';
 
 export type ApiResponse<T> = {
   code: number;
@@ -21,90 +14,6 @@ export type ApiError = {
   resultMessage: string;
 };
 
-//healthcheck types:
-export type AppHealthDetails = {
-  timestamp: string;
-  uptime: number;
-  memoryUsage: {
-    total: number;
-    free: number;
-  };
-  startTime: number;
-};
-
-export type DbHealthDetails = {
-  timestamp: string;
-  connectionTime?: number;
-  databaseStatus?: string;
-  error?: string;
-};
-
-export type HealthCheckProps<T> = {
-  status: string;
-  message: string;
-  details?: T;
-};
-
-export type HealthCheckData<T> = {
-  healthCheck: HealthCheckProps<T>;
-};
-
-//role types:
-export type RoleProps = {
-  id?: string;
-  name: string;
-  description: string;
-  status: boolean;
-  permissions: string[];
-  createdAt?: string;
-  updatedAt?: string;
-  deletedAt?: string;
-};
-
-export type RoleData = {
-  newRole?: RoleProps;
-  role?: RoleProps;
-  roles: RoleProps[];
-};
-
-//user types:
-export type UserProps = {
-  id?: string;
-  fullname: string;
-  birthdate: string;
-  email: string;
-  password: string;
-  status: boolean;
-  role: string[];
-  createdAt?: string;
-  updatedAt?: string;
-  deletedAt?: string;
-};
-
-export type UserData = {
-  newUser?: UserProps;
-  user?: UserProps;
-  users: UserProps[];
-};
-
-//task types:
-export type TaskIdentifier = EntityIdentifier<SqlId>;
-export type MongoTaskIdentifier = EntityIdentifier<MongoId>;
-
-export type TaskProps = {
-  id: SqlId;
-  title: string;
-  description: string;
-  done: boolean;
-  owner: number;
-  createdAt?: string;
-  updatedAt?: string;
-  deletedAt?: null | string;
-};
-
-export type AddTaskProps = Pick<TaskProps, 'title' | 'owner'>;
-//export type AddTaskProps = Pick<TaskProps, 'title' | 'description' | 'owner'>;
-
 //pagination and task related ops
 
 export type PaginationMetadata = {
@@ -117,13 +26,6 @@ export type PaginationMetadata = {
   hasPrev: boolean;
   isFirstPage: boolean;
   isLastPage: boolean;
-};
-
-export type TaskData = {
-  tasks: TaskProps[];
-  pagination: PaginationMetadata;
-  etag?: string;
-  lastModified?: string;
 };
 
 export type PaginationParams = {

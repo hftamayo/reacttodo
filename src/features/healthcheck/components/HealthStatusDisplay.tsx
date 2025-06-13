@@ -2,7 +2,7 @@ import React from 'react';
 import { useHealthCheck } from '../hooks/useHealthCheck';
 import { DashBoardFooterStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
-import { HealthStatus } from '@/shared/types/healthcheck.type';
+import { HealthStatus } from '@/shared/types/healthcheck/healthcheck.type';
 import { MAX_RETRIES } from '@/shared/utils/envvars';
 
 const STATUS_CLASSES: Record<HealthStatus, string> = {

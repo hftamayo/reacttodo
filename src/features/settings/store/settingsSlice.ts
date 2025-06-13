@@ -1,5 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AppSettings, SettingsState } from '@/shared/types/settings.type';
+import {
+  AppSettings,
+  SettingsState,
+} from '@/shared/types/settings/settings.type';
 import { RootState } from '@/shared/services/redux/rootReducer';
 
 const initialState: SettingsState = {

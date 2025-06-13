@@ -4,7 +4,7 @@ import { SearchText } from './SearchText';
 import { ProfileMenu } from './ProfileMenu';
 import { ThemeButton } from './ThemeButton';
 import { FaBell } from 'react-icons/fa';
-import { ToggleButtonProps } from '@/shared/types/menu.type';
+import { ToggleButtonProps } from '@/shared/types/dashboard/menu.type';
 
 export const ContainerHeader: React.FC<ToggleButtonProps> = ({
   setSidebarToggle,

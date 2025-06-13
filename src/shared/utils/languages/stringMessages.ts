@@ -1,4 +1,4 @@
-import { LanguageContextType } from '@/shared/types/settings.type';
+import { LanguageContextType } from '@/shared/types/settings/settings.type';
 import { LucideBlend } from 'lucide-react';
 
 export const stringMessages: LanguageContextType = {
