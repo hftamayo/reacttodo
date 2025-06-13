@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TaskProps } from '@/shared/types/api.type';
+import { TaskProps } from '@/shared/types/domains/task.type';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { FaRegTrashAlt, FaPencilAlt } from 'react-icons/fa';
 import { Label } from '@/shared/components/ui/label/Label';
