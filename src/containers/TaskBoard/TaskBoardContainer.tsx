@@ -4,7 +4,7 @@ import { TaskBoardPresenter } from './TaskBoardPresenter';
 import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import { useErrorHandler } from '@/shared/hooks/useErrorHandler';
 import { useTaskBoard } from '@/features/task/hooks/useTaskBoard';
-import { AddTaskProps, TaskProps } from '@/shared/types/api.type';
+import { AddTaskProps, TaskProps } from '@/shared/types/domains/task.type';
 
 export const TaskBoardContainer: React.FC = () => {
   const { handleError } = useErrorHandler('TaskBoard');
