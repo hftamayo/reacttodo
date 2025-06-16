@@ -191,50 +191,6 @@ export const stringMessages: LanguageContextType = {
 
   //menu
   //profileMenu
-  crudOperations: {
-    en: {
-      group: {
-        createSuccess: 'Created successfully',
-        createError: 'Failed to create',
-        readSuccess: 'Data loaded successfully',
-        readError: 'Failed to load data',
-        updateSuccess: 'Updated successfully',
-        updateError: 'Failed to update',
-        deleteSuccess: 'Deleted successfully',
-        deleteError: 'Failed to delete',
-        toggleSuccess: 'Status updated successfully',
-        toggleError: 'Failed to update status',
-      },
-    },
-    es: {
-      group: {
-        createSuccess: 'Creado con éxito',
-        createError: 'Error al crear',
-        readSuccess: 'Datos cargados correctamente',
-        readError: 'Error al cargar datos',
-        updateSuccess: 'Actualizado con éxito',
-        updateError: 'Error al actualizar',
-        deleteSuccess: 'Eliminado con éxito',
-        deleteError: 'Error al eliminar',
-        toggleSuccess: 'Estado actualizado correctamente',
-        toggleError: 'Error al actualizar el estado',
-      },
-    },
-    de: {
-      group: {
-        createSuccess: 'Erfolgreich erstellt',
-        createError: 'Erstellen fehlgeschlagen',
-        readSuccess: 'Daten erfolgreich geladen',
-        readError: 'Fehler beim Laden der Daten',
-        updateSuccess: 'Erfolgreich aktualisiert',
-        updateError: 'Aktualisierung fehlgeschlagen',
-        deleteSuccess: 'Erfolgreich gelöscht',
-        deleteError: 'Löschen fehlgeschlagen',
-        toggleSuccess: 'Status erfolgreich aktualisiert',
-        toggleError: 'Fehler beim Aktualisieren des Status',
-      },
-    },
-  },
   sideBarDashboard: {
     en: {
       group: {
@@ -376,6 +332,51 @@ export const stringMessages: LanguageContextType = {
         lblTaskStatus: 'Aufgabenstatus',
         btnCancel: 'Abbrechen',
         btnUpdate: 'Aktualisieren',
+      },
+    },
+  },
+
+  crudOperations: {
+    en: {
+      group: {
+        createSuccess: 'Created successfully',
+        createError: 'Failed to create',
+        readSuccess: 'Data loaded successfully',
+        readError: 'Failed to load data',
+        updateSuccess: 'Updated successfully',
+        updateError: 'Failed to update',
+        deleteSuccess: 'Deleted successfully',
+        deleteError: 'Failed to delete',
+        toggleSuccess: 'Status updated successfully',
+        toggleError: 'Failed to update status',
+      },
+    },
+    es: {
+      group: {
+        createSuccess: 'Creado con éxito',
+        createError: 'Error al crear',
+        readSuccess: 'Datos cargados correctamente',
+        readError: 'Error al cargar datos',
+        updateSuccess: 'Actualizado con éxito',
+        updateError: 'Error al actualizar',
+        deleteSuccess: 'Eliminado con éxito',
+        deleteError: 'Error al eliminar',
+        toggleSuccess: 'Estado actualizado correctamente',
+        toggleError: 'Error al actualizar el estado',
+      },
+    },
+    de: {
+      group: {
+        createSuccess: 'Erfolgreich erstellt',
+        createError: 'Erstellen fehlgeschlagen',
+        readSuccess: 'Daten erfolgreich geladen',
+        readError: 'Fehler beim Laden der Daten',
+        updateSuccess: 'Erfolgreich aktualisiert',
+        updateError: 'Aktualisierung fehlgeschlagen',
+        deleteSuccess: 'Erfolgreich gelöscht',
+        deleteError: 'Löschen fehlgeschlagen',
+        toggleSuccess: 'Status erfolgreich aktualisiert',
+        toggleError: 'Fehler beim Aktualisieren des Status',
       },
     },
   },
