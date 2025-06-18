@@ -3,11 +3,7 @@ import { TaskProps, AddTaskProps } from './domains/task.type';
 
 export type CrudOperation = 'create' | 'read' | 'update' | 'delete' | 'toggle';
 export type EntityType = 'task' | 'user' | 'setting';
-export type OperationMessages = {
-  pending?: string;
-  success: string;
-  error: string;
-};
+
 export type ApiResponse<T> = {
   code: number;
   resultMessage: string;
