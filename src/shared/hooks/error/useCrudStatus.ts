@@ -19,10 +19,7 @@ export const useCrudStatus = (entityType: EntityType) => {
     return null;
   }
 
-  const defaultMessages: Record<
-    CrudOperation,
-    { success: string; error: string }
-  > = {
+  const defaultMessages: Record<CrudOperation, OperationMessages> = {
     create: {
       success: group.createSuccess,
       error: group.createError,
