@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { ErrorInfo } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 import { useLocation } from 'wouter';
 import { TaskBoardPresenter } from './TaskBoardPresenter';
-import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
-import { useErrorHandler } from '@/shared/hooks/useErrorHandler';
 import { useTaskBoard } from '@/features/task/hooks/useTaskBoard';
 import { AddTaskProps, TaskProps } from '@/shared/types/domains/task.type';
+import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
+import { showError } from '@/shared/services/notification/notificationService';
 
 export const TaskBoardContainer: React.FC = () => {
-  const { handleError } = useErrorHandler('TaskBoard');
+  const { showBoundary } = useErrorBoundary();
+
   const [, setLocation] = useLocation();
 
   const {
@@ -18,11 +20,15 @@ export const TaskBoardContainer: React.FC = () => {
     mutations,
     setCurrentPage,
     taskStats,
-    refetch,
   } = useTaskBoard();
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
+  };
+
+  const handleError = (error: Error, errorInfo: ErrorInfo) => {
+    console.error('Task Board Error:', error, errorInfo);
+    showError('An error occurred in the Task Board');
   };
 
   const handleClose = () => {
@@ -33,7 +39,9 @@ export const TaskBoardContainer: React.FC = () => {
     try {
       await mutations.addTask.mutateAsync(newTask);
     } catch (error) {
-      handleError(error as Error, { componentStack: '' });
+      if (error instanceof Error && error.message.includes('CRITICAL')) {
+        showBoundary(error);
+      }
     }
   };
 
@@ -41,7 +49,9 @@ export const TaskBoardContainer: React.FC = () => {
     try {
       await mutations.updateTask.mutateAsync(task);
     } catch (error) {
-      handleError(error as Error, { componentStack: '' });
+      if (error instanceof Error && error.message.includes('CRITICAL')) {
+        showBoundary(error);
+      }
     }
   };
 
@@ -49,7 +59,9 @@ export const TaskBoardContainer: React.FC = () => {
     try {
       await mutations.toggleTaskDone.mutateAsync(id);
     } catch (error) {
-      handleError(error as Error, { componentStack: '' });
+      if (error instanceof Error && error.message.includes('CRITICAL')) {
+        showBoundary(error);
+      }
     }
   };
 
@@ -57,7 +69,9 @@ export const TaskBoardContainer: React.FC = () => {
     try {
       await mutations.deleteTask.mutateAsync(id);
     } catch (error) {
-      handleError(error as Error, { componentStack: '' });
+      if (error instanceof Error && error.message.includes('CRITICAL')) {
+        showBoundary(error);
+      }
     }
   };
 
