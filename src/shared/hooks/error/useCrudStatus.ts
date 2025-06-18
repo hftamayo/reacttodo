@@ -4,43 +4,48 @@ import {
   showError,
 } from '@/shared/services/notification/notificationService';
 import { useErrorHandler } from '../useErrorHandler';
-import {
-  CrudOperation,
-  EntityType,
-  OperationMessages,
-} from '@/shared/types/api.type';
+import { CrudOperation, EntityType } from '@/shared/types/api.type';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 
 export const useCrudStatus = (entityType: EntityType) => {
   const { handleError: errorHandlerFn } = useErrorHandler(entityType);
   const { group } = useTranslation('crudStatus');
 
-  if (!group) {
-    return null;
-  }
+  const getDefaultMessages = useCallback(
+    (operation: CrudOperation, status: 'success' | 'error') => {
+      if (!group) {
+        return status === 'success'
+          ? 'operation successful'
+          : 'operation failed';
+      }
 
-  const defaultMessages: Record<CrudOperation, OperationMessages> = {
-    create: {
-      success: group.createSuccess,
-      error: group.createError,
+      const messages = {
+        create: {
+          success: group.createSuccess || 'created successfully',
+          error: group.createError || 'creation failed',
+        },
+        read: {
+          success: group.readSuccess || 'loaded successfully',
+          error: group.readError || 'loading failed',
+        },
+        update: {
+          success: group.updateSuccess || 'updated successfully',
+          error: group.updateError || 'update failed',
+        },
+        delete: {
+          success: group.deleteSuccess || 'deleted successfully',
+          error: group.deleteError || 'deletion failed',
+        },
+        toggle: {
+          success: group.toggleSuccess || 'toggled successfully',
+          error: group.toggleError || 'toggle failed',
+        },
+      };
+
+      return messages[operation]?.[status] || `${status}`;
     },
-    read: {
-      success: group.readSuccess,
-      error: group.readError,
-    },
-    update: {
-      success: group.updateSuccess,
-      error: group.updateError,
-    },
-    delete: {
-      success: group.deleteSuccess,
-      error: group.deleteError,
-    },
-    toggle: {
-      success: group.toggleSuccess,
-      error: group.toggleError,
-    },
-  };
+    [group]
+  );
 
   const getOperationMessage = useCallback(
     (
@@ -51,11 +56,11 @@ export const useCrudStatus = (entityType: EntityType) => {
       if (customMessages) return customMessages;
 
       const entity = entityType.charAt(0).toUpperCase() + entityType.slice(1);
-      const baseMessage = defaultMessages[operation][status];
+      const baseMessage = getDefaultMessages(operation, status);
 
       return `${entity} ${baseMessage}`;
     },
-    [entityType, defaultMessages]
+    [entityType, getDefaultMessages]
   );
 
   const handleSuccess = useCallback(
