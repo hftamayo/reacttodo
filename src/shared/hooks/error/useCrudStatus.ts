@@ -12,7 +12,7 @@ import {
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 
 export const useCrudStatus = (entityType: EntityType) => {
-  const errorHandler = useErrorHandler();
+  const { handleError: errorHandlerFn } = useErrorHandler(entityType);
   const { group } = useTranslation('crudStatus');
 
   if (!group) {
@@ -58,7 +58,7 @@ export const useCrudStatus = (entityType: EntityType) => {
 
       return `${entity} ${baseMessage}`;
     },
-    [entitytype, defaultMessages]
+    [entityType, defaultMessages]
   );
 
   const handleSuccess = useCallback(
@@ -81,14 +81,13 @@ export const useCrudStatus = (entityType: EntityType) => {
       showError(message);
 
       // Pass to global error handler for consistent processing
-      errorHandler(error, {
-        source: `${entityType}:${operation}`,
+      errorHandlerFn(error, {
         componentStack: error.stack ?? '',
       });
 
       // Could add error reporting to monitoring service here
     },
-    [getOperationMessage, entityType, errorHandler]
+    [getOperationMessage, entityType, errorHandlerFn]
   );
 
   return { handleSuccess, handleError };
