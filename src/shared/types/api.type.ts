@@ -1,6 +1,9 @@
 import { useTaskMutations } from '@/features/task/hooks/core/useTaskMutations';
 import { TaskProps, AddTaskProps } from './domains/task.type';
 
+export type CrudOperation = 'create' | 'read' | 'update' | 'delete' | 'toggle';
+export type EntityType = 'task' | 'user' | 'setting';
+
 export type ApiResponse<T> = {
   code: number;
   resultMessage: string;

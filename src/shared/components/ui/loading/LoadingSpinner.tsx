@@ -22,4 +22,4 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
       aria-label="Loading"
     />
   );
-}; 
+};

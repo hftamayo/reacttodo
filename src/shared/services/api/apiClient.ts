@@ -1,16 +1,16 @@
 import { handleResponse, handleError, makeRequest } from './apiHelpers';
 import { BACKEND_URL } from '@/shared/utils/envvars';
+import { PaginationParams, ApiResponse } from '../../types/api.type';
 import {
   HealthCheckData,
+  AppHealthDetails,
+  DbHealthDetails,
+} from '@/shared/types/healthcheck/healthcheck.type';
+import {
   TaskProps,
   TaskData,
-  PaginationParams,
-  ApiResponse,
-  DbHealthDetails,
-  AppHealthDetails,
   AddTaskProps,
-  TaskIdentifier,
-} from '../../types/api.type';
+} from '@/shared/types/domains/task.type';
 
 export const beOps = {
   async appHealth(): Promise<ApiResponse<HealthCheckData<AppHealthDetails>>> {
@@ -56,8 +56,8 @@ export const taskOps = {
     return makeRequest<TaskData>(url);
   },
 
-  async getTask(id: number): Promise<ApiResponse<TaskData>> {
-    const url = `${BACKEND_URL}/tasks/task/${id}`;
+  async getTask(taskId: number): Promise<ApiResponse<TaskData>> {
+    const url = `${BACKEND_URL}/tasks/task/${taskId}`;
     return makeRequest<TaskData>(url);
   },
 
@@ -79,16 +79,16 @@ export const taskOps = {
     });
   },
 
-  async toggleTaskDone(taskId: TaskIdentifier): Promise<ApiResponse<TaskData>> {
-    const url = `${BACKEND_URL}/tasks/task/${taskId.id}/done`;
+  async toggleTaskDone(taskId: number): Promise<ApiResponse<TaskData>> {
+    const url = `${BACKEND_URL}/tasks/task/${taskId}/done`;
     return makeRequest<TaskData>(url, {
       method: 'PATCH',
       //credentials: 'include',
     });
   },
 
-  async deleteTask(id: number): Promise<ApiResponse<TaskData>> {
-    const url = `${BACKEND_URL}/tasks/task/${id}`;
+  async deleteTask(taskId: number): Promise<ApiResponse<TaskData>> {
+    const url = `${BACKEND_URL}/tasks/task/${taskId}`;
     return makeRequest<TaskData>(url, {
       method: 'DELETE',
       //credentials: 'include',

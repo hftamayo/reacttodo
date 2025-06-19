@@ -1,55 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { taskOps } from '@/shared/services/api/apiClient';
 import { taskKeys } from './queryKeys';
-import {
-  showSuccess,
-  showError,
-} from '@/shared/services/notification/notificationService';
-import {
-  AddTaskProps,
-  TaskProps,
-  TaskIdentifier,
-  PaginationParams,
-} from '@/shared/types/api.type';
+import { AddTaskProps, TaskProps } from '@/shared/types/domains/task.type';
+import { PaginationParams } from '@/shared/types/api.type';
+import { useCrudStatus } from '@/shared/hooks/error/useCrudStatus';
 
 export const useTaskMutations = (paginationParams: PaginationParams) => {
   const queryClient = useQueryClient();
-
-  // Add Task Mutation
-  const addTask = useMutation({
-    mutationFn: (newTask: AddTaskProps) => taskOps.addTask(newTask),
-    onSuccess: async () => {
-      showSuccess('Task added successfully');
-      await refreshTasksAfterMutation();
-    },
-  });
-
-  // Update Task Mutation
-  const updateTask = useMutation({
-    mutationFn: (task: TaskProps) => taskOps.updateTask(task),
-    onSuccess: async () => {
-      showSuccess('Task updated successfully');
-      await refreshTasksAfterMutation();
-    },
-  });
-
-  // Toggle Task Done Mutation
-  const toggleTaskDone = useMutation({
-    mutationFn: (taskId: TaskIdentifier) => taskOps.toggleTaskDone(taskId),
-    onSuccess: async () => {
-      showSuccess('Task status updated successfully');
-      await refreshTasksAfterMutation();
-    },
-  });
-
-  // Delete Task Mutation
-  const deleteTask = useMutation({
-    mutationFn: (id: number) => taskOps.deleteTask(id),
-    onSuccess: async () => {
-      showSuccess('Task deleted successfully');
-      await refreshTasksAfterMutation();
-    },
-  });
+  const { handleSuccess, handleError } = useCrudStatus('task');
 
   const refreshTasksAfterMutation = async () => {
     queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
@@ -61,18 +19,64 @@ export const useTaskMutations = (paginationParams: PaginationParams) => {
         ...paginationParams,
         _t: timestamp,
       });
+
       queryClient.setQueryData(taskKeys.list(paginationParams), freshData);
       await queryClient.refetchQueries({
         queryKey: taskKeys.list(paginationParams),
         exact: true,
       });
-      return true;
     } catch (error) {
-      showError('Failed to refresh task data');
       console.error('Error refreshing task data:', error);
-      return false;
     }
   };
+
+  // Add Task Mutation
+  const addTask = useMutation({
+    mutationFn: (newTask: AddTaskProps) => taskOps.addTask(newTask),
+    onSuccess: async () => {
+      handleSuccess('create');
+      await refreshTasksAfterMutation();
+    },
+    onError: (error: Error) => {
+      handleError('create', error);
+    },
+  });
+
+  // Update Task Mutation
+  const updateTask = useMutation({
+    mutationFn: (task: TaskProps) => taskOps.updateTask(task),
+    onSuccess: async () => {
+      handleSuccess('update');
+      await refreshTasksAfterMutation();
+    },
+    onError: (error: Error) => {
+      handleError('update', error);
+    },
+  });
+
+  // Toggle Task Done Mutation
+  const toggleTaskDone = useMutation({
+    mutationFn: (taskId: number) => taskOps.toggleTaskDone(taskId),
+    onSuccess: async () => {
+      handleSuccess('toggle');
+      await refreshTasksAfterMutation();
+    },
+    onError: (error: Error) => {
+      handleError('toggle', error);
+    },
+  });
+
+  // Delete Task Mutation
+  const deleteTask = useMutation({
+    mutationFn: (id: number) => taskOps.deleteTask(id),
+    onSuccess: async () => {
+      handleSuccess('delete');
+      await refreshTasksAfterMutation();
+    },
+    onError: (error: Error) => {
+      handleError('delete', error);
+    },
+  });
 
   return {
     addTask,

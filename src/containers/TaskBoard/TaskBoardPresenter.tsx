@@ -7,7 +7,8 @@ import { OffsetPagination } from '@/shared/components/pagination/OffsetPaginatio
 import CustomModal from '@/shared/components/ui/modal/CustomModal';
 import { TaskBoardStats } from '@/features/task/components/TaskBoardStats';
 import { taskBoard } from '@/shared/utils/twind/styles';
-import { TaskProps, TaskBoardPresenterProps } from '@/shared/types/api.type';
+import { TaskBoardPresenterProps } from '@/shared/types/api.type';
+import { TaskProps } from '@/shared/types/domains/task.type';
 import { showError } from '@/shared/services/notification/notificationService';
 import { LoadingSpinner } from '@/shared/components/ui/loading/LoadingSpinner';
 

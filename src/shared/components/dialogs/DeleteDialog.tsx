@@ -30,8 +30,9 @@ export const DeleteDialog = ({
         <AlertDialogHeader>
           <AlertDialogTitle>Delete Entity</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete the entity "{title}"? This action
-            cannot be undone.
+            Are you sure you want to delete the entity{' '}
+            <span className="font-bold text-red-500">{title}</span>
+            {''}? This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
