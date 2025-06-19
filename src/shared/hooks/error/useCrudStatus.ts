@@ -9,7 +9,7 @@ import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 
 export const useCrudStatus = (entityType: EntityType) => {
   const { handleError: errorHandlerFn } = useErrorHandler(entityType);
-  const { group } = useTranslation('crudStatus');
+  const { group } = useTranslation('crudOperations');
 
   const getDefaultMessages = useCallback(
     (operation: CrudOperation, status: 'success' | 'error') => {
