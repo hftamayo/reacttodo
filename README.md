@@ -8,6 +8,48 @@ Application which help the user to manage tasks and reminders
 - Update status (finished / ongoing)
 - Delete permanently a task / reminder
 
+## Redux Store ##
+
+### Responsibilities ###
+
+1. UI State Management
+    - Tracks which task is selected (selectedTaskId)
+    - Manages the current view mode (viewMode, e.g., 'list' or 'grid')
+
+2. Settings State
+    - Stores user/application settings (via the settings slice)
+    - Manages language, theme, and other user preferences
+
+3. Health Metrics and Menu State
+    - Stores health check metrics for the app (via the healthMetrics slice)
+    - Manages menu state (via the menu slice)
+
+4. Selectors for UI State
+    - Provides selectors to access UI state (e.g., selectViewMode, selectSelectedTaskId)
+
+5. Redux DevTools and Middleware
+    - Enables Redux DevTools for debugging (in non-production)
+    - Uses middleware like redux-logger in development for action/state logging
+
+### What the Redux Store Does NOT Do ###
+1. Does NOT manage task data, mutations, or server state (handled by React Query and custom hooks)
+2. Does NOT handle optimistic updates, caching, or pagination for tasks
+3. Does NOT coordinate business logic or side effects for tasks
+
+### **Summary Table**
+
+| State Type         | Managed by Redux? | Example Slice/Selector      |
+|--------------------|:----------------:|-----------------------------|
+| UI State           |        ✅         | `taskUI`, `selectViewMode`  |
+| User Settings      |        ✅         | `settings`                  |
+| Health Metrics     |        ✅         | `healthMetrics`             |
+| Menu State         |        ✅         | `menu`                      |
+| Task Data          |        ❌         | (Handled by React Query)    |
+| Task Mutations     |        ❌         | (Handled by React Query)    |
+| Pagination         |        ❌         | (Handled by hooks/React Q.) |
+| Optimistic Updates |        ❌         | (Handled by React Query)    |
+
+
 
 ## Releases ##
 
