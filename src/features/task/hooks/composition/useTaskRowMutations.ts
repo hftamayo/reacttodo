@@ -6,8 +6,7 @@ import { PaginationParams } from '@/shared/types/api.type';
 // Accepts the task and pagination params (if needed)
 export const useTaskRowMutations = (
   task: TaskProps,
-  paginationParams: PaginationParams,
-  onEdit: (task: TaskProps) => void
+  paginationParams: PaginationParams
 ) => {
   const { updateTask, deleteTask, toggleTaskDone } =
     useTaskMutations(paginationParams);
