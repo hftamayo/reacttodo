@@ -107,8 +107,6 @@ export const TaskBoardContainer: React.FC = () => {
         onClose={handleClose}
         onAddTask={handleAddTask}
         onUpdateTask={handleUpdateTask}
-        onToggleTask={handleToggleTask}
-        onDeleteTask={handleDeleteTask}
         onPageChange={handlePageChange}
       />
     </ErrorBoundary>
