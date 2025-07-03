@@ -1,5 +1,5 @@
 import { useTaskMutations } from '@/features/task/hooks/core/useTaskMutations';
-import { TaskProps, AddTaskProps } from './domains/task.type';
+import { TaskProps } from './domains/task.type';
 
 export type CrudOperation = 'create' | 'read' | 'update' | 'delete' | 'toggle';
 export type EntityType = 'task' | 'user' | 'setting';
@@ -80,8 +80,6 @@ export type TaskBoardPresenterProps = {
   error?: Error;
 
   // Callbacks
-  onAddTask: (task: AddTaskProps) => Promise<void>;
-  onUpdateTask: (task: TaskProps) => Promise<void>;
   onPageChange: (page: number) => void;
   onClose: () => void;
 };

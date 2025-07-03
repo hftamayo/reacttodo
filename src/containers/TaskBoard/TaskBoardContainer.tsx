@@ -3,7 +3,6 @@ import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { useLocation } from 'wouter';
 import { TaskBoardPresenter } from './TaskBoardPresenter';
 import { useTaskBoard } from '@/features/task/hooks/useTaskBoard';
-import { AddTaskProps, TaskProps } from '@/shared/types/domains/task.type';
 import { showError } from '@/shared/services/notification/notificationService';
 
 const TaskBoardFallback: React.FC<FallbackProps> = ({
@@ -50,46 +49,6 @@ export const TaskBoardContainer: React.FC = () => {
     setLocation('/');
   };
 
-  const handleAddTask = async (newTask: AddTaskProps) => {
-    try {
-      await mutations.addTask.mutateAsync(newTask);
-    } catch (error) {
-      if (error instanceof Error && error.message.includes('CRITICAL')) {
-        throw error;
-      }
-    }
-  };
-
-  const handleUpdateTask = async (task: TaskProps) => {
-    try {
-      await mutations.updateTask.mutateAsync(task);
-    } catch (error) {
-      if (error instanceof Error && error.message.includes('CRITICAL')) {
-        throw error;
-      }
-    }
-  };
-
-  const handleToggleTask = async (id: number) => {
-    try {
-      await mutations.toggleTaskDone.mutateAsync(id);
-    } catch (error) {
-      if (error instanceof Error && error.message.includes('CRITICAL')) {
-        throw error;
-      }
-    }
-  };
-
-  const handleDeleteTask = async (id: number) => {
-    try {
-      await mutations.deleteTask.mutateAsync(id);
-    } catch (error) {
-      if (error instanceof Error && error.message.includes('CRITICAL')) {
-        throw error;
-      }
-    }
-  };
-
   return (
     <ErrorBoundary FallbackComponent={TaskBoardFallback} onError={handleError}>
       <TaskBoardPresenter
@@ -105,8 +64,6 @@ export const TaskBoardContainer: React.FC = () => {
         isDeleting={mutations.deleteTask.isPending}
         error={error as Error}
         onClose={handleClose}
-        onAddTask={handleAddTask}
-        onUpdateTask={handleUpdateTask}
         onPageChange={handlePageChange}
       />
     </ErrorBoundary>
