@@ -8,9 +8,10 @@ import { Button } from '@/shared/components/ui/button/Button';
 import { taskRow } from '../../../../shared/utils/twind/styles';
 import { DeleteDialog } from '@/shared/components/dialogs/DeleteDialog';
 import { useTaskRowMutations } from '@/features/task/hooks/composition/useTaskRowMutations';
+import { PaginationParams } from '@/shared/types/api.type';
 
 interface TaskRowProps extends TaskProps {
-  paginationParams: import('@/shared/types/api.type').PaginationParams;
+  paginationParams: PaginationParams;
 }
 
 const TaskRowComponent: React.FC<TaskRowProps> = ({
