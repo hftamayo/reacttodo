@@ -82,8 +82,6 @@ export type TaskBoardPresenterProps = {
   // Callbacks
   onAddTask: (task: AddTaskProps) => Promise<void>;
   onUpdateTask: (task: TaskProps) => Promise<void>;
-  onToggleTask: (id: number) => Promise<void>;
-  onDeleteTask: (id: number) => Promise<void>;
   onPageChange: (page: number) => void;
   onClose: () => void;
 };
