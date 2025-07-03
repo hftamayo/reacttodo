@@ -7,13 +7,10 @@ import { Input } from '@/shared/components/ui/input/Input';
 import { Button } from '@/shared/components/ui/button/Button';
 import { taskRow } from '../../../../shared/utils/twind/styles';
 import { DeleteDialog } from '@/shared/components/dialogs/DeleteDialog';
+import { useTaskRowMutations } from '@/features/task/hooks/composition/useTaskRowMutations';
 
 interface TaskRowProps extends TaskProps {
-  onEdit: (task: TaskProps) => void;
-  onToggle: () => Promise<void>;
-  onDelete: () => Promise<void>;
-  isToggling: boolean;
-  isDeleting: boolean;
+  paginationParams: import('@/shared/types/api.type').PaginationParams;
 }
 
 const TaskRowComponent: React.FC<TaskRowProps> = ({
@@ -22,11 +19,7 @@ const TaskRowComponent: React.FC<TaskRowProps> = ({
   description,
   done,
   owner,
-  onEdit,
-  onToggle,
-  onDelete,
-  isToggling,
-  isDeleting,
+  paginationParams,
 }) => {
   // Calculate classes
   const liClass = done ? taskRow.liComplete : taskRow.li;
@@ -34,6 +27,13 @@ const TaskRowComponent: React.FC<TaskRowProps> = ({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { text: deleteRowButton } = useTranslation('deleteRowButton');
   const { text: updateRowButton } = useTranslation('updateRowButton');
+
+  // Use the new hook for mutation handlers and states
+  const { onToggle, onDelete, onUpdate, isToggling, isDeleting } =
+    useTaskRowMutations(
+      { id, title, description, done, owner },
+      paginationParams
+    );
 
   const handleDeleteTask = async () => {
     await onDelete();
@@ -80,7 +80,7 @@ const TaskRowComponent: React.FC<TaskRowProps> = ({
         <Button
           variant="secondary"
           size="sm"
-          onClick={() => onEdit({ id, title, description, done, owner })}
+          onClick={onUpdate}
           title={updateRowButton}
           disabled={done}
           aria-label={`Edit task "${title}" ${done ? '(disabled - task completed)' : ''}`}
