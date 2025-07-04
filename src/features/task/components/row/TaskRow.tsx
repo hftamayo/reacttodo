@@ -7,7 +7,7 @@ import { Input } from '@/shared/components/ui/input/Input';
 import { Button } from '@/shared/components/ui/button/Button';
 import { taskRow } from '../../../../shared/utils/twind/styles';
 import { DeleteDialog } from '@/shared/components/dialogs/DeleteDialog';
-import { useTaskBoardMutations } from '../../hooks/composition/useTaskBoardActions';
+import { useTaskBoardActions } from '../../hooks/composition/useTaskBoardActions';
 import { PaginationParams } from '@/shared/types/api.type';
 
 interface TaskRowProps extends TaskProps {
@@ -48,7 +48,7 @@ const TaskRowComponent: React.FC<TaskRowProps> = ({
           type="checkbox"
           checked={done}
           onChange={onToggle}
-          disabled={isToggling || isDeleting}
+          disabled={isToggling ?? isDeleting}
           aria-label={`Mark "${title}" as ${done ? 'incomplete' : 'complete'}`}
         />
         <Label
@@ -65,7 +65,7 @@ const TaskRowComponent: React.FC<TaskRowProps> = ({
           size="sm"
           onClick={() => setIsDialogOpen(true)}
           title={deleteRowButton}
-          disabled={isToggling || isDeleting}
+          disabled={isToggling ?? isDeleting}
           aria-label={`Delete task "${title}"`}
         >
           <FaRegTrashAlt />
