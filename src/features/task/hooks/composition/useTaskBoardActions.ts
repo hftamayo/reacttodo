@@ -1,20 +1,23 @@
 import { useCallback } from 'react';
 import { TaskProps, AddTaskProps } from '@/shared/types/domains/task.type';
-import { useTaskMutations } from '../core/useTaskBoardMutations';
+import { useTaskBoardMutations } from '../core/useTaskBoardMutations';
 import { PaginationParams } from '@/shared/types/api.type';
 
 // Accepts the task and pagination params (if needed)
-export const useTaskBoardMutations = (
+export const useTaskBoardActions = (
   task: TaskProps,
   paginationParams: PaginationParams
 ) => {
   const { addTask, updateTask, deleteTask, toggleTaskDone } =
-    useTaskMutations(paginationParams);
+    useTaskBoardMutations(paginationParams);
 
   // Handler for adding a new task
-  const handleAddTask = useCallback(async (newTask: AddTaskProps) => {
-    await addTask.mutateAsync(newTask);
-  }, [addTask]);
+  const handleAddTask = useCallback(
+    async (newTask: AddTaskProps) => {
+      await addTask.mutateAsync(newTask);
+    },
+    [addTask]
+  );
 
   // Handler for toggling task completion
   const handleToggle = useCallback(async () => {
