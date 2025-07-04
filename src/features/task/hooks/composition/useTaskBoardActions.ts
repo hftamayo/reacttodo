@@ -1,15 +1,20 @@
 import { useCallback } from 'react';
-import { TaskProps } from '@/shared/types/domains/task.type';
-import { useTaskMutations } from '../core/useTaskMutations';
+import { TaskProps, AddTaskProps } from '@/shared/types/domains/task.type';
+import { useTaskMutations } from '../core/useTaskBoardMutations';
 import { PaginationParams } from '@/shared/types/api.type';
 
 // Accepts the task and pagination params (if needed)
-export const useTaskRowMutations = (
+export const useTaskBoardMutations = (
   task: TaskProps,
   paginationParams: PaginationParams
 ) => {
-  const { updateTask, deleteTask, toggleTaskDone } =
+  const { addTask, updateTask, deleteTask, toggleTaskDone } =
     useTaskMutations(paginationParams);
+
+  // Handler for adding a new task
+  const handleAddTask = useCallback(async (newTask: AddTaskProps) => {
+    await addTask.mutateAsync(newTask);
+  }, [addTask]);
 
   // Handler for toggling task completion
   const handleToggle = useCallback(async () => {
@@ -27,9 +32,11 @@ export const useTaskRowMutations = (
   }, [updateTask, task]);
 
   return {
+    onAddTask: handleAddTask,
     onToggle: handleToggle,
     onDelete: handleDelete,
     onUpdate: handleUpdate,
+    isAdding: addTask.isPending,
     isToggling: toggleTaskDone.isPending,
     isDeleting: deleteTask.isPending,
   };
