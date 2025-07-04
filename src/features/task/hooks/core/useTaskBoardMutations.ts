@@ -5,7 +5,7 @@ import { AddTaskProps, TaskProps } from '@/shared/types/domains/task.type';
 import { PaginationParams } from '@/shared/types/api.type';
 import { useCrudStatus } from '@/shared/hooks/error/useCrudStatus';
 
-export const useTaskMutations = (paginationParams: PaginationParams) => {
+export const useTaskBoardMutations = (paginationParams: PaginationParams) => {
   const queryClient = useQueryClient();
   const { handleSuccess, handleError } = useCrudStatus('task');
 
