@@ -10,9 +10,14 @@ import { formStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { TaskCardProps } from '@/shared/types/domains/task.type';
 import { UpdateTaskForm } from './UpdateTaskForm';
+import { useTaskBoardActions } from '@/features/task/hooks/composition/useTaskBoardActions';
+import { PaginationParams } from '@/shared/types/api.type';
 
 export const UpdateTaskCard: React.FC<
-  TaskCardProps & { isUpdating?: boolean }
+  TaskCardProps & {
+    isUpdating?: boolean;
+    paginationParams: PaginationParams;
+  }
 > = ({
   id,
   title,
@@ -20,28 +25,17 @@ export const UpdateTaskCard: React.FC<
   done,
   owner,
   onClose = () => {},
-  onUpdateTask,
   isUpdating = false,
+  paginationParams,
 }) => {
   const { group } = useTranslation('updateTaskForm');
+  const initialData = { id, title, description, done, owner };
+
+  const { onUpdate } = useTaskBoardActions(initialData, paginationParams);
 
   if (!group) {
     return null;
   }
-
-  const initialData = { id, title, description, done, owner };
-
-  const handleUpdateTask = async (updatedTask: typeof initialData) => {
-    try {
-      // Only proceed if onUpdateTask is provided
-      if (onUpdateTask) {
-        await onUpdateTask(updatedTask);
-        onClose();
-      }
-    } catch (error) {
-      console.error('Error updating task:', error);
-    }
-  };
 
   return (
     <Card>
@@ -66,7 +60,7 @@ export const UpdateTaskCard: React.FC<
         <UpdateTaskForm
           initialData={initialData}
           onCancel={onClose}
-          onUpdateTask={handleUpdateTask}
+          onUpdateTask={onUpdate}
           isUpdating={isUpdating}
         />
       </CardContent>
