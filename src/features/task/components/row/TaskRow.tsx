@@ -7,7 +7,7 @@ import { Input } from '@/shared/components/ui/input/Input';
 import { Button } from '@/shared/components/ui/button/Button';
 import { taskRow } from '../../../../shared/utils/twind/styles';
 import { DeleteDialog } from '@/shared/components/dialogs/DeleteDialog';
-import { useTaskRowMutations } from '@/features/task/hooks/composition/useTaskRowMutations';
+import { useTaskBoardMutations } from '../../hooks/composition/useTaskBoardActions';
 import { PaginationParams } from '@/shared/types/api.type';
 
 interface TaskRowProps extends TaskProps {
@@ -31,7 +31,7 @@ const TaskRowComponent: React.FC<TaskRowProps> = ({
 
   // Use the new hook for mutation handlers and states
   const { onToggle, onDelete, onUpdate, isToggling, isDeleting } =
-    useTaskRowMutations(
+    useTaskBoardMutations(
       { id, title, description, done, owner },
       paginationParams
     );
