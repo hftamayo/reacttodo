@@ -17,10 +17,6 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
   pagination,
   isLoading,
   error,
-  onAddTask,
-  onUpdateTask,
-  onToggleTask,
-  onDeleteTask,
   onPageChange,
   onClose,
   isAdding = false,
@@ -64,11 +60,10 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
           <TaskRowContainer
             key={task.id}
             task={task}
-            onEdit={handleEdit}
-            onToggleTask={onToggleTask}
-            onDeleteTask={onDeleteTask}
-            isToggling={isToggling}
-            isDeleting={isDeleting}
+            paginationParams={{
+              page: pagination.currentPage,
+              limit: pagination.limit,
+            }}
           />
         ))}
       </ul>
@@ -78,10 +73,8 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
     tasks.length,
     error,
     handleEdit,
-    onToggleTask,
-    onDeleteTask,
-    isToggling,
-    isDeleting,
+    pagination.currentPage,
+    pagination.limit,
   ]);
 
   const renderContent = () => {
@@ -131,7 +124,7 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
         </div>
 
         <div className="mb-6">
-          <AddTaskForm onAddTask={onAddTask} isAddingTask={isAdding} />
+          <AddTaskForm isAddingTask={isAdding} />
         </div>
 
         {renderContent()}
@@ -145,7 +138,6 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
             <UpdateTaskCard
               {...editingTask}
               onClose={handleCloseModal}
-              onUpdateTask={onUpdateTask}
               isUpdating={isUpdating}
             />
           )}
