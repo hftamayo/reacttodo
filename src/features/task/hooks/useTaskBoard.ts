@@ -1,6 +1,6 @@
 import { useEffect, useCallback } from 'react';
 import { useLazyLoad } from '@/shared/services/lazyloading/hooks/useLazyLoad';
-import { useTaskMutations } from './core/useTaskMutations';
+import { useTaskMutations } from './core/useTaskBoardMutations';
 import { usePaginationState } from '@/shared/services/redux/hooks/usePaginationState';
 import { useTaskData } from './composition/useTaskData';
 import { useTaskStats } from './composition/useTaskStats';
