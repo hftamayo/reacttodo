@@ -31,7 +31,7 @@ const TaskRowComponent: React.FC<TaskRowProps> = ({
 
   // Use the new hook for mutation handlers and states
   const { onToggle, onDelete, onUpdate, isToggling, isDeleting } =
-    useTaskBoardMutations(
+    useTaskBoardActions(
       { id, title, description, done, owner },
       paginationParams
     );
