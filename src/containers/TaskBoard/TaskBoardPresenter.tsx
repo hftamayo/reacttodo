@@ -57,25 +57,11 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
     return (
       <ul className="space-y-2">
         {tasks.map((task) => (
-          <TaskRowContainer
-            key={task.id}
-            task={task}
-            paginationParams={{
-              page: pagination.currentPage,
-              limit: pagination.limit,
-            }}
-          />
+          <TaskRowContainer key={task.id} task={task} />
         ))}
       </ul>
     );
-  }, [
-    tasks,
-    tasks.length,
-    error,
-    handleEdit,
-    pagination.currentPage,
-    pagination.limit,
-  ]);
+  }, [tasks, tasks.length, error, handleEdit, pagination.currentPage]);
 
   const renderContent = () => {
     if (isLoading && !tasks.length) {
