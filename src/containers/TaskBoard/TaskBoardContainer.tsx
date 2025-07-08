@@ -3,6 +3,7 @@ import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { useLocation } from 'wouter';
 import { TaskBoardPresenter } from './TaskBoardPresenter';
 import { useTaskBoard } from '@/features/task/hooks/useTaskBoard';
+import { useTaskBoardLoadingStates } from '@/features/task/hooks/composition/useTaskBoardLoadingStates';
 import { showError } from '@/shared/services/notification/notificationService';
 
 const TaskBoardFallback: React.FC<FallbackProps> = ({
@@ -28,6 +29,8 @@ export const TaskBoardContainer: React.FC = () => {
 
   const { tasks, pagination, isLoading, error, setCurrentPage, taskStats } =
     useTaskBoard();
+  
+  const { isAdding, isUpdating } = useTaskBoardLoadingStates();
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
@@ -51,10 +54,8 @@ export const TaskBoardContainer: React.FC = () => {
           completedCount: taskStats.completed,
         }}
         isLoading={isLoading}
-        isAdding={mutations.addTask.isPending}
-        isUpdating={mutations.updateTask.isPending}
-        isToggling={mutations.toggleTaskDone.isPending}
-        isDeleting={mutations.deleteTask.isPending}
+        isAdding={isAdding}
+        isUpdating={isUpdating}
         error={error as Error}
         onClose={handleClose}
         onPageChange={handlePageChange}

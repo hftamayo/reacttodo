@@ -21,8 +21,6 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
   onClose,
   isAdding = false,
   isUpdating = false,
-  isToggling = false,
-  isDeleting = false,
 }) => {
   const [editingTask, setEditingTask] = useState<TaskProps | null>(null);
 
