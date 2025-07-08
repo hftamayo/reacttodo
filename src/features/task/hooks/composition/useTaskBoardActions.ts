@@ -39,6 +39,7 @@ export const useTaskBoardActions = (
     onDelete: handleDelete,
     onUpdate: handleUpdate,
     isAdding: addTask.isPending,
+    isUpdating: updateTask.isPending,
     isToggling: toggleTaskDone.isPending,
     isDeleting: deleteTask.isPending,
   };
