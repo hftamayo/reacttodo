@@ -15,7 +15,6 @@ interface AddTaskFormProps {
 
 export const AddTaskForm: React.FC<AddTaskFormProps> = ({
   isAddingTask,
-  paginationParams,
 }) => {
   const { text: addTaskButton } = useTranslation('addTaskButton');
   const { text: errorComponent = 'An error occurred' } =
@@ -29,7 +28,7 @@ export const AddTaskForm: React.FC<AddTaskFormProps> = ({
     formState: { errors },
   } = useForm<AddTaskProps>();
 
-  const { onAddTask } = useTaskBoardActions(null, paginationParams);
+  const { onAddTask } = useTaskBoardActions({} as any);
 
   if (!group) {
     return null;
