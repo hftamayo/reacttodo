@@ -26,15 +26,8 @@ const TaskBoardFallback: React.FC<FallbackProps> = ({
 export const TaskBoardContainer: React.FC = () => {
   const [, setLocation] = useLocation();
 
-  const {
-    tasks,
-    pagination,
-    isLoading,
-    error,
-    mutations,
-    setCurrentPage,
-    taskStats,
-  } = useTaskBoard();
+  const { tasks, pagination, isLoading, error, setCurrentPage, taskStats } =
+    useTaskBoard();
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
