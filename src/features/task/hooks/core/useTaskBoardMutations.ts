@@ -4,10 +4,15 @@ import { taskKeys } from './queryKeys';
 import { AddTaskProps, TaskProps } from '@/shared/types/domains/task.type';
 import { PaginationParams } from '@/shared/types/api.type';
 import { useCrudStatus } from '@/shared/hooks/error/useCrudStatus';
+import { useSelector } from 'react-redux';
+import { selectPage, selectLimit } from '@/features/task/store/taskSlice';
 
-export const useTaskBoardMutations = (paginationParams: PaginationParams) => {
+export const useTaskBoardMutations = () => {
   const queryClient = useQueryClient();
   const { handleSuccess, handleError } = useCrudStatus('task');
+  const page = useSelector(selectPage);
+  const limit = useSelector(selectLimit);
+  const paginationParams = { page, limit };
 
   const refreshTasksAfterMutation = async () => {
     queryClient.invalidateQueries({ queryKey: taskKeys.lists() });

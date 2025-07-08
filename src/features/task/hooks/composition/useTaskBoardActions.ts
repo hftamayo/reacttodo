@@ -5,11 +5,10 @@ import { PaginationParams } from '@/shared/types/api.type';
 
 // Accepts the task and pagination params (if needed)
 export const useTaskBoardActions = (
-  task: TaskProps,
-  paginationParams: PaginationParams
+  task: TaskProps
 ) => {
   const { addTask, updateTask, deleteTask, toggleTaskDone } =
-    useTaskBoardMutations(paginationParams);
+    useTaskBoardMutations();
 
   // Handler for adding a new task
   const handleAddTask = useCallback(
