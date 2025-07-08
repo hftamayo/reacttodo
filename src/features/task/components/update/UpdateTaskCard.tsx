@@ -16,7 +16,6 @@ import { PaginationParams } from '@/shared/types/api.type';
 export const UpdateTaskCard: React.FC<
   TaskCardProps & {
     isUpdating?: boolean;
-    paginationParams: PaginationParams;
   }
 > = ({
   id,
@@ -26,12 +25,11 @@ export const UpdateTaskCard: React.FC<
   owner,
   onClose = () => {},
   isUpdating = false,
-  paginationParams,
 }) => {
   const { group } = useTranslation('updateTaskForm');
   const initialData = { id, title, description, done, owner };
 
-  const { onUpdate } = useTaskBoardActions(initialData, paginationParams);
+  const { onUpdate } = useTaskBoardActions(initialData);
 
   if (!group) {
     return null;
