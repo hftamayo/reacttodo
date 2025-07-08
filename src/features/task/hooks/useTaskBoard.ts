@@ -1,6 +1,5 @@
 import { useEffect, useCallback } from 'react';
 import { useLazyLoad } from '@/shared/services/lazyloading/hooks/useLazyLoad';
-import { useTaskMutations } from './core/useTaskBoardMutations';
 import { usePaginationState } from '@/shared/services/redux/hooks/usePaginationState';
 import { useTaskData } from './composition/useTaskData';
 import { useTaskStats } from './composition/useTaskStats';
@@ -26,9 +25,6 @@ export const useTaskBoard = (initialParams?: Partial<PaginationParams>) => {
     pagination.totalCount,
     data?.data?.lastModified
   );
-
-  // Access mutations
-  const mutations = useTaskMutations({ page, limit });
 
   // Setup pagination with prefetching
   const { setCurrentPage } = useTaskPagination(
@@ -73,7 +69,6 @@ export const useTaskBoard = (initialParams?: Partial<PaginationParams>) => {
     error,
 
     // Actions
-    mutations,
     setCurrentPage,
     refetch: memoizedRefetch,
     ref,
