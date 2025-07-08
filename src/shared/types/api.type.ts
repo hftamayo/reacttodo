@@ -1,4 +1,3 @@
-import { useTaskMutations } from '@/features/task/hooks/core/useTaskMutations';
 import { TaskProps } from './domains/task.type';
 
 export type CrudOperation = 'create' | 'read' | 'update' | 'delete' | 'toggle';
@@ -49,7 +48,6 @@ export type TaskBoardState = {
   error: Error | null;
   pagination: PaginationMetadata;
   taskStats: TaskStatsProps;
-  mutations: ReturnType<typeof useTaskMutations>;
   refetch?: () => void;
   setCurrentPage: (page: number) => void;
   ref?: React.RefObject<HTMLElement>;
@@ -73,8 +71,6 @@ export type TaskBoardPresenterProps = {
   isLoading: boolean;
   isAdding?: boolean;
   isUpdating?: boolean;
-  isToggling?: boolean;
-  isDeleting?: boolean;
 
   // Error handling
   error?: Error;
