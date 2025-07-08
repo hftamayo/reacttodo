@@ -8,11 +8,8 @@ import { Button } from '@/shared/components/ui/button/Button';
 import { taskRow } from '../../../../shared/utils/twind/styles';
 import { DeleteDialog } from '@/shared/components/dialogs/DeleteDialog';
 import { useTaskBoardActions } from '../../hooks/composition/useTaskBoardActions';
-import { PaginationParams } from '@/shared/types/api.type';
 
-interface TaskRowProps extends TaskProps {
-  paginationParams: PaginationParams;
-}
+interface TaskRowProps extends TaskProps {}
 
 const TaskRowComponent: React.FC<TaskRowProps> = ({
   id,
@@ -20,7 +17,6 @@ const TaskRowComponent: React.FC<TaskRowProps> = ({
   description,
   done,
   owner,
-  paginationParams,
 }) => {
   // Calculate classes
   const liClass = done ? taskRow.liComplete : taskRow.li;
@@ -31,10 +27,7 @@ const TaskRowComponent: React.FC<TaskRowProps> = ({
 
   // Use the new hook for mutation handlers and states
   const { onToggle, onDelete, onUpdate, isToggling, isDeleting } =
-    useTaskBoardActions(
-      { id, title, description, done, owner },
-      paginationParams
-    );
+    useTaskBoardActions({ id, title, description, done, owner });
 
   const handleDeleteTask = async () => {
     await onDelete();

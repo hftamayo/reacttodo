@@ -5,14 +5,12 @@ import { PaginationParams } from '@/shared/types/api.type';
 
 interface TaskRowContainerProps {
   task: TaskProps;
-  paginationParams: PaginationParams;
 }
 
 export const TaskRowContainer: React.FC<TaskRowContainerProps> = ({
   task,
-  paginationParams,
 }) => {
-  return <TaskRow {...task} paginationParams={paginationParams} />;
+  return <TaskRow {...task} />;
 };
 
 TaskRowContainer.displayName = 'TaskRowContainer';
