@@ -11,7 +11,6 @@ import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { TaskCardProps } from '@/shared/types/domains/task.type';
 import { UpdateTaskForm } from './UpdateTaskForm';
 import { useTaskBoardActions } from '@/features/task/hooks/composition/useTaskBoardActions';
-import { PaginationParams } from '@/shared/types/api.type';
 
 export const UpdateTaskCard: React.FC<
   TaskCardProps & {
