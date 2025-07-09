@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { TaskProps } from '@/shared/types/domains/task.type';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { FaRegTrashAlt, FaPencilAlt } from 'react-icons/fa';
@@ -7,10 +7,16 @@ import { Input } from '@/shared/components/ui/input/Input';
 import { Button } from '@/shared/components/ui/button/Button';
 import { taskRow } from '../../../../shared/utils/twind/styles';
 import { DeleteDialog } from '@/shared/components/dialogs/DeleteDialog';
-import { useTaskBoardActions } from '../../hooks/composition/useTaskBoardActions';
 
 interface TaskRowProps extends TaskProps {
-  onEdit: (task: TaskProps) => void;
+  onToggle: () => void;
+  onDelete: () => void;
+  onEdit: () => void;
+  isToggling?: boolean;
+  isDeleting?: boolean;
+  isDialogOpen: boolean;
+  onConfirmDelete: () => Promise<void>;
+  onCancelDelete: () => void;
 }
 
 const TaskRowComponent: FC<TaskRowProps> = ({
@@ -19,27 +25,20 @@ const TaskRowComponent: FC<TaskRowProps> = ({
   description,
   done,
   owner,
+  onToggle,
+  onDelete,
   onEdit,
+  isToggling = false,
+  isDeleting = false,
+  isDialogOpen,
+  onConfirmDelete,
+  onCancelDelete,
 }) => {
   // Calculate classes
   const liClass = done ? taskRow.liComplete : taskRow.li;
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { text: deleteRowButton } = useTranslation('deleteRowButton');
   const { text: updateRowButton } = useTranslation('updateRowButton');
-
-  // Use the new hook for mutation handlers and states (excluding update)
-  const { onToggle, onDelete, isToggling, isDeleting } =
-    useTaskBoardActions({ id, title, description, done, owner });
-
-  const handleDeleteTask = async () => {
-    await onDelete();
-    setIsDialogOpen(false);
-  };
-
-  const handleEditTask = () => {
-    onEdit({ id, title, description, done, owner });
-  };
 
   return (
     <li className={liClass} data-testid={`task-row-${id}`}>
@@ -48,7 +47,7 @@ const TaskRowComponent: FC<TaskRowProps> = ({
           type="checkbox"
           checked={done}
           onChange={onToggle}
-          disabled={isToggling ?? isDeleting}
+          disabled={isToggling || isDeleting}
           aria-label={`Mark "${title}" as ${done ? 'incomplete' : 'complete'}`}
         />
         <Label
@@ -63,9 +62,9 @@ const TaskRowComponent: FC<TaskRowProps> = ({
         <Button
           variant="destructive"
           size="sm"
-          onClick={() => setIsDialogOpen(true)}
+          onClick={onDelete}
           title={deleteRowButton}
-          disabled={isToggling ?? isDeleting}
+          disabled={isToggling || isDeleting}
           aria-label={`Delete task "${title}"`}
         >
           <FaRegTrashAlt />
@@ -74,14 +73,14 @@ const TaskRowComponent: FC<TaskRowProps> = ({
           title={title}
           isOpen={isDialogOpen}
           isDeleting={isDeleting}
-          onConfirm={handleDeleteTask}
-          onCancel={() => setIsDialogOpen(false)}
+          onConfirm={onConfirmDelete}
+          onCancel={onCancelDelete}
         />
 
         <Button
           variant="secondary"
           size="sm"
-          onClick={handleEditTask}
+          onClick={onEdit}
           title={updateRowButton}
           disabled={done}
           aria-label={`Edit task "${title}" ${done ? '(disabled - task completed)' : ''}`}
