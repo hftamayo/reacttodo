@@ -24,7 +24,7 @@ const TaskBoardFallback: FC<FallbackProps> = ({
   </div>
 );
 
-export const TaskBoardContainer: React.FC = () => {
+export const TaskBoardContainer: FC = () => {
   const [, setLocation] = useLocation();
 
   const { tasks, pagination, isLoading, error, setCurrentPage, taskStats } =

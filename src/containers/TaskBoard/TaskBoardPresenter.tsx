@@ -55,7 +55,7 @@ export const TaskBoardPresenter: FC<TaskBoardPresenterProps> = ({
     return (
       <ul className="space-y-2">
         {tasks.map((task) => (
-          <TaskRowContainer key={task.id} task={task} />
+          <TaskRowContainer key={task.id} task={task} onEdit={handleEdit} />
         ))}
       </ul>
     );
