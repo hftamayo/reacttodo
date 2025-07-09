@@ -9,7 +9,9 @@ import { taskRow } from '../../../../shared/utils/twind/styles';
 import { DeleteDialog } from '@/shared/components/dialogs/DeleteDialog';
 import { useTaskBoardActions } from '../../hooks/composition/useTaskBoardActions';
 
-interface TaskRowProps extends TaskProps {}
+interface TaskRowProps extends TaskProps {
+  onEdit: (task: TaskProps) => void;
+}
 
 const TaskRowComponent: FC<TaskRowProps> = ({
   id,
@@ -17,6 +19,7 @@ const TaskRowComponent: FC<TaskRowProps> = ({
   description,
   done,
   owner,
+  onEdit,
 }) => {
   // Calculate classes
   const liClass = done ? taskRow.liComplete : taskRow.li;
@@ -25,13 +28,17 @@ const TaskRowComponent: FC<TaskRowProps> = ({
   const { text: deleteRowButton } = useTranslation('deleteRowButton');
   const { text: updateRowButton } = useTranslation('updateRowButton');
 
-  // Use the new hook for mutation handlers and states
-  const { onToggle, onDelete, onUpdate, isToggling, isDeleting } =
+  // Use the new hook for mutation handlers and states (excluding update)
+  const { onToggle, onDelete, isToggling, isDeleting } =
     useTaskBoardActions({ id, title, description, done, owner });
 
   const handleDeleteTask = async () => {
     await onDelete();
     setIsDialogOpen(false);
+  };
+
+  const handleEditTask = () => {
+    onEdit({ id, title, description, done, owner });
   };
 
   return (
@@ -74,7 +81,7 @@ const TaskRowComponent: FC<TaskRowProps> = ({
         <Button
           variant="secondary"
           size="sm"
-          onClick={onUpdate}
+          onClick={handleEditTask}
           title={updateRowButton}
           disabled={done}
           aria-label={`Edit task "${title}" ${done ? '(disabled - task completed)' : ''}`}

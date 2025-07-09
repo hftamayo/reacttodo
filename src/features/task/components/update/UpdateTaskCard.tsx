@@ -10,7 +10,7 @@ import { formStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { TaskCardProps } from '@/shared/types/domains/task.type';
 import { UpdateTaskForm } from './UpdateTaskForm';
-import { useTaskBoardActions } from '@/features/task/hooks/composition/useTaskBoardActions';
+import { useTaskBoardMutations } from '@/features/task/hooks/core/useTaskBoardMutations';
 
 export const UpdateTaskCard: FC<
   TaskCardProps & {
@@ -28,7 +28,11 @@ export const UpdateTaskCard: FC<
   const { group } = useTranslation('updateTaskForm');
   const initialData = { id, title, description, done, owner };
 
-  const { onUpdate } = useTaskBoardActions(initialData);
+  const { updateTask } = useTaskBoardMutations();
+
+  const handleUpdateTask = async (taskData: typeof initialData) => {
+    await updateTask.mutateAsync(taskData);
+  };
 
   if (!group) {
     return null;
@@ -57,7 +61,7 @@ export const UpdateTaskCard: FC<
         <UpdateTaskForm
           initialData={initialData}
           onCancel={onClose}
-          onUpdateTask={onUpdate}
+          onUpdateTask={handleUpdateTask}
           isUpdating={isUpdating}
         />
       </CardContent>
