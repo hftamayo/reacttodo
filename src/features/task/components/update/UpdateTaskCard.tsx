@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import {
   Card,
   CardContent,
@@ -12,7 +12,7 @@ import { TaskCardProps } from '@/shared/types/domains/task.type';
 import { UpdateTaskForm } from './UpdateTaskForm';
 import { useTaskBoardActions } from '@/features/task/hooks/composition/useTaskBoardActions';
 
-export const UpdateTaskCard: React.FC<
+export const UpdateTaskCard: FC<
   TaskCardProps & {
     isUpdating?: boolean;
   }

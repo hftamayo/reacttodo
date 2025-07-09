@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { showError } from '@/shared/services/notification/notificationService';
 import { Input } from '@/shared/components/ui/input/Input';
@@ -13,9 +13,7 @@ interface AddTaskFormProps {
   isAddingTask: boolean;
 }
 
-export const AddTaskForm: React.FC<AddTaskFormProps> = ({
-  isAddingTask,
-}) => {
+export const AddTaskForm: FC<AddTaskFormProps> = ({ isAddingTask }) => {
   const { text: addTaskButton } = useTranslation('addTaskButton');
   const { text: errorComponent = 'An error occurred' } =
     useTranslation('errorComponent');

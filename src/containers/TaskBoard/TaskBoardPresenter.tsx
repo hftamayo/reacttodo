@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import { FC, useState, useCallback, useMemo } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { AddTaskForm } from '@/features/task/components/AddTaskForm';
 import { UpdateTaskCard } from '@/features/task/components/update/UpdateTaskCard';
@@ -12,7 +12,7 @@ import { TaskProps } from '@/shared/types/domains/task.type';
 import { showError } from '@/shared/services/notification/notificationService';
 import { LoadingSpinner } from '@/shared/components/ui/loading/LoadingSpinner';
 
-export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
+export const TaskBoardPresenter: FC<TaskBoardPresenterProps> = ({
   tasks,
   pagination,
   isLoading,

@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import {
   Pagination,
   PaginationContent,
@@ -8,7 +8,7 @@ import {
 } from '../ui/pagination/pagination';
 import { OffsetPaginationProps } from '@/shared/types/api.type';
 
-export const OffsetPagination: React.FC<OffsetPaginationProps> = ({
+export const OffsetPagination: FC<OffsetPaginationProps> = ({
   currentPage,
   totalPages,
   onPageChange,

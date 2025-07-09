@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { taskOps } from '@/shared/services/api/apiClient';
 import { taskKeys } from './queryKeys';
 import { AddTaskProps, TaskProps } from '@/shared/types/domains/task.type';
-import { PaginationParams } from '@/shared/types/api.type';
 import { useCrudStatus } from '@/shared/hooks/error/useCrudStatus';
 import { useSelector } from 'react-redux';
 import { selectPage, selectLimit } from '@/features/task/store/taskSlice';

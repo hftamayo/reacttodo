@@ -1,12 +1,9 @@
 import { useCallback } from 'react';
 import { TaskProps, AddTaskProps } from '@/shared/types/domains/task.type';
 import { useTaskBoardMutations } from '../core/useTaskBoardMutations';
-import { PaginationParams } from '@/shared/types/api.type';
 
 // Accepts the task and pagination params (if needed)
-export const useTaskBoardActions = (
-  task: TaskProps
-) => {
+export const useTaskBoardActions = (task: TaskProps) => {
   const { addTask, updateTask, deleteTask, toggleTaskDone } =
     useTaskBoardMutations();
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { FC, useState } from 'react';
 import { TaskProps } from '@/shared/types/domains/task.type';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { FaRegTrashAlt, FaPencilAlt } from 'react-icons/fa';
@@ -11,7 +11,7 @@ import { useTaskBoardActions } from '../../hooks/composition/useTaskBoardActions
 
 interface TaskRowProps extends TaskProps {}
 
-const TaskRowComponent: React.FC<TaskRowProps> = ({
+const TaskRowComponent: FC<TaskRowProps> = ({
   id,
   title,
   description,
