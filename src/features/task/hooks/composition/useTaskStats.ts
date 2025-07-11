@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
-import { TaskProps } from '@/shared/types/domains/task.type';
-import { TaskStatsProps } from '@/shared/types/api.type';
+import { TaskProps, TaskStatsProps } from '@/shared/types/domains/task.type';
 
 export const useTaskStats = (
   tasks: TaskProps[],

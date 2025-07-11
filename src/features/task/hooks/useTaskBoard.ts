@@ -4,7 +4,7 @@ import { usePaginationState } from '@/shared/services/redux/hooks/usePaginationS
 import { useTaskData } from './composition/useTaskData';
 import { useTaskStats } from './composition/useTaskStats';
 import { useTaskPagination } from './composition/useTaskPagination';
-import { PaginationParams } from '@/shared/types/api.type';
+import { PaginationParams } from '@/shared/types/utils/pagination.type';
 import { EXECUTION_MODE } from '@/shared/utils/envvars';
 
 export const useTaskBoard = (initialParams?: Partial<PaginationParams>) => {

@@ -1,4 +1,4 @@
-import { PaginationParams } from '@/shared/types/api.type';
+import { PaginationParams } from '@/shared/types/utils/pagination.type';
 
 export const taskKeys = {
   // Base key

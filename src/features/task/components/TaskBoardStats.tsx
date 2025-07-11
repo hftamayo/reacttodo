@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { TaskStatsProps } from '@/shared/types/api.type';
+import { TaskStatsProps } from '@/shared/types/domains/task.type';
 
 export const TaskBoardStats: FC<TaskStatsProps> = ({ total, completed }) => {
   // Only calculate remaining if we're rendering

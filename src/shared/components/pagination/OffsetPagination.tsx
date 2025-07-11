@@ -6,7 +6,7 @@ import {
   PaginationPrevious,
   PaginationNext,
 } from '../ui/pagination/pagination';
-import { OffsetPaginationProps } from '@/shared/types/api.type';
+import { OffsetPaginationProps } from '@/shared/types/utils/pagination.type';
 
 export const OffsetPagination: FC<OffsetPaginationProps> = ({
   currentPage,

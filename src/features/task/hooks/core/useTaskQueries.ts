@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { taskOps } from '@/shared/services/api/apiClient';
 import { taskKeys } from './queryKeys';
-import { PaginationParams } from '@/shared/types/api.type';
+import { PaginationParams } from '@/shared/types/utils/pagination.type';
 
 export const taskQueryKeys = {
   all: ['tasks'] as const,
