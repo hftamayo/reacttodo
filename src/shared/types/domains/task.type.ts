@@ -1,4 +1,4 @@
-import { PaginationMetadata } from '@/shared/types/api.type';
+import { PaginationMetadata } from '@/shared/types/utils/pagination.type';
 
 export type FullTask = {
   id: number;
