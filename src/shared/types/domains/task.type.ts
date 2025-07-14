@@ -1,4 +1,8 @@
-import { PaginationMetadata } from '@/shared/types/api.type';
+import { PaginationMetadata } from '@/shared/types/utils/pagination.type';
+
+// ============================================================================
+// CORE TASK TYPES
+// ============================================================================
 
 export type FullTask = {
   id: number;
@@ -11,34 +15,76 @@ export type FullTask = {
   deletedAt: null | Date;
 };
 
-export type AddTaskProps = Pick<
-  FullTask,
-  'title' | 'owner' | 'createdAt' | 'updatedAt' | 'deletedAt'
->;
-
 export type TaskProps = Omit<FullTask, 'createdAt' | 'updatedAt' | 'deletedAt'>;
 
-export type TaskData = {
-  tasks: TaskProps[];
-  pagination: PaginationMetadata;
-  etag?: string;
-  lastModified?: string;
+export type AddTaskProps = Pick<
+  FullTask,
+  'title' | 'description' | 'owner'
+>;
+
+// ============================================================================
+// TASK STATISTICS
+// ============================================================================
+
+export type TaskStats = {
+  total: number;
+  completed: number;
+  remaining: number;
+  lastUpdated: string;
 };
 
-// Props for the UpdateTaskForm component
+// ============================================================================
+// TASK BOARD DATA
+// ============================================================================
+
+export type TaskBoardData = {
+  tasks: TaskProps[];
+  pagination: PaginationMetadata;
+};
+
+// ============================================================================
+// TASK BOARD UI PROPS
+// ============================================================================
+
+export type TaskBoardDataProps = {
+  tasks: TaskProps[];
+  pagination: PaginationMetadata & {
+    completedCount: number;
+  };
+};
+
+export type TaskBoardUIStateProps = {
+  isLoading: boolean;
+  isAdding?: boolean;
+  isUpdating?: boolean;
+  error?: Error;
+};
+
+export type TaskBoardCallbackProps = {
+  onPageChange: (page: number) => void;
+  onClose: () => void;
+};
+
+export type TaskBoardPresenterProps = TaskBoardDataProps & 
+  TaskBoardUIStateProps & 
+  TaskBoardCallbackProps;
+
+// ============================================================================
+// TASK FORM PROPS
+// ============================================================================
+
 export type TaskUpdateProps = {
   initialData: TaskProps;
   onCancel: () => void;
   onUpdateTask: (task: TaskProps) => Promise<void>;
+  isUpdating?: boolean;
 };
 
-// Props for UpdateTaskCard component
 export type TaskCardProps = TaskProps & {
   onClose?: () => void;
-  onUpdateTask?: TaskUpdateProps['onUpdateTask'];
+  isUpdating?: boolean;
 };
 
-// Props for the useTaskUpdate hook
 export type UseUpdateTaskProps = Pick<
   TaskUpdateProps,
   'initialData' | 'onUpdateTask'

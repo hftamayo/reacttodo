@@ -1,22 +1,19 @@
-import React from 'react';
+import { FC } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { showError } from '@/shared/services/notification/notificationService';
 import { Input } from '@/shared/components/ui/input/Input';
 import { Button } from '@/shared/components/ui/button/Button';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
+import { useTaskBoardActions } from '../hooks/composition/useTaskBoardActions';
 import { taskBoard } from '@/shared/utils/twind/styles';
 import { AddTaskProps } from '@/shared/types/domains/task.type';
 import { AiOutlinePlus } from 'react-icons/ai';
 
 interface AddTaskFormProps {
-  onAddTask: (task: AddTaskProps) => Promise<void>;
   isAddingTask: boolean;
 }
 
-export const AddTaskForm: React.FC<AddTaskFormProps> = ({
-  onAddTask,
-  isAddingTask,
-}) => {
+export const AddTaskForm: FC<AddTaskFormProps> = ({ isAddingTask }) => {
   const { text: addTaskButton } = useTranslation('addTaskButton');
   const { text: errorComponent = 'An error occurred' } =
     useTranslation('errorComponent');
@@ -28,6 +25,8 @@ export const AddTaskForm: React.FC<AddTaskFormProps> = ({
     reset,
     formState: { errors },
   } = useForm<AddTaskProps>();
+
+  const { onAddTask } = useTaskBoardActions({} as any);
 
   if (!group) {
     return null;

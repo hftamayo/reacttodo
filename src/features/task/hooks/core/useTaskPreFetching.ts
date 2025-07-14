@@ -1,7 +1,7 @@
 import { queryClient } from '@/shared/services/cache/queryClient';
 import { taskOps } from '@/shared/services/api/apiClient';
 import { taskKeys } from './queryKeys';
-import { PaginationParams } from '@/shared/types/api.type';
+import { PaginationParams } from '@/shared/types/utils/pagination.type';
 
 export const useTaskPrefetching = () => {
   // Prefetch a page of tasks for smooth pagination

@@ -1,26 +1,24 @@
 import { useMemo } from 'react';
-import { TaskProps, TaskStatsProps } from '@/shared/types/api.type';
+import { TaskProps, TaskStats } from '@/shared/types/domains/task.type';
 
-export const useTaskStats = (
+export type TaskStatsCalculatorReturn = TaskStats;
+
+export const useTaskStatsCalculator = (
   tasks: TaskProps[],
   totalCount: number,
   lastModified?: string
-) => {
-  return useMemo((): TaskStatsProps => {
+): TaskStatsCalculatorReturn => {
+  return useMemo(() => {
     const completedTasks = tasks.filter((task) => task.done).length;
+    const remainingTasks = totalCount - completedTasks;
 
     return {
       total: totalCount,
       completed: completedTasks,
+      remaining: remainingTasks,
       lastUpdated: lastModified
         ? new Date(lastModified).toLocaleString()
         : new Date().toLocaleString(),
     };
-  }, [
-    tasks,
-    tasks.length,
-    tasks.filter((t) => t.done).length,
-    totalCount,
-    lastModified,
-  ]);
-};
+  }, [tasks, totalCount, lastModified]);
+}; 

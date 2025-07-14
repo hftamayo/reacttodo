@@ -1,12 +1,12 @@
-import React, { ErrorInfo } from 'react';
+import { FC, ErrorInfo } from 'react';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { useLocation } from 'wouter';
 import { TaskBoardPresenter } from './TaskBoardPresenter';
 import { useTaskBoard } from '@/features/task/hooks/useTaskBoard';
-import { AddTaskProps, TaskProps } from '@/shared/types/domains/task.type';
+import { useTaskBoardLoadingStates } from '@/features/task/hooks/composition/useTaskBoardLoadingStates';
 import { showError } from '@/shared/services/notification/notificationService';
 
-const TaskBoardFallback: React.FC<FallbackProps> = ({
+const TaskBoardFallback: FC<FallbackProps> = ({
   error,
   resetErrorBoundary,
 }) => (
@@ -24,21 +24,15 @@ const TaskBoardFallback: React.FC<FallbackProps> = ({
   </div>
 );
 
-export const TaskBoardContainer: React.FC = () => {
+export const TaskBoardContainer: FC = () => {
   const [, setLocation] = useLocation();
 
-  const {
-    tasks,
-    pagination,
-    isLoading,
-    error,
-    mutations,
-    setCurrentPage,
-    taskStats,
-  } = useTaskBoard();
+  const { data, stats, loading, actions, error, lazyLoad } = useTaskBoard();
+
+  const { isAdding, isUpdating } = useTaskBoardLoadingStates();
 
   const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
+    actions.setCurrentPage(newPage);
   };
 
   const handleError = (error: Error, errorInfo: ErrorInfo) => {
@@ -50,66 +44,21 @@ export const TaskBoardContainer: React.FC = () => {
     setLocation('/');
   };
 
-  const handleAddTask = async (newTask: AddTaskProps) => {
-    try {
-      await mutations.addTask.mutateAsync(newTask);
-    } catch (error) {
-      if (error instanceof Error && error.message.includes('CRITICAL')) {
-        throw error;
-      }
-    }
-  };
-
-  const handleUpdateTask = async (task: TaskProps) => {
-    try {
-      await mutations.updateTask.mutateAsync(task);
-    } catch (error) {
-      if (error instanceof Error && error.message.includes('CRITICAL')) {
-        throw error;
-      }
-    }
-  };
-
-  const handleToggleTask = async (id: number) => {
-    try {
-      await mutations.toggleTaskDone.mutateAsync(id);
-    } catch (error) {
-      if (error instanceof Error && error.message.includes('CRITICAL')) {
-        throw error;
-      }
-    }
-  };
-
-  const handleDeleteTask = async (id: number) => {
-    try {
-      await mutations.deleteTask.mutateAsync(id);
-    } catch (error) {
-      if (error instanceof Error && error.message.includes('CRITICAL')) {
-        throw error;
-      }
-    }
-  };
-
   return (
     <ErrorBoundary FallbackComponent={TaskBoardFallback} onError={handleError}>
       <TaskBoardPresenter
-        tasks={tasks}
+        tasks={data.tasks}
         pagination={{
-          ...pagination,
-          completedCount: taskStats.completed,
+          ...data.pagination,
+          completedCount: stats.completed,
         }}
-        isLoading={isLoading}
-        isAdding={mutations.addTask.isPending}
-        isUpdating={mutations.updateTask.isPending}
-        isToggling={mutations.toggleTaskDone.isPending}
-        isDeleting={mutations.deleteTask.isPending}
+        isLoading={loading.isLoading}
+        isAdding={isAdding}
+        isUpdating={isUpdating}
         error={error as Error}
         onClose={handleClose}
-        onAddTask={handleAddTask}
-        onUpdateTask={handleUpdateTask}
-        onToggleTask={handleToggleTask}
-        onDeleteTask={handleDeleteTask}
         onPageChange={handlePageChange}
+        stats={stats}
       />
     </ErrorBoundary>
   );

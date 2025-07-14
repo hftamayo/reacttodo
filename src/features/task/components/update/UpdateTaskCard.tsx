@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import {
   Card,
   CardContent,
@@ -10,9 +10,12 @@ import { formStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { TaskCardProps } from '@/shared/types/domains/task.type';
 import { UpdateTaskForm } from './UpdateTaskForm';
+import { useTaskBoardMutations } from '@/features/task/hooks/core/useTaskBoardMutations';
 
-export const UpdateTaskCard: React.FC<
-  TaskCardProps & { isUpdating?: boolean }
+export const UpdateTaskCard: FC<
+  TaskCardProps & {
+    isUpdating?: boolean;
+  }
 > = ({
   id,
   title,
@@ -20,28 +23,20 @@ export const UpdateTaskCard: React.FC<
   done,
   owner,
   onClose = () => {},
-  onUpdateTask,
   isUpdating = false,
 }) => {
   const { group } = useTranslation('updateTaskForm');
+  const initialData = { id, title, description, done, owner };
+
+  const { updateTask } = useTaskBoardMutations();
+
+  const handleUpdateTask = async (taskData: typeof initialData) => {
+    await updateTask.mutateAsync(taskData);
+  };
 
   if (!group) {
     return null;
   }
-
-  const initialData = { id, title, description, done, owner };
-
-  const handleUpdateTask = async (updatedTask: typeof initialData) => {
-    try {
-      // Only proceed if onUpdateTask is provided
-      if (onUpdateTask) {
-        await onUpdateTask(updatedTask);
-        onClose();
-      }
-    } catch (error) {
-      console.error('Error updating task:', error);
-    }
-  };
 
   return (
     <Card>

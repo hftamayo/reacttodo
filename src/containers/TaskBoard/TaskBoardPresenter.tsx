@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import { FC, useState, useCallback, useMemo } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { AddTaskForm } from '@/features/task/components/AddTaskForm';
 import { UpdateTaskCard } from '@/features/task/components/update/UpdateTaskCard';
@@ -7,26 +7,24 @@ import { OffsetPagination } from '@/shared/components/pagination/OffsetPaginatio
 import CustomModal from '@/shared/components/ui/modal/CustomModal';
 import { TaskBoardStats } from '@/features/task/components/TaskBoardStats';
 import { taskBoard } from '@/shared/utils/twind/styles';
-import { TaskBoardPresenterProps } from '@/shared/types/api.type';
-import { TaskProps } from '@/shared/types/domains/task.type';
+import {
+  TaskProps,
+  TaskBoardPresenterProps,
+  TaskStats,
+} from '@/shared/types/domains/task.type';
 import { showError } from '@/shared/services/notification/notificationService';
 import { LoadingSpinner } from '@/shared/components/ui/loading/LoadingSpinner';
 
-export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
+export const TaskBoardPresenter: FC<TaskBoardPresenterProps & { stats: TaskStats }> = ({
   tasks,
   pagination,
   isLoading,
   error,
-  onAddTask,
-  onUpdateTask,
-  onToggleTask,
-  onDeleteTask,
   onPageChange,
   onClose,
   isAdding = false,
   isUpdating = false,
-  isToggling = false,
-  isDeleting = false,
+  stats,
 }) => {
   const [editingTask, setEditingTask] = useState<TaskProps | null>(null);
 
@@ -61,28 +59,11 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
     return (
       <ul className="space-y-2">
         {tasks.map((task) => (
-          <TaskRowContainer
-            key={task.id}
-            task={task}
-            onEdit={handleEdit}
-            onToggleTask={onToggleTask}
-            onDeleteTask={onDeleteTask}
-            isToggling={isToggling}
-            isDeleting={isDeleting}
-          />
+          <TaskRowContainer key={task.id} task={task} onEdit={handleEdit} />
         ))}
       </ul>
     );
-  }, [
-    tasks,
-    tasks.length,
-    error,
-    handleEdit,
-    onToggleTask,
-    onDeleteTask,
-    isToggling,
-    isDeleting,
-  ]);
+  }, [tasks, tasks.length, error, handleEdit, pagination.currentPage]);
 
   const renderContent = () => {
     if (isLoading && !tasks.length) {
@@ -131,7 +112,7 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
         </div>
 
         <div className="mb-6">
-          <AddTaskForm onAddTask={onAddTask} isAddingTask={isAdding} />
+          <AddTaskForm isAddingTask={isAdding} />
         </div>
 
         {renderContent()}
@@ -145,15 +126,11 @@ export const TaskBoardPresenter: React.FC<TaskBoardPresenterProps> = ({
             <UpdateTaskCard
               {...editingTask}
               onClose={handleCloseModal}
-              onUpdateTask={onUpdateTask}
               isUpdating={isUpdating}
             />
           )}
         </CustomModal>
-        <TaskBoardStats
-          total={pagination.totalCount}
-          completed={pagination.completedCount ?? 0}
-        />
+        <TaskBoardStats {...stats} />
       </div>
     </div>
   );
