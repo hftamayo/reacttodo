@@ -10,11 +10,12 @@ import { taskBoard } from '@/shared/utils/twind/styles';
 import {
   TaskProps,
   TaskBoardPresenterProps,
+  TaskStats,
 } from '@/shared/types/domains/task.type';
 import { showError } from '@/shared/services/notification/notificationService';
 import { LoadingSpinner } from '@/shared/components/ui/loading/LoadingSpinner';
 
-export const TaskBoardPresenter: FC<TaskBoardPresenterProps> = ({
+export const TaskBoardPresenter: FC<TaskBoardPresenterProps & { stats: TaskStats }> = ({
   tasks,
   pagination,
   isLoading,
@@ -23,6 +24,7 @@ export const TaskBoardPresenter: FC<TaskBoardPresenterProps> = ({
   onClose,
   isAdding = false,
   isUpdating = false,
+  stats,
 }) => {
   const [editingTask, setEditingTask] = useState<TaskProps | null>(null);
 
@@ -128,10 +130,7 @@ export const TaskBoardPresenter: FC<TaskBoardPresenterProps> = ({
             />
           )}
         </CustomModal>
-        <TaskBoardStats
-          total={pagination.totalCount}
-          completed={pagination.completedCount ?? 0}
-        />
+        <TaskBoardStats {...stats} />
       </div>
     </div>
   );

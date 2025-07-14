@@ -27,13 +27,12 @@ const TaskBoardFallback: FC<FallbackProps> = ({
 export const TaskBoardContainer: FC = () => {
   const [, setLocation] = useLocation();
 
-  const { tasks, pagination, isLoading, error, setCurrentPage, taskStats } =
-    useTaskBoard();
+  const { data, stats, loading, actions, error, lazyLoad } = useTaskBoard();
 
   const { isAdding, isUpdating } = useTaskBoardLoadingStates();
 
   const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
+    actions.setCurrentPage(newPage);
   };
 
   const handleError = (error: Error, errorInfo: ErrorInfo) => {
@@ -48,17 +47,18 @@ export const TaskBoardContainer: FC = () => {
   return (
     <ErrorBoundary FallbackComponent={TaskBoardFallback} onError={handleError}>
       <TaskBoardPresenter
-        tasks={tasks}
+        tasks={data.tasks}
         pagination={{
-          ...pagination,
-          completedCount: taskStats.completed,
+          ...data.pagination,
+          completedCount: stats.completed,
         }}
-        isLoading={isLoading}
+        isLoading={loading.isLoading}
         isAdding={isAdding}
         isUpdating={isUpdating}
         error={error as Error}
         onClose={handleClose}
         onPageChange={handlePageChange}
+        stats={stats}
       />
     </ErrorBoundary>
   );
