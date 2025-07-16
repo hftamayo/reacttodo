@@ -1,6 +1,7 @@
 import { handleResponse, handleError, makeRequest } from './apiHelpers';
 import { BACKEND_URL } from '@/shared/utils/envvars';
-import { PaginationParams, ApiResponse } from '../../types/api.type';
+import { PaginationParams } from '@/shared/types/utils/pagination.type';
+import { ApiResponse } from '../../types/api.type';
 import {
   HealthCheckData,
   AppHealthDetails,
@@ -8,7 +9,7 @@ import {
 } from '@/shared/types/healthcheck/healthcheck.type';
 import {
   TaskProps,
-  TaskData,
+  TaskBoardData,
   AddTaskProps,
 } from '@/shared/types/domains/task.type';
 
@@ -49,47 +50,47 @@ export const taskOps = {
     page,
     limit,
     _t,
-  }: PaginationParams): Promise<ApiResponse<TaskData>> {
+  }: PaginationParams): Promise<ApiResponse<TaskBoardData>> {
     const timestamp = _t ?? Date.now();
 
     const url = `${BACKEND_URL}/tasks/task/list/page?page=${page}&limit=${limit}&_t=${timestamp}`;
-    return makeRequest<TaskData>(url);
+    return makeRequest<TaskBoardData>(url);
   },
 
-  async getTask(taskId: number): Promise<ApiResponse<TaskData>> {
+  async getTask(taskId: number): Promise<ApiResponse<TaskBoardData>> {
     const url = `${BACKEND_URL}/tasks/task/${taskId}`;
-    return makeRequest<TaskData>(url);
+    return makeRequest<TaskBoardData>(url);
   },
 
-  async addTask(task: AddTaskProps): Promise<ApiResponse<TaskData>> {
+  async addTask(task: AddTaskProps): Promise<ApiResponse<TaskBoardData>> {
     const url = `${BACKEND_URL}/tasks/task`;
-    return makeRequest<TaskData>(url, {
+    return makeRequest<TaskBoardData>(url, {
       method: 'POST',
       //credentials: 'include',
       body: JSON.stringify(task),
     });
   },
 
-  async updateTask(task: TaskProps): Promise<ApiResponse<TaskData>> {
+  async updateTask(task: TaskProps): Promise<ApiResponse<TaskBoardData>> {
     const url = `${BACKEND_URL}/tasks/task/${task.id}`;
-    return makeRequest<TaskData>(url, {
+    return makeRequest<TaskBoardData>(url, {
       method: 'PATCH',
       //credentials: 'include',
       body: JSON.stringify(task),
     });
   },
 
-  async toggleTaskDone(taskId: number): Promise<ApiResponse<TaskData>> {
+  async toggleTaskDone(taskId: number): Promise<ApiResponse<TaskBoardData>> {
     const url = `${BACKEND_URL}/tasks/task/${taskId}/done`;
-    return makeRequest<TaskData>(url, {
+    return makeRequest<TaskBoardData>(url, {
       method: 'PATCH',
       //credentials: 'include',
     });
   },
 
-  async deleteTask(taskId: number): Promise<ApiResponse<TaskData>> {
+  async deleteTask(taskId: number): Promise<ApiResponse<TaskBoardData>> {
     const url = `${BACKEND_URL}/tasks/task/${taskId}`;
-    return makeRequest<TaskData>(url, {
+    return makeRequest<TaskBoardData>(url, {
       method: 'DELETE',
       //credentials: 'include',
     });
