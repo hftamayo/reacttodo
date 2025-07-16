@@ -303,6 +303,30 @@ export const stringMessages: LanguageContextType = {
     },
   },
 
+  loginForm: {
+    en: {
+      group: {
+        lblplaceholder: 'Add a task',
+        lblregister: 'Task name is required',
+        lblminlength: 'Task name must be at least 5 characters',
+      },
+    },
+    es: {
+      group: {
+        lblplaceholder: 'Agregar una tarea',
+        lblregister: 'Se requiere el nombre de la tarea',
+        lblminlength: 'El nombre de la tarea debe tener al menos 5 caracteres',
+      },
+    },
+    de: {
+      group: {
+        lblplaceholder: 'Eine Aufgabe hinzufügen',
+        lblregister: 'Aufgabenname ist erforderlich',
+        lblminlength: 'Der Aufgabenname muss mindestens 5 Zeichen lang sein',
+      },
+    },
+  },
+
   updateTaskForm: {
     en: {
       group: {
