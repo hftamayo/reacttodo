@@ -2,10 +2,15 @@
 export type FullUser = {
   id: string;
   fullname: string;
+  age: number;
   email: string;
   password: string;
-  status: boolean;
   role: string[];
+  status: boolean;
+  isAdmin: boolean;
+  isAccountNonExpired: boolean;
+  isAccountNonLocked: boolean;
+  isCredentialsNonExpired: boolean;
   createdAt?: string;
   updatedAt?: string;
   deletedAt?: string;
