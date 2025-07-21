@@ -93,6 +93,7 @@ export const formStyles = {
   formRow: 'flex flex-col space-y-2',
   label: 'text-sm font-medium',
   input: 'w-full',
+  checkbox: 'mr-2',
   footer: 'flex justify-center gap-4 mt-6',
   error: 'text-red-500 text-sm mt-1',
 
