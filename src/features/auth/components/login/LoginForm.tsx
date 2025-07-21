@@ -48,6 +48,32 @@ export const LoginForm: FC<UserProps> = ({ credentials, onClose, onLogin }) => {
             <span className={formStyles.error}>{errors.email.message}</span>
           )}
         </div>
+
+        <div className={formStyles.formRow}>
+          <Label className={formStyles.label} htmlFor="txtpassword">
+            {group.lblPassword}
+          </Label>
+          <Input
+            id="txtpassword"
+            className="{formStyles.input}"
+            {...login('password', passwordValidation)}
+            disabled={isDisabled}
+          />
+          {errors.email && (
+            <span className={formStyles.error}>{errors.password.message}</span>
+          )}
+        </div>
+
+        <div className={formStyles.formRow}>
+          <Checkbox
+            id="chkremember"
+            className="{formStyles.checkbox}"
+            {...login('remember')}
+            disabled={isDisabled}
+          />
+          <Label className={formStyles.label} htmlFor="chkremember">
+            {group.lblRememberMe}
+          </Label>
       </div>
     </form>
   );
