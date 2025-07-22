@@ -65,15 +65,36 @@ export const LoginForm: FC<UserProps> = ({ credentials, onClose, onLogin }) => {
         </div>
 
         <div className={formStyles.formRow}>
-          <Checkbox
-            id="chkremember"
-            className="{formStyles.checkbox}"
-            {...login('remember')}
-            disabled={isDisabled}
-          />
-          <Label className={formStyles.label} htmlFor="chkremember">
-            {group.lblRememberMe}
-          </Label>
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="chkremember"
+              className="{formStyles.checkbox}"
+              {...login('remember')}
+              disabled={isDisabled}
+            />
+            <Label className={formStyles.label} htmlFor="chkremember">
+              {group.lblRememberMe}
+            </Label>
+          </div>
+        </div>
+      </div>
+
+      <div className={formStyles.footer}>
+        <button
+          type="button"
+          className={formStyles.cancelButton}
+          onClick={onClose}
+          disabled={isDisabled}
+        >
+          {group.btnCancel}
+        </button>
+        <button
+          type="submit"
+          className={formStyles.submitButton}
+          disabled={isDisabled}
+        >
+          {group.btnLogin}
+        </button>
       </div>
     </form>
   );
