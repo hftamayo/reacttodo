@@ -411,6 +411,7 @@ export const stringMessages: LanguageContextType = {
         lblSignUpLink: 'Sign Up',
         lblRememberMe: 'Remember Me',
         btnLogin: 'Login',
+        btnCancel: 'Cancel',
       },
     },
     es: {
@@ -429,6 +430,7 @@ export const stringMessages: LanguageContextType = {
         lblSignUpLink: 'Regístrate',
         lblRememberMe: 'Recuérdame',
         btnLogin: 'Iniciar sesión',
+        btnCancel: 'Cancelar',
       },
     },
     de: {
@@ -447,6 +449,7 @@ export const stringMessages: LanguageContextType = {
         lblSignUpLink: 'Registrieren',
         lblRememberMe: 'Angemeldet bleiben',
         btnLogin: 'Anmelden',
+        btnCancel: 'Abbrechen',
       },
     },
   },
