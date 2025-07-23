@@ -7,6 +7,7 @@ import {
   AppHealthDetails,
   DbHealthDetails,
 } from '@/shared/types/healthcheck/healthcheck.type';
+import { LoginProps } from '@/shared/types/domains/user.type';
 import {
   TaskProps,
   TaskBoardData,
@@ -42,6 +43,17 @@ export const beOps = {
       handleError(error);
       throw error;
     }
+  },
+};
+
+export const authOps = {
+  async login(credentials: LoginProps): Promise<ApiResponse<{}>> {
+    const url = `${BACKEND_URL}/auth/login`;
+    return makeRequest<{}>(url, {
+      method: 'POST',
+      //credentials: 'include',
+      body: JSON.stringify(credentials),
+    });
   },
 };
 
