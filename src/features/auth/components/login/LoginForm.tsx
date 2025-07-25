@@ -4,9 +4,14 @@ import { Input } from '@/shared/components/ui/input/Input';
 import { Checkbox } from '@/shared/components/ui/checkbox/Checkbox';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { formStyles } from '@/shared/utils/twind/styles';
-import { UserProps } from '@/shared/types/domains/user.type';
+import { LoginCardProps } from '@/shared/types/domains/user.type';
 
-export const LoginForm: FC<UserProps> = ({ credentials, onClose, onLogin }) => {
+export const LoginForm: FC<LoginCardProps> = ({
+  credentials,
+  onClose,
+  onLogin,
+  isLogginIn = false,
+}) => {
   const { group } = useTranslation('loginForm');
   const { login, errors, isSubmitting, handleFormSubmit } = useLoginForm({
     credentials,
