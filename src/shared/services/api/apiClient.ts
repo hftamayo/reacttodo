@@ -7,7 +7,7 @@ import {
   AppHealthDetails,
   DbHealthDetails,
 } from '@/shared/types/healthcheck/healthcheck.type';
-import { LoginProps } from '@/shared/types/domains/user.type';
+import { SignUpProps, LoginProps } from '@/shared/types/domains/user.type';
 import {
   TaskProps,
   TaskBoardData,
@@ -53,6 +53,21 @@ export const authOps = {
       method: 'POST',
       //credentials: 'include',
       body: JSON.stringify(credentials),
+    });
+  },
+  async signup(user: SignUpProps): Promise<ApiResponse<{}>> {
+    const url = `${BACKEND_URL}/auth/signup`;
+    return makeRequest<{}>(url, {
+      method: 'POST',
+      //credentials: 'include',
+      body: JSON.stringify(user),
+    });
+  },
+  async logout(): Promise<ApiResponse<{}>> {
+    const url = `${BACKEND_URL}/auth/logout`;
+    return makeRequest<{}>(url, {
+      method: 'POST',
+      //credentials: 'include',
     });
   },
 };
