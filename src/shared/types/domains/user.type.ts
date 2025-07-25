@@ -32,4 +32,5 @@ export type LoginCardProps = UserProps & {
   credentials: LoginProps;
   onClose?: () => void;
   onLogin: (credentials: LoginProps) => Promise<void>;
+  isLogginIn?: boolean;
 };
