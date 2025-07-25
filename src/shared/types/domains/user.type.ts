@@ -21,6 +21,11 @@ export type UserProps = Omit<
   'password' | 'createdAt' | 'updatedAt' | 'deletedAt'
 >;
 
+export type SignUpProps = Pick<
+  FullUser,
+  'fullname' | 'age' | 'email' | 'password'
+>;
+
 export type LoginProps = Pick<FullUser, 'email' | 'password'>;
 
 export type LoginCardProps = UserProps & {
