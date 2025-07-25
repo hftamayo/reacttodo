@@ -10,20 +10,21 @@ import { formStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { LoginCardProps } from '@/shared/types/domains/user.type';
 import { LoginForm } from './LoginForm';
+import { useAuthMutations } from '../../hooks/core/useAuthMutations';
 
 export const LoginCard: FC<LoginCardProps & { isLogginIn?: boolean }> = ({
-  email,
-  password,
+  credentials,
   onClose = () => {},
+  onLogin,
   isLogginIn = false,
 }) => {
   const { group } = useTranslation('loginForm');
-  const credentials = { email, password };
+  const { email, password } = credentials;
 
-  const { login } = useAuthMutations();
+  const { loginMutation } = useAuthMutations();
 
-  const handleLogin = async (credentialsData: typeof credentials) => {
-    await login.mutateAsync(credentialsData);
+  const handleLogin = async () => {
+    await loginMutation.mutateAsync({ email, password });
   };
 
   if (!group) {
