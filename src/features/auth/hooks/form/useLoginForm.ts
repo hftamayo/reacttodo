@@ -4,21 +4,21 @@ import { showSuccess } from '@/shared/services/notification/notificationService'
 import { LoginProps, LoginFormProps } from '@/shared/types/domains/user.type';
 
 export const useLoginForm = ({
-  credentials,
-  onClose,
-  onSuccess,
   onLogin,
+  onSuccess,
+  onClose,
+  defaultCredentials = {},
 }: LoginFormProps) => {
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isValid }, // Use isValid instead of isDirty
+    formState: { errors, isValid },
   } = useForm<LoginProps>({
     defaultValues: {
-      email: credentials.email,
-      password: credentials.password,
-      rememberMe: credentials.rememberMe ?? false,
+      email: defaultCredentials.email || '',
+      password: defaultCredentials.password || '',
+      rememberMe: defaultCredentials.rememberMe || false,
     },
     mode: 'onChange', // Enable real-time validation
   });
@@ -46,7 +46,7 @@ export const useLoginForm = ({
     handleSubmit,
     reset,
     errors,
-    isValid, // Better for login forms
+    isValid,
     isSubmitting,
     handleLoginSubmit,
     onClose,
