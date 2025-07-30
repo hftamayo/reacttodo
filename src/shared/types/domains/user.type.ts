@@ -26,11 +26,20 @@ export type SignUpProps = Pick<
   'fullname' | 'age' | 'email' | 'password'
 >;
 
-export type LoginProps = Pick<FullUser, 'email' | 'password'>;
+export type LoginProps = Pick<FullUser, 'email' | 'password'> & {
+  rememberMe?: boolean;
+};
 
 export type LoginCardProps = UserProps & {
   credentials: LoginProps;
   onClose?: () => void;
   onLogin: (credentials: LoginProps) => Promise<void>;
   isLogginIn?: boolean;
+};
+
+export type LoginFormProps = {
+  credentials: LoginProps;
+  onClose?: () => void;
+  onSuccess?: () => void;
+  onLogin: (credentials: LoginProps) => Promise<void>;
 };
