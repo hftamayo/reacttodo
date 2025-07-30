@@ -12,19 +12,19 @@ import { LoginCardProps } from '@/shared/types/domains/user.type';
 import { LoginForm } from './LoginForm';
 import { useAuthMutations } from '../../hooks/core/useAuthMutations';
 
-export const LoginCard: FC<LoginCardProps & { isLogginIn?: boolean }> = ({
-  credentials,
+export const LoginCard: FC<LoginCardProps> = ({
   onClose = () => {},
-  onLogin,
-  isLogginIn = false,
+  title,
 }) => {
   const { group } = useTranslation('loginForm');
-  const { email, password } = credentials;
-
   const { loginMutation } = useAuthMutations();
 
-  const handleLogin = async () => {
-    await loginMutation.mutateAsync({ email, password });
+  const handleLogin = async (credentials: any) => {
+    await loginMutation.mutateAsync(credentials);
+  };
+
+  const handleSuccess = () => {
+    onClose();
   };
 
   if (!group) {
@@ -37,14 +37,13 @@ export const LoginCard: FC<LoginCardProps & { isLogginIn?: boolean }> = ({
         <div className="flex justify-between items-center">
           <div className="flex-1 text-center">
             <CardTitle className={formStyles.title}>
-              {group.cardTitle}
+              {title || group.cardTitle}
             </CardTitle>
           </div>
           <button
             onClick={onClose}
             className={formStyles.closeButton}
             aria-label="Close Form"
-            disabled={isLogginIn}
           >
             <FaTimes className={formStyles.closeIcon} />
           </button>
@@ -52,10 +51,9 @@ export const LoginCard: FC<LoginCardProps & { isLogginIn?: boolean }> = ({
       </CardHeader>
       <CardContent>
         <LoginForm
-          credentials={credentials}
-          onCancel={onClose}
           onLogin={handleLogin}
-          isLogginIn={isLogginIn}
+          onSuccess={handleSuccess}
+          onClose={onClose}
         />
       </CardContent>
     </Card>
