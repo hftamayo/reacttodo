@@ -30,16 +30,16 @@ export type LoginProps = Pick<FullUser, 'email' | 'password'> & {
   rememberMe?: boolean;
 };
 
-export type LoginCardProps = UserProps & {
-  credentials: LoginProps;
-  onClose?: () => void;
+// Simplified login types - no more prop drilling
+export type LoginFormProps = {
   onLogin: (credentials: LoginProps) => Promise<void>;
-  isLogginIn?: boolean;
+  onSuccess?: () => void;
+  onClose?: () => void;
+  defaultCredentials?: Partial<LoginProps>; // Optional default values
 };
 
-export type LoginFormProps = {
-  credentials: LoginProps;
+// For the card wrapper - minimal props
+export type LoginCardProps = {
   onClose?: () => void;
-  onSuccess?: () => void;
-  onLogin: (credentials: LoginProps) => Promise<void>;
+  title?: string;
 };
