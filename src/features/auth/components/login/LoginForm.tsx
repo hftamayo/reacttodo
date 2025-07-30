@@ -4,26 +4,29 @@ import { Input } from '@/shared/components/ui/input/Input';
 import { Checkbox } from '@/shared/components/ui/checkbox/Checkbox';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { formStyles } from '@/shared/utils/twind/styles';
-import { LoginCardProps } from '@/shared/types/domains/user.type';
+import { useLoginForm } from '../../hooks/form/useLoginForm';
+import { LoginFormProps } from '@/shared/types/domains/user.type';
 
-export const LoginForm: FC<LoginCardProps> = ({
-  credentials,
-  onClose,
+export const LoginForm: FC<LoginFormProps> = ({
   onLogin,
-  isLogginIn = false,
+  onSuccess,
+  onClose,
+  defaultCredentials,
 }) => {
   const { group } = useTranslation('loginForm');
-  const { login, errors, isSubmitting, handleFormSubmit } = useLoginForm({
-    credentials,
-    onSuccess: onClose,
-    onLogin,
-  });
+  const { register, errors, isValid, isSubmitting, handleLoginSubmit } =
+    useLoginForm({
+      onLogin,
+      onSuccess,
+      onClose,
+      defaultCredentials,
+    });
 
   if (!group) {
     return null;
   }
 
-  const isDisabled = isSubmitting;
+  const isDisabled = isSubmitting || !isValid;
 
   const emailValidation = {
     required: {
@@ -32,9 +35,16 @@ export const LoginForm: FC<LoginCardProps> = ({
     },
   };
 
+  const passwordValidation = {
+    required: {
+      value: true,
+      message: group.lblPasswordError,
+    },
+  };
+
   return (
     <form
-      onSubmit={handleFormSubmit}
+      onSubmit={handleLoginSubmit}
       className={formStyles.form}
       aria-label="Login Form"
     >
@@ -45,8 +55,8 @@ export const LoginForm: FC<LoginCardProps> = ({
           </Label>
           <Input
             id="txtemail"
-            className="{formStyles.input}"
-            {...login('email', emailValidation)}
+            className={formStyles.input}
+            {...register('email', emailValidation)}
             disabled={isDisabled}
           />
           {errors.email && (
@@ -58,13 +68,14 @@ export const LoginForm: FC<LoginCardProps> = ({
           <Label className={formStyles.label} htmlFor="txtpassword">
             {group.lblPassword}
           </Label>
-          <Input
+          <input
             id="txtpassword"
-            className="{formStyles.input}"
-            {...login('password', passwordValidation)}
+            type="password"
+            className={formStyles.input}
+            {...register('password', passwordValidation)}
             disabled={isDisabled}
           />
-          {errors.email && (
+          {errors.password && (
             <span className={formStyles.error}>{errors.password.message}</span>
           )}
         </div>
@@ -73,8 +84,8 @@ export const LoginForm: FC<LoginCardProps> = ({
           <div className="flex items-center gap-2">
             <Checkbox
               id="chkremember"
-              className="{formStyles.checkbox}"
-              {...login('remember')}
+              className={formStyles.checkbox}
+              {...register('rememberMe')}
               disabled={isDisabled}
             />
             <Label className={formStyles.label} htmlFor="chkremember">
@@ -98,7 +109,7 @@ export const LoginForm: FC<LoginCardProps> = ({
           className={formStyles.submitButton}
           disabled={isDisabled}
         >
-          {group.btnLogin}
+          {isSubmitting ? group.btnLoggingIn || 'Logging in...' : group.btnLogin}
         </button>
       </div>
     </form>
