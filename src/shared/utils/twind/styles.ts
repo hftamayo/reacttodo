@@ -1,3 +1,8 @@
+export const LandingStyles = {
+  button:
+    'text-2xl py-4 px-6 md:px-10 lg:py-6 lg:px-12 bg-white bg-opacity-10 hover:bg-opacity-20 duration-150 rounded-full outline-none',
+};
+
 export const MainLayoutStyles = {
   layoutContainer:
     'min-h-screen flex flex-col bg-[var(--cameo-0)] text-[var(--cameo-1000)]',
