@@ -21,7 +21,7 @@ const SOCIAL_LINKS: SocialLink[] = [
   },
 ];
 
-export const Footer: React.FC = () => {
+export const FooterContainer: React.FC = () => {
   const handleSocialClick =
     (url: string, label: string) => (e: React.MouseEvent) => {
       // You might want to add analytics tracking here
