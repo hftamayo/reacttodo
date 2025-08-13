@@ -1,9 +1,15 @@
 import React from 'react';
 import { Router } from 'wouter';
+import { Provider } from 'react-redux';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from 'sonner';
+import { store } from './shared/services/redux/store';
 import { LandingContainer } from './containers/Landing/LandingContainer';
-import { DashboardContainer } from './containers/Dashboard/DashboardContainer';
-import { AuthGuard } from './shared/components/auth/AuthGuard';
-import { useAuthState } from './features/auth/hooks/useAuthState';
+import { DashBoardContainer } from './containers/DashBoard/DashBoardContainer';
+import { AuthGuard } from './features/auth/hooks/core/AuthGuard';
+import { useAuthState } from './features/auth/hooks/core/useAuthState';
+
+const queryClient = new QueryClient();
 
 export const App: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuthState();
@@ -18,14 +24,19 @@ export const App: React.FC = () => {
   }
 
   return (
-    <Router>
-      {isAuthenticated ? (
-        <AuthGuard>
-          <DashboardContainer />
-        </AuthGuard>
-      ) : (
-        <LandingContainer />
-      )}
-    </Router>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          {isAuthenticated ? (
+            <AuthGuard>
+              <DashBoardContainer />
+            </AuthGuard>
+          ) : (
+            <LandingContainer />
+          )}
+        </Router>
+        <Toaster position="bottom-left" />
+      </QueryClientProvider>
+    </Provider>
   );
 };
