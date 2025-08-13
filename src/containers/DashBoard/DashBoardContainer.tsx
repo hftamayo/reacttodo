@@ -2,11 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { onCLS, onFCP, onLCP, onTTFB } from 'web-vitals';
 import { Provider } from 'react-redux';
-import { store } from './shared/services/redux/store';
+import { store } from '../../shared/services/redux/store';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './index.css';
 import { Toaster } from 'sonner';
-import { MainLayout } from './shared/components/ui/layout/dashboard/MainLayout';
+import { MainLayout } from '../../shared/components/ui/layout/dashboard/MainLayout';
 
 const queryClient = new QueryClient();
 
