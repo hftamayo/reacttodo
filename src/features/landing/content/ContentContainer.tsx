@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const ContentLayout: React.FC = () => {
+export const ContentContainer: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
