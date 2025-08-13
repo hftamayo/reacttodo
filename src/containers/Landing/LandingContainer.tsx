@@ -3,7 +3,7 @@ import { DashBoardAnalyticsSkeleton } from '@/shared/components/ui/skeleton/Dash
 import LandingPresenter from './LandingPresenter';
 
 export const LandingContainer: React.FC = () => {
-  const loading = true;
+  const loading = false;
   if (loading) {
     return <DashBoardAnalyticsSkeleton />;
   }
