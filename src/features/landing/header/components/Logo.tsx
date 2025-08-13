@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'wouter';
-import logoCompany from '@/assets/tamayo.png';
+import logoCompany from '../../../../shared/assets/tamayo.png';
 
 export const Logo: React.FC = () => {
   return (
