@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FaUserCircle, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import {
@@ -8,35 +8,27 @@ import {
   DropdownMenuItem,
   DropdownMenuGroup,
 } from '@/shared/components/ui/menu/DropDownMenu';
-import { SettingsContainer } from '@/containers/Settings/SettingsContainer';
-import CustomModal from '@/shared/components/ui/modal/CustomModal';
+import { useModalState } from '@/shared/services/redux/hooks/useModalState';
 import { DashBoardHeaderProfileMenuStyles } from '@/shared/utils/twind/styles';
 
 export const ProfileMenu: React.FC = () => {
   const { group } = useTranslation('dropDownHeaderBar');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState<React.ReactNode>(null);
+  const { openModal } = useModalState();
 
   if (!group) {
     return null;
   }
 
   const handleProfileClick = () => {
-    console.log('Profile clicked');
+    openModal('profile');
   };
 
   const handleSettingsClick = () => {
-    setModalContent(
-      <SettingsContainer
-        onCancel={() => setIsModalOpen(false)}
-        onSubmit={() => {}}
-      />
-    );
-    setIsModalOpen(true);
+    openModal('settings');
   };
 
   const handleLogoutClick = () => {
-    console.log('Logout clicked');
+    openModal('logout');
   };
 
   return (
@@ -65,10 +57,6 @@ export const ProfileMenu: React.FC = () => {
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
-
-      <CustomModal isOpen={isModalOpen} onDismiss={() => setIsModalOpen(false)}>
-        {modalContent}
-      </CustomModal>
     </div>
   );
 };
