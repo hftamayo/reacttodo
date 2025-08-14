@@ -5,9 +5,16 @@ import { FooterContainer } from '@/features/landing/footer/FooterContainer';
 
 const LandingPresenter: React.FC = () => {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
+      {/* Header - Fixed height across all screen sizes */}
       <HeaderContainer />
-      <ContentContainer />
+
+      {/* Content - Takes remaining space but allows scrolling */}
+      <main className="flex-1 flex flex-col">
+        <ContentContainer />
+      </main>
+
+      {/* Footer - Stays at bottom */}
       <FooterContainer />
     </div>
   );
