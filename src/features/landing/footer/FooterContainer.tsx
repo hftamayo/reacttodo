@@ -102,7 +102,7 @@ export const FooterContainer: React.FC = () => {
           text-center sm:text-right
         "
         >
-          © 2025 React Todo. All rights reserved.
+          © 2025 ReactTodo. All rights reserved.
         </div>
       </div>
     </footer>

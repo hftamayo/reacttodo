@@ -22,7 +22,7 @@ export const ContentContainer: React.FC = () => {
           leading-tight
         "
         >
-          Welcome to React Todo
+          Welcome to ReactTodo
         </h1>
 
         <p
