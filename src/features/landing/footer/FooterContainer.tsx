@@ -99,7 +99,6 @@ export const FooterContainer: React.FC = () => {
         <div
           className="
           text-xs sm:text-sm 
-          text-gray-500
           text-center sm:text-right
         "
         >
