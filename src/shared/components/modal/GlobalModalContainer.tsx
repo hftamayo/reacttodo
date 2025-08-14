@@ -8,7 +8,7 @@ import { useModalState } from '../../services/redux/hooks/useModalState';
  * Place this component at the app root level
  */
 export const GlobalModalContainer: React.FC = () => {
-  const { isOpen, modalType, closeModal } = useModalState();
+  const { isOpen, modalType, modalProps, closeModal } = useModalState();
 
   const renderModalContent = () => {
     if (!modalType) return null;
@@ -62,6 +62,23 @@ export const GlobalModalContainer: React.FC = () => {
           <div className="p-6 min-w-[500px]">
             <h2 className="text-2xl font-bold mb-4">Settings</h2>
             <p className="mb-4">Settings form will be rendered here</p>
+            <button
+              onClick={closeModal}
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Close
+            </button>
+          </div>
+        );
+
+      case 'updateTask':
+        return (
+          <div className="p-6 min-w-[500px]">
+            <h2 className="text-2xl font-bold mb-4">Update Task</h2>
+            <p className="mb-4">Update task form will be rendered here</p>
+            <p className="mb-4 text-sm text-gray-600">
+              Task data: {modalProps ? JSON.stringify(modalProps, null, 2) : 'No data'}
+            </p>
             <button
               onClick={closeModal}
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"

@@ -6,6 +6,7 @@ export type ModalType =
   | 'settings'
   | 'profile'
   | 'logout'
+  | 'updateTask'
   | 'customSearch'
   | 'reportOptions'
   | 'exportReport'

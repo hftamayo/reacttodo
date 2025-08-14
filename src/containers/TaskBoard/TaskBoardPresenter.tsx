@@ -1,11 +1,10 @@
-import { FC, useState, useCallback, useMemo } from 'react';
+import { FC, useCallback, useMemo } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { AddTaskForm } from '@/features/task/components/AddTaskForm';
-import { UpdateTaskCard } from '@/features/task/components/update/UpdateTaskCard';
 import { TaskRowContainer } from '@/features/task/components/row/TaskRowContainer';
 import { OffsetPagination } from '@/shared/components/pagination/OffsetPagination';
-import CustomModal from '@/shared/components/ui/modal/CustomModal';
 import { TaskBoardStats } from '@/features/task/components/TaskBoardStats';
+import { useModalState } from '@/shared/services/redux/hooks/useModalState';
 import { taskBoard } from '@/shared/utils/twind/styles';
 import {
   TaskProps,
@@ -26,15 +25,18 @@ export const TaskBoardPresenter: FC<TaskBoardPresenterProps & { stats: TaskStats
   isUpdating = false,
   stats,
 }) => {
-  const [editingTask, setEditingTask] = useState<TaskProps | null>(null);
+  const { openModal } = useModalState();
 
   const handleEdit = useCallback((task: TaskProps) => {
-    setEditingTask(task);
-  }, []);
-
-  const handleCloseModal = useCallback(() => {
-    setEditingTask(null);
-  }, []);
+    openModal('updateTask', {
+      id: task.id,
+      title: task.title,
+      description: task.description,
+      done: task.done,
+      owner: task.owner,
+      isUpdating,
+    });
+  }, [openModal, isUpdating]);
 
   const taskList = useMemo(() => {
     if (error) {
@@ -117,19 +119,6 @@ export const TaskBoardPresenter: FC<TaskBoardPresenterProps & { stats: TaskStats
 
         {renderContent()}
 
-        <CustomModal
-          isOpen={!!editingTask}
-          onDismiss={handleCloseModal}
-          aria-labelledby="update-task-modal"
-        >
-          {editingTask && (
-            <UpdateTaskCard
-              {...editingTask}
-              onClose={handleCloseModal}
-              isUpdating={isUpdating}
-            />
-          )}
-        </CustomModal>
         <TaskBoardStats {...stats} />
       </div>
     </div>
