@@ -8,6 +8,7 @@ import { LandingContainer } from './containers/Landing/LandingContainer';
 import { DashBoardContainer } from './containers/DashBoard/DashBoardContainer';
 import { AuthGuard } from './features/auth/hooks/core/AuthGuard';
 import { useAuthState } from './features/auth/hooks/core/useAuthState';
+import { GlobalModalContainer } from './shared/components/modal/GlobalModalContainer';
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ export const App: React.FC = () => {
           )}
         </Router>
         <Toaster position="bottom-left" />
+        <GlobalModalContainer />
       </QueryClientProvider>
     </Provider>
   );
