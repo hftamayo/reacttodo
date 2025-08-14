@@ -11,7 +11,6 @@ import {
 import { SettingsContainer } from '@/containers/Settings/SettingsContainer';
 import CustomModal from '@/shared/components/ui/modal/CustomModal';
 import { DashBoardHeaderProfileMenuStyles } from '@/shared/utils/twind/styles';
-import { LoginCard } from '@/features/auth/components/login/LoginCard';
 
 export const ProfileMenu: React.FC = () => {
   const { group } = useTranslation('dropDownHeaderBar');
@@ -37,8 +36,7 @@ export const ProfileMenu: React.FC = () => {
   };
 
   const handleLogoutClick = () => {
-    setModalContent(<LoginCard onClose={() => setIsModalOpen(false)} />);
-    setIsModalOpen(true);
+    console.log('Logout clicked');
   };
 
   return (
