@@ -96,14 +96,16 @@ export const GlobalModalContainer: React.FC = () => {
 
       case 'customSearch':
         return (
-          <div className="p-6 min-w-[500px]">
-            <h2 className="text-2xl font-bold mb-4">Custom Search</h2>
-            <p className="mb-4">
+          <div className="p-4 sm:p-6 w-full">
+            <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
+              Custom Search
+            </h2>
+            <p className="mb-3 sm:mb-4 text-sm sm:text-base">
               Custom search options will be implemented here
             </p>
             <button
               onClick={closeModal}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="w-full sm:w-auto px-4 py-2 text-sm sm:text-base bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
             >
               Close
             </button>
@@ -112,14 +114,16 @@ export const GlobalModalContainer: React.FC = () => {
 
       case 'reportOptions':
         return (
-          <div className="p-6 min-w-[500px]">
-            <h2 className="text-2xl font-bold mb-4">Report Options</h2>
-            <p className="mb-4">
+          <div className="p-4 sm:p-6 w-full">
+            <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
+              Report Options
+            </h2>
+            <p className="mb-3 sm:mb-4 text-sm sm:text-base">
               Report configuration options will be implemented here
             </p>
             <button
               onClick={closeModal}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="w-full sm:w-auto px-4 py-2 text-sm sm:text-base bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
             >
               Close
             </button>
@@ -128,12 +132,16 @@ export const GlobalModalContainer: React.FC = () => {
 
       case 'exportReport':
         return (
-          <div className="p-6 min-w-[400px]">
-            <h2 className="text-2xl font-bold mb-4">Export Report</h2>
-            <p className="mb-4">Export options will be implemented here</p>
+          <div className="p-4 sm:p-6 w-full">
+            <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
+              Export Report
+            </h2>
+            <p className="mb-3 sm:mb-4 text-sm sm:text-base">
+              Export options will be implemented here
+            </p>
             <button
               onClick={closeModal}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="w-full sm:w-auto px-4 py-2 text-sm sm:text-base bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
             >
               Close
             </button>
@@ -142,14 +150,16 @@ export const GlobalModalContainer: React.FC = () => {
 
       default:
         return (
-          <div className="p-6 min-w-[300px]">
-            <h2 className="text-2xl font-bold mb-4 text-red-600">
+          <div className="p-4 sm:p-6 w-full">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-3 sm:mb-4 text-red-600">
               Unknown Modal
             </h2>
-            <p className="mb-4">Modal type "{modalType}" is not implemented</p>
+            <p className="mb-3 sm:mb-4 text-sm sm:text-base">
+              Modal type "{modalType}" is not implemented
+            </p>
             <button
               onClick={closeModal}
-              className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+              className="w-full sm:w-auto px-4 py-2 text-sm sm:text-base bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
             >
               Close
             </button>
