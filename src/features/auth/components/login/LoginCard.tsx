@@ -32,9 +32,9 @@ export const LoginCard: FC<LoginCardProps> = ({
   }
 
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-start sm:items-center">
           <div className="flex-1 text-center">
             <CardTitle className={formStyles.title}>
               {title || group.cardTitle}
