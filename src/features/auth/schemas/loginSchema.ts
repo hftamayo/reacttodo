@@ -23,7 +23,7 @@ export const loginSchema = z.object({
       'Password must contain at least one uppercase letter, one lowercase letter, and one number'
     ),
 
-  rememberMe: z.boolean().default(false),
+  rememberMe: z.boolean(),
 });
 
 /**
@@ -31,6 +31,13 @@ export const loginSchema = z.object({
  * Use this type instead of manually defining LoginProps
  */
 export type LoginFormData = z.infer<typeof loginSchema>;
+
+/**
+ * Schema with defaults for form initialization
+ */
+export const loginSchemaWithDefaults = loginSchema.extend({
+  rememberMe: z.boolean().default(false),
+});
 
 /**
  * Validation schema for email-only (useful for two-stage auth)
