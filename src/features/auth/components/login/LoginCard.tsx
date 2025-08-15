@@ -11,6 +11,7 @@ import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { LoginCardProps } from '@/shared/types/domains/user.type';
 import { LoginForm } from './LoginForm';
 import { useAuthMutations } from '../../hooks/core/useAuthMutations';
+import { type LoginFormData } from '../../schemas';
 
 export const LoginCard: FC<LoginCardProps> = ({
   onClose = () => {},
@@ -19,7 +20,7 @@ export const LoginCard: FC<LoginCardProps> = ({
   const { group } = useTranslation('loginForm');
   const { loginMutation } = useAuthMutations();
 
-  const handleLogin = async (credentials: any) => {
+  const handleLogin = async (credentials: LoginFormData) => {
     await loginMutation.mutateAsync(credentials);
   };
 

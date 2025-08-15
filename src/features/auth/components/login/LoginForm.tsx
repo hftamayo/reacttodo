@@ -6,10 +6,18 @@ import { Button } from '@/shared/components/ui/button/Button';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { formStyles } from '@/shared/utils/twind/styles';
 import { useLoginForm } from '../../hooks/form/useLoginForm';
-import { LoginFormProps } from '@/shared/types/domains/user.type';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { type LoginFormData } from '../../schemas';
 
-export const LoginForm: FC<LoginFormProps> = ({
+// Updated props to work with Zod validation
+interface ZodLoginFormProps {
+  onLogin: (credentials: LoginFormData) => Promise<void>;
+  onSuccess?: () => void;
+  onClose?: () => void;
+  defaultCredentials?: Partial<LoginFormData>;
+}
+
+export const LoginForm: FC<ZodLoginFormProps> = ({
   onLogin,
   onSuccess,
   onClose,
@@ -32,20 +40,6 @@ export const LoginForm: FC<LoginFormProps> = ({
 
   const isDisabled = isSubmitting || !isValid;
 
-  const emailValidation = {
-    required: {
-      value: true,
-      message: group.lblEmailError,
-    },
-  };
-
-  const passwordValidation = {
-    required: {
-      value: true,
-      message: group.lblPasswordError,
-    },
-  };
-
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -64,7 +58,7 @@ export const LoginForm: FC<LoginFormProps> = ({
           <Input
             id="txtemail"
             className={formStyles.input}
-            {...register('email', emailValidation)}
+            {...register('email')}
             disabled={isDisabled}
           />
           {errors.email && (
@@ -81,7 +75,7 @@ export const LoginForm: FC<LoginFormProps> = ({
               id="txtpassword"
               type={showPassword ? 'text' : 'password'}
               className={formStyles.input}
-              {...register('password', passwordValidation)}
+              {...register('password')}
               disabled={isDisabled}
             />
             <Button
