@@ -28,7 +28,6 @@
     "@babel/preset-env": "^7.25.4",
     "@babel/preset-react": "^7.24.7",
     "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react-hooks": "^8.0.1",
     "@types/jest": "^29.5.13",
     "@types/lodash": "^4.17.17",
     "@types/node": "^22.10.1",
