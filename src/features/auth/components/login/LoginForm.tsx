@@ -17,7 +17,7 @@ export const LoginForm: FC<LoginFormProps> = ({
 }) => {
   const { group } = useTranslation('loginForm');
   const [showPassword, setShowPassword] = useState(false);
-  
+
   const { register, errors, isValid, isSubmitting, handleLoginSubmit } =
     useLoginForm({
       onLogin,
@@ -88,15 +88,15 @@ export const LoginForm: FC<LoginFormProps> = ({
               type="button"
               variant="ghost"
               size="sm"
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 h-auto w-auto"
+              className="absolute right-1 sm:right-2 top-1/2 transform -translate-y-1/2 p-1 sm:p-1.5 h-auto w-auto min-w-[32px] sm:min-w-[36px]"
               onClick={togglePasswordVisibility}
               disabled={isDisabled}
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
               {showPassword ? (
-                <FaEyeSlash className="w-4 h-4 text-gray-500" />
+                <FaEyeSlash className="w-3 h-3 sm:w-4 sm:h-4 text-gray-500" />
               ) : (
-                <FaEye className="w-4 h-4 text-gray-500" />
+                <FaEye className="w-3 h-3 sm:w-4 sm:h-4 text-gray-500" />
               )}
             </Button>
           </div>
@@ -106,7 +106,7 @@ export const LoginForm: FC<LoginFormProps> = ({
         </div>
 
         <div className={formStyles.formRow}>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
             <Checkbox
               id="chkremember"
               className={formStyles.checkbox}
@@ -134,7 +134,9 @@ export const LoginForm: FC<LoginFormProps> = ({
           className={formStyles.submitButton}
           disabled={isDisabled}
         >
-          {isSubmitting ? group.btnLoggingIn || 'Logging in...' : group.btnLogin}
+          {isSubmitting
+            ? group.btnLoggingIn || 'Logging in...'
+            : group.btnLogin}
         </button>
       </div>
     </form>
