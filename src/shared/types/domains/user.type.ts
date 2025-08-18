@@ -1,7 +1,7 @@
 //user types:
 export type FullUser = {
   id: string;
-  fullname: string;
+  name: string;
   age: number;
   email: string;
   password: string;
@@ -21,10 +21,7 @@ export type UserProps = Omit<
   'password' | 'createdAt' | 'updatedAt' | 'deletedAt'
 >;
 
-export type SignUpProps = Pick<
-  FullUser,
-  'fullname' | 'age' | 'email' | 'password'
->;
+export type SignUpProps = Pick<FullUser, 'name' | 'age' | 'email' | 'password'>;
 
 export type LoginProps = Pick<FullUser, 'email' | 'password'> & {
   rememberMe?: boolean;
