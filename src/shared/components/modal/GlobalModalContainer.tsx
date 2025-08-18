@@ -2,6 +2,7 @@ import React from 'react';
 import CustomModal from '../ui/modal/CustomModal';
 import { useModalState } from '../../services/redux/hooks/useModalState';
 import { LoginCard } from '@/features/auth/components/login/LoginCard';
+import { SignUpCard } from '@/features/auth/components/signup/SignUpCard';
 import { ProfileCard } from '@/features/dashboard/components/header/components/ProfileCard';
 import { LogoutConfirmation } from '@/features/auth/components/logout/LogoutConfirmation';
 import { UpdateTaskCard } from '@/features/task/components/update/UpdateTaskCard';
@@ -28,14 +29,14 @@ export const GlobalModalContainer: React.FC = () => {
           />
         );
 
-      //     case 'signup':
-      //       return (
-      //         <SignupCard
-      //           onClose={closeModal}
-      //           title={modalProps?.title}
-      //           {...modalProps}
-      //         />
-      //       );
+      case 'signup':
+        return (
+          <SignUpCard
+            onClose={closeModal}
+            title={modalProps?.title}
+            {...modalProps}
+          />
+        );
 
       //   case 'resetPassword':
       //     return (
