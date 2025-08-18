@@ -8,10 +8,13 @@ export const loginSchema = z.object({
   email: z
     .string()
     .min(1, 'Email is required')
-    .email('Please enter a valid email address')
     .max(254, 'Email address is too long')
     .toLowerCase()
-    .trim(),
+    .trim()
+    .refine(
+      (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
+      'Please enter a valid email address'
+    ),
 
   password: z
     .string()
@@ -19,8 +22,8 @@ export const loginSchema = z.object({
     .min(8, 'Password must be at least 8 characters long')
     .max(128, 'Password is too long')
     .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
+      'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&)'
     ),
 
   rememberMe: z.boolean(),
