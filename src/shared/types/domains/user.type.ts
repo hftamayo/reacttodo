@@ -35,8 +35,21 @@ export type LoginFormProps = {
   defaultCredentials?: Partial<LoginProps>; // Optional default values
 };
 
+// Simplified signup types - no more prop drilling
+export type SignUpFormProps = {
+  onSignUp: (credentials: SignUpProps) => Promise<void>;
+  onSuccess?: () => void;
+  onClose?: () => void;
+  defaultCredentials?: Partial<SignUpProps>; // Optional default values
+};
+
 // For the card wrapper - minimal props
 export type LoginCardProps = {
+  onClose?: () => void;
+  title?: string;
+};
+
+export type SignUpCardProps = {
   onClose?: () => void;
   title?: string;
 };
