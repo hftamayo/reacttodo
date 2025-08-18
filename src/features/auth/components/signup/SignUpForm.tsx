@@ -29,7 +29,7 @@ export const SignUpForm: FC<SignUpFormProps> = ({
   onClose,
   defaultCredentials,
 }) => {
-  const { group } = useTranslation('singUpForm');
+  const { group } = useTranslation('SignUpForm');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 

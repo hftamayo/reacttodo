@@ -16,7 +16,7 @@ export const SignUpCard: FC<SignUpCardProps> = ({
   onClose = () => {},
   title,
 }) => {
-  const { group } = useTranslation('signupForm');
+  const { group } = useTranslation('SignUpForm');
   const { signupMutation } = useAuthMutations();
 
   const handleSignUp = async (credentials: SignUpProps) => {
