@@ -71,7 +71,7 @@ export const LoginForm: FC<ZodLoginFormProps> = ({
             {group.lblPassword}
           </Label>
           <div className="relative">
-            <input
+            <Input
               id="txtpassword"
               type={showPassword ? 'text' : 'password'}
               className={formStyles.input}

@@ -8,6 +8,7 @@ const inputVariants = cva(
     variants: {
       type: {
         text: '',
+        password: '', // Same styling as text
         checkbox:
           'bg-transparent checked:bg-[var(--cameo-600)] checked:border-[var(--cameo-700)]',
       },
@@ -21,6 +22,9 @@ const inputVariants = cva(
       { type: 'text', ctrlsize: 'small', className: 'h-6 text-sm' },
       { type: 'text', ctrlsize: 'medium', className: 'h-9 text-base' },
       { type: 'text', ctrlsize: 'large', className: 'h-12 text-lg' },
+      { type: 'password', ctrlsize: 'small', className: 'h-6 text-sm' },
+      { type: 'password', ctrlsize: 'medium', className: 'h-9 text-base' },
+      { type: 'password', ctrlsize: 'large', className: 'h-12 text-lg' },
       { type: 'checkbox', ctrlsize: 'small', className: 'h-3 w-3' },
       { type: 'checkbox', ctrlsize: 'medium', className: 'h-4 w-4' },
       { type: 'checkbox', ctrlsize: 'large', className: 'h-5 w-5' },
