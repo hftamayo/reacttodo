@@ -13,6 +13,13 @@ export {
   type PasswordOnlyData,
 } from './loginSchema';
 
+// Signup schemas
+export {
+  signupSchema,
+  signupWithConfirmSchema,
+  type SignupFormData,
+  type SignupWithConfirmData,
+} from './signupSchema';
+
 // Future schemas can be added here:
-// export { signupSchema, type SignupFormData } from './signupSchema';
 // export { resetPasswordSchema, type ResetPasswordFormData } from './resetPasswordSchema';
