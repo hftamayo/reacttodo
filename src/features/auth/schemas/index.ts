@@ -14,7 +14,7 @@ export {
 } from './loginSchema';
 
 // Signup schemas
-export { signupSchema, type SignupFormData } from './signupSchema';
+export { signupSchema } from './signupSchema';
 
 // Future schemas can be added here:
 // export { resetPasswordSchema, type ResetPasswordFormData } from './resetPasswordSchema';

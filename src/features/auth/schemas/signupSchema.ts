@@ -36,4 +36,3 @@ export const signupSchema = loginSchema
 /**
  * TypeScript type inferred from the signup schema
  */
-export type SignupFormData = z.infer<typeof signupSchema>;

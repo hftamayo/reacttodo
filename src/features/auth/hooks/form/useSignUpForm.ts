@@ -2,18 +2,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { showSuccess } from '@/shared/services/notification/notificationService';
-import { SignUpFormProps } from '@/shared/types/domains/user.type';
-import { signupSchema, type SignupFormData } from '../../schemas';
-
-/**
- * Extended interface for signup form with Zod validation
- * Accepts SignupFormData instead of base SignUpProps
- */
-interface ZodSignUpFormProps
-  extends Omit<SignUpFormProps, 'onSignUp' | 'defaultCredentials'> {
-  onSignUp: (credentials: SignupFormData) => Promise<void>;
-  defaultCredentials?: Partial<SignupFormData>;
-}
+import { SignUpFormProps, SignUpProps } from '@/shared/types/domains/user.type';
+import { signupSchema } from '../../schemas';
 
 /**
  * Custom hook for signup form with Zod validation
@@ -29,19 +19,20 @@ export const useSignUpForm = ({
   onSuccess,
   onClose,
   defaultCredentials = {},
-}: ZodSignUpFormProps) => {
+}: SignUpFormProps) => {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isValid },
-  } = useForm<SignupFormData>({
+  } = useForm<SignUpProps>({
     resolver: zodResolver(signupSchema) as any, // Type assertion to fix Zod coerce typing issue
     defaultValues: {
       name: defaultCredentials.name || '',
       age: defaultCredentials.age || 13, // Default to minimum reasonable age
       email: defaultCredentials.email || '',
       password: defaultCredentials.password || '',
+      confirmPassword: defaultCredentials.confirmPassword || '',
     },
     mode: 'onChange', // Enable real-time validation
   });
@@ -52,7 +43,7 @@ export const useSignUpForm = ({
     try {
       setIsSubmitting(true);
       // Data is properly validated and typed by Zod resolver
-      await onSignUp(data as unknown as SignupFormData);
+      await onSignUp(data as unknown as SignUpProps);
       showSuccess('Account created successfully! It requires activation.');
       onSuccess?.();
       reset();
