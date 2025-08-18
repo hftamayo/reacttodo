@@ -46,12 +46,12 @@ export const SignUpForm: FC<SignUpFormProps> = ({
 
   const isDisabled = isSubmitting;
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
+  const togglePasswordVisibility = (field: 'password' | 'confirm') => {
+    if (field === 'password') {
+      setShowPassword(!showPassword);
+    } else {
+      setShowConfirmPassword(!showConfirmPassword);
+    }
   };
 
   return (
@@ -130,7 +130,7 @@ export const SignUpForm: FC<SignUpFormProps> = ({
               variant="ghost"
               size="sm"
               className="absolute right-1 sm:right-2 top-1/2 transform -translate-y-1/2 p-1 sm:p-1.5 h-auto w-auto min-w-[32px] sm:min-w-[36px]"
-              onClick={togglePasswordVisibility}
+              onClick={() => togglePasswordVisibility('password')}
               disabled={isDisabled}
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
@@ -164,7 +164,7 @@ export const SignUpForm: FC<SignUpFormProps> = ({
               variant="ghost"
               size="sm"
               className="absolute right-1 sm:right-2 top-1/2 transform -translate-y-1/2 p-1 sm:p-1.5 h-auto w-auto min-w-[32px] sm:min-w-[36px]"
-              onClick={toggleConfirmPasswordVisibility}
+              onClick={() => togglePasswordVisibility('confirm')}
               disabled={isDisabled}
               aria-label={
                 showConfirmPassword ? 'Hide password' : 'Show password'
