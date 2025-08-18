@@ -38,7 +38,7 @@ export const LoginForm: FC<ZodLoginFormProps> = ({
     return null;
   }
 
-  const isDisabled = isSubmitting || !isValid;
+  const isDisabled = isSubmitting;
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
