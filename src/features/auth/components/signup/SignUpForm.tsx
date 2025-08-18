@@ -5,10 +5,24 @@ import { Button } from '@/shared/components/ui/button/Button';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { formStyles } from '@/shared/utils/twind/styles';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { SignUpFormProps } from '@/shared/types/domains/user.type';
 import { useSignUpForm } from '../../hooks/form/useSignUpForm';
-import { type SignupFormData } from '../../schemas';
+import { SignUpFormProps } from '@/shared/types/domains/user.type';
 
+/**
+ * SignUpForm Component
+ *
+ * A comprehensive signup form with Zod validation featuring:
+ * - Name, age, email, password, and confirm password fields
+ * - Real-time validation with descriptive error messages
+ * - Password visibility toggle for both password fields
+ * - Mobile-first responsive design
+ * - TypeScript type safety with Zod schema validation
+ *
+ * @param onSignUp - Function to handle form submission
+ * @param onSuccess - Optional callback for successful signup
+ * @param onClose - Optional callback to close the form
+ * @param defaultCredentials - Optional default form values
+ */
 export const SignUpForm: FC<SignUpFormProps> = ({
   onSignUp,
   onSuccess,
@@ -17,6 +31,7 @@ export const SignUpForm: FC<SignUpFormProps> = ({
 }) => {
   const { group } = useTranslation('singUpForm');
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const { register, errors, isSubmitting, handleSignUpSubmit } = useSignUpForm({
     onSignUp,
@@ -35,6 +50,10 @@ export const SignUpForm: FC<SignUpFormProps> = ({
     setShowPassword(!showPassword);
   };
 
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   return (
     <form
       onSubmit={handleSignUpSubmit}
@@ -48,6 +67,8 @@ export const SignUpForm: FC<SignUpFormProps> = ({
           </Label>
           <Input
             id="txtname"
+            type="text"
+            placeholder="Enter your full name"
             className={formStyles.input}
             {...register('name')}
             disabled={isDisabled}
@@ -63,6 +84,8 @@ export const SignUpForm: FC<SignUpFormProps> = ({
           </Label>
           <Input
             id="txtage"
+            type="text"
+            placeholder="Enter your age"
             className={formStyles.input}
             {...register('age')}
             disabled={isDisabled}
@@ -78,6 +101,8 @@ export const SignUpForm: FC<SignUpFormProps> = ({
           </Label>
           <Input
             id="txtemail"
+            type="text"
+            placeholder="Enter your email address"
             className={formStyles.input}
             {...register('email')}
             disabled={isDisabled}
@@ -95,6 +120,7 @@ export const SignUpForm: FC<SignUpFormProps> = ({
             <Input
               id="txtpassword"
               type={showPassword ? 'text' : 'password'}
+              placeholder="Create a strong password"
               className={formStyles.input}
               {...register('password')}
               disabled={isDisabled}
@@ -121,15 +147,16 @@ export const SignUpForm: FC<SignUpFormProps> = ({
         </div>
 
         <div className={formStyles.formRow}>
-          <Label className={formStyles.label} htmlFor="txtrepeatpassword">
+          <Label className={formStyles.label} htmlFor="txtconfirmpassword">
             {group.lblRepeatPassword}
           </Label>
           <div className="relative">
             <Input
-              id="txtrepeatpassword"
-              type={showPassword ? 'text' : 'password'}
+              id="txtconfirmpassword"
+              type={showConfirmPassword ? 'text' : 'password'}
+              placeholder="Confirm your password"
               className={formStyles.input}
-              {...register('repeatPassword')}
+              {...register('confirmPassword')}
               disabled={isDisabled}
             />
             <Button
@@ -137,20 +164,22 @@ export const SignUpForm: FC<SignUpFormProps> = ({
               variant="ghost"
               size="sm"
               className="absolute right-1 sm:right-2 top-1/2 transform -translate-y-1/2 p-1 sm:p-1.5 h-auto w-auto min-w-[32px] sm:min-w-[36px]"
-              onClick={togglePasswordVisibility}
+              onClick={toggleConfirmPasswordVisibility}
               disabled={isDisabled}
-              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              aria-label={
+                showConfirmPassword ? 'Hide password' : 'Show password'
+              }
             >
-              {showPassword ? (
+              {showConfirmPassword ? (
                 <FaEyeSlash className="w-3 h-3 sm:w-4 sm:h-4 text-gray-500" />
               ) : (
                 <FaEye className="w-3 h-3 sm:w-4 sm:h-4 text-gray-500" />
               )}
             </Button>
           </div>
-          {errors.repeatPassword && (
+          {errors.confirmPassword && (
             <span className={formStyles.error}>
-              {errors.repeatPassword.message}
+              {errors.confirmPassword.message}
             </span>
           )}
         </div>
@@ -169,8 +198,16 @@ export const SignUpForm: FC<SignUpFormProps> = ({
           type="submit"
           className={formStyles.submitButton}
           disabled={isDisabled}
+          aria-describedby={isSubmitting ? 'signup-loading' : undefined}
         >
-          {isSubmitting ? group.btnSignUp || 'Signing up...' : group.btnSignUp}
+          {isSubmitting ? (
+            <>
+              <span className="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></span>
+              {group.btnSignUp || 'Creating account...'}
+            </>
+          ) : (
+            group.btnSignUp || 'Create Account'
+          )}
         </button>
       </div>
     </form>
