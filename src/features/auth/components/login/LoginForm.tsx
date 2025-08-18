@@ -26,13 +26,12 @@ export const LoginForm: FC<ZodLoginFormProps> = ({
   const { group } = useTranslation('loginForm');
   const [showPassword, setShowPassword] = useState(false);
 
-  const { register, errors, isValid, isSubmitting, handleLoginSubmit } =
-    useLoginForm({
-      onLogin,
-      onSuccess,
-      onClose,
-      defaultCredentials,
-    });
+  const { register, errors, isSubmitting, handleLoginSubmit } = useLoginForm({
+    onLogin,
+    onSuccess,
+    onClose,
+    defaultCredentials,
+  });
 
   if (!group) {
     return null;
