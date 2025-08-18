@@ -2,16 +2,28 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { showSuccess } from '@/shared/services/notification/notificationService';
-import { SignUpProps } from '@/shared/types/domains/user.type';
+import { SignUpFormProps } from '@/shared/types/domains/user.type';
 import { signupSchema, type SignupFormData } from '../../schemas';
 
-// Updated interface to accept LoginFormData
+/**
+ * Extended interface for signup form with Zod validation
+ * Accepts SignupFormData instead of base SignUpProps
+ */
 interface ZodSignUpFormProps
-  extends Omit<SignUpProps, 'onSignUp' | 'defaultCredentials'> {
+  extends Omit<SignUpFormProps, 'onSignUp' | 'defaultCredentials'> {
   onSignUp: (credentials: SignupFormData) => Promise<void>;
   defaultCredentials?: Partial<SignupFormData>;
 }
 
+/**
+ * Custom hook for signup form with Zod validation
+ *
+ * @param onSignUp - Function to handle signup submission
+ * @param onSuccess - Optional callback for successful signup
+ * @param onClose - Optional callback to close the form
+ * @param defaultCredentials - Optional default form values
+ * @returns Form state and handlers with validation
+ */
 export const useSignUpForm = ({
   onSignUp,
   onSuccess,
@@ -24,10 +36,10 @@ export const useSignUpForm = ({
     reset,
     formState: { errors, isValid },
   } = useForm<SignupFormData>({
-    resolver: zodResolver(signupSchema),
+    resolver: zodResolver(signupSchema) as any, // Type assertion to fix Zod coerce typing issue
     defaultValues: {
       name: defaultCredentials.name || '',
-      age: defaultCredentials.age || 0,
+      age: defaultCredentials.age || 13, // Default to minimum reasonable age
       email: defaultCredentials.email || '',
       password: defaultCredentials.password || '',
     },
@@ -39,14 +51,15 @@ export const useSignUpForm = ({
   const handleSignUpSubmit = handleSubmit(async (data) => {
     try {
       setIsSubmitting(true);
-      // Data is properly typed by Zod resolver
-      await onSubmit(data as unknown as SignupFormData);
-      showSuccess('Signup successful');
+      // Data is properly validated and typed by Zod resolver
+      await onSignUp(data as unknown as SignupFormData);
+      showSuccess('Account created successfully! It requires activation.');
       onSuccess?.();
       reset();
       return true;
     } catch (error) {
       console.error('SignUp form submission error:', error);
+      // Error is handled by the parent component or error boundary
       return false;
     } finally {
       setIsSubmitting(false);

@@ -21,7 +21,7 @@ export type UserProps = Omit<
   'password' | 'createdAt' | 'updatedAt' | 'deletedAt'
 >;
 
-export type SignUpProps = Pick<FullUser, 'name' | 'age' | 'email' | 'password'>;
+type SignUpProps = Pick<FullUser, 'name' | 'age' | 'email' | 'password'>;
 
 export type LoginProps = Pick<FullUser, 'email' | 'password'> & {
   rememberMe?: boolean;
