@@ -14,7 +14,9 @@ import {
 import { showError } from '@/shared/services/notification/notificationService';
 import { LoadingSpinner } from '@/shared/components/ui/loading/LoadingSpinner';
 
-export const TaskBoardPresenter: FC<TaskBoardPresenterProps & { stats: TaskStats }> = ({
+export const TaskBoardPresenter: FC<
+  TaskBoardPresenterProps & { stats: TaskStats }
+> = ({
   tasks,
   pagination,
   isLoading,
@@ -27,16 +29,19 @@ export const TaskBoardPresenter: FC<TaskBoardPresenterProps & { stats: TaskStats
 }) => {
   const { openModal } = useModalState();
 
-  const handleEdit = useCallback((task: TaskProps) => {
-    openModal('updateTask', {
-      id: task.id,
-      title: task.title,
-      description: task.description,
-      done: task.done,
-      owner: task.owner,
-      isUpdating,
-    });
-  }, [openModal, isUpdating]);
+  const handleEdit = useCallback(
+    (task: TaskProps) => {
+      openModal('updateTask', {
+        id: task.id,
+        title: task.title,
+        description: task.description,
+        done: task.done,
+        owner: task.owner,
+        isUpdating,
+      });
+    },
+    [openModal, isUpdating]
+  );
 
   const taskList = useMemo(() => {
     if (error) {
