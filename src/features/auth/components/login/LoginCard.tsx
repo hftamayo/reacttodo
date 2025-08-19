@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { Link } from 'wouter';
 import {
   Card,
   CardHeader,
@@ -56,6 +57,14 @@ export const LoginCard: FC<LoginCardProps> = ({
           onSuccess={handleSuccess}
           onClose={onClose}
         />
+        <div>
+          <Link to="/signup" className={formStyles.link}>
+            {group.signupLink}
+          </Link>
+          <Link to="/forgot-password" className={formStyles.link}>
+            {group.forgotPasswordLink}
+          </Link>
+        </div>
       </CardContent>
     </Card>
   );
