@@ -1,16 +1,16 @@
 import React from 'react';
 import { Button } from '@/shared/components/ui/button/Button';
-import { useModalState } from '@/shared/services/redux/hooks/useModalState';
+import { useLocation } from 'wouter';
 
 export const ActionButtons: React.FC = () => {
-  const { openModal } = useModalState();
+  const [, setLocation] = useLocation();
 
   const handleLoginClick = () => {
-    openModal('login');
+    setLocation('/auth/login');
   };
 
   const handleSignUpClick = () => {
-    openModal('signup');
+    setLocation('/auth/signup');
   };
 
   return (
