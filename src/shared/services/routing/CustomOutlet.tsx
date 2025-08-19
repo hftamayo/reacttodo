@@ -6,29 +6,65 @@ import { TaskBoardContainer } from '@/containers/TaskBoard/TaskBoardContainer';
 import { SignUpContainer } from '@/containers/Auth/SignUpContainer';
 import { LoginContainer } from '@/containers/Auth/LoginContainer';
 import { LandingContainer } from '@/containers/Landing/LandingContainer';
+import { useAuthState } from '@/features/auth/hooks/core/useAuthState';
+import { AuthGuard } from '@/features/auth/hooks/core/AuthGuard';
 
 export const CustomOutlet: React.FC = () => {
   const [match] = useRoute('/');
+  const { isAuthenticated } = useAuthState();
 
   return (
     <Switch>
-      {/* Landing/Public Routes */}
+      {/* Public Routes - Always accessible */}
       <Route path="/landing" component={LandingContainer} />
-
-      {/* Authentication Routes */}
+      
+      {/* Authentication Routes - Only for non-authenticated users */}
       <Route path="/auth/login" component={LoginContainer} />
       <Route path="/auth/signup" component={SignUpContainer} />
+      
+      {/* Protected Routes - Only for authenticated users */}
+      <Route path="/dashboard">
+        {isAuthenticated ? (
+          <AuthGuard>
+            <DashBoardContainer />
+          </AuthGuard>
+        ) : (
+          <LandingContainer />
+        )}
+      </Route>
+      
+      <Route path="/dashboard/analytics">
+        {isAuthenticated ? (
+          <AuthGuard>
+            <DashBoardAnalyticsContainer />
+          </AuthGuard>
+        ) : (
+          <LandingContainer />
+        )}
+      </Route>
+      
+      <Route path="/dashboard/tasks">
+        {isAuthenticated ? (
+          <AuthGuard>
+            <TaskBoardContainer />
+          </AuthGuard>
+        ) : (
+          <LandingContainer />
+        )}
+      </Route>
 
-      {/* Dashboard Routes */}
-      <Route path="/dashboard" component={DashBoardContainer} />
-      <Route
-        path="/dashboard/analytics"
-        component={DashBoardAnalyticsContainer}
-      />
-      <Route path="/dashboard/tasks" component={TaskBoardContainer} />
-
-      {/* Default Route - redirect to analytics dashboard when authenticated */}
-      {match && <Route path="/" component={DashBoardAnalyticsContainer} />}
+      {/* Default Route */}
+      {match && (
+        <Route path="/">
+          {isAuthenticated ? (
+            <AuthGuard>
+              <DashBoardAnalyticsContainer />
+            </AuthGuard>
+          ) : (
+            <LandingContainer />
+          )}
+        </Route>
+      )}
 
       {/* Fallback Route for unknown paths */}
       <Route path="*" component={LandingContainer} />
