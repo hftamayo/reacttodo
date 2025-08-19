@@ -7,6 +7,8 @@ import { ProfileCard } from '@/features/dashboard/components/header/components/P
 import { LogoutConfirmation } from '@/features/auth/components/logout/LogoutConfirmation';
 import { UpdateTaskCard } from '@/features/task/components/update/UpdateTaskCard';
 import { SettingsContainer } from '@/containers/Settings/SettingsContainer';
+import { useAuthMutations } from '@/features/auth/hooks/core/useAuthMutations';
+import { LoginProps, SignUpProps } from '@/shared/types/domains/user.type';
 
 /**
  * GlobalModalContainer - Centralized modal renderer
@@ -15,6 +17,22 @@ import { SettingsContainer } from '@/containers/Settings/SettingsContainer';
  */
 export const GlobalModalContainer: React.FC = () => {
   const { isOpen, modalType, modalProps, closeModal } = useModalState();
+  const { loginMutation, signupMutation } = useAuthMutations();
+
+  // Authentication handlers for modal context
+  const handleLogin = async (credentials: LoginProps) => {
+    await loginMutation.mutateAsync(credentials);
+  };
+
+  const handleSignUp = async (credentials: SignUpProps) => {
+    await signupMutation.mutateAsync(credentials);
+  };
+
+  const handleAuthSuccess = () => {
+    // Close modal and optionally redirect or refresh state
+    closeModal();
+    // Could add additional success logic here
+  };
 
   const renderModalContent = () => {
     if (!modalType) return null;
@@ -24,6 +42,9 @@ export const GlobalModalContainer: React.FC = () => {
         return (
           <LoginCard
             onClose={closeModal}
+            onLogin={handleLogin}
+            onSuccess={handleAuthSuccess}
+            isLoading={loginMutation.isPending}
             title={modalProps?.title}
             {...modalProps}
           />
@@ -33,6 +54,9 @@ export const GlobalModalContainer: React.FC = () => {
         return (
           <SignUpCard
             onClose={closeModal}
+            onSignUp={handleSignUp}
+            onSuccess={handleAuthSuccess}
+            isLoading={signupMutation.isPending}
             title={modalProps?.title}
             {...modalProps}
           />
