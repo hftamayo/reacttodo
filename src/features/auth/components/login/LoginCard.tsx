@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { Link } from 'wouter';
 import {
   Card,
   CardHeader,
@@ -11,23 +10,15 @@ import { formStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { LoginCardProps } from '@/shared/types/domains/user.type';
 import { LoginForm } from './LoginForm';
-import { useAuthMutations } from '../../hooks/core/useAuthMutations';
-import { type LoginFormData } from '../../schemas';
 
 export const LoginCard: FC<LoginCardProps> = ({
+  onLogin,
+  onSuccess,
   onClose = () => {},
   title,
+  isLoading = false,
 }) => {
   const { group } = useTranslation('loginForm');
-  const { loginMutation } = useAuthMutations();
-
-  const handleLogin = async (credentials: LoginFormData) => {
-    await loginMutation.mutateAsync(credentials);
-  };
-
-  const handleSuccess = () => {
-    onClose();
-  };
 
   if (!group) {
     return null;
@@ -46,25 +37,14 @@ export const LoginCard: FC<LoginCardProps> = ({
             onClick={onClose}
             className={formStyles.closeButton}
             aria-label="Close Form"
+            disabled={isLoading}
           >
             <FaTimes className={formStyles.closeIcon} />
           </button>
         </div>
       </CardHeader>
       <CardContent>
-        <LoginForm
-          onLogin={handleLogin}
-          onSuccess={handleSuccess}
-          onClose={onClose}
-        />
-        <div>
-          <Link to="/signup" className={formStyles.link}>
-            {group.signupLink}
-          </Link>
-          <Link to="/forgot-password" className={formStyles.link}>
-            {group.forgotPasswordLink}
-          </Link>
-        </div>
+        <LoginForm onLogin={onLogin} onSuccess={onSuccess} onClose={onClose} />
       </CardContent>
     </Card>
   );
