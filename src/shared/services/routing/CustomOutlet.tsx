@@ -3,11 +3,13 @@ import { useRoute, Switch, Route } from 'wouter';
 import { DashBoardAnalyticsContainer } from '@/containers/DashBoard/DashBoardAnalyticsContainer';
 import { DashBoardContainer } from '@/containers/DashBoard/DashBoardContainer';
 import { TaskBoardContainer } from '@/containers/TaskBoard/TaskBoardContainer';
+import { SettingsContainer } from '@/containers/Settings/SettingsContainer';
 import { SignUpContainer } from '@/containers/Auth/SignUpContainer';
 import { LoginContainer } from '@/containers/Auth/LoginContainer';
 import { LandingContainer } from '@/containers/Landing/LandingContainer';
 import { useAuthState } from '@/features/auth/hooks/core/useAuthState';
 import { AuthGuard } from '@/features/auth/hooks/core/AuthGuard';
+import { MainLayout } from '@/shared/components/ui/layout/dashboard/MainLayout';
 
 export const CustomOutlet: React.FC = () => {
   const [match] = useRoute('/');
@@ -22,43 +24,32 @@ export const CustomOutlet: React.FC = () => {
       <Route path="/auth/login" component={LoginContainer} />
       <Route path="/auth/signup" component={SignUpContainer} />
       
-      {/* Protected Routes - Only for authenticated users */}
+      {/* Protected Routes - Single MainLayout wrapper for all dashboard routes */}
       <Route path="/dashboard">
         {isAuthenticated ? (
           <AuthGuard>
-            <DashBoardContainer />
+            <MainLayout>
+              <Switch>
+                <Route path="/dashboard" component={DashBoardContainer} />
+                <Route path="/dashboard/analytics" component={DashBoardAnalyticsContainer} />
+                <Route path="/dashboard/tasks" component={TaskBoardContainer} />
+                <Route path="/dashboard/settings" component={SettingsContainer} />
+              </Switch>
+            </MainLayout>
           </AuthGuard>
         ) : (
           <LandingContainer />
         )}
       </Route>
       
-      <Route path="/dashboard/analytics">
-        {isAuthenticated ? (
-          <AuthGuard>
-            <DashBoardAnalyticsContainer />
-          </AuthGuard>
-        ) : (
-          <LandingContainer />
-        )}
-      </Route>
-      
-      <Route path="/dashboard/tasks">
-        {isAuthenticated ? (
-          <AuthGuard>
-            <TaskBoardContainer />
-          </AuthGuard>
-        ) : (
-          <LandingContainer />
-        )}
-      </Route>
-
       {/* Default Route */}
       {match && (
         <Route path="/">
           {isAuthenticated ? (
             <AuthGuard>
-              <DashBoardAnalyticsContainer />
+              <MainLayout>
+                <DashBoardAnalyticsContainer />
+              </MainLayout>
             </AuthGuard>
           ) : (
             <LandingContainer />
