@@ -113,6 +113,7 @@ export const formStyles = {
     'bg-[var(--cameo-400)] text-[var(--cameo-1000)] px-3 py-2 sm:px-4 sm:py-2 text-sm sm:text-base rounded-md hover:bg-[var(--cameo-600)] transition-colors duration-200 w-full sm:w-auto',
   submitButton:
     'bg-[var(--cameo-400)] text-[var(--cameo-1000)] px-3 py-2 sm:px-4 sm:py-2 text-sm sm:text-base rounded-md hover:bg-[var(--cameo-600)] transition-colors duration-200 w-full sm:w-auto',
+  link: 'text-sm sm:text-base text-[var(--cameo-600)] hover:underline',
 };
 
 export const toasterMessages = {
