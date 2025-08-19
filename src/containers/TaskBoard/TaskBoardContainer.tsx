@@ -27,7 +27,7 @@ const TaskBoardFallback: FC<FallbackProps> = ({
 export const TaskBoardContainer: FC = () => {
   const [, setLocation] = useLocation();
 
-  const { data, stats, loading, actions, error, lazyLoad } = useTaskBoard();
+  const { data, stats, loading, actions, error } = useTaskBoard();
 
   const { isAdding, isUpdating } = useTaskBoardLoadingStates();
 
