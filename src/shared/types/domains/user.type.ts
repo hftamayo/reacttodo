@@ -48,13 +48,19 @@ export type SignUpFormProps = {
   defaultCredentials?: Partial<SignUpProps>; // Optional default values
 };
 
-// For the card wrapper - minimal props
+// For the card wrapper - enhanced for Container-Presenter pattern
 export type LoginCardProps = {
+  onLogin: (credentials: LoginProps) => Promise<void>;
+  onSuccess: () => void;
   onClose?: () => void;
   title?: string;
+  isLoading?: boolean;
 };
 
 export type SignUpCardProps = {
+  onSignUp: (credentials: SignUpProps) => Promise<void>;
+  onSuccess: () => void;
   onClose?: () => void;
   title?: string;
+  isLoading?: boolean;
 };
