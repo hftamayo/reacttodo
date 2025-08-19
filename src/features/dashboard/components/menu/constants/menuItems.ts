@@ -30,7 +30,7 @@ export const MENU_ITEMS: MenuItemProps[] = [
     isDropDownItem: true,
   },
   {
-    path: '/dashboard/entities/taskboard',
+    path: '/dashboard/tasks',
     label: 'Tasks',
     iconName: 'FaRegFileAlt',
     roles: ['admin', 'supervisor', 'user'],
@@ -44,7 +44,7 @@ export const MENU_ITEMS: MenuItemProps[] = [
     isDropDownItem: false,
   },
   {
-    path: '/dashboard/metrics',
+    path: '/dashboard/analytics',
     label: 'Metrics',
     iconName: 'FaDeezer',
     roles: ['admin', 'supervisor'],
@@ -54,6 +54,13 @@ export const MENU_ITEMS: MenuItemProps[] = [
     path: '/dashboard/repository',
     label: 'Repository',
     iconName: 'FaDatabase',
+    roles: ['admin', 'supervisor', 'user'],
+    isDropDownItem: false,
+  },
+  {
+    path: '/dashboard/settings',
+    label: 'Settings',
+    iconName: 'FaCog',
     roles: ['admin', 'supervisor', 'user'],
     isDropDownItem: false,
   },
