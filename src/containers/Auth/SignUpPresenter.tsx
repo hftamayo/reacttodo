@@ -44,7 +44,13 @@ export const SignUpPresenter: FC<SignUpPresenterProps> = ({
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full space-y-8">
         {/* Pass the props that SignUpCard actually needs */}
-        <SignUpCard onClose={onClose} title="Create Account" />
+        <SignUpCard
+          onClose={onClose}
+          onSignUp={onSignUp}
+          onSuccess={onSuccess}
+          isLoading={isLoading}
+          title="Create Account"
+        />
 
         {/* Navigation to Login */}
         <div className="text-center">

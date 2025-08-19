@@ -8,24 +8,17 @@ import {
 import { FaTimes } from 'react-icons/fa';
 import { formStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
-import { SignUpProps, SignUpCardProps } from '@/shared/types/domains/user.type';
+import { SignUpCardProps } from '@/shared/types/domains/user.type';
 import { SignUpForm } from './SignUpForm';
-import { useAuthMutations } from '../../hooks/core/useAuthMutations';
 
 export const SignUpCard: FC<SignUpCardProps> = ({
+  onSignUp,
+  onSuccess,
   onClose = () => {},
   title,
+  isLoading = false,
 }) => {
   const { group } = useTranslation('SignUpForm');
-  const { signupMutation } = useAuthMutations();
-
-  const handleSignUp = async (credentials: SignUpProps) => {
-    await signupMutation.mutateAsync(credentials);
-  };
-
-  const handleSuccess = () => {
-    onClose();
-  };
 
   if (!group) {
     return null;
@@ -44,6 +37,7 @@ export const SignUpCard: FC<SignUpCardProps> = ({
             onClick={onClose}
             className={formStyles.closeButton}
             aria-label="Close Form"
+            disabled={isLoading}
           >
             <FaTimes className={formStyles.closeIcon} />
           </button>
@@ -51,8 +45,8 @@ export const SignUpCard: FC<SignUpCardProps> = ({
       </CardHeader>
       <CardContent>
         <SignUpForm
-          onSignUp={handleSignUp}
-          onSuccess={handleSuccess}
+          onSignUp={onSignUp}
+          onSuccess={onSuccess}
           onClose={onClose}
         />
       </CardContent>
