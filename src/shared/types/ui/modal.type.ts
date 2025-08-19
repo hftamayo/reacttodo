@@ -10,6 +10,7 @@ export type ModalType =
   | 'customSearch'
   | 'reportOptions'
   | 'exportReport'
+  | 'demo'
   | null;
 
 export interface ModalProps {
