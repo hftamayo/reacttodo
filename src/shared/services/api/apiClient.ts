@@ -48,7 +48,7 @@ export const beOps = {
 
 export const authOps = {
   async login(credentials: LoginProps): Promise<ApiResponse<{}>> {
-    const url = `${BACKEND_URL}/auth/login`;
+    const url = `${BACKEND_URL}/api/auth/login`;
     return makeRequest<{}>(url, {
       method: 'POST',
       //credentials: 'include',
@@ -56,7 +56,7 @@ export const authOps = {
     });
   },
   async signup(user: SignUpProps): Promise<ApiResponse<{}>> {
-    const url = `${BACKEND_URL}/auth/signup`;
+    const url = `${BACKEND_URL}/api/auth/signup`;
     return makeRequest<{}>(url, {
       method: 'POST',
       //credentials: 'include',
@@ -64,7 +64,7 @@ export const authOps = {
     });
   },
   async logout(): Promise<ApiResponse<{}>> {
-    const url = `${BACKEND_URL}/auth/logout`;
+    const url = `${BACKEND_URL}/api/auth/logout`;
     return makeRequest<{}>(url, {
       method: 'POST',
       //credentials: 'include',
