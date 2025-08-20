@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaUserCircle, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { FaUserCircle, FaUser, FaCog, FaSignOutAlt, FaPalette } from 'react-icons/fa';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import {
   DropdownMenu,
@@ -7,6 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuGroup,
+  DropdownMenuSeparator,
 } from '@/shared/components/ui/menu/DropDownMenu';
 import { useModalState } from '@/shared/services/redux/hooks/useModalState';
 import { DashBoardHeaderProfileMenuStyles } from '@/shared/utils/twind/styles';
@@ -31,6 +32,10 @@ export const ProfileMenu: React.FC = () => {
     openModal('logout');
   };
 
+  const handleDemoClick = () => {
+    openModal('demo');
+  };
+
   return (
     <div className="relative">
       <DropdownMenu>
@@ -53,6 +58,13 @@ export const ProfileMenu: React.FC = () => {
             <DropdownMenuItem onSelect={handleLogoutClick}>
               <FaSignOutAlt className={DashBoardHeaderProfileMenuStyles.icon} />
               {group.logout}
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem onSelect={handleDemoClick}>
+              <FaPalette className={DashBoardHeaderProfileMenuStyles.icon} />
+              Modal Demo
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
