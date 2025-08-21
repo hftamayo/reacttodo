@@ -19,11 +19,11 @@ export const CustomOutlet: React.FC = () => {
     <Switch>
       {/* Public Routes - Always accessible */}
       <Route path="/landing" component={LandingContainer} />
-      
+
       {/* Authentication Routes - Only for non-authenticated users */}
       <Route path="/auth/login" component={LoginContainer} />
       <Route path="/auth/signup" component={SignUpContainer} />
-      
+
       {/* Protected Routes - Single MainLayout wrapper for all dashboard routes */}
       <Route path="/dashboard">
         {isAuthenticated ? (
@@ -31,9 +31,12 @@ export const CustomOutlet: React.FC = () => {
             <MainLayout>
               <Switch>
                 <Route path="/dashboard" component={DashBoardContainer} />
-                <Route path="/dashboard/analytics" component={DashBoardAnalyticsContainer} />
+                <Route
+                  path="/dashboard/analytics"
+                  component={DashBoardAnalyticsContainer}
+                />
                 <Route path="/dashboard/tasks" component={TaskBoardContainer} />
-                <Route path="/dashboard/settings" component={SettingsContainer} />
+                {/* <Route path="/dashboard/settings" component={SettingsContainer} /> */}
               </Switch>
             </MainLayout>
           </AuthGuard>
@@ -41,7 +44,7 @@ export const CustomOutlet: React.FC = () => {
           <LandingContainer />
         )}
       </Route>
-      
+
       {/* Default Route */}
       {match && (
         <Route path="/">
