@@ -157,6 +157,7 @@ export const GlobalModalContainer: React.FC = () => {
           <LogoutConfirmation
             onConfirm={handleLogout}
             onCancel={closeModal}
+            isLoading={logoutMutation.isPending}
             {...modalProps}
           />
         );
