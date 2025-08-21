@@ -13,7 +13,7 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/login');
+      navigate('/landing');
     } else if (roles && !roles.includes(userRole)) {
       navigate('/unauthorized');
     }
