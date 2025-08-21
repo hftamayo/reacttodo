@@ -12,20 +12,15 @@ import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 interface LogoutConfirmationProps {
   onConfirm: () => void;
   onCancel: () => void;
+  isLoading?: boolean;
 }
 
 export const LogoutConfirmation: React.FC<LogoutConfirmationProps> = ({
   onConfirm,
   onCancel,
+  isLoading = false,
 }) => {
   const { group } = useTranslation('logoutConfirmation');
-
-  const handleLogout = () => {
-    // Here you would typically call your logout logic
-    console.log('User logged out');
-    // Clear auth tokens, redirect, etc.
-    onConfirm();
-  };
 
   if (!group) {
     return (
@@ -55,16 +50,18 @@ export const LogoutConfirmation: React.FC<LogoutConfirmationProps> = ({
               variant="secondary"
               onClick={onCancel}
               className="min-w-[80px]"
+              disabled={isLoading}
             >
               Cancel
             </Button>
             <Button
               variant="destructive"
-              onClick={handleLogout}
+              onClick={onConfirm}
               className="min-w-[80px]"
+              disabled={isLoading}
             >
               <FaSignOutAlt className="w-4 h-4 mr-2" />
-              Logout
+              {isLoading ? 'Logging out...' : 'Logout'}
             </Button>
           </div>
         </CardContent>
@@ -96,16 +93,18 @@ export const LogoutConfirmation: React.FC<LogoutConfirmationProps> = ({
             variant="secondary"
             onClick={onCancel}
             className="min-w-[80px]"
+            disabled={isLoading}
           >
             {group.cancel}
           </Button>
           <Button
             variant="destructive"
-            onClick={handleLogout}
+            onClick={onConfirm}
             className="min-w-[80px]"
+            disabled={isLoading}
           >
             <FaSignOutAlt className="w-4 h-4 mr-2" />
-            {group.confirm}
+            {isLoading ? 'Logging out...' : group.confirm}
           </Button>
         </div>
       </CardContent>
