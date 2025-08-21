@@ -9,8 +9,9 @@ export const useAuthMutations = () => {
   const loginMutation = useMutation({
     mutationFn: (credentials: LoginProps) => authOps.login(credentials),
     onSuccess: (data) => {
-      // Handle successful login, e.g., store user data, redirect, etc.
+      // Handle successful login - redirect to dashboard
       console.log('Login successful:', data);
+      setLocation('/dashboard');
     },
     onError: (error: Error) => {
       // Handle login error
