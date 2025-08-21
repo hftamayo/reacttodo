@@ -17,7 +17,7 @@ import { LoginProps, SignUpProps } from '@/shared/types/domains/user.type';
  */
 export const GlobalModalContainer: React.FC = () => {
   const { isOpen, modalType, modalProps, closeModal } = useModalState();
-  const { loginMutation, signupMutation } = useAuthMutations();
+  const { loginMutation, signupMutation, logoutMutation } = useAuthMutations();
 
   // Authentication handlers for modal context
   const handleLogin = async (credentials: LoginProps) => {
@@ -39,20 +39,45 @@ export const GlobalModalContainer: React.FC = () => {
     switch (type) {
       case 'login':
       case 'signup':
-        return { backgroundStyle: 'gradient' as const, backgroundIntensity: 'medium' as const };
+        return {
+          backgroundStyle: 'gradient' as const,
+          backgroundIntensity: 'medium' as const,
+        };
       case 'settings':
-        return { backgroundStyle: 'gradient' as const, backgroundIntensity: 'light' as const };
+        return {
+          backgroundStyle: 'gradient' as const,
+          backgroundIntensity: 'light' as const,
+        };
       case 'updateTask':
-        return { backgroundStyle: 'solid' as const, backgroundIntensity: 'medium' as const };
+        return {
+          backgroundStyle: 'solid' as const,
+          backgroundIntensity: 'medium' as const,
+        };
       case 'profile':
-        return { backgroundStyle: 'gradient' as const, backgroundIntensity: 'strong' as const };
+        return {
+          backgroundStyle: 'gradient' as const,
+          backgroundIntensity: 'strong' as const,
+        };
       case 'logout':
-        return { backgroundStyle: 'solid' as const, backgroundIntensity: 'strong' as const };
+        return {
+          backgroundStyle: 'solid' as const,
+          backgroundIntensity: 'strong' as const,
+        };
       case 'demo':
-        return { backgroundStyle: 'gradient' as const, backgroundIntensity: 'medium' as const };
+        return {
+          backgroundStyle: 'gradient' as const,
+          backgroundIntensity: 'medium' as const,
+        };
       default:
-        return { backgroundStyle: 'gradient' as const, backgroundIntensity: 'medium' as const };
+        return {
+          backgroundStyle: 'gradient' as const,
+          backgroundIntensity: 'medium' as const,
+        };
     }
+  };
+
+  const handleLogout = async () => {
+    await logoutMutation.mutateAsync();
   };
 
   const renderModalContent = () => {
@@ -130,11 +155,7 @@ export const GlobalModalContainer: React.FC = () => {
       case 'logout':
         return (
           <LogoutConfirmation
-            onConfirm={() => {
-              // TODO: Implement actual logout logic
-              console.log('User logged out');
-              closeModal();
-            }}
+            onConfirm={handleLogout}
             onCancel={closeModal}
             {...modalProps}
           />
@@ -206,24 +227,29 @@ export const GlobalModalContainer: React.FC = () => {
                   This modal showcases the new background effects!
                 </p>
                 <p className="text-xs text-gray-500">
-                  Current: {backgroundConfig.backgroundStyle} ({backgroundConfig.backgroundIntensity})
+                  Current: {backgroundConfig.backgroundStyle} (
+                  {backgroundConfig.backgroundIntensity})
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div className="p-2 bg-gray-100 rounded text-center">
-                  <span className="font-semibold">Gradient</span><br/>
+                  <span className="font-semibold">Gradient</span>
+                  <br />
                   <span className="text-gray-600">Beautiful overlay</span>
                 </div>
                 <div className="p-2 bg-gray-100 rounded text-center">
-                  <span className="font-semibold">Solid</span><br/>
+                  <span className="font-semibold">Solid</span>
+                  <br />
                   <span className="text-gray-600">Clean & simple</span>
                 </div>
                 <div className="p-2 bg-gray-100 rounded text-center">
-                  <span className="font-semibold">Minimal</span><br/>
+                  <span className="font-semibold">Minimal</span>
+                  <br />
                   <span className="text-gray-600">Subtle effect</span>
                 </div>
                 <div className="p-2 bg-gray-100 rounded text-center">
-                  <span className="font-semibold">Intensities</span><br/>
+                  <span className="font-semibold">Intensities</span>
+                  <br />
                   <span className="text-gray-600">Light/Medium/Strong</span>
                 </div>
               </div>
@@ -260,8 +286,8 @@ export const GlobalModalContainer: React.FC = () => {
   const backgroundConfig = getModalBackgroundStyle(modalType || '');
 
   return (
-    <CustomModal 
-      isOpen={isOpen} 
+    <CustomModal
+      isOpen={isOpen}
       onDismiss={closeModal}
       backgroundStyle={backgroundConfig.backgroundStyle}
       backgroundIntensity={backgroundConfig.backgroundIntensity}
