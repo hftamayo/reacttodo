@@ -51,7 +51,7 @@ export const authOps = {
     const url = `${BACKEND_URL}/api/auth/login`;
     return makeRequest<{}>(url, {
       method: 'POST',
-      //credentials: 'include',
+      credentials: 'include',
       body: JSON.stringify(credentials),
     });
   },
@@ -59,7 +59,7 @@ export const authOps = {
     const url = `${BACKEND_URL}/api/auth/signup`;
     return makeRequest<{}>(url, {
       method: 'POST',
-      //credentials: 'include',
+      credentials: 'include',
       body: JSON.stringify(user),
     });
   },
@@ -67,7 +67,7 @@ export const authOps = {
     const url = `${BACKEND_URL}/api/auth/logout`;
     return makeRequest<{}>(url, {
       method: 'POST',
-      //credentials: 'include',
+      credentials: 'include',
     });
   },
 };
