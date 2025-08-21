@@ -30,8 +30,8 @@ export const LoginContainer: FC = () => {
   };
 
   const handleLoginSuccess = () => {
-    // Redirect to dashboard after successful login
-    setLocation('/');
+    // Navigation is now handled by useAuthMutations onSuccess
+    console.log('Login success handler called');
   };
 
   const handleSwitchToSignup = () => {
