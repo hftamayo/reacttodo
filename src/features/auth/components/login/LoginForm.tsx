@@ -115,14 +115,6 @@ export const LoginForm: FC<ZodLoginFormProps> = ({
 
       <div className={formStyles.footer}>
         <button
-          type="button"
-          className={formStyles.cancelButton}
-          onClick={onClose}
-          disabled={isDisabled}
-        >
-          {group.btnCancel}
-        </button>
-        <button
           type="submit"
           className={formStyles.submitButton}
           disabled={isDisabled}
@@ -130,6 +122,14 @@ export const LoginForm: FC<ZodLoginFormProps> = ({
           {isSubmitting
             ? group.btnLoggingIn || 'Logging in...'
             : group.btnLogin}
+        </button>
+        <button
+          type="button"
+          className={formStyles.cancelButton}
+          onClick={onClose}
+          disabled={isDisabled}
+        >
+          {group.btnCancel}
         </button>
       </div>
     </form>
