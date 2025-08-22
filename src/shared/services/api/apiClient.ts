@@ -18,7 +18,7 @@ export const beOps = {
   async appHealth(): Promise<ApiResponse<HealthCheckData<AppHealthDetails>>> {
     try {
       const startTime = performance.now();
-      const response = await fetch(`${BACKEND_URL}/tasks/healthcheck/app`, {
+      const response = await fetch(`${BACKEND_URL}/healthcheck/app`, {
         //credentials: 'include',
       });
       const data =
@@ -35,7 +35,7 @@ export const beOps = {
 
   async dbHealth(): Promise<ApiResponse<HealthCheckData<DbHealthDetails>>> {
     try {
-      const response = await fetch(`${BACKEND_URL}/tasks/healthcheck/db`, {
+      const response = await fetch(`${BACKEND_URL}/healthcheck/db`, {
         //credentials: 'include',
       });
       return await handleResponse<HealthCheckData<DbHealthDetails>>(response);
@@ -48,7 +48,7 @@ export const beOps = {
 
 export const authOps = {
   async login(credentials: LoginProps): Promise<ApiResponse<{}>> {
-    const url = `${BACKEND_URL}/api/auth/login`;
+    const url = `${BACKEND_URL}/users/login`;
     return makeRequest<{}>(url, {
       method: 'POST',
       credentials: 'include',
@@ -56,7 +56,7 @@ export const authOps = {
     });
   },
   async signup(user: SignUpProps): Promise<ApiResponse<{}>> {
-    const url = `${BACKEND_URL}/api/auth/signup`;
+    const url = `${BACKEND_URL}/users/register`;
     return makeRequest<{}>(url, {
       method: 'POST',
       credentials: 'include',
@@ -64,7 +64,7 @@ export const authOps = {
     });
   },
   async logout(): Promise<ApiResponse<{}>> {
-    const url = `${BACKEND_URL}/api/auth/logout`;
+    const url = `${BACKEND_URL}/users/logout`;
     return makeRequest<{}>(url, {
       method: 'POST',
       credentials: 'include',
@@ -80,17 +80,17 @@ export const taskOps = {
   }: PaginationParams): Promise<ApiResponse<TaskBoardData>> {
     const timestamp = _t ?? Date.now();
 
-    const url = `${BACKEND_URL}/tasks/task/list/page?page=${page}&limit=${limit}&_t=${timestamp}`;
+    const url = `${BACKEND_URL}/todos/list/page?page=${page}&limit=${limit}&_t=${timestamp}`;
     return makeRequest<TaskBoardData>(url);
   },
 
   async getTask(taskId: number): Promise<ApiResponse<TaskBoardData>> {
-    const url = `${BACKEND_URL}/tasks/task/${taskId}`;
+    const url = `${BACKEND_URL}/todos/task/${taskId}`;
     return makeRequest<TaskBoardData>(url);
   },
 
   async addTask(task: AddTaskProps): Promise<ApiResponse<TaskBoardData>> {
-    const url = `${BACKEND_URL}/tasks/task`;
+    const url = `${BACKEND_URL}/todos/create`;
     return makeRequest<TaskBoardData>(url, {
       method: 'POST',
       //credentials: 'include',
@@ -99,7 +99,7 @@ export const taskOps = {
   },
 
   async updateTask(task: TaskProps): Promise<ApiResponse<TaskBoardData>> {
-    const url = `${BACKEND_URL}/tasks/task/${task.id}`;
+    const url = `${BACKEND_URL}/todos/update/${task.id}`;
     return makeRequest<TaskBoardData>(url, {
       method: 'PATCH',
       //credentials: 'include',
@@ -108,7 +108,7 @@ export const taskOps = {
   },
 
   async toggleTaskDone(taskId: number): Promise<ApiResponse<TaskBoardData>> {
-    const url = `${BACKEND_URL}/tasks/task/${taskId}/done`;
+    const url = `${BACKEND_URL}/todos/task/${taskId}/done`;
     return makeRequest<TaskBoardData>(url, {
       method: 'PATCH',
       //credentials: 'include',
@@ -116,7 +116,7 @@ export const taskOps = {
   },
 
   async deleteTask(taskId: number): Promise<ApiResponse<TaskBoardData>> {
-    const url = `${BACKEND_URL}/tasks/task/${taskId}`;
+    const url = `${BACKEND_URL}/todos/delete/${taskId}`;
     return makeRequest<TaskBoardData>(url, {
       method: 'DELETE',
       //credentials: 'include',
