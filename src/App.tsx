@@ -4,14 +4,15 @@ import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
 import { store } from './shared/services/redux/store';
-import { useAuthState } from './features/auth/hooks/core/useAuthState';
+import { AuthProvider, useAuth } from './features/auth/hooks/core/AuthContext';
 import { GlobalModalContainer } from './shared/components/modal/GlobalModalContainer';
 import { CustomOutlet } from './shared/services/routing/CustomOutlet';
 
 const queryClient = new QueryClient();
 
-export const App: React.FC = () => {
-  const { isLoading } = useAuthState();
+// Inner App component that uses auth context
+const AppContent: React.FC = () => {
+  const { isLoading } = useAuth();
 
   // Show loading state while checking authentication
   if (isLoading) {
@@ -23,14 +24,22 @@ export const App: React.FC = () => {
   }
 
   return (
+    <Router>
+      {/* Let CustomOutlet handle all routing logic */}
+      <CustomOutlet />
+    </Router>
+  );
+};
+
+export const App: React.FC = () => {
+  return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Router>
-          {/* Let CustomOutlet handle all routing logic */}
-          <CustomOutlet />
-        </Router>
-        <Toaster position="bottom-left" />
-        <GlobalModalContainer />
+        <AuthProvider>
+          <AppContent />
+          <Toaster position="bottom-left" />
+          <GlobalModalContainer />
+        </AuthProvider>
       </QueryClientProvider>
     </Provider>
   );
