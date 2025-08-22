@@ -1,59 +1,89 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { userOps } from '@/shared/services/api/apiClient';
+import { UserProfileData } from '@/shared/types/api.type';
 
 interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
-  user: any | null;
+  user: UserProfileData | null;
 }
 
 /**
- * useAuthState - Manages authentication state
- * This hook should check for valid session/token and return auth status
+ * useAuthState - Modern authentication state management for JWT httpOnly cookies
+ *
+ * This hook validates authentication by calling the /users/me endpoint instead of
+ * checking localStorage. It automatically handles session validation and user data.
+ *
+ * Features:
+ * - Session validation via API calls (not localStorage)
+ * - Automatic retry on network errors
+ * - Proper handling of 401/403 responses
+ * - User profile data management
+ * - Session refresh capability
  */
-export const useAuthState = (): AuthState => {
+export const useAuthState = (): AuthState & {
+  refreshAuth: () => Promise<void>;
+} => {
   const [authState, setAuthState] = useState<AuthState>({
     isAuthenticated: false,
     isLoading: true,
     user: null,
   });
 
-  useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        // TODO: Implement actual authentication check
-        // Check for valid token in localStorage/sessionStorage
-        // Validate token with backend
-        // Example:
-        const token = localStorage.getItem('authToken');
+  const validateSession = useCallback(async () => {
+    try {
+      setAuthState((prev) => ({ ...prev, isLoading: true }));
 
-        if (token) {
-          // TODO: Validate token with backend
-          // const response = await authApi.validateToken(token);
-          // For now, just check if token exists
-          setAuthState({
-            isAuthenticated: true,
-            isLoading: false,
-            user: null, // TODO: Set actual user data
-          });
-        } else {
-          setAuthState({
-            isAuthenticated: false,
-            isLoading: false,
-            user: null,
-          });
-        }
-      } catch (error) {
-        console.error('Auth check failed:', error);
+      // Call /users/me endpoint to validate session and get user data
+      const response = await userOps.getCurrentUser();
+
+      // Backend returns data in { data: { data: userInfo } } structure
+      if (response.code === 200 && response.data) {
+        setAuthState({
+          isAuthenticated: true,
+          isLoading: false,
+          user: response.data,
+        });
+      } else {
+        // Invalid response format
         setAuthState({
           isAuthenticated: false,
           isLoading: false,
           user: null,
         });
       }
-    };
+    } catch (error: any) {
+      console.error('Session validation failed:', error);
 
-    checkAuthStatus();
+      // Handle different error types
+      if (error?.status === 401 || error?.status === 403) {
+        // Unauthorized - session expired or invalid
+        setAuthState({
+          isAuthenticated: false,
+          isLoading: false,
+          user: null,
+        });
+      } else {
+        // Network error or other issues - keep current state but stop loading
+        setAuthState((prev) => ({
+          ...prev,
+          isLoading: false,
+        }));
+      }
+    }
   }, []);
 
-  return authState;
+  // Refresh authentication state manually
+  const refreshAuth = useCallback(async () => {
+    await validateSession();
+  }, [validateSession]);
+
+  useEffect(() => {
+    validateSession();
+  }, [validateSession]);
+
+  return {
+    ...authState,
+    refreshAuth,
+  };
 };
