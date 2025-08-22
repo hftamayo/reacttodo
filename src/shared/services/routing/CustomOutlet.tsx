@@ -7,12 +7,12 @@ import { SignUpContainer } from '@/containers/Auth/SignUpContainer';
 import { LoginContainer } from '@/containers/Auth/LoginContainer';
 import { LogoutContainer } from '@/containers/Auth/LogoutContainer';
 import { LandingContainer } from '@/containers/Landing/LandingContainer';
-import { useAuthState } from '@/features/auth/hooks/core/useAuthState';
+import { useAuth } from '@/features/auth/hooks/core/AuthContext';
 import { AuthGuard } from '@/features/auth/hooks/core/AuthGuard';
 import { MainLayout } from '@/shared/components/ui/layout/dashboard/MainLayout';
 
 export const CustomOutlet: React.FC = () => {
-  const { isAuthenticated } = useAuthState();
+  const { isAuthenticated } = useAuth();
 
   return (
     <Switch>

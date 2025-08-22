@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuthState } from './useAuthState';
+import { useAuth } from './AuthContext';
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -8,9 +8,10 @@ interface AuthGuardProps {
 /**
  * AuthGuard - Protects routes that require authentication
  * Redirects to landing/login if user is not authenticated
+ * Uses the modern auth context that validates sessions via API calls
  */
 export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
-  const { isAuthenticated, isLoading } = useAuthState();
+  const { isAuthenticated, isLoading } = useAuth();
 
   // Show loading state while checking authentication
   if (isLoading) {

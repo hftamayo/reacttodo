@@ -2,15 +2,23 @@ import { useMutation } from '@tanstack/react-query';
 import { useLocation } from 'wouter';
 import { authOps } from '@/shared/services/api/apiClient';
 import { LoginProps, SignUpProps } from '@/shared/types/domains/user.type';
+import { useAuth } from './AuthContext';
 
 export const useAuthMutations = () => {
   const [, setLocation] = useLocation();
+  const { refreshAuth } = useAuth();
+
   // Login Mutation
   const loginMutation = useMutation({
     mutationFn: (credentials: LoginProps) => authOps.login(credentials),
-    onSuccess: (data) => {
-      // Handle successful login - redirect to dashboard
+    onSuccess: async (data) => {
+      // Handle successful login
       console.log('Login successful:', data);
+
+      // Refresh auth state to get user data
+      await refreshAuth();
+
+      // Redirect to dashboard
       setLocation('/dashboard');
     },
     onError: (error: Error) => {
@@ -34,8 +42,11 @@ export const useAuthMutations = () => {
 
   const logoutMutation = useMutation({
     mutationFn: () => authOps.logout(),
-    onSuccess: () => {
-      // Clear secure storage
+    onSuccess: async () => {
+      // Refresh auth state to clear user data
+      await refreshAuth();
+
+      // Redirect to landing
       setLocation('/landing');
       console.log('User logged out successfully');
     },
