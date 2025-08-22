@@ -13,3 +13,14 @@ export type ApiError = {
   code: number;
   resultMessage: string;
 };
+
+export type UserProfileData = {
+  id: number;
+  name: string;
+  email: string;
+  avatar?: string;
+  bio?: string;
+  joinDate?: string;
+  role?: string;
+  isActive?: boolean;
+};
