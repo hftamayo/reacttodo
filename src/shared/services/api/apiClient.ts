@@ -47,7 +47,9 @@ export const beOps = {
 };
 
 export const authOps = {
-  async login(credentials: LoginProps): Promise<ApiResponse<Record<string, unknown>>> {
+  async login(
+    credentials: LoginProps
+  ): Promise<ApiResponse<Record<string, unknown>>> {
     const url = `${BACKEND_URL}/users/login`;
     return makeRequest<Record<string, unknown>>(url, {
       method: 'POST',
@@ -55,7 +57,9 @@ export const authOps = {
       body: JSON.stringify(credentials),
     });
   },
-  async signup(user: SignUpProps): Promise<ApiResponse<Record<string, unknown>>> {
+  async signup(
+    user: SignUpProps
+  ): Promise<ApiResponse<Record<string, unknown>>> {
     const url = `${BACKEND_URL}/users/register`;
     return makeRequest<Record<string, unknown>>(url, {
       method: 'POST',
