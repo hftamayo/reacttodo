@@ -1,7 +1,7 @@
 import { handleResponse, handleError, makeRequest } from './apiHelpers';
 import { BACKEND_URL } from '@/shared/utils/envvars';
 import { PaginationParams } from '@/shared/types/utils/pagination.type';
-import { ApiResponse } from '../../types/api.type';
+import { ApiResponse, UserProfileData } from '../../types/api.type';
 import {
   HealthCheckData,
   AppHealthDetails,
@@ -67,6 +67,16 @@ export const authOps = {
     const url = `${BACKEND_URL}/users/logout`;
     return makeRequest<{}>(url, {
       method: 'POST',
+      credentials: 'include',
+    });
+  },
+};
+
+export const userOps = {
+  async getCurrentUser(): Promise<ApiResponse<UserProfileData>> {
+    const url = `${BACKEND_URL}/users/me`;
+    return makeRequest<UserProfileData>(url, {
+      method: 'GET',
       credentials: 'include',
     });
   },
