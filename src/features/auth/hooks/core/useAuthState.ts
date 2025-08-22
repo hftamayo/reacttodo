@@ -52,23 +52,33 @@ export const useAuthState = (): AuthState & {
           user: null,
         });
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Session validation failed:', error);
 
       // Handle different error types
-      if (error?.status === 401 || error?.status === 403) {
-        // Unauthorized - session expired or invalid
+      if (error && typeof error === 'object' && 'status' in error) {
+        const statusError = error as { status: number };
+        if (statusError.status === 401 || statusError.status === 403) {
+          // Unauthorized - session expired or invalid
+          setAuthState({
+            isAuthenticated: false,
+            isLoading: false,
+            user: null,
+          });
+        } else {
+          // Network error or other issues - keep current state but stop loading
+          setAuthState((prev) => ({
+            ...prev,
+            isLoading: false,
+          }));
+        }
+      } else {
+        // Unknown error type - clear auth state
         setAuthState({
           isAuthenticated: false,
           isLoading: false,
           user: null,
         });
-      } else {
-        // Network error or other issues - keep current state but stop loading
-        setAuthState((prev) => ({
-          ...prev,
-          isLoading: false,
-        }));
       }
     }
   }, []);

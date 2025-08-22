@@ -47,25 +47,25 @@ export const beOps = {
 };
 
 export const authOps = {
-  async login(credentials: LoginProps): Promise<ApiResponse<{}>> {
+  async login(credentials: LoginProps): Promise<ApiResponse<Record<string, unknown>>> {
     const url = `${BACKEND_URL}/users/login`;
-    return makeRequest<{}>(url, {
+    return makeRequest<Record<string, unknown>>(url, {
       method: 'POST',
       credentials: 'include',
       body: JSON.stringify(credentials),
     });
   },
-  async signup(user: SignUpProps): Promise<ApiResponse<{}>> {
+  async signup(user: SignUpProps): Promise<ApiResponse<Record<string, unknown>>> {
     const url = `${BACKEND_URL}/users/register`;
-    return makeRequest<{}>(url, {
+    return makeRequest<Record<string, unknown>>(url, {
       method: 'POST',
       credentials: 'include',
       body: JSON.stringify(user),
     });
   },
-  async logout(): Promise<ApiResponse<{}>> {
+  async logout(): Promise<ApiResponse<Record<string, unknown>>> {
     const url = `${BACKEND_URL}/users/logout`;
-    return makeRequest<{}>(url, {
+    return makeRequest<Record<string, unknown>>(url, {
       method: 'POST',
       credentials: 'include',
     });
