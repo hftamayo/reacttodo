@@ -48,6 +48,7 @@ export const LoginForm: FC<ZodLoginFormProps> = ({
       onSubmit={handleLoginSubmit}
       className={formStyles.form}
       aria-label="Login Form"
+      autoComplete="off"
     >
       <div className={formStyles.formGrid}>
         <div className={formStyles.formRow}>
@@ -59,7 +60,7 @@ export const LoginForm: FC<ZodLoginFormProps> = ({
             className={formStyles.input}
             {...register('email')}
             disabled={isDisabled}
-            autoComplete="email"
+            autoComplete="off"
           />
           {errors.email && (
             <span className={formStyles.error}>{errors.email.message}</span>
@@ -77,7 +78,7 @@ export const LoginForm: FC<ZodLoginFormProps> = ({
               className={formStyles.input}
               {...register('password')}
               disabled={isDisabled}
-              autoComplete="current-password"
+              autoComplete="off"
             />
             <Button
               type="button"

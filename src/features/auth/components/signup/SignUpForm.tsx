@@ -59,6 +59,7 @@ export const SignUpForm: FC<SignUpFormProps> = ({
       onSubmit={handleSignUpSubmit}
       className={formStyles.form}
       aria-label="SignUp Form"
+      autoComplete="off"
     >
       <div className={formStyles.formGrid}>
         <div className={formStyles.formRow}>
@@ -72,7 +73,7 @@ export const SignUpForm: FC<SignUpFormProps> = ({
             className={formStyles.input}
             {...register('name')}
             disabled={isDisabled}
-            autoComplete="name"
+            autoComplete="off"
           />
           {errors.name && (
             <span className={formStyles.error}>{errors.name.message}</span>
@@ -108,7 +109,7 @@ export const SignUpForm: FC<SignUpFormProps> = ({
             className={formStyles.input}
             {...register('email')}
             disabled={isDisabled}
-            autoComplete="email"
+            autoComplete="off"
           />
           {errors.email && (
             <span className={formStyles.error}>{errors.email.message}</span>
@@ -127,7 +128,7 @@ export const SignUpForm: FC<SignUpFormProps> = ({
               className={formStyles.input}
               {...register('password')}
               disabled={isDisabled}
-              autoComplete="new-password"
+              autoComplete="off"
             />
             <Button
               type="button"
@@ -162,7 +163,7 @@ export const SignUpForm: FC<SignUpFormProps> = ({
               className={formStyles.input}
               {...register('confirmPassword')}
               disabled={isDisabled}
-              autoComplete="new-password"
+              autoComplete="off"
             />
             <Button
               type="button"
