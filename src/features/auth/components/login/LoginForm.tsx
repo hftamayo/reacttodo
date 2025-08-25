@@ -59,6 +59,7 @@ export const LoginForm: FC<ZodLoginFormProps> = ({
             className={formStyles.input}
             {...register('email')}
             disabled={isDisabled}
+            autoComplete="email"
           />
           {errors.email && (
             <span className={formStyles.error}>{errors.email.message}</span>
@@ -76,6 +77,7 @@ export const LoginForm: FC<ZodLoginFormProps> = ({
               className={formStyles.input}
               {...register('password')}
               disabled={isDisabled}
+              autoComplete="current-password"
             />
             <Button
               type="button"
