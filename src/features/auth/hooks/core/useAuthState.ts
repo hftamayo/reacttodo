@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { userOps } from '@/shared/services/api/apiClient';
 import { UserProfileData } from '@/shared/types/api.type';
 
@@ -9,41 +9,49 @@ interface AuthState {
 }
 
 /**
- * useAuthState - Modern authentication state management for JWT httpOnly cookies
+ * useAuthState - Secure lazy authentication state management for JWT httpOnly cookies
  *
- * This hook validates authentication by calling the /users/me endpoint instead of
- * checking localStorage. It automatically handles session validation and user data.
+ * This hook implements "lazy auth checking" for maximum security and efficiency.
+ * It defaults to unauthenticated and only validates sessions when contextually needed.
+ *
+ * Security Benefits:
+ * - No unnecessary network probing for session state
+ * - Principle of least exposure - only check auth when required
+ * - No timing attack vectors from initial load probing
+ * - Graceful degradation approach
  *
  * Features:
- * - Session validation via API calls (not localStorage)
- * - Proper handling of 401/403 responses (normal for unauthenticated users)
- * - User profile data management
- * - Session refresh capability
+ * - Defaults to unauthenticated state (secure)
+ * - Only calls /users/me when explicitly needed
+ * - Manual session validation available
+ * - Optimized for httpOnly cookies
  */
 export const useAuthState = (): AuthState & {
   refreshAuth: () => Promise<void>;
+  checkAuth: () => Promise<void>;
 } => {
   const [authState, setAuthState] = useState<AuthState>({
     isAuthenticated: false,
-    isLoading: true,
+    isLoading: false, // Start as NOT loading - we don't check by default
     user: null,
   });
 
+  // Remove the hasLikelySession logic - we use lazy checking instead
   const validateSession = useCallback(async () => {
     try {
       setAuthState((prev) => ({ ...prev, isLoading: true }));
 
-      // Call /users/me endpoint to validate session and get user data
-      // Note: 401 response is NORMAL for unauthenticated users, not an error
+      console.log('Validating session with /users/me endpoint...');
       const response = await userOps.getCurrentUser();
 
-      // Backend returns data in { data: { data: userInfo } } structure
+      // Backend returns data structure
       if (response.code === 200 && response.data) {
         setAuthState({
           isAuthenticated: true,
           isLoading: false,
           user: response.data,
         });
+        console.log('Session validated successfully');
       } else {
         // Invalid response format
         setAuthState({
@@ -57,19 +65,17 @@ export const useAuthState = (): AuthState & {
       if (apiError && typeof apiError === 'object' && 'code' in apiError) {
         const statusError = apiError as { code: number };
         if (statusError.code === 401 || statusError.code === 403) {
-          // 401/403 is NORMAL for unauthenticated users - not an error
-          // This means no valid session exists, which is expected behavior
+          // 401/403 is normal for unauthenticated users
           setAuthState({
             isAuthenticated: false,
             isLoading: false,
             user: null,
           });
-          // Log this as info, not error - it's expected for unauthenticated users
           console.log(
             'No active session found (expected for unauthenticated users)'
           );
         } else {
-          // Other HTTP errors (500, network issues, etc.) are actual problems
+          // Other HTTP errors are actual problems
           console.error('Session validation failed with HTTP error:', apiError);
           setAuthState({
             isAuthenticated: false,
@@ -78,9 +84,9 @@ export const useAuthState = (): AuthState & {
           });
         }
       } else {
-        // Unknown API error type - log and clear auth state
+        // Unknown API error type
         console.error(
-          'Session validation failed with unknown API error:',
+          'Session validation failed with unknown error:',
           apiError
         );
         setAuthState({
@@ -92,17 +98,26 @@ export const useAuthState = (): AuthState & {
     }
   }, []);
 
-  // Refresh authentication state manually
+  // Manual auth check - explicitly validates session
+  const checkAuth = useCallback(async () => {
+    await validateSession();
+  }, [validateSession]);
+
+  // Refresh authentication state - same as checkAuth for lazy approach
   const refreshAuth = useCallback(async () => {
     await validateSession();
   }, [validateSession]);
 
-  useEffect(() => {
-    validateSession();
-  }, [validateSession]);
+  // NO useEffect here - we don't check auth on mount!
+  // Auth will only be checked when explicitly requested via:
+  // - checkAuth() - explicit validation
+  // - refreshAuth() - explicit validation
+  // - AuthGuard component when accessing protected routes
+  // - After login/logout operations
 
   return {
     ...authState,
     refreshAuth,
+    checkAuth,
   };
 };
