@@ -16,8 +16,7 @@ interface AuthState {
  *
  * Features:
  * - Session validation via API calls (not localStorage)
- * - Automatic retry on network errors
- * - Proper handling of 401/403 responses
+ * - Proper handling of 401/403 responses (normal for unauthenticated users)
  * - User profile data management
  * - Session refresh capability
  */
@@ -35,6 +34,7 @@ export const useAuthState = (): AuthState & {
       setAuthState((prev) => ({ ...prev, isLoading: true }));
 
       // Call /users/me endpoint to validate session and get user data
+      // Note: 401 response is NORMAL for unauthenticated users, not an error
       const response = await userOps.getCurrentUser();
 
       // Backend returns data in { data: { data: userInfo } } structure
@@ -52,28 +52,37 @@ export const useAuthState = (): AuthState & {
           user: null,
         });
       }
-    } catch (error: unknown) {
-      console.error('Session validation failed:', error);
-
-      // Handle different error types
-      if (error && typeof error === 'object' && 'status' in error) {
-        const statusError = error as { status: number };
-        if (statusError.status === 401 || statusError.status === 403) {
-          // Unauthorized - session expired or invalid
+    } catch (apiError: unknown) {
+      // Handle API-specific errors
+      if (apiError && typeof apiError === 'object' && 'code' in apiError) {
+        const statusError = apiError as { code: number };
+        if (statusError.code === 401 || statusError.code === 403) {
+          // 401/403 is NORMAL for unauthenticated users - not an error
+          // This means no valid session exists, which is expected behavior
           setAuthState({
             isAuthenticated: false,
             isLoading: false,
             user: null,
           });
+          // Log this as info, not error - it's expected for unauthenticated users
+          console.log(
+            'No active session found (expected for unauthenticated users)'
+          );
         } else {
-          // Network error or other issues - keep current state but stop loading
-          setAuthState((prev) => ({
-            ...prev,
+          // Other HTTP errors (500, network issues, etc.) are actual problems
+          console.error('Session validation failed with HTTP error:', apiError);
+          setAuthState({
+            isAuthenticated: false,
             isLoading: false,
-          }));
+            user: null,
+          });
         }
       } else {
-        // Unknown error type - clear auth state
+        // Unknown API error type - log and clear auth state
+        console.error(
+          'Session validation failed with unknown API error:',
+          apiError
+        );
         setAuthState({
           isAuthenticated: false,
           isLoading: false,
