@@ -7,13 +7,10 @@ import { SignUpContainer } from '@/containers/Auth/SignUpContainer';
 import { LoginContainer } from '@/containers/Auth/LoginContainer';
 import { LogoutContainer } from '@/containers/Auth/LogoutContainer';
 import { LandingContainer } from '@/containers/Landing/LandingContainer';
-import { useAuth } from '@/features/auth/hooks/core/AuthContext';
 import { AuthGuard } from '@/features/auth/hooks/core/AuthGuard';
 import { MainLayout } from '@/shared/components/ui/layout/dashboard/MainLayout';
 
 export const CustomOutlet: React.FC = () => {
-  const { isAuthenticated } = useAuth();
-
   return (
     <Switch>
       {/* Universal Entry Point */}
@@ -29,39 +26,27 @@ export const CustomOutlet: React.FC = () => {
 
       {/* Protected Routes - Dashboard with MainLayout wrapper */}
       <Route path="/dashboard">
-        {isAuthenticated ? (
-          <AuthGuard>
-            <MainLayout>
-              <DashBoardContainer />
-            </MainLayout>
-          </AuthGuard>
-        ) : (
-          <LandingContainer />
-        )}
+        <AuthGuard>
+          <MainLayout>
+            <DashBoardContainer />
+          </MainLayout>
+        </AuthGuard>
       </Route>
 
       <Route path="/dashboard/analytics">
-        {isAuthenticated ? (
-          <AuthGuard>
-            <MainLayout>
-              <DashBoardAnalyticsContainer />
-            </MainLayout>
-          </AuthGuard>
-        ) : (
-          <LandingContainer />
-        )}
+        <AuthGuard>
+          <MainLayout>
+            <DashBoardAnalyticsContainer />
+          </MainLayout>
+        </AuthGuard>
       </Route>
 
       <Route path="/dashboard/tasks">
-        {isAuthenticated ? (
-          <AuthGuard>
-            <MainLayout>
-              <TaskBoardContainer />
-            </MainLayout>
-          </AuthGuard>
-        ) : (
-          <LandingContainer />
-        )}
+        <AuthGuard>
+          <MainLayout>
+            <TaskBoardContainer />
+          </MainLayout>
+        </AuthGuard>
       </Route>
 
       {/* Fallback Route for unknown paths */}
