@@ -6,17 +6,17 @@ import { useAuth } from './AuthContext';
 
 export const useAuthMutations = () => {
   const [, setLocation] = useLocation();
-  const { refreshAuth, checkAuth } = useAuth();
+  const { refreshAuth } = useAuth(); // Only needed for logout
 
   // Login Mutation
   const loginMutation = useMutation({
     mutationFn: (credentials: LoginProps) => authOps.login(credentials),
-    onSuccess: async (data) => {
-      // Handle successful login
+    onSuccess: (data) => {
       console.log('Login successful:', data);
 
-      // Validate session to get user data after successful login
-      await checkAuth();
+      // No need to call refreshAuth() - the backend should set the httpOnly cookie
+      // and the user data should be included in the login response.
+      // The AuthGuard will validate the session when accessing protected routes.
 
       // Redirect to dashboard
       setLocation('/dashboard');
