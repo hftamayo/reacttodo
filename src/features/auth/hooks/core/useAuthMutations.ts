@@ -6,7 +6,7 @@ import { useAuth } from './AuthContext';
 
 export const useAuthMutations = () => {
   const [, setLocation] = useLocation();
-  const { refreshAuth } = useAuth();
+  const { refreshAuth, checkAuth } = useAuth();
 
   // Login Mutation
   const loginMutation = useMutation({
@@ -15,8 +15,8 @@ export const useAuthMutations = () => {
       // Handle successful login
       console.log('Login successful:', data);
 
-      // Refresh auth state to get user data
-      await refreshAuth();
+      // Validate session to get user data after successful login
+      await checkAuth();
 
       // Redirect to dashboard
       setLocation('/dashboard');
@@ -43,7 +43,7 @@ export const useAuthMutations = () => {
   const logoutMutation = useMutation({
     mutationFn: () => authOps.logout(),
     onSuccess: async () => {
-      // Refresh auth state to clear user data
+      // Clear auth state after logout
       await refreshAuth();
 
       // Redirect to landing
