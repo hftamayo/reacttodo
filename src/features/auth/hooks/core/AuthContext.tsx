@@ -7,6 +7,7 @@ interface AuthContextValue {
   isLoading: boolean;
   user: UserProfileData | null;
   refreshAuth: () => Promise<void>;
+  checkAuth: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -16,10 +17,13 @@ interface AuthProviderProps {
 }
 
 /**
- * AuthProvider - Provides authentication context to the entire app
+ * AuthProvider - Provides secure lazy authentication context to the entire app
  *
- * This provider wraps the app and makes auth state available via useAuth hook.
- * It uses the modernized useAuthState hook that validates sessions via API calls.
+ * This provider implements lazy auth checking for maximum security:
+ * - Defaults to unauthenticated state
+ * - Only validates sessions when explicitly needed
+ * - No automatic probing of auth endpoints
+ * - Secure by design with principle of least exposure
  */
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const authState = useAuthState();
@@ -30,13 +34,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 };
 
 /**
- * useAuth - Access authentication state and refresh function
+ * useAuth - Access secure lazy authentication state and functions
  *
  * This hook provides access to:
- * - isAuthenticated: boolean - whether user is logged in
+ * - isAuthenticated: boolean - whether user is logged in (defaults to false)
  * - isLoading: boolean - whether auth check is in progress
  * - user: UserProfileData | null - current user profile data
- * - refreshAuth: () => Promise<void> - manually refresh auth state
+ * - refreshAuth: () => Promise<void> - validate session (called after logout)
+ * - checkAuth: () => Promise<void> - validate session (called when accessing protected routes)
  */
 export const useAuth = (): AuthContextValue => {
   const context = useContext(AuthContext);
