@@ -1,4 +1,3 @@
-import { LogoutConfirmation } from '@/features/auth/components/logout/LogoutConfirmation';
 import { LanguageContextType } from '@/shared/types/settings/settings.type';
 
 export const stringMessages: LanguageContextType = {
@@ -464,7 +463,7 @@ export const stringMessages: LanguageContextType = {
     },
   },
 
-  LogoutConfirmation: {
+  logoutConfirmation: {
     en: {
       group: {
         cardTitle: 'Logout Confirmation',

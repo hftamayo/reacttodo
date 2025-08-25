@@ -23,50 +23,7 @@ export const LogoutConfirmation: React.FC<LogoutConfirmationProps> = ({
   const { group } = useTranslation('logoutConfirmation');
 
   if (!group) {
-    return (
-      <Card className="min-w-[350px]">
-        <CardHeader>
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <FaSignOutAlt className="w-5 h-5 text-red-500" />
-              <CardTitle>Confirm Logout</CardTitle>
-            </div>
-            <button
-              onClick={onCancel}
-              className="p-1 rounded-full hover:bg-gray-200 transition-colors"
-              aria-label="Close"
-            >
-              <FaTimes className="w-4 h-4 text-gray-600" />
-            </button>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <p className="mb-6 text-gray-700">
-            Are you sure you want to logout? You will need to login again to
-            access your tasks.
-          </p>
-          <div className="flex gap-3 justify-end">
-            <Button
-              variant="secondary"
-              onClick={onCancel}
-              className="min-w-[80px]"
-              disabled={isLoading}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={onConfirm}
-              className="min-w-[80px]"
-              disabled={isLoading}
-            >
-              <FaSignOutAlt className="w-4 h-4 mr-2" />
-              {isLoading ? 'Logging out...' : 'Logout'}
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    );
+    return null;
   }
 
   return (
@@ -75,7 +32,7 @@ export const LogoutConfirmation: React.FC<LogoutConfirmationProps> = ({
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <FaSignOutAlt className="w-5 h-5 text-red-500" />
-            <CardTitle>{group.title}</CardTitle>
+            <CardTitle>{group.cardTitle}</CardTitle>
           </div>
           <button
             onClick={onCancel}
@@ -87,7 +44,7 @@ export const LogoutConfirmation: React.FC<LogoutConfirmationProps> = ({
         </div>
       </CardHeader>
       <CardContent>
-        <p className="mb-6 text-gray-700">{group.message}</p>
+        <p className="mb-6 text-gray-700">{group.confirmMessage}</p>
         <div className="flex gap-3 justify-end">
           <Button
             variant="secondary"
@@ -95,7 +52,7 @@ export const LogoutConfirmation: React.FC<LogoutConfirmationProps> = ({
             className="min-w-[80px]"
             disabled={isLoading}
           >
-            {group.cancel}
+            {group.btnCancel}
           </Button>
           <Button
             variant="destructive"
@@ -104,7 +61,7 @@ export const LogoutConfirmation: React.FC<LogoutConfirmationProps> = ({
             disabled={isLoading}
           >
             <FaSignOutAlt className="w-4 h-4 mr-2" />
-            {isLoading ? 'Logging out...' : group.confirm}
+            {isLoading ? 'Logging out...' : group.btnLogout}
           </Button>
         </div>
       </CardContent>
