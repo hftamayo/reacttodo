@@ -1,3 +1,4 @@
+import { LogoutConfirmation } from '@/features/auth/components/logout/LogoutConfirmation';
 import { LanguageContextType } from '@/shared/types/settings/settings.type';
 
 export const stringMessages: LanguageContextType = {
@@ -459,6 +460,33 @@ export const stringMessages: LanguageContextType = {
         btnCancel: 'Abbrechen',
         forgotPasswordLink: 'Passwort vergessen?',
         signupLink: 'Registrieren',
+      },
+    },
+  },
+
+  LogoutConfirmation: {
+    en: {
+      group: {
+        cardTitle: 'Logout Confirmation',
+        confirmMessage: 'Are you sure you want to logout?',
+        btnCancel: 'Cancel',
+        btnLogout: 'Logout',
+      },
+    },
+    es: {
+      group: {
+        cardTitle: 'Confirmación de cierre de sesión',
+        confirmMessage: '¿Está seguro de que desea cerrar sesión?',
+        btnCancel: 'Cancelar',
+        btnLogout: 'Cerrar sesión',
+      },
+    },
+    de: {
+      group: {
+        cardTitle: 'Abmeldebestätigung',
+        confirmMessage: 'Sind Sie sicher, dass Sie sich abmelden möchten?',
+        btnCancel: 'Abbrechen',
+        btnLogout: 'Abmelden',
       },
     },
   },
