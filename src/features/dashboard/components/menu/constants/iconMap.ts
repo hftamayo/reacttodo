@@ -4,6 +4,7 @@ import {
   FaRegEnvelope,
   FaDeezer,
   FaDatabase,
+  FaCog,
 } from 'react-icons/fa';
 
 export const iconMap = {
@@ -12,6 +13,7 @@ export const iconMap = {
   FaRegEnvelope,
   FaDeezer,
   FaDatabase,
+  FaCog,
 } as const;
 
-export type IconName = keyof typeof iconMap; 
+export type IconName = keyof typeof iconMap;
