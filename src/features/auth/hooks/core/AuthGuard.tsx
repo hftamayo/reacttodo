@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAuth } from './AuthContext';
 
 interface AuthGuardProps {
@@ -7,11 +7,22 @@ interface AuthGuardProps {
 
 /**
  * AuthGuard - Protects routes that require authentication
- * Redirects to landing/login if user is not authenticated
- * Uses the modern auth context that validates sessions via API calls
+ *
+ * This component implements lazy auth checking:
+ * - Triggers auth validation when protected route is accessed
+ * - Only makes API calls when user tries to access protected content
+ * - Provides secure route protection without unnecessary probing
  */
 export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, checkAuth } = useAuth();
+
+  // Trigger auth check when AuthGuard mounts (user accessing protected route)
+  useEffect(() => {
+    if (!isAuthenticated && !isLoading) {
+      console.log('Protected route accessed - checking authentication...');
+      checkAuth();
+    }
+  }, [isAuthenticated, isLoading, checkAuth]);
 
   // Show loading state while checking authentication
   if (isLoading) {
