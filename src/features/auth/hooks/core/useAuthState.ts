@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { userOps } from '@/shared/services/api/apiClient';
 import { UserProfileData } from '@/shared/types/api.type';
 
@@ -153,12 +153,17 @@ export const useAuthState = (): AuthState & {
     await validateSession(true); // Mark as post-logout to handle differently
   }, [validateSession]);
 
-  // NO useEffect here - we don't check auth on mount!
-  // Auth will only be checked when explicitly requested via:
-  // - checkAuth() - explicit validation
-  // - refreshAuth() - explicit validation
-  // - AuthGuard component when accessing protected routes
-  // - After login/logout operations
+  // Check for existing session on app initialization (one-time)
+  const hasInitializedRef = useRef(false);
+  useEffect(() => {
+    if (!hasInitializedRef.current && !recentLogoutRef.current) {
+      hasInitializedRef.current = true;
+      console.log(
+        'useAuthState: Checking for existing session on app initialization...'
+      );
+      checkAuth();
+    }
+  }, [checkAuth]);
 
   return {
     ...authState,
