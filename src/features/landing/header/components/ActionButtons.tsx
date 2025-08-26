@@ -21,18 +21,12 @@ export const ActionButtons: React.FC = () => {
 
   // Show loading state during auth check
   if (isLoading) {
-    console.log('ActionButtons: Rendering loading state');
     return (
       <div className="flex items-center gap-1 sm:gap-2">
         <div className="text-sm text-gray-500">Loading...</div>
       </div>
     );
   }
-
-  // Debug log for current render decision
-  console.log(
-    `ActionButtons: Rendering for ${isAuthenticated ? 'authenticated' : 'unauthenticated'} user`
-  );
 
   return (
     <div className="flex items-center gap-1 sm:gap-2">
