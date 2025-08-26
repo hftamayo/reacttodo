@@ -1,15 +1,19 @@
 import React from 'react';
+import { useHealthCheck } from '@/features/healthcheck/hooks/useHealthCheck';
+import { DashBoardAnalyticsPresenter } from './DashBoardAnalyticsPresenter';
+import { DashBoardAnalyticsSkeleton } from '@/shared/components/ui/skeleton/DashBoardAnalyticsSkeleton';
 
-/**
- * DashBoardContainer - Main authenticated application container
- * This component contains the main dashboard content for authenticated users
- * Layout is now handled at the routing level via MainLayout wrapper
- */
 export const DashBoardContainer: React.FC = () => {
+  const metrics = useHealthCheck();
+  const loading = metrics.status === 'CHECKING';
+
+  if (loading) {
+    return <DashBoardAnalyticsSkeleton />;
+  }
+
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold text-gray-900 mb-4">Dashboard</h1>
-      <p className="text-gray-600">Welcome to your dashboard!</p>
+      <DashBoardAnalyticsPresenter metrics={metrics} />
     </div>
   );
 };
