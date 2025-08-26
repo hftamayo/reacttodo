@@ -22,30 +22,31 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     if (!isAuthenticated && !isLoading && !hasTriggeredCheck.current) {
       // Don't check auth immediately after logout - user is definitely unauthenticated
       if (isRecentLogout()) {
-        console.log('Recent logout detected - skipping auth check');
+        console.log(
+          'Recent logout detected - skipping auth check and redirecting'
+        );
         hasTriggeredCheck.current = true;
+        setLocation('/landing');
         return;
       }
 
-      console.log('Protected route accessed - checking authentication...');
+      // For unauthenticated users accessing protected routes:
+      // Instead of making API calls, assume they're not authenticated and redirect silently
+      // This provides the same UX as accessing non-existent routes
+      console.log(
+        'Protected route accessed by unauthenticated user - redirecting silently'
+      );
       hasTriggeredCheck.current = true;
-      checkAuth();
+      setLocation('/landing');
+
+      // Note: We skip checkAuth() to avoid unnecessary API calls and error notifications
+      // If there was a valid session, the user would already be authenticated
     } else if (isAuthenticated) {
       console.log('User already authenticated, no need to check');
     }
-  }, [isAuthenticated, isLoading, checkAuth, isRecentLogout]);
+  }, [isAuthenticated, isLoading, checkAuth, isRecentLogout, setLocation]);
 
-  // Redirect unauthenticated users after auth check completes (or immediately after logout)
-  useEffect(() => {
-    if (
-      !isLoading &&
-      !isAuthenticated &&
-      (hasTriggeredCheck.current || isRecentLogout())
-    ) {
-      console.log('User not authenticated - redirecting to landing page');
-      setLocation('/landing');
-    }
-  }, [isAuthenticated, isLoading, setLocation, isRecentLogout]);
+  // Note: Second redirect effect removed since we handle redirects directly in the first effect
 
   // Show loading state while checking authentication
   if (isLoading) {
