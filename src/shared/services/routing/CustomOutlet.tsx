@@ -1,6 +1,5 @@
 import React from 'react';
 import { Switch, Route } from 'wouter';
-import { DashBoardAnalyticsContainer } from '@/containers/DashBoard/DashBoardAnalyticsContainer';
 import { DashBoardContainer } from '@/containers/DashBoard/DashBoardContainer';
 import { TaskBoardContainer } from '@/containers/TaskBoard/TaskBoardContainer';
 import { SignUpContainer } from '@/containers/Auth/SignUpContainer';
@@ -26,14 +25,6 @@ export const CustomOutlet: React.FC = () => {
         <AuthGuard>
           <MainLayout>
             <DashBoardContainer />
-          </MainLayout>
-        </AuthGuard>
-      </Route>
-
-      <Route path="/dashboard/analytics">
-        <AuthGuard>
-          <MainLayout>
-            <DashBoardAnalyticsContainer />
           </MainLayout>
         </AuthGuard>
       </Route>
