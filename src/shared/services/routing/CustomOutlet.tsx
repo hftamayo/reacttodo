@@ -21,15 +21,27 @@ export const CustomOutlet: React.FC = () => {
       <Route path="/auth/signup" component={SignUpContainer} />
       <Route path="/auth/logout" component={LogoutContainer} />
 
-      {/* Protected Routes - Dashboard with MainLayout wrapper */}
+      {/* Protected Routes - Single AuthGuard for all dashboard routes */}
       <Route path="/dashboard">
         <AuthGuard>
           <MainLayout>
-            <Switch>
-              <Route path="/dashboard" component={DashBoardContainer} />
-              <Route path="/dashboard/analytics" component={DashBoardAnalyticsContainer} />
-              <Route path="/dashboard/tasks" component={TaskBoardContainer} />
-            </Switch>
+            <DashBoardContainer />
+          </MainLayout>
+        </AuthGuard>
+      </Route>
+
+      <Route path="/dashboard/analytics">
+        <AuthGuard>
+          <MainLayout>
+            <DashBoardAnalyticsContainer />
+          </MainLayout>
+        </AuthGuard>
+      </Route>
+
+      <Route path="/dashboard/tasks">
+        <AuthGuard>
+          <MainLayout>
+            <TaskBoardContainer />
           </MainLayout>
         </AuthGuard>
       </Route>

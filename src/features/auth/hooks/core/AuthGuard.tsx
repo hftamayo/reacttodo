@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useLocation } from 'wouter';
 import { useAuth } from './AuthContext';
 
@@ -9,21 +9,19 @@ interface AuthGuardProps {
 /**
  * AuthGuard - Protects routes that require authentication
  *
- * This component implements lazy auth checking:
- * - Triggers auth validation when protected route is accessed
- * - Only makes API calls when user tries to access protected content
- * - Provides secure route protection without unnecessary probing
- * - Redirects unauthenticated users to landing page
- * - Handles session validation after login when user reaches dashboard
+ * This component implements lazy auth checking with optimization to prevent
+ * multiple auth checks when multiple instances mount simultaneously.
  */
 export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   const { isAuthenticated, isLoading, checkAuth } = useAuth();
   const [, setLocation] = useLocation();
+  const hasTriggeredCheck = useRef(false);
 
   // Trigger auth check when AuthGuard mounts (user accessing protected route)
   useEffect(() => {
-    if (!isAuthenticated && !isLoading) {
+    if (!isAuthenticated && !isLoading && !hasTriggeredCheck.current) {
       console.log('Protected route accessed - checking authentication...');
+      hasTriggeredCheck.current = true;
       checkAuth();
     } else if (isAuthenticated) {
       console.log('User already authenticated, no need to check');
@@ -32,7 +30,7 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
 
   // Redirect unauthenticated users after auth check completes
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
+    if (!isLoading && !isAuthenticated && hasTriggeredCheck.current) {
       console.log('User not authenticated - redirecting to landing page');
       setLocation('/landing');
     }

@@ -6,7 +6,7 @@ import { useAuth } from './AuthContext';
 
 export const useAuthMutations = () => {
   const [, setLocation] = useLocation();
-  const { clearAuth } = useAuth(); // Use clearAuth for immediate logout
+  const { refreshAuth, clearAuth } = useAuth(); // Include both for login and logout
 
   // Login Mutation
   const loginMutation = useMutation({
@@ -14,10 +14,11 @@ export const useAuthMutations = () => {
     onSuccess: async (data) => {
       console.log('Login successful:', data);
 
-      // Don't call refreshAuth() after login - let AuthGuard handle validation
-      // This avoids the race condition where the JWT cookie might not be set yet
-      
-      // Redirect to dashboard - AuthGuard will validate the session when needed
+      // Update auth state immediately after successful login
+      // This prevents the AuthGuard from triggering unnecessary checkAuth() calls
+      await refreshAuth();
+
+      // Redirect to dashboard
       setLocation('/dashboard');
     },
     onError: (error: Error) => {
@@ -45,7 +46,7 @@ export const useAuthMutations = () => {
       // Clear local auth state immediately after logout
       // This avoids unnecessary API calls and provides instant feedback
       clearAuth();
-      
+
       // Redirect to landing page
       setLocation('/landing');
       console.log('User logged out successfully');
