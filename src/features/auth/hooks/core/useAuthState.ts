@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { userOps } from '@/shared/services/api/apiClient';
 import { UserProfileData } from '@/shared/types/api.type';
 
@@ -31,12 +31,17 @@ export const useAuthState = (): AuthState & {
   refreshAuth: () => Promise<void>;
   checkAuth: () => Promise<void>;
   clearAuth: () => void;
+  isRecentLogout: () => boolean;
 } => {
   const [authState, setAuthState] = useState<AuthState>({
     isAuthenticated: false,
     isLoading: false, // Start as NOT loading - we don't check by default
     user: null,
   });
+
+  // Track recent logout to prevent unnecessary auth checks
+  const recentLogoutRef = useRef(false);
+  const logoutTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Remove the hasLikelySession logic - we use lazy checking instead
   const validateSession = useCallback(async (isPostLogout = false) => {
@@ -74,11 +79,13 @@ export const useAuthState = (): AuthState & {
             isLoading: false,
             user: null,
           });
-          
+
           if (isPostLogout) {
             console.log('Session cleared after logout (expected)');
           } else {
-            console.log('No active session found (expected for unauthenticated users)');
+            console.log(
+              'No active session found (expected for unauthenticated users)'
+            );
           }
         } else {
           // Other HTTP errors are actual problems
@@ -107,6 +114,19 @@ export const useAuthState = (): AuthState & {
   // Clear authentication state immediately (for logout scenarios)
   const clearAuth = useCallback(() => {
     console.log('Clearing authentication state immediately');
+
+    // Set logout flag to prevent immediate auth checks
+    recentLogoutRef.current = true;
+
+    // Clear the flag after 2 seconds to allow normal auth checks later
+    if (logoutTimeoutRef.current) {
+      clearTimeout(logoutTimeoutRef.current);
+    }
+    logoutTimeoutRef.current = setTimeout(() => {
+      recentLogoutRef.current = false;
+      logoutTimeoutRef.current = null;
+    }, 2000);
+
     setAuthState({
       isAuthenticated: false,
       isLoading: false,
@@ -114,10 +134,19 @@ export const useAuthState = (): AuthState & {
     });
   }, []);
 
-  // Manual auth check - explicitly validates session
+  // Manual auth check - explicitly validates session (but not immediately after logout)
   const checkAuth = useCallback(async () => {
+    if (recentLogoutRef.current) {
+      console.log('Skipping auth check - recent logout detected');
+      return;
+    }
     await validateSession(false);
   }, [validateSession]);
+
+  // Check if user recently logged out
+  const isRecentLogout = useCallback(() => {
+    return recentLogoutRef.current;
+  }, []);
 
   // Refresh authentication state - handles both validation and logout cleanup
   const refreshAuth = useCallback(async () => {
@@ -136,5 +165,6 @@ export const useAuthState = (): AuthState & {
     refreshAuth,
     checkAuth,
     clearAuth,
+    isRecentLogout,
   };
 };

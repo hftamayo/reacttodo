@@ -9,6 +9,7 @@ interface AuthContextValue {
   refreshAuth: () => Promise<void>;
   checkAuth: () => Promise<void>;
   clearAuth: () => void;
+  isRecentLogout: () => boolean;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);

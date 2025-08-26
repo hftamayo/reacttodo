@@ -13,28 +13,39 @@ interface AuthGuardProps {
  * multiple auth checks when multiple instances mount simultaneously.
  */
 export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
-  const { isAuthenticated, isLoading, checkAuth } = useAuth();
+  const { isAuthenticated, isLoading, checkAuth, isRecentLogout } = useAuth();
   const [, setLocation] = useLocation();
   const hasTriggeredCheck = useRef(false);
 
   // Trigger auth check when AuthGuard mounts (user accessing protected route)
   useEffect(() => {
     if (!isAuthenticated && !isLoading && !hasTriggeredCheck.current) {
+      // Don't check auth immediately after logout - user is definitely unauthenticated
+      if (isRecentLogout()) {
+        console.log('Recent logout detected - skipping auth check');
+        hasTriggeredCheck.current = true;
+        return;
+      }
+
       console.log('Protected route accessed - checking authentication...');
       hasTriggeredCheck.current = true;
       checkAuth();
     } else if (isAuthenticated) {
       console.log('User already authenticated, no need to check');
     }
-  }, [isAuthenticated, isLoading, checkAuth]);
+  }, [isAuthenticated, isLoading, checkAuth, isRecentLogout]);
 
-  // Redirect unauthenticated users after auth check completes
+  // Redirect unauthenticated users after auth check completes (or immediately after logout)
   useEffect(() => {
-    if (!isLoading && !isAuthenticated && hasTriggeredCheck.current) {
+    if (
+      !isLoading &&
+      !isAuthenticated &&
+      (hasTriggeredCheck.current || isRecentLogout())
+    ) {
       console.log('User not authenticated - redirecting to landing page');
       setLocation('/landing');
     }
-  }, [isAuthenticated, isLoading, setLocation]);
+  }, [isAuthenticated, isLoading, setLocation, isRecentLogout]);
 
   // Show loading state while checking authentication
   if (isLoading) {
