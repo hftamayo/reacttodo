@@ -14,6 +14,7 @@ interface AuthGuardProps {
  * - Only makes API calls when user tries to access protected content
  * - Provides secure route protection without unnecessary probing
  * - Redirects unauthenticated users to landing page
+ * - Handles session validation after login when user reaches dashboard
  */
 export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   const { isAuthenticated, isLoading, checkAuth } = useAuth();
@@ -24,6 +25,8 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     if (!isAuthenticated && !isLoading) {
       console.log('Protected route accessed - checking authentication...');
       checkAuth();
+    } else if (isAuthenticated) {
+      console.log('User already authenticated, no need to check');
     }
   }, [isAuthenticated, isLoading, checkAuth]);
 
@@ -53,5 +56,6 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     );
   }
 
+  console.log('AuthGuard: Rendering protected content');
   return <>{children}</>;
 };

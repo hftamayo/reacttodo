@@ -13,9 +13,6 @@ import { MainLayout } from '@/shared/components/ui/layout/dashboard/MainLayout';
 export const CustomOutlet: React.FC = () => {
   return (
     <Switch>
-      {/* Universal Entry Point */}
-      <Route path="/" component={LandingContainer} />
-
       {/* Public Routes */}
       <Route path="/landing" component={LandingContainer} />
 
@@ -28,26 +25,17 @@ export const CustomOutlet: React.FC = () => {
       <Route path="/dashboard">
         <AuthGuard>
           <MainLayout>
-            <DashBoardContainer />
+            <Switch>
+              <Route path="/dashboard" component={DashBoardContainer} />
+              <Route path="/dashboard/analytics" component={DashBoardAnalyticsContainer} />
+              <Route path="/dashboard/tasks" component={TaskBoardContainer} />
+            </Switch>
           </MainLayout>
         </AuthGuard>
       </Route>
 
-      <Route path="/dashboard/analytics">
-        <AuthGuard>
-          <MainLayout>
-            <DashBoardAnalyticsContainer />
-          </MainLayout>
-        </AuthGuard>
-      </Route>
-
-      <Route path="/dashboard/tasks">
-        <AuthGuard>
-          <MainLayout>
-            <TaskBoardContainer />
-          </MainLayout>
-        </AuthGuard>
-      </Route>
+      {/* Default Route - Landing page for unauthenticated users */}
+      <Route path="/" component={LandingContainer} />
 
       {/* Fallback Route for unknown paths */}
       <Route path="*" component={LandingContainer} />

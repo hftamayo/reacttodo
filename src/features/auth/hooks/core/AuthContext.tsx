@@ -8,6 +8,7 @@ interface AuthContextValue {
   user: UserProfileData | null;
   refreshAuth: () => Promise<void>;
   checkAuth: () => Promise<void>;
+  clearAuth: () => void;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);

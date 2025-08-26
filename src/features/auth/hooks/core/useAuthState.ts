@@ -25,10 +25,12 @@ interface AuthState {
  * - Only calls /users/me when explicitly needed
  * - Manual session validation available
  * - Optimized for httpOnly cookies
+ * - No automatic validation after login (handled by AuthGuard)
  */
 export const useAuthState = (): AuthState & {
   refreshAuth: () => Promise<void>;
   checkAuth: () => Promise<void>;
+  clearAuth: () => void;
 } => {
   const [authState, setAuthState] = useState<AuthState>({
     isAuthenticated: false,
@@ -37,7 +39,7 @@ export const useAuthState = (): AuthState & {
   });
 
   // Remove the hasLikelySession logic - we use lazy checking instead
-  const validateSession = useCallback(async () => {
+  const validateSession = useCallback(async (isPostLogout = false) => {
     try {
       setAuthState((prev) => ({ ...prev, isLoading: true }));
 
@@ -59,21 +61,25 @@ export const useAuthState = (): AuthState & {
           isLoading: false,
           user: null,
         });
+        console.log('Session validation failed - invalid response format');
       }
     } catch (apiError: unknown) {
       // Handle API-specific errors
       if (apiError && typeof apiError === 'object' && 'code' in apiError) {
         const statusError = apiError as { code: number };
         if (statusError.code === 401 || statusError.code === 403) {
-          // 401/403 is normal for unauthenticated users
+          // 401/403 means no active session - clear auth state
           setAuthState({
             isAuthenticated: false,
             isLoading: false,
             user: null,
           });
-          console.log(
-            'No active session found (expected for unauthenticated users)'
-          );
+          
+          if (isPostLogout) {
+            console.log('Session cleared after logout (expected)');
+          } else {
+            console.log('No active session found (expected for unauthenticated users)');
+          }
         } else {
           // Other HTTP errors are actual problems
           console.error('Session validation failed with HTTP error:', apiError);
@@ -98,14 +104,24 @@ export const useAuthState = (): AuthState & {
     }
   }, []);
 
+  // Clear authentication state immediately (for logout scenarios)
+  const clearAuth = useCallback(() => {
+    console.log('Clearing authentication state immediately');
+    setAuthState({
+      isAuthenticated: false,
+      isLoading: false,
+      user: null,
+    });
+  }, []);
+
   // Manual auth check - explicitly validates session
   const checkAuth = useCallback(async () => {
-    await validateSession();
+    await validateSession(false);
   }, [validateSession]);
 
-  // Refresh authentication state - same as checkAuth for lazy approach
+  // Refresh authentication state - handles both validation and logout cleanup
   const refreshAuth = useCallback(async () => {
-    await validateSession();
+    await validateSession(true); // Mark as post-logout to handle differently
   }, [validateSession]);
 
   // NO useEffect here - we don't check auth on mount!
@@ -119,5 +135,6 @@ export const useAuthState = (): AuthState & {
     ...authState,
     refreshAuth,
     checkAuth,
+    clearAuth,
   };
 };
