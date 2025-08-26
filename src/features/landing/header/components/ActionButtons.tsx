@@ -52,11 +52,11 @@ export const ActionButtons: React.FC = () => {
       ) : (
         // Authenticated user - Show Dashboard link
         <Button
-          variant="default"
-          className="text-sm sm:text-base px-3 sm:px-4"
+          variant="link"
+          className="text-sm sm:text-base px-2 sm:px-3"
           onClick={handleDashboardClick}
         >
-          Go to Dashboard
+          Dashboard
         </Button>
       )}
     </div>
