@@ -38,10 +38,6 @@ export const ProfileMenu: React.FC = () => {
     openModal('logout', { title: 'Confirm Logout' });
   };
 
-  const handleDemoClick = () => {
-    openModal('demo');
-  };
-
   return (
     <div className="relative">
       <DropdownMenu>
@@ -61,16 +57,12 @@ export const ProfileMenu: React.FC = () => {
               <FaCog className={DashBoardHeaderProfileMenuStyles.icon} />
               {group.settings}
             </DropdownMenuItem>
-            <DropdownMenuItem onSelect={handleLogoutClick}>
-              <FaSignOutAlt className={DashBoardHeaderProfileMenuStyles.icon} />
-              {group.logout}
-            </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem onSelect={handleDemoClick}>
-              <FaPalette className={DashBoardHeaderProfileMenuStyles.icon} />
-              Modal Demo
+            <DropdownMenuItem onSelect={handleLogoutClick}>
+              <FaSignOutAlt className={DashBoardHeaderProfileMenuStyles.icon} />
+              {group.logout}
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
