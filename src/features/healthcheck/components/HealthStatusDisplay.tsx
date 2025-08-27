@@ -2,7 +2,7 @@ import React from 'react';
 import { useHealthCheck } from '../hooks/useHealthCheck';
 import { DashBoardFooterStyles } from '@/shared/utils/twind/styles';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
-import { HealthStatus } from '@/shared/types/healthcheck.type';
+import { HealthStatus } from '@/shared/types/healthcheck/healthcheck.type';
 import { MAX_RETRIES } from '@/shared/utils/envvars';
 
 const STATUS_CLASSES: Record<HealthStatus, string> = {
@@ -23,9 +23,13 @@ export const HealthStatusDisplay: React.FC = () => {
   const { text: statusChecking = 'Checking Status...' } =
     useTranslation('statusChecking');
 
+  const retryMsg =
+    metrics.failureCount > 0
+      ? '(Retry ' + metrics.failureCount + '/' + MAX_RETRIES + ')'
+      : '';
   const statusMessage = {
     ONLINE: 'Backend: Online',
-    OFFLINE: `Backend: Offline ${metrics.failureCount > 0 ? `(Retry ${metrics.failureCount}/${MAX_RETRIES})` : ''}`,
+    OFFLINE: 'Backend: Offline ' + retryMsg,
     NO_CONNECTION: 'Backend: No Connection',
     CHECKING: `Backend: Checking${'.'.repeat((metrics.failureCount % 3) + 1)}`,
   }[metrics.status];

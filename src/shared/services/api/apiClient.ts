@@ -1,44 +1,24 @@
+import { handleResponse, handleError, makeRequest } from './apiHelpers';
 import { BACKEND_URL } from '@/shared/utils/envvars';
+import { PaginationParams } from '@/shared/types/utils/pagination.type';
+import { ApiResponse, UserProfileData } from '../../types/api.type';
 import {
-  ApiError,
   HealthCheckData,
-  TaskProps,
-  TaskData,
-  ApiResponse,
-  DbHealthDetails,
   AppHealthDetails,
+  DbHealthDetails,
+} from '@/shared/types/healthcheck/healthcheck.type';
+import { SignUpProps, LoginProps } from '@/shared/types/domains/user.type';
+import {
+  TaskProps,
+  TaskBoardData,
   AddTaskProps,
-  TaskIdentifier,
-} from '../../types/api.type';
-import { showError } from '../notification/notificationService';
-
-const handleResponse = async <T>(
-  response: Response
-): Promise<ApiResponse<T>> => {
-  if (!response.ok) {
-    const errorData = await response.json();
-    const error: ApiError = {
-      code: response.status,
-      resultMessage: `Network response was not ok: ${response.statusText}. Data: ${JSON.stringify(errorData)}`,
-    };
-    handleError(error);
-  }
-  return await response.json();
-};
-
-const handleError = (error: unknown) => {
-  showError(
-    error as ApiError,
-    'An error occurred while processing your request.'
-  );
-  throw new Error((error as ApiError).resultMessage);
-};
+} from '@/shared/types/domains/task.type';
 
 export const beOps = {
   async appHealth(): Promise<ApiResponse<HealthCheckData<AppHealthDetails>>> {
     try {
       const startTime = performance.now();
-      const response = await fetch(`${BACKEND_URL}/tasks/healthcheck/app`, {
+      const response = await fetch(`${BACKEND_URL}/healthcheck/app`, {
         //credentials: 'include',
       });
       const data =
@@ -55,7 +35,7 @@ export const beOps = {
 
   async dbHealth(): Promise<ApiResponse<HealthCheckData<DbHealthDetails>>> {
     try {
-      const response = await fetch(`${BACKEND_URL}/tasks/healthcheck/db`, {
+      const response = await fetch(`${BACKEND_URL}/healthcheck/db`, {
         //credentials: 'include',
       });
       return await handleResponse<HealthCheckData<DbHealthDetails>>(response);
@@ -66,116 +46,94 @@ export const beOps = {
   },
 };
 
+export const authOps = {
+  async login(
+    credentials: LoginProps
+  ): Promise<ApiResponse<Record<string, unknown>>> {
+    const url = `${BACKEND_URL}/users/login`;
+    return makeRequest<Record<string, unknown>>(url, {
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify(credentials),
+    });
+  },
+  async signup(
+    user: SignUpProps
+  ): Promise<ApiResponse<Record<string, unknown>>> {
+    const url = `${BACKEND_URL}/users/register`;
+    return makeRequest<Record<string, unknown>>(url, {
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify(user),
+    });
+  },
+  async logout(): Promise<ApiResponse<Record<string, unknown>>> {
+    const url = `${BACKEND_URL}/users/logout`;
+    return makeRequest<Record<string, unknown>>(url, {
+      method: 'POST',
+      credentials: 'include',
+    });
+  },
+};
+
+export const userOps = {
+  async getCurrentUser(): Promise<ApiResponse<UserProfileData>> {
+    const url = `${BACKEND_URL}/users/me`;
+    return makeRequest<UserProfileData>(url, {
+      method: 'GET',
+      credentials: 'include',
+    });
+  },
+};
+
 export const taskOps = {
-  async getTasks(): Promise<ApiResponse<TaskData>> {
-    try {
-      const url = `${BACKEND_URL}/tasks/task/list?limit=5`;
-      const response = await fetch(url, {
-        //credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        mode: 'cors',
-      });
-      return await handleResponse<TaskData>(response);
-    } catch (error: unknown) {
-      handleError(error);
-      throw error;
-    }
+  async getTasks({
+    page,
+    limit,
+    _t,
+  }: PaginationParams): Promise<ApiResponse<TaskBoardData>> {
+    const timestamp = _t ?? Date.now();
+
+    const url = `${BACKEND_URL}/todos/list/page?page=${page}&limit=${limit}&_t=${timestamp}`;
+    return makeRequest<TaskBoardData>(url);
   },
 
-  async getTask(id: number): Promise<ApiResponse<TaskData>> {
-    try {
-      const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
-        //credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        mode: 'cors',
-      });
-      return await handleResponse(response);
-    } catch (error: unknown) {
-      handleError(error);
-      throw error;
-    }
+  async getTask(taskId: number): Promise<ApiResponse<TaskBoardData>> {
+    const url = `${BACKEND_URL}/todos/task/${taskId}`;
+    return makeRequest<TaskBoardData>(url);
   },
 
-  async addTask(task: AddTaskProps): Promise<ApiResponse<TaskData>> {
-    try {
-      const response = await fetch(`${BACKEND_URL}/tasks/task`, {
-        method: 'POST',
-        //credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        mode: 'cors',
-        body: JSON.stringify(task),
-      });
-      return await handleResponse(response);
-    } catch (error: unknown) {
-      handleError(error);
-      throw error;
-    }
+  async addTask(task: AddTaskProps): Promise<ApiResponse<TaskBoardData>> {
+    const url = `${BACKEND_URL}/todos/create`;
+    return makeRequest<TaskBoardData>(url, {
+      method: 'POST',
+      //credentials: 'include',
+      body: JSON.stringify(task),
+    });
   },
 
-  async updateTask(task: TaskProps): Promise<ApiResponse<TaskData>> {
-    try {
-      const response = await fetch(`${BACKEND_URL}/tasks/task/${task.id}`, {
-        method: 'PUT',
-        //credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        mode: 'cors',
-        body: JSON.stringify(task),
-      });
-      return await handleResponse(response);
-    } catch (error: unknown) {
-      handleError(error);
-      throw error;
-    }
+  async updateTask(task: TaskProps): Promise<ApiResponse<TaskBoardData>> {
+    const url = `${BACKEND_URL}/todos/update/${task.id}`;
+    return makeRequest<TaskBoardData>(url, {
+      method: 'PATCH',
+      //credentials: 'include',
+      body: JSON.stringify(task),
+    });
   },
 
-  async toggleTaskDone(taskId: TaskIdentifier): Promise<ApiResponse<TaskData>> {
-    try {
-      const response = await fetch(
-        `${BACKEND_URL}/tasks/task/${taskId.id}/done`,
-        {
-          method: 'PATCH',
-          //credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          mode: 'cors',
-        }
-      );
-      return await handleResponse(response);
-    } catch (error: unknown) {
-      handleError(error);
-      throw error;
-    }
+  async toggleTaskDone(taskId: number): Promise<ApiResponse<TaskBoardData>> {
+    const url = `${BACKEND_URL}/todos/task/${taskId}/done`;
+    return makeRequest<TaskBoardData>(url, {
+      method: 'PATCH',
+      //credentials: 'include',
+    });
   },
 
-  async deleteTask(id: number): Promise<ApiResponse<TaskData>> {
-    try {
-      const response = await fetch(`${BACKEND_URL}/tasks/task/${id}`, {
-        method: 'DELETE',
-        //credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        mode: 'cors',
-      });
-      return await handleResponse(response);
-    } catch (error: unknown) {
-      handleError(error);
-      throw error;
-    }
+  async deleteTask(taskId: number): Promise<ApiResponse<TaskBoardData>> {
+    const url = `${BACKEND_URL}/todos/delete/${taskId}`;
+    return makeRequest<TaskBoardData>(url, {
+      method: 'DELETE',
+      //credentials: 'include',
+    });
   },
 };

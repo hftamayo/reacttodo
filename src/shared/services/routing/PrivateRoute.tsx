@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'wouter';
 //import {selectIsAuthenticated, selectUserRole} from
-import { PrivateRouteProps } from '@/shared/types/privroutes.type';
+import { PrivateRouteProps } from '@/shared/types/dashboard/privroutes.type';
 
 export const PrivateRoute: React.FC<PrivateRouteProps> = ({
   component: Component,
@@ -13,7 +13,7 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/login');
+      navigate('/landing');
     } else if (roles && !roles.includes(userRole)) {
       navigate('/unauthorized');
     }

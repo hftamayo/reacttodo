@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAppSelector } from '@/shared/services/redux/hooks/useAppSelector';
 import { selectTheme } from '@/features/settings/store/settingsSlice';
-import { CustomOutlet } from '@/shared/services/routing/CustomOutlet';
 import { DashBoardHeader } from '@/features/dashboard/components/header/DashBoardHeader';
 import { DashBoardToggleMenuBar } from '@/features/dashboard/components/menu/DashBoardToggleMenuBar';
 import { DashBoardFooter } from '@/features/dashboard/components/footer/DashBoardFooter';
 import { APP_NAME } from '@/shared/utils/envvars';
 import { MainLayoutStyles } from '@/shared/utils/twind/styles';
 
-export const MainLayout: React.FC = React.memo(() => {
+interface MainLayoutProps {
+  children?: React.ReactNode;
+}
+
+export const MainLayout: React.FC<MainLayoutProps> = React.memo(({ children }) => {
   const theme = useAppSelector(selectTheme);
   const isAuthenticated = true;
   const userRole = 'admin';
@@ -42,7 +45,7 @@ export const MainLayout: React.FC = React.memo(() => {
           className={`${MainLayoutStyles.layoutContent(sidebarToggle)} flex-1`}
         >
           <div className="flex-1">
-            <CustomOutlet />
+            {children}
           </div>
         </div>
       </div>

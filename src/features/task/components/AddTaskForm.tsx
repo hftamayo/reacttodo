@@ -1,24 +1,23 @@
-import React from 'react';
+import { FC } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { showError } from '@/shared/services/notification/notificationService';
 import { Input } from '@/shared/components/ui/input/Input';
 import { Button } from '@/shared/components/ui/button/Button';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
+import { useTaskBoardActions } from '../hooks/composition/useTaskBoardActions';
 import { taskBoard } from '@/shared/utils/twind/styles';
-import { AddTaskProps } from '@/shared/types/api.type';
+import { AddTaskProps } from '@/shared/types/domains/task.type';
 import { AiOutlinePlus } from 'react-icons/ai';
-import { useTaskMutations } from '../hooks/useTaskMutations';
 
 interface AddTaskFormProps {
-  mutations: ReturnType<typeof useTaskMutations>;
+  isAddingTask: boolean;
 }
 
-export const AddTaskForm: React.FC<AddTaskFormProps> = ({ mutations }) => {
+export const AddTaskForm: FC<AddTaskFormProps> = ({ isAddingTask }) => {
   const { text: addTaskButton } = useTranslation('addTaskButton');
   const { text: errorComponent = 'An error occurred' } =
     useTranslation('errorComponent');
   const { group } = useTranslation('addTaskForm');
-  const { addTask } = mutations;
 
   const {
     register,
@@ -26,6 +25,8 @@ export const AddTaskForm: React.FC<AddTaskFormProps> = ({ mutations }) => {
     reset,
     formState: { errors },
   } = useForm<AddTaskProps>();
+
+  const { onAddTask } = useTaskBoardActions({} as any);
 
   if (!group) {
     return null;
@@ -37,10 +38,10 @@ export const AddTaskForm: React.FC<AddTaskFormProps> = ({ mutations }) => {
         ...data,
         owner: 1, // Replace with actual owner ID
       };
-      //await addTask.mutateAsync(data);
-      await addTask.mutateAsync(TaskWithOwner);
+      await onAddTask(TaskWithOwner);
       reset();
     } catch (error) {
+      console.error('Error adding task:', error);
       showError('Failed to add task');
     }
   };
@@ -64,7 +65,7 @@ export const AddTaskForm: React.FC<AddTaskFormProps> = ({ mutations }) => {
           type="text"
           ctrlsize="large"
           placeholder={group.lblplaceholder}
-          disabled={addTask.isPending}
+          disabled={isAddingTask}
           aria-invalid={errors.title ? 'true' : 'false'}
           {...register('title', {
             required: `${group.lblregister}`,
@@ -79,6 +80,7 @@ export const AddTaskForm: React.FC<AddTaskFormProps> = ({ mutations }) => {
           size="lg"
           type="submit"
           title={addTaskButton}
+          disabled={isAddingTask}
         >
           <AiOutlinePlus size={30} />
         </Button>

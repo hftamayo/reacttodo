@@ -1,3 +1,8 @@
+export const LandingStyles = {
+  button:
+    'text-2xl py-4 px-6 md:px-10 lg:py-6 lg:px-12 bg-white bg-opacity-10 hover:bg-opacity-20 duration-150 rounded-full outline-none',
+};
+
 export const MainLayoutStyles = {
   layoutContainer:
     'min-h-screen flex flex-col bg-[var(--cameo-0)] text-[var(--cameo-1000)]',
@@ -77,21 +82,38 @@ export const taskBoard = {
 };
 
 export const taskRow = {
-  li: 'flex justify-between bg-[var(--cameo-200)] p-4 my-2 capitalize',
-  liComplete: 'flex justify-between bg-[var(--cameo-300)] p-4 my-2 capitalize',
-  row: 'flex',
+  li: 'flex items-center justify-between bg-[var(--cameo-200)] p-4 my-2 capitalize',
+  liComplete:
+    'flex items-center justify-between bg-[var(--cameo-300)] p-4 my-2 capitalize',
+  content: 'flex items-center flex-grow',
   text: 'ml-2 cursor-pointer',
   textComplete: 'ml-2 cursor-pointer line-through',
-  button: 'cursor-pointer flex items-center',
+  actions: 'flex items-center space-x-2',
 };
 
-export const formSettingsStyles = {
-  title: 'text-center text-2xl font-bold',
-  description: 'text-center text-xl font-bold',
-  grouptitle: 'font-bold underline',
+export const formStyles = {
+  form: 'w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto px-4 sm:px-0',
+  header: 'text-center mb-4 sm:mb-6',
+  formGrid: 'flex flex-col space-y-3 sm:space-y-4',
+  formRow: 'flex flex-col space-y-1 sm:space-y-2',
+  label: 'text-xs sm:text-sm font-medium',
+  input: 'w-full text-sm sm:text-base px-3 py-2 sm:px-4 sm:py-3',
+  checkbox: 'mr-1 sm:mr-2',
+  footer:
+    'flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mt-4 sm:mt-6',
+  error: 'text-red-500 text-xs sm:text-sm mt-1',
+
+  title: 'text-xl sm:text-2xl md:text-3xl font-bold text-center mb-2',
+  description: 'text-center text-lg sm:text-xl font-bold',
+  grouptitle: 'font-bold underline text-sm sm:text-base',
   closeButton:
-    'absolute top-4 right-4 p-2 rounded-full bg-[var(--cameo-600)] hover:bg-[var(--cameo-400)] transition-colors duration-200',
-  closeIcon: 'w-5 h-5 text-[var(--cameo-1000)]',
+    'absolute top-1 right-1 sm:top-2 sm:right-2 p-1 sm:p-1.5 rounded-full bg-[var(--cameo-400)] hover:bg-[var(--cameo-600)] transition-colors duration-200',
+  closeIcon: 'w-3 h-3 sm:w-4 sm:h-4 text-[var(--cameo-1000)]',
+  cancelButton:
+    'bg-[var(--cameo-400)] text-[var(--cameo-1000)] px-3 py-2 sm:px-4 sm:py-2 text-sm sm:text-base rounded-md hover:bg-[var(--cameo-600)] transition-colors duration-200 w-full sm:w-auto',
+  submitButton:
+    'bg-[var(--cameo-400)] text-[var(--cameo-1000)] px-3 py-2 sm:px-4 sm:py-2 text-sm sm:text-base rounded-md hover:bg-[var(--cameo-600)] transition-colors duration-200 w-full sm:w-auto',
+  link: 'text-sm sm:text-base text-[var(--cameo-600)] hover:underline',
 };
 
 export const toasterMessages = {

@@ -7,15 +7,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/components/ui/select/Select';
-import { formSettingsStyles } from '@/shared/utils/twind/styles';
-import { SettingsFormSpecialControlsProps } from '@/shared/types/settings.type';
+import { formStyles } from '@/shared/utils/twind/styles';
+import { SettingsFormSpecialControlsProps } from '@/shared/types/settings/settings.type';
 
 export const FontSizeComponent: React.FC<
   SettingsFormSpecialControlsProps<string>
 > = ({ value, onChange, labels }) => {
   return (
     <div className="flex flex-col space-y-1.5">
-      <Label className={formSettingsStyles.grouptitle} htmlFor="fontsize">
+      <Label className={formStyles.grouptitle} htmlFor="fontsize">
         {labels.title}
       </Label>
       <Select value={value} onValueChange={onChange}>

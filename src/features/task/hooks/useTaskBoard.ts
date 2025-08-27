@@ -1,50 +1,132 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useLazyLoad } from '@/shared/services/lazyloading/hooks/useLazyLoad';
-import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
-import { showError } from '@/shared/services/notification/notificationService';
-import { useTaskQueries } from './useTaskQueries';
-import { useTaskMutations } from './useTaskMutations';
+import { usePaginationState } from '@/shared/services/redux/hooks/usePaginationState';
+import { useTaskDataFetcher } from './composition/useTaskDataFetcher';
+import {
+  useTaskStatsCalculator,
+  TaskStatsCalculatorReturn,
+} from './composition/useTaskStatsCalculator';
+import { useTaskPagination } from './composition/useTaskPagination';
+import {
+  PaginationParams,
+  PaginationMetadata,
+} from '@/shared/types/utils/pagination.type';
+import { TaskProps } from '@/shared/types/domains/task.type';
+import { EXECUTION_MODE } from '@/shared/utils/envvars';
 
-export const useTaskBoard = () => {
+export type UseTaskBoardReturn = {
+  // Data
+  data: {
+    tasks: TaskProps[];
+    pagination: PaginationMetadata;
+  };
+  // Statistics
+  stats: TaskStatsCalculatorReturn;
+  // Loading states
+  loading: {
+    isLoading: boolean;
+    isFetching: boolean;
+  };
+  // Actions
+  actions: {
+    setCurrentPage: (page: number) => void;
+    refetch: () => void;
+  };
+  // Error handling
+  error: Error | null;
+  // Lazy loading
+  lazyLoad: {
+    ref: React.RefObject<HTMLDivElement | null>;
+    shouldFetch: boolean;
+  };
+};
+
+export const useTaskBoard = (
+  initialParams?: Partial<PaginationParams>
+): UseTaskBoardReturn => {
+  // Manage pagination state
+  const paginationState = usePaginationState(initialParams);
+  const { page, limit, setPage } = paginationState;
+
+  // Get lazy loading reference
   const { ref, shouldFetch } = useLazyLoad();
-  const { data, error, isLoading } = useTaskQueries.getTasks(shouldFetch);
-  const { text: errorMessage = 'An error occurred' } =
-    useTranslation('errorComponent');
-  const mutations = useTaskMutations();
 
-  const tasks = useMemo(() => {
-    if (isLoading) {
-      return [];
-    }
+  // Fetch task data
+  const { tasks, pagination, isLoading, isFetching, error, refetch } =
+    useTaskDataFetcher({ page, limit });
 
-    if (!data?.data?.tasks) {
-      console.error('No tasks found in the API response');
-      return [];
-    }
-    return data.data.tasks;
-  }, [data, isLoading]);
+  // Calculate task statistics
+  const stats = useTaskStatsCalculator(tasks, pagination.totalCount);
 
-  const taskStats = useMemo(
-    () => ({
-      total: data?.data?.pagination.totalCount ?? 0,
-      completed: tasks.filter((task) => task.done).length,
-    }),
-    [data, tasks]
+  // Setup pagination with prefetching
+  const { setCurrentPage } = useTaskPagination(
+    page,
+    limit,
+    pagination,
+    isLoading,
+    setPage
   );
 
+  const memoizedRefetch = useCallback(() => {
+    return refetch();
+  }, [refetch]);
+
+  // Development logging
   useEffect(() => {
-    if (error) {
-      showError('unexpected UI error', errorMessage);
+    if (EXECUTION_MODE === 'development') {
+      console.log('TaskBoard State:', {
+        page,
+        limit,
+        totalPages: pagination.totalPages,
+        totalCount: pagination.totalCount,
+        isLoading,
+        isFetching,
+        error: error ? 'Error fetching data' : undefined,
+        taskCount: tasks.length,
+        hasMore: pagination.hasMore,
+        hasPrev: pagination.hasPrev,
+        stats: {
+          total: stats.total,
+          completed: stats.completed,
+          remaining: stats.remaining,
+        },
+      });
     }
-  }, [error, errorMessage]);
+  }, [
+    page,
+    limit,
+    pagination,
+    isLoading,
+    isFetching,
+    error,
+    tasks.length,
+    stats,
+  ]);
 
   return {
-    ref,
-    tasks,
+    // Data
+    data: {
+      tasks,
+      pagination,
+    },
+    // Statistics
+    stats,
+    // Loading states
+    loading: {
+      isLoading,
+      isFetching,
+    },
+    // Actions
+    actions: {
+      setCurrentPage,
+      refetch: memoizedRefetch,
+    },
+    // Error handling
     error,
-    isLoading,
-    errorMessage,
-    taskStats,
-    mutations,
+    // Lazy loading
+    lazyLoad: {
+      ref,
+      shouldFetch,
+    },
   };
 };
