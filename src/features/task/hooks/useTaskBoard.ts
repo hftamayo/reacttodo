@@ -36,7 +36,7 @@ export type UseTaskBoardReturn = {
   error: Error | null;
   // Lazy loading
   lazyLoad: {
-    ref: React.RefObject<HTMLElement>;
+    ref: React.RefObject<HTMLDivElement | null>;
     shouldFetch: boolean;
   };
 };
