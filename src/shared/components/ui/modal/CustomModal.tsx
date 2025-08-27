@@ -17,9 +17,6 @@ const CustomModal: React.FC<CustomModalProps> = ({
 }) => {
   if (!isOpen) return null;
 
-  // Debug logging
-  console.log('CustomModal rendering:', { isOpen, backgroundStyle, backgroundIntensity });
-
   // Background overlay classes based on style and intensity
   const getBackgroundClasses = () => {
     switch (backgroundStyle) {
@@ -54,13 +51,12 @@ const CustomModal: React.FC<CustomModalProps> = ({
 
   // Modal content styling based on background style
   const getModalClasses = () => {
-    const baseClasses = 'relative z-[60] rounded-xl shadow-2xl p-4 sm:p-6 w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto max-h-[90vh] overflow-y-auto bg-white border border-gray-200';
+    const baseClasses =
+      'relative z-[60] rounded-xl shadow-2xl p-4 sm:p-6 w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto max-h-[90vh] overflow-y-auto bg-white border border-gray-200';
     return baseClasses;
   };
 
   const backgroundClasses = getBackgroundClasses();
-  console.log('Background classes:', backgroundClasses);
-
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
       {/* Background overlay */}
@@ -68,11 +64,9 @@ const CustomModal: React.FC<CustomModalProps> = ({
         className={`absolute inset-0 ${backgroundClasses}`}
         onClick={onDismiss}
       />
-      
+
       {/* Modal content */}
-      <div className={getModalClasses()}>
-        {children}
-      </div>
+      <div className={getModalClasses()}>{children}</div>
     </div>
   );
 };
