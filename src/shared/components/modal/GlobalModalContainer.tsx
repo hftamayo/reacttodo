@@ -60,8 +60,8 @@ export const GlobalModalContainer: React.FC = () => {
         };
       case 'logout':
         return {
-          backgroundStyle: 'solid' as const,
-          backgroundIntensity: 'strong' as const,
+          backgroundStyle: 'gradient' as const,
+          backgroundIntensity: 'medium' as const,
         };
       case 'demo':
         return {
