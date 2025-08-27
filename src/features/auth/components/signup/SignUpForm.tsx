@@ -193,14 +193,6 @@ export const SignUpForm: FC<SignUpFormProps> = ({
 
       <div className={formStyles.footer}>
         <button
-          type="button"
-          className={formStyles.cancelButton}
-          onClick={onClose}
-          disabled={isDisabled}
-        >
-          {group.btnCancel}
-        </button>
-        <button
           type="submit"
           className={formStyles.submitButton}
           disabled={isDisabled}
@@ -214,6 +206,14 @@ export const SignUpForm: FC<SignUpFormProps> = ({
           ) : (
             group.btnSignUp || 'Create Account'
           )}
+        </button>
+        <button
+          type="button"
+          className={formStyles.cancelButton}
+          onClick={onClose}
+          disabled={isDisabled}
+        >
+          {group.btnCancel}
         </button>
       </div>
     </form>
