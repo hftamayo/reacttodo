@@ -10,11 +10,11 @@ export const ActionButtons: React.FC = () => {
   const { openModal } = useModalState();
 
   const handleLoginClick = () => {
-    openModal('login');
+    openModal('login', { title: 'Welcome Back!' });
   };
 
   const handleSignUpClick = () => {
-    openModal('signup');
+    openModal('signup', { title: 'Join Our Community' });
   };
 
   const handleDashboardClick = () => {

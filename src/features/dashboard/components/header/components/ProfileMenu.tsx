@@ -35,7 +35,7 @@ export const ProfileMenu: React.FC = () => {
   };
 
   const handleLogoutClick = () => {
-    openModal('logout');
+    openModal('logout', { title: 'Confirm Logout' });
   };
 
   const handleDemoClick = () => {
