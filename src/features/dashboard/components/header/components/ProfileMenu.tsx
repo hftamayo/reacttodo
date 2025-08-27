@@ -6,7 +6,6 @@ import {
   FaSignOutAlt,
   FaPalette,
 } from 'react-icons/fa';
-import { useLocation } from 'wouter';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import {
   DropdownMenu,
@@ -22,7 +21,6 @@ import { DashBoardHeaderProfileMenuStyles } from '@/shared/utils/twind/styles';
 export const ProfileMenu: React.FC = () => {
   const { group } = useTranslation('dropDownHeaderBar');
   const { openModal } = useModalState();
-  const [, setLocation] = useLocation();
 
   if (!group) {
     return null;
@@ -37,7 +35,7 @@ export const ProfileMenu: React.FC = () => {
   };
 
   const handleLogoutClick = () => {
-    setLocation('/auth/logout');
+    openModal('logout');
   };
 
   const handleDemoClick = () => {
