@@ -2,17 +2,19 @@ import React from 'react';
 import { Button } from '@/shared/components/ui/button/Button';
 import { useLocation } from 'wouter';
 import { useAuth } from '@/features/auth/hooks/core/AuthContext';
+import { useModalState } from '@/shared/services/redux/hooks/useModalState';
 
 export const ActionButtons: React.FC = () => {
   const [, setLocation] = useLocation();
   const { isAuthenticated, isLoading } = useAuth();
+  const { openModal } = useModalState();
 
   const handleLoginClick = () => {
-    setLocation('/auth/login');
+    openModal('login');
   };
 
   const handleSignUpClick = () => {
-    setLocation('/auth/signup');
+    openModal('signup');
   };
 
   const handleDashboardClick = () => {

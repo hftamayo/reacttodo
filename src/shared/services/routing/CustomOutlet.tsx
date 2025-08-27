@@ -2,8 +2,6 @@ import React from 'react';
 import { Switch, Route } from 'wouter';
 import { DashBoardContainer } from '@/containers/DashBoard/DashBoardContainer';
 import { TaskBoardContainer } from '@/containers/TaskBoard/TaskBoardContainer';
-import { SignUpContainer } from '@/containers/Auth/SignUpContainer';
-import { LoginContainer } from '@/containers/Auth/LoginContainer';
 import { LogoutContainer } from '@/containers/Auth/LogoutContainer';
 import { LandingContainer } from '@/containers/Landing/LandingContainer';
 import { AuthGuard } from '@/features/auth/hooks/core/AuthGuard';
@@ -16,8 +14,6 @@ export const CustomOutlet: React.FC = () => {
       <Route path="/landing" component={LandingContainer} />
 
       {/* Authentication Routes */}
-      <Route path="/auth/login" component={LoginContainer} />
-      <Route path="/auth/signup" component={SignUpContainer} />
       <Route path="/auth/logout" component={LogoutContainer} />
 
       {/* Protected Routes - Single AuthGuard for all dashboard routes */}
