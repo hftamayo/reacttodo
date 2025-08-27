@@ -41,7 +41,7 @@ export const TaskBoardContainer: FC = () => {
   };
 
   const handleClose = () => {
-    setLocation('/');
+    setLocation('/dashboard');
   };
 
   return (
