@@ -78,6 +78,8 @@ export const GlobalModalContainer: React.FC = () => {
 
   const handleLogout = async () => {
     await logoutMutation.mutateAsync();
+    // Close modal after successful logout
+    closeModal();
   };
 
   const renderModalContent = () => {
