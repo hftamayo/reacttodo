@@ -1,11 +1,8 @@
 import { RootState } from './rootReducer';
 
-// Extract state types from RootState
+// Only export types for slices that exist in rootReducer
 export type TaskUIState = RootState['taskUI'];
-export type TaskState = RootState['task'];
 export type SettingsState = RootState['settings'];
-export type HealthMetricsState = RootState['healthMetrics'];
-export type MenuState = RootState['menu'];
 
-// Type for the last operation in TaskUI
-export type TaskOperationType = TaskUIState['lastOperation']['type'];
+// If you need HealthMetricsState or MenuState elsewhere, move those types to their respective slice files.
+// Remove TaskState and TaskOperationType as 'task' and 'lastOperation' do not exist in the current rootReducer.

@@ -1,13 +1,7 @@
-import React from 'react';
-import { TaskStatsProps } from '@/shared/types/api.type';
+import { FC } from 'react';
+import { TaskStats } from '@/shared/types/domains/task.type';
 
-export const TaskBoardStats: React.FC<TaskStatsProps> = ({
-  total,
-  completed,
-}) => {
-  // Only calculate remaining if we're rendering
-  const remainingCount = total - completed;
-
+export const TaskBoardStats: FC<TaskStats> = ({ total, completed, remaining }) => {
   // Don't render anything if there are no tasks
   if (total <= 0) return null;
 
@@ -27,7 +21,7 @@ export const TaskBoardStats: React.FC<TaskStatsProps> = ({
         <div className="flex items-center">
           <span className="text-sm text-gray-600 mr-2">Remaining:</span>
           <span className="text-sm font-bold text-gray-800">
-            {remainingCount}
+            {remaining}
           </span>
         </div>
       </div>

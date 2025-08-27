@@ -1,14 +1,49 @@
 import { useEffect, useCallback } from 'react';
 import { useLazyLoad } from '@/shared/services/lazyloading/hooks/useLazyLoad';
-import { useTaskMutations } from './core/useTaskMutations';
 import { usePaginationState } from '@/shared/services/redux/hooks/usePaginationState';
-import { useTaskData } from './composition/useTaskData';
-import { useTaskStats } from './composition/useTaskStats';
+import { useTaskDataFetcher } from './composition/useTaskDataFetcher';
+import {
+  useTaskStatsCalculator,
+  TaskStatsCalculatorReturn,
+} from './composition/useTaskStatsCalculator';
 import { useTaskPagination } from './composition/useTaskPagination';
-import { PaginationParams } from '@/shared/types/api.type';
+import {
+  PaginationParams,
+  PaginationMetadata,
+} from '@/shared/types/utils/pagination.type';
+import { TaskProps } from '@/shared/types/domains/task.type';
 import { EXECUTION_MODE } from '@/shared/utils/envvars';
 
-export const useTaskBoard = (initialParams?: Partial<PaginationParams>) => {
+export type UseTaskBoardReturn = {
+  // Data
+  data: {
+    tasks: TaskProps[];
+    pagination: PaginationMetadata;
+  };
+  // Statistics
+  stats: TaskStatsCalculatorReturn;
+  // Loading states
+  loading: {
+    isLoading: boolean;
+    isFetching: boolean;
+  };
+  // Actions
+  actions: {
+    setCurrentPage: (page: number) => void;
+    refetch: () => void;
+  };
+  // Error handling
+  error: Error | null;
+  // Lazy loading
+  lazyLoad: {
+    ref: React.RefObject<HTMLDivElement | null>;
+    shouldFetch: boolean;
+  };
+};
+
+export const useTaskBoard = (
+  initialParams?: Partial<PaginationParams>
+): UseTaskBoardReturn => {
   // Manage pagination state
   const paginationState = usePaginationState(initialParams);
   const { page, limit, setPage } = paginationState;
@@ -17,18 +52,11 @@ export const useTaskBoard = (initialParams?: Partial<PaginationParams>) => {
   const { ref, shouldFetch } = useLazyLoad();
 
   // Fetch task data
-  const { tasks, pagination, isLoading, isFetching, error, refetch, data } =
-    useTaskData({ page, limit });
+  const { tasks, pagination, isLoading, isFetching, error, refetch } =
+    useTaskDataFetcher({ page, limit });
 
   // Calculate task statistics
-  const taskStats = useTaskStats(
-    tasks,
-    pagination.totalCount,
-    data?.data?.lastModified
-  );
-
-  // Access mutations
-  const mutations = useTaskMutations({ page, limit });
+  const stats = useTaskStatsCalculator(tasks, pagination.totalCount);
 
   // Setup pagination with prefetching
   const { setCurrentPage } = useTaskPagination(
@@ -57,26 +85,48 @@ export const useTaskBoard = (initialParams?: Partial<PaginationParams>) => {
         taskCount: tasks.length,
         hasMore: pagination.hasMore,
         hasPrev: pagination.hasPrev,
+        stats: {
+          total: stats.total,
+          completed: stats.completed,
+          remaining: stats.remaining,
+        },
       });
     }
-  }, [page, limit, pagination, isLoading, isFetching, error, tasks.length]);
-
-  return {
-    // Data
-    tasks,
+  }, [
+    page,
+    limit,
     pagination,
-    taskStats,
-
-    // State
     isLoading,
     isFetching,
     error,
+    tasks.length,
+    stats,
+  ]);
 
+  return {
+    // Data
+    data: {
+      tasks,
+      pagination,
+    },
+    // Statistics
+    stats,
+    // Loading states
+    loading: {
+      isLoading,
+      isFetching,
+    },
     // Actions
-    mutations,
-    setCurrentPage,
-    refetch: memoizedRefetch,
-    ref,
-    shouldFetch,
+    actions: {
+      setCurrentPage,
+      refetch: memoizedRefetch,
+    },
+    // Error handling
+    error,
+    // Lazy loading
+    lazyLoad: {
+      ref,
+      shouldFetch,
+    },
   };
 };

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { TaskProps } from '@/shared/types/api.type';
+import { FC } from 'react';
+import { TaskProps } from '@/shared/types/domains/task.type';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { FaRegTrashAlt, FaPencilAlt } from 'react-icons/fa';
 import { Label } from '@/shared/components/ui/label/Label';
@@ -9,38 +9,36 @@ import { taskRow } from '../../../../shared/utils/twind/styles';
 import { DeleteDialog } from '@/shared/components/dialogs/DeleteDialog';
 
 interface TaskRowProps extends TaskProps {
-  onEdit: (task: TaskProps) => void;
-  onToggle: () => Promise<void>;
-  onDelete: () => Promise<void>;
-  isToggling: boolean;
-  isDeleting: boolean;
-  isOptimistic?: boolean;
+  onToggle: () => void;
+  onDelete: () => void;
+  onEdit: () => void;
+  isToggling?: boolean;
+  isDeleting?: boolean;
+  isDialogOpen: boolean;
+  onConfirmDelete: () => Promise<void>;
+  onCancelDelete: () => void;
 }
 
-const TaskRowComponent: React.FC<TaskRowProps> = ({
+const TaskRowComponent: FC<TaskRowProps> = ({
   id,
   title,
   description,
   done,
   owner,
-  onEdit,
   onToggle,
   onDelete,
-  isToggling,
-  isDeleting,
-  isOptimistic,
+  onEdit,
+  isToggling = false,
+  isDeleting = false,
+  isDialogOpen,
+  onConfirmDelete,
+  onCancelDelete,
 }) => {
   // Calculate classes
   const liClass = done ? taskRow.liComplete : taskRow.li;
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { text: deleteRowButton } = useTranslation('deleteRowButton');
   const { text: updateRowButton } = useTranslation('updateRowButton');
-
-  const handleDeleteTask = async () => {
-    await onDelete();
-    setIsDialogOpen(false);
-  };
 
   return (
     <li className={liClass} data-testid={`task-row-${id}`}>
@@ -64,7 +62,7 @@ const TaskRowComponent: React.FC<TaskRowProps> = ({
         <Button
           variant="destructive"
           size="sm"
-          onClick={() => setIsDialogOpen(true)}
+          onClick={onDelete}
           title={deleteRowButton}
           disabled={isToggling || isDeleting}
           aria-label={`Delete task "${title}"`}
@@ -75,14 +73,14 @@ const TaskRowComponent: React.FC<TaskRowProps> = ({
           title={title}
           isOpen={isDialogOpen}
           isDeleting={isDeleting}
-          onConfirm={handleDeleteTask}
-          onCancel={() => setIsDialogOpen(false)}
+          onConfirm={onConfirmDelete}
+          onCancel={onCancelDelete}
         />
 
         <Button
           variant="secondary"
           size="sm"
-          onClick={() => onEdit({ id, title, description, done, owner })}
+          onClick={onEdit}
           title={updateRowButton}
           disabled={done}
           aria-label={`Edit task "${title}" ${done ? '(disabled - task completed)' : ''}`}

@@ -3,7 +3,7 @@ import { useHealthCheck } from '@/features/healthcheck/hooks/useHealthCheck';
 import { DashBoardAnalyticsPresenter } from './DashBoardAnalyticsPresenter';
 import { DashBoardAnalyticsSkeleton } from '@/shared/components/ui/skeleton/DashBoardAnalyticsSkeleton';
 
-export const DashBoardAnalyticsContainer: React.FC = () => {
+export const DashBoardContainer: React.FC = () => {
   const metrics = useHealthCheck();
   const loading = metrics.status === 'CHECKING';
 
@@ -11,5 +11,9 @@ export const DashBoardAnalyticsContainer: React.FC = () => {
     return <DashBoardAnalyticsSkeleton />;
   }
 
-  return <DashBoardAnalyticsPresenter metrics={metrics} />;
+  return (
+    <div className="p-6">
+      <DashBoardAnalyticsPresenter metrics={metrics} />
+    </div>
+  );
 };

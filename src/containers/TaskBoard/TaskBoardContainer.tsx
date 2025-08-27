@@ -1,96 +1,64 @@
-import React from 'react';
+import { FC, ErrorInfo } from 'react';
+import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { useLocation } from 'wouter';
 import { TaskBoardPresenter } from './TaskBoardPresenter';
-import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
-import { useErrorHandler } from '@/shared/hooks/useErrorHandler';
 import { useTaskBoard } from '@/features/task/hooks/useTaskBoard';
-import { AddTaskProps, TaskProps } from '@/shared/types/api.type';
+import { useTaskBoardLoadingStates } from '@/features/task/hooks/composition/useTaskBoardLoadingStates';
+import { showError } from '@/shared/services/notification/notificationService';
 
-export const TaskBoardContainer: React.FC = () => {
-  const { handleError } = useErrorHandler('TaskBoard');
+const TaskBoardFallback: FC<FallbackProps> = ({
+  error,
+  resetErrorBoundary,
+}) => (
+  <div className="flex flex-col items-center justify-center p-8">
+    <h2 className="text-xl font-semibold mb-4">Task Board Failed to Load</h2>
+    <p className="text-gray-600">
+      {error?.message ?? 'Please try refreshing the page'}
+    </p>
+    <button
+      onClick={resetErrorBoundary}
+      className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+    >
+      Try Again
+    </button>
+  </div>
+);
+
+export const TaskBoardContainer: FC = () => {
   const [, setLocation] = useLocation();
 
-  const {
-    tasks,
-    pagination,
-    isLoading,
-    error,
-    mutations,
-    setCurrentPage,
-    taskStats,
-    refetch,
-  } = useTaskBoard();
+  const { data, stats, loading, actions, error } = useTaskBoard();
+
+  const { isAdding, isUpdating } = useTaskBoardLoadingStates();
 
   const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
+    actions.setCurrentPage(newPage);
+  };
+
+  const handleError = (error: Error, errorInfo: ErrorInfo) => {
+    console.error('Task Board Error:', error, errorInfo);
+    showError('An error occurred in the Task Board');
   };
 
   const handleClose = () => {
-    setLocation('/');
-  };
-
-  const handleAddTask = async (newTask: AddTaskProps) => {
-    try {
-      await mutations.addTask.mutateAsync(newTask);
-    } catch (error) {
-      handleError(error as Error, { componentStack: '' });
-    }
-  };
-
-  const handleUpdateTask = async (task: TaskProps) => {
-    try {
-      await mutations.updateTask.mutateAsync(task);
-    } catch (error) {
-      handleError(error as Error, { componentStack: '' });
-    }
-  };
-
-  const handleToggleTask = async (id: number) => {
-    try {
-      await mutations.toggleTaskDone.mutateAsync({ id });
-    } catch (error) {
-      handleError(error as Error, { componentStack: '' });
-    }
-  };
-
-  const handleDeleteTask = async (id: number) => {
-    try {
-      await mutations.deleteTask.mutateAsync(id);
-    } catch (error) {
-      handleError(error as Error, { componentStack: '' });
-    }
+    setLocation('/dashboard');
   };
 
   return (
-    <ErrorBoundary
-      fallback={
-        <div className="flex flex-col items-center justify-center p-8">
-          <h2 className="text-xl font-semibold mb-4">
-            Task Board Failed to Load
-          </h2>
-          <p className="text-gray-600">Please try refreshing the page</p>
-        </div>
-      }
-      onError={handleError}
-    >
+    <ErrorBoundary FallbackComponent={TaskBoardFallback} onError={handleError}>
       <TaskBoardPresenter
-        tasks={tasks}
+        tasks={data.tasks}
         pagination={{
-          ...pagination,
-          completedCount: taskStats.completed,
+          ...data.pagination,
+          completedCount: stats.completed,
         }}
-        isLoading={isLoading}
-        isAdding={mutations.addTask.isPending}
-        isUpdating={mutations.updateTask.isPending}
-        isToggling={mutations.toggleTaskDone.isPending}
-        isDeleting={mutations.deleteTask.isPending}
+        isLoading={loading.isLoading}
+        isAdding={isAdding}
+        isUpdating={isUpdating}
         error={error as Error}
         onClose={handleClose}
-        onAddTask={handleAddTask}
-        onUpdateTask={handleUpdateTask}
-        onToggleTask={handleToggleTask}
-        onDeleteTask={handleDeleteTask}
         onPageChange={handlePageChange}
+        stats={stats}
       />
     </ErrorBoundary>
   );

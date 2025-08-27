@@ -4,8 +4,8 @@ import { Input } from '@/shared/components/ui/input/Input';
 import { Checkbox } from '@/shared/components/ui/checkbox/Checkbox';
 import { useTranslation } from '@/shared/services/redux/hooks/useTranslation';
 import { formStyles } from '@/shared/utils/twind/styles';
-import { useTaskUpdate } from '../../hooks/core/useTaskUpdate';
-import { TaskUpdateProps } from '@/shared/types/task.type';
+import { useTaskUpdateForm } from '../../hooks/forms/useTaskUpdateForm';
+import { TaskUpdateProps } from '@/shared/types/domains/task.type';
 
 export const UpdateTaskForm: FC<TaskUpdateProps & { isUpdating?: boolean }> = ({
   initialData,
@@ -14,11 +14,12 @@ export const UpdateTaskForm: FC<TaskUpdateProps & { isUpdating?: boolean }> = ({
   isUpdating = false,
 }) => {
   const { group } = useTranslation('updateTaskForm');
-  const { register, errors, isSubmitting, handleFormSubmit } = useTaskUpdate({
-    initialData,
-    onSuccess: onCancel,
-    onUpdateTask,
-  });
+  const { register, errors, isSubmitting, handleFormSubmit } =
+    useTaskUpdateForm({
+      initialData,
+      onSuccess: onCancel,
+      onUpdateTask,
+    });
 
   if (!group) {
     return null;

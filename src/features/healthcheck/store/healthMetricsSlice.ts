@@ -1,5 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { HealthMetrics, HealthStatus } from '@/shared/types/healthcheck.type';
+import {
+  HealthMetrics,
+  HealthStatus,
+} from '@/shared/types/healthcheck/healthcheck.type';
 import { healthService } from '../services/HealthService';
 
 const initialState: HealthMetrics = {

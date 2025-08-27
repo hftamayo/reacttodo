@@ -1,14 +1,29 @@
 import { useMemo } from 'react';
 import { useTaskQueries } from '../core/useTaskQueries';
-import { PaginationParams, PaginationMetadata } from '@/shared/types/api.type';
+import {
+  PaginationParams,
+  PaginationMetadata,
+} from '@/shared/types/utils/pagination.type';
+import { TaskProps } from '@/shared/types/domains/task.type';
 
-export const useTaskData = (paginationParams: PaginationParams) => {
+export type TaskDataFetcherReturn = {
+  tasks: TaskProps[];
+  pagination: PaginationMetadata;
+  isLoading: boolean;
+  isFetching: boolean;
+  error: Error | null;
+  refetch: () => void;
+};
+
+export const useTaskDataFetcher = (
+  paginationParams: PaginationParams
+): TaskDataFetcherReturn => {
   const { page, limit } = paginationParams;
 
   const { data, error, isLoading, refetch, isFetching } =
     useTaskQueries.getTasks({ page, limit });
 
-  // Extract and memoize tasks array
+  // Extract tasks array
   const tasks = useMemo(() => {
     if (isLoading || !data?.data?.tasks) return [];
     return [...data.data.tasks];
@@ -38,8 +53,9 @@ export const useTaskData = (paginationParams: PaginationParams) => {
     pagination,
     isLoading,
     isFetching,
-    error,
-    refetch,
-    data,
+    error: error,
+    refetch: () => {
+      refetch();
+    },
   };
 };

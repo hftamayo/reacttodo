@@ -1,7 +1,7 @@
 import {
   HealthMetrics,
   PubSubHealthListener,
-} from '@/shared/types/healthcheck.type';
+} from '@/shared/types/healthcheck/healthcheck.type';
 import {
   showSuccess,
   showError,

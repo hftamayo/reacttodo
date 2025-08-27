@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { TaskProps } from '@/shared/types/api.type';
+import {
+  TaskProps,
+  UseUpdateTaskProps,
+} from '@/shared/types/domains/task.type';
 import { showSuccess } from '@/shared/services/notification/notificationService';
-import { UseUpdateTaskProps } from '@/shared/types/task.type';
 
-export const useTaskUpdate = ({
+export const useTaskUpdateForm = ({
   initialData,
   onSuccess,
   onUpdateTask,

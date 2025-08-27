@@ -12,7 +12,7 @@ import {
   AppSettings,
   SettingsFormProps,
   UseSettingsFormHandlers,
-} from '@/shared/types/settings.type';
+} from '@/shared/types/settings/settings.type';
 import { showError } from '@/shared/services/notification/notificationService';
 
 type SettingsFormHook = Pick<SettingsFormProps, 'onSubmit' | 'onCancel'>;
@@ -37,15 +37,18 @@ export const useSettingsForm = ({ onSubmit, onCancel }: SettingsFormHook) => {
       }));
     },
 
-    submitHandler: async (event: React.FormEvent) => {
+    submitHandler: (event: React.FormEvent) => {
       event.preventDefault();
-      try {
-        settingsService.saveSettings(formValues);
-        dispatch(updateSettings(formValues));
-        onSubmit(formValues);
-      } catch (error) {
-        showError('Failed to update settings');
-      }
+      (async () => {
+        try {
+          settingsService.saveSettings(formValues);
+          dispatch(updateSettings(formValues));
+          onSubmit(formValues);
+        } catch (error) {
+          console.error('Error updating settings:', error);
+          showError('Failed to update settings');
+        }
+      })();
     },
 
     cancelHandler: () => {

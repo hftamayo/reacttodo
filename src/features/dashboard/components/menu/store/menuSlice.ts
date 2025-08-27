@@ -1,7 +1,7 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { MENU_ITEMS } from '../constants/menuItems';
 import { RootState } from '@/shared/services/redux/rootReducer';
-import { MenuState } from '@/shared/types/menu.type';
+import { MenuState } from '@/shared/types/dashboard/menu.type';
 
 const initialState: MenuState = {
   items: MENU_ITEMS,
