@@ -154,16 +154,31 @@ export const useAuthState = (): AuthState & {
   }, [validateSession]);
 
   // Check for existing session on app initialization (one-time)
+  // Only check if we're not already authenticated and haven't recently logged out
   const hasInitializedRef = useRef(false);
   useEffect(() => {
-    if (!hasInitializedRef.current && !recentLogoutRef.current) {
+    if (
+      !hasInitializedRef.current &&
+      !recentLogoutRef.current &&
+      !authState.isAuthenticated &&
+      !authState.isLoading
+    ) {
       hasInitializedRef.current = true;
+
+      // For httpOnly cookies, we can't easily check if they exist client-side
+      // But we can implement a more conservative approach:
+      // Only check session if the user manually navigates or performs an action that requires auth
+      // For now, we'll skip the automatic initialization check to avoid unnecessary API calls
       console.log(
-        'useAuthState: Checking for existing session on app initialization...'
+        'useAuthState: Skipping automatic session check on app initialization to avoid unnecessary API calls'
       );
-      checkAuth();
+
+      // Note: Session will be checked when:
+      // 1. User tries to access protected routes (AuthGuard)
+      // 2. User performs actions that require authentication
+      // 3. Components explicitly call checkAuth()
     }
-  }, [checkAuth]);
+  }, [authState.isAuthenticated, authState.isLoading]);
 
   return {
     ...authState,
