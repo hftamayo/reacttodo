@@ -4,9 +4,13 @@ Frontend for API for managing tasks assigned to users.
 
 ---
 
-[Version 1](./assets/ver01.png)
+### UI version 2:
 
-[Version 2](./assets/ver02.png)
+![Version 2](./sshots/ver02.png)
+
+### UI version 1:
+
+![Version 1](./sshots/ver01.png)
 
 # 2. Level of complexity
 
