@@ -1,24 +1,19 @@
-import React, { useEffect } from 'react';
-import { useLocation } from 'wouter';
-import { useAuthState } from '@/features/auth/hooks/core/useAuthState';
+import React from 'react';
+import { useAuth } from '@/features/auth/hooks/core/AuthContext';
 import { DashBoardAnalyticsSkeleton } from '@/shared/components/ui/skeleton/DashBoardAnalyticsSkeleton';
 import LandingPresenter from './LandingPresenter';
 
 export const LandingContainer: React.FC = () => {
-  const { isAuthenticated, isLoading } = useAuthState();
-  const [, setLocation] = useLocation();
+  const { isLoading } = useAuth();
 
-  // Auto-redirect authenticated users to dashboard
-  useEffect(() => {
-    if (!isLoading && isAuthenticated) {
-      setLocation('/dashboard');
-    }
-  }, [isAuthenticated, isLoading, setLocation]);
+  // Removed auto-redirect - let users choose to stay on landing or go to dashboard
+  // The ActionButtons component will show "Go to Dashboard" for authenticated users
 
   if (isLoading) {
     return <DashBoardAnalyticsSkeleton />;
   }
 
-  // Only show landing page for non-authenticated users
+  // Show landing page for both authenticated and non-authenticated users
+  // ActionButtons will display appropriate controls based on auth state
   return <LandingPresenter />;
 };
