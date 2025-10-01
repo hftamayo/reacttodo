@@ -8,6 +8,8 @@ import { act } from 'react-dom/test-utils';
 
 import { UpdateTaskForm } from '@/features/task/components/update/UpdateTaskForm';
 import { TaskProps } from '@/shared/types/domains/task.type';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 const initialTask: TaskProps = {
   id: 1,
@@ -116,17 +118,11 @@ describe('UpdateTaskForm (AAA)', () => {
   it('calls onCancel when cancel button clicked (AAA)', async () => {
     // Arrange
     const props = { initialData: initialTask, onCancel, onUpdateTask };
-    act(() => {
-      ReactDOM.render(React.createElement(UpdateTaskForm, props), container);
-    });
-    const cancelBtn = container.querySelector('button[type="button"]') as HTMLButtonElement;
+    render(React.createElement(UpdateTaskForm, props));
+    const cancelBtn = screen.getByRole('button', { name: /cancel/i });
 
     // Act
-    expect(cancelBtn.getAttribute('type')).toBe('button');
-    await act(async () => {
-      cancelBtn.click();
-      await Promise.resolve();
-    });
+    await userEvent.click(cancelBtn);
 
     // Assert
     expect(onCancel).toHaveBeenCalledTimes(1);
