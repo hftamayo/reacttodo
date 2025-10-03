@@ -2,7 +2,7 @@
  * Jest setup file for API helpers tests
  */
 
-import 'jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 
 // Mock global fetch
 global.fetch = jest.fn();
@@ -19,6 +19,16 @@ global.IntersectionObserver = jest.fn().mockImplementation(() => ({
   unobserve: jest.fn(),
   disconnect: jest.fn(),
 })) as any;
+
+// Mock ResizeObserver required by Radix UI components in JSDOM
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+class ResizeObserverMock implements Partial<ResizeObserver> {
+  observe = jest.fn();
+  unobserve = jest.fn();
+  disconnect = jest.fn();
+}
+// @ts-ignore
+global.ResizeObserver = ResizeObserverMock as any;
 
 // Mock performance.now
 Object.defineProperty(performance, 'now', {
