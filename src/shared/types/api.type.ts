@@ -24,3 +24,10 @@ export type UserProfileData = {
   role?: string;
   isActive?: boolean;
 };
+
+// Pagination params used across hooks/services
+export type PaginationParams = {
+  page: number;
+  limit: number;
+  _t?: number;
+};

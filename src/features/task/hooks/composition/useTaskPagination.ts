@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { taskKeys } from '../core/queryKeys';
 import { useTaskPrefetching } from '../core/useTaskPreFetching';
-import { PaginationMetadata } from '@/shared/types/api.type';
+import { PaginationMetadata } from '@/shared/types/utils/pagination.type';
 import debounce from 'lodash/debounce';
 
 export const useTaskPagination = (
